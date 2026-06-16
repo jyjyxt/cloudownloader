@@ -54,6 +54,12 @@ opencli xiaohongshu notifications
 opencli xiaohongshu download "https://www.xiaohongshu.com/search_result/<id>?xsec_token=..."
 opencli xiaohongshu download "https://xhslink.com/..."
 
+# Publish an ordinary image-text note
+opencli xiaohongshu publish "正文内容" --title "标题" --images ./a.jpg,./b.png
+
+# Publish a text-image note; split multiple cards with ||| and use \n for card line breaks
+opencli xiaohongshu publish "正文内容" --title "标题" --card-text "第一张\\n第二行|||第二张" --card-style 边框
+
 # Follow / unfollow a profile
 opencli xiaohongshu follow 5d8f88dc0000000001005d3a
 opencli xiaohongshu unfollow https://www.xiaohongshu.com/user/profile/5d8f88dc0000000001005d3a
@@ -69,6 +75,7 @@ opencli xiaohongshu delete-note 6a08ba0b000000000702a893 --execute
 > `ask` is separate from ordinary `search`: it submits the question to 点点, returns `answer`, `source_count`, and `sources[]`, and keeps `xsec_token` in JSON when Xiaohongshu returns one. The current 点点 source API may return bare note IDs without `xsec_token`; in that case `url` falls back to `/explore/<note_id>` and `xsec_token` is an empty string.
 > `delete-note` operates in creator center and accepts a 24-character note ID or exact Xiaohongshu note URL; it defaults to dry-run verification and only deletes with `--execute`.
 > `follow` and `unfollow` are write commands on the public profile page. They verify the browser stayed on the requested `/user/profile/<id>` target before clicking, and verify the visible follow-state button after the action.
+> `publish --card-text` uses creator-center 文字配图. It requires generated card images to appear in the current composer before filling title/body or submitting. If you request `--card-style`, that exact live page style must be selected; unavailable styles fail instead of silently falling back.
 
 ## Prerequisites
 
