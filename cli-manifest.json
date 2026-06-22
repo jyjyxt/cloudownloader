@@ -14200,6 +14200,51 @@
     "siteSession": "persistent"
   },
   {
+    "site": "github-trending",
+    "name": "repos",
+    "description": "GitHub Trending repositories (public, no login). Filter by --language and --since.",
+    "access": "read",
+    "domain": "github.com",
+    "strategy": "public",
+    "browser": false,
+    "args": [
+      {
+        "name": "since",
+        "type": "string",
+        "default": "daily",
+        "required": false,
+        "help": "Time range: daily / weekly / monthly"
+      },
+      {
+        "name": "language",
+        "type": "string",
+        "default": "",
+        "required": false,
+        "help": "Filter by programming language slug, e.g. python, rust, \"c++\""
+      },
+      {
+        "name": "limit",
+        "type": "int",
+        "default": 25,
+        "required": false,
+        "help": "Number of repositories to return (max 25)"
+      }
+    ],
+    "columns": [
+      "rank",
+      "repo",
+      "description",
+      "language",
+      "stars",
+      "forks",
+      "starsSince",
+      "url"
+    ],
+    "type": "js",
+    "modulePath": "github-trending/repos.js",
+    "sourceFile": "github-trending/repos.js"
+  },
+  {
     "site": "google",
     "name": "news",
     "description": "Get Google News headlines",
