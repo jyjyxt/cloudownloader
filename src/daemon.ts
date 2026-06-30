@@ -446,8 +446,15 @@ wss.on('connection', (ws: WebSocket) => {
         pending.delete(msg.id);
         p.resolve(msg);
       }
-    } catch {
-      // Ignore malformed messages
+    } catch (err) {
+      // Malformed message from the extension. Surface so protocol drift /
+      // version skew between daemon and extension shows up in the log
+      // instead of presenting as a generic command timeout downstream.
+      const sample = data.toString().slice(0, 200);
+      log.warn(
+        `[daemon] Ignoring malformed WS message from extension: ` +
+        `${err instanceof Error ? err.message : String(err)} (first 200 chars: ${JSON.stringify(sample)})`,
+      );
     }
   });
 
