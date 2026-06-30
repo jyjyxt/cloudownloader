@@ -588,33 +588,46 @@ export async function evaluateInFrame(
   const contexts = tabFrameContexts.get(tabId);
   const contextId = contexts?.get(frameId);
 
-  if (contextId === undefined) {
-    await sendCommandInFrameTarget(tabId, frameId, 'Runtime.enable', {}, aggressiveRetry).catch(() => undefined);
-    const result = await sendCommandInFrameTarget(tabId, frameId, 'Runtime.evaluate', {
-      expression,
-      returnByValue: true,
-      awaitPromise: true,
-    }, aggressiveRetry) as {
-      result?: { type: string; value?: unknown; description?: string; subtype?: string };
-      exceptionDetails?: { exception?: { description?: string }; text?: string };
-    };
-
-    if (result.exceptionDetails) {
-      const errMsg = result.exceptionDetails.exception?.description
-        || result.exceptionDetails.text
-        || 'Eval error';
-      throw new Error(errMsg);
+  if (contextId !== undefined) {
+    try {
+      const result = await chrome.debugger.sendCommand({ tabId }, 'Runtime.evaluate', {
+        expression,
+        contextId,
+        returnByValue: true,
+        awaitPromise: true,
+      }) as {
+        result?: { type: string; value?: unknown; description?: string; subtype?: string };
+        exceptionDetails?: { exception?: { description?: string }; text?: string };
+      };
+      if (result.exceptionDetails) {
+        const errMsg = result.exceptionDetails.exception?.description
+          || result.exceptionDetails.text
+          || 'Eval error';
+        throw new Error(errMsg);
+      }
+      return result.result?.value;
+    } catch (err) {
+      // A navigated/reloaded frame invalidates its cached context id, but the
+      // Runtime.executionContextDestroyed event may not have been processed
+      // yet — the cache still holds the stale id and Runtime.evaluate rejects
+      // with "Cannot find context with specified id". Drop the stale id and
+      // fall through to the frame-target path instead of failing (evaluate()
+      // likewise re-resolves on a dead context). Re-throw genuine page errors.
+      const msg = String((err as { message?: string })?.message || err);
+      if (!/Cannot find context|context with specified id|Execution context was destroyed/i.test(msg)) {
+        throw err;
+      }
+      contexts?.delete(frameId);
     }
-
-    return result.result?.value;
   }
 
-  const result = await chrome.debugger.sendCommand({ tabId }, 'Runtime.evaluate', {
+  // No cached context, or the cached one went stale: resolve via the frame target.
+  await sendCommandInFrameTarget(tabId, frameId, 'Runtime.enable', {}, aggressiveRetry).catch(() => undefined);
+  const result = await sendCommandInFrameTarget(tabId, frameId, 'Runtime.evaluate', {
     expression,
-    contextId,
     returnByValue: true,
     awaitPromise: true,
-  }) as {
+  }, aggressiveRetry) as {
     result?: { type: string; value?: unknown; description?: string; subtype?: string };
     exceptionDetails?: { exception?: { description?: string }; text?: string };
   };
@@ -765,28 +778,35 @@ export function registerListeners(): void {
         requestHeaders: normalizeHeaders(request?.headers),
       });
       if (!entry) return;
-      entry.requestBodyKind = request?.hasPostData ? 'string' : 'empty';
-      {
-        const raw = String(request?.postData || '');
-        const fullSize = raw.length;
-        const truncated = fullSize > CDP_REQUEST_BODY_CAPTURE_LIMIT;
-        entry.requestBodyPreview = truncated ? raw.slice(0, CDP_REQUEST_BODY_CAPTURE_LIMIT) : raw;
-        entry.requestBodyFullSize = fullSize;
-        entry.requestBodyTruncated = truncated;
-      }
-      try {
-        const postData = await chrome.debugger.sendCommand({ tabId }, 'Network.getRequestPostData', { requestId }) as { postData?: string };
-        if (postData?.postData) {
-          const raw = postData.postData;
+      // On an HTTP 30x, CDP re-fires requestWillBeSent with the SAME requestId
+      // (the prior hop is carried in `redirectResponse`) for the redirect
+      // target — typically a GET with no postData. Overwriting the body here
+      // would wipe the original request's captured POST body, so only populate
+      // the body on the initial send.
+      if (!eventParams?.redirectResponse) {
+        entry.requestBodyKind = request?.hasPostData ? 'string' : 'empty';
+        {
+          const raw = String(request?.postData || '');
           const fullSize = raw.length;
           const truncated = fullSize > CDP_REQUEST_BODY_CAPTURE_LIMIT;
-          entry.requestBodyKind = 'string';
           entry.requestBodyPreview = truncated ? raw.slice(0, CDP_REQUEST_BODY_CAPTURE_LIMIT) : raw;
           entry.requestBodyFullSize = fullSize;
           entry.requestBodyTruncated = truncated;
         }
-      } catch {
-        // Optional; some requests do not expose postData.
+        try {
+          const postData = await chrome.debugger.sendCommand({ tabId }, 'Network.getRequestPostData', { requestId }) as { postData?: string };
+          if (postData?.postData) {
+            const raw = postData.postData;
+            const fullSize = raw.length;
+            const truncated = fullSize > CDP_REQUEST_BODY_CAPTURE_LIMIT;
+            entry.requestBodyKind = 'string';
+            entry.requestBodyPreview = truncated ? raw.slice(0, CDP_REQUEST_BODY_CAPTURE_LIMIT) : raw;
+            entry.requestBodyFullSize = fullSize;
+            entry.requestBodyTruncated = truncated;
+          }
+        } catch {
+          // Optional; some requests do not expose postData.
+        }
       }
       return;
     }
@@ -799,9 +819,14 @@ export function registerListeners(): void {
         status?: number;
         headers?: Record<string, unknown>;
       } | undefined;
-      const entry = getOrCreateNetworkCaptureEntry(tabId, requestId, {
-        url: response?.url,
-      });
+      // Lookup-only (like loadingFinished below): never create an entry from a
+      // response. If the matching requestWillBeSent was already drained by a
+      // readNetworkCapture() while the request was in flight, creating one here
+      // produces an orphan half-entry with a defaulted method ('GET') and no
+      // request data.
+      const stateEntryIndex = state.requestToIndex.get(requestId);
+      if (stateEntryIndex === undefined) return;
+      const entry = state.entries[stateEntryIndex];
       if (!entry) return;
       entry.responseStatus = response?.status;
       entry.responseContentType = response?.mimeType || '';

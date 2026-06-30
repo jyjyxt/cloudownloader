@@ -395,25 +395,33 @@ async function evaluateInFrame(tabId, expression, frameId, aggressiveRetry = fal
   });
   const contexts = tabFrameContexts.get(tabId);
   const contextId = contexts?.get(frameId);
-  if (contextId === void 0) {
-    await sendCommandInFrameTarget(tabId, frameId, "Runtime.enable", {}, aggressiveRetry).catch(() => void 0);
-    const result2 = await sendCommandInFrameTarget(tabId, frameId, "Runtime.evaluate", {
-      expression,
-      returnByValue: true,
-      awaitPromise: true
-    }, aggressiveRetry);
-    if (result2.exceptionDetails) {
-      const errMsg = result2.exceptionDetails.exception?.description || result2.exceptionDetails.text || "Eval error";
-      throw new Error(errMsg);
+  if (contextId !== void 0) {
+    try {
+      const result2 = await chrome.debugger.sendCommand({ tabId }, "Runtime.evaluate", {
+        expression,
+        contextId,
+        returnByValue: true,
+        awaitPromise: true
+      });
+      if (result2.exceptionDetails) {
+        const errMsg = result2.exceptionDetails.exception?.description || result2.exceptionDetails.text || "Eval error";
+        throw new Error(errMsg);
+      }
+      return result2.result?.value;
+    } catch (err) {
+      const msg = String(err?.message || err);
+      if (!/Cannot find context|context with specified id|Execution context was destroyed/i.test(msg)) {
+        throw err;
+      }
+      contexts?.delete(frameId);
     }
-    return result2.result?.value;
   }
-  const result = await chrome.debugger.sendCommand({ tabId }, "Runtime.evaluate", {
+  await sendCommandInFrameTarget(tabId, frameId, "Runtime.enable", {}, aggressiveRetry).catch(() => void 0);
+  const result = await sendCommandInFrameTarget(tabId, frameId, "Runtime.evaluate", {
     expression,
-    contextId,
     returnByValue: true,
     awaitPromise: true
-  });
+  }, aggressiveRetry);
   if (result.exceptionDetails) {
     const errMsg = result.exceptionDetails.exception?.description || result.exceptionDetails.text || "Eval error";
     throw new Error(errMsg);
@@ -533,36 +541,38 @@ function registerListeners() {
         requestHeaders: normalizeHeaders(request?.headers)
       });
       if (!entry) return;
-      entry.requestBodyKind = request?.hasPostData ? "string" : "empty";
-      {
-        const raw = String(request?.postData || "");
-        const fullSize = raw.length;
-        const truncated = fullSize > CDP_REQUEST_BODY_CAPTURE_LIMIT;
-        entry.requestBodyPreview = truncated ? raw.slice(0, CDP_REQUEST_BODY_CAPTURE_LIMIT) : raw;
-        entry.requestBodyFullSize = fullSize;
-        entry.requestBodyTruncated = truncated;
-      }
-      try {
-        const postData = await chrome.debugger.sendCommand({ tabId }, "Network.getRequestPostData", { requestId });
-        if (postData?.postData) {
-          const raw = postData.postData;
+      if (!eventParams?.redirectResponse) {
+        entry.requestBodyKind = request?.hasPostData ? "string" : "empty";
+        {
+          const raw = String(request?.postData || "");
           const fullSize = raw.length;
           const truncated = fullSize > CDP_REQUEST_BODY_CAPTURE_LIMIT;
-          entry.requestBodyKind = "string";
           entry.requestBodyPreview = truncated ? raw.slice(0, CDP_REQUEST_BODY_CAPTURE_LIMIT) : raw;
           entry.requestBodyFullSize = fullSize;
           entry.requestBodyTruncated = truncated;
         }
-      } catch {
+        try {
+          const postData = await chrome.debugger.sendCommand({ tabId }, "Network.getRequestPostData", { requestId });
+          if (postData?.postData) {
+            const raw = postData.postData;
+            const fullSize = raw.length;
+            const truncated = fullSize > CDP_REQUEST_BODY_CAPTURE_LIMIT;
+            entry.requestBodyKind = "string";
+            entry.requestBodyPreview = truncated ? raw.slice(0, CDP_REQUEST_BODY_CAPTURE_LIMIT) : raw;
+            entry.requestBodyFullSize = fullSize;
+            entry.requestBodyTruncated = truncated;
+          }
+        } catch {
+        }
       }
       return;
     }
     if (method === "Network.responseReceived") {
       const requestId = String(eventParams?.requestId || "");
       const response = eventParams?.response;
-      const entry = getOrCreateNetworkCaptureEntry(tabId, requestId, {
-        url: response?.url
-      });
+      const stateEntryIndex = state.requestToIndex.get(requestId);
+      if (stateEntryIndex === void 0) return;
+      const entry = state.entries[stateEntryIndex];
       if (!entry) return;
       entry.responseStatus = response?.status;
       entry.responseContentType = response?.mimeType || "";

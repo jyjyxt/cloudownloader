@@ -465,3 +465,146 @@ describe('cdp network capture survives forced re-attach', () => {
     expect(mock.networkEnableCount()).toBeGreaterThan(enablesAfterStart);
   });
 });
+
+describe('cdp network capture correctness', () => {
+  beforeEach(() => {
+    vi.resetModules();
+  });
+
+  afterEach(() => {
+    vi.unstubAllGlobals();
+  });
+
+  function createNetworkMock() {
+    const onEventListeners = [];
+    const debuggerApi = {
+      attach: vi.fn(async () => {}),
+      detach: vi.fn(async () => {}),
+      sendCommand: vi.fn(async (_target, method, params) => {
+        if (method === 'Runtime.evaluate' && params?.expression === '1') return { result: { value: '1' } };
+        if (method === 'Network.getRequestPostData') return {}; // no override; use inline postData
+        return {};
+      }),
+      onDetach: { addListener: vi.fn() },
+      onEvent: { addListener: vi.fn((fn) => { onEventListeners.push(fn); }) },
+    };
+    const tabs = {
+      get: vi.fn(async () => ({ id: 1, windowId: 1, url: 'https://x.com/home' })),
+      onRemoved: { addListener: vi.fn() },
+      onUpdated: { addListener: vi.fn() },
+    };
+    const fire = async (method, params) => {
+      for (const fn of onEventListeners) await fn({ tabId: 1 }, method, params);
+    };
+    return {
+      chrome: { tabs, debugger: debuggerApi, scripting: {}, runtime: { id: 'opencli-test' } },
+      fire,
+    };
+  }
+
+  it('preserves the original POST body when a captured request follows a redirect', async () => {
+    const mock = createNetworkMock();
+    vi.stubGlobal('chrome', mock.chrome);
+    const mod = await import('./cdp');
+    mod.registerListeners();
+    await mod.startNetworkCapture(1, 'api.example');
+
+    // Initial POST with a body.
+    await mock.fire('Network.requestWillBeSent', {
+      requestId: 'r1',
+      request: { url: 'https://api.example/login', method: 'POST', postData: 'user=a&pass=b', hasPostData: true },
+    });
+    // The 302 target re-fires with the SAME requestId, carried via redirectResponse,
+    // as a GET with no postData — this must NOT wipe the captured body.
+    await mock.fire('Network.requestWillBeSent', {
+      requestId: 'r1',
+      redirectResponse: { status: 302, url: 'https://api.example/login' },
+      request: { url: 'https://api.example/home', method: 'GET' },
+    });
+
+    const entries = await mod.readNetworkCapture(1);
+    expect(entries).toHaveLength(1);
+    expect(entries[0].requestBodyPreview).toBe('user=a&pass=b');
+    expect(entries[0].requestBodyKind).toBe('string');
+  });
+
+  it('does not create an orphan entry from a response after the request was drained', async () => {
+    const mock = createNetworkMock();
+    vi.stubGlobal('chrome', mock.chrome);
+    const mod = await import('./cdp');
+    mod.registerListeners();
+    await mod.startNetworkCapture(1, 'api.example');
+
+    await mock.fire('Network.requestWillBeSent', {
+      requestId: 'r2',
+      request: { url: 'https://api.example/x', method: 'GET' },
+    });
+    // Read drains entries + clears requestToIndex while the request is in flight.
+    const first = await mod.readNetworkCapture(1);
+    expect(first).toHaveLength(1);
+
+    // Late response for the drained request must not resurrect a half-entry.
+    await mock.fire('Network.responseReceived', {
+      requestId: 'r2',
+      response: { url: 'https://api.example/x', status: 200, mimeType: 'text/html' },
+    });
+    const second = await mod.readNetworkCapture(1);
+    expect(second).toEqual([]);
+  });
+});
+
+describe('cdp evaluateInFrame stale context fallback', () => {
+  beforeEach(() => {
+    vi.resetModules();
+  });
+
+  afterEach(() => {
+    vi.unstubAllGlobals();
+  });
+
+  it('falls back to the frame target when the cached context id went stale', async () => {
+    const debuggerEventListeners = [];
+    const debuggerApi = {
+      attach: vi.fn(async () => {}),
+      detach: vi.fn(async () => {}),
+      sendCommand: vi.fn(async (target, method, params) => {
+        if (method === 'Runtime.enable') return {};
+        // The cached context id is stale after the frame navigated: CDP rejects.
+        if (method === 'Runtime.evaluate' && params?.contextId === 99) {
+          throw new Error('Cannot find context with specified id');
+        }
+        if (method === 'Target.setDiscoverTargets') return {};
+        if (method === 'Target.setAutoAttach') return {};
+        if (method === 'Target.getTargets') {
+          return { targetInfos: [{ targetId: 'stale-frame', type: 'iframe', url: 'https://frame.test' }] };
+        }
+        if (target?.targetId === 'stale-frame' && method === 'Runtime.evaluate') {
+          return { result: { value: 'frame-ok' } };
+        }
+        return {};
+      }),
+      onDetach: { addListener: vi.fn() },
+      onEvent: { addListener: vi.fn((fn) => { debuggerEventListeners.push(fn); }) },
+    };
+    const tabs = {
+      get: vi.fn(async () => ({ id: 1, windowId: 1, url: 'https://x.com/home' })),
+      onRemoved: { addListener: vi.fn() },
+      onUpdated: { addListener: vi.fn() },
+    };
+    vi.stubGlobal('chrome', { tabs, debugger: debuggerApi, scripting: {}, runtime: { id: 'opencli-test' } });
+
+    const mod = await import('./cdp');
+    mod.registerFrameTracking();
+    // Cache a context id (99) for the frame, which then goes stale.
+    for (const fn of debuggerEventListeners) {
+      fn({ tabId: 1 }, 'Runtime.executionContextCreated', {
+        context: { id: 99, auxData: { frameId: 'stale-frame', isDefault: true } },
+      });
+    }
+
+    const result = await mod.evaluateInFrame(1, 'document.title', 'stale-frame');
+
+    expect(result).toBe('frame-ok');
+    expect(debuggerApi.attach).toHaveBeenCalledWith({ targetId: 'stale-frame' }, '1.3');
+  });
+});
