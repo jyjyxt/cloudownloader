@@ -61,21 +61,25 @@ jobs:
       - name: Build extension
         run: npm run build --prefix extension
 
-      - name: Run AX Chrome smoke (Linux, via xvfb)
-        if: runner.os == 'Linux'
-        env:
-          CHROME_PATH: ${{ steps.setup-chrome.outputs.chrome-path }}
-          OPENCLI_AX_E2E: '1'
-        run: |
-          xvfb-run --auto-servernum --server-args="-screen 0 1280x720x24" \
-            npx vitest run --project e2e tests/e2e/browser-ax-chrome.test.ts --reporter=verbose
-
-      - name: Run AX Chrome smoke (macOS / Windows)
-        if: runner.os != 'Linux'
+      # The AX smoke runs Chrome in new-headless mode: a full browser (MV3
+      # service worker + chrome.debugger + --load-extension) with no display
+      # server or GUI-session dependency, so the same command is release-
+      # blocking on every OS. Headed Chrome on hosted macOS fails Mach port
+      # rendezvous for child processes (CI jobs run outside a regular Aqua
+      # session); headless removes that entire failure class instead of
+      # skipping the platform.
+      - name: Run AX Chrome smoke (headless, all platforms)
         env:
           CHROME_PATH: ${{ steps.setup-chrome.outputs.chrome-path }}
           OPENCLI_AX_E2E: '1'
         run: npx vitest run --project e2e tests/e2e/browser-ax-chrome.test.ts --reporter=verbose
+
+      # Transport contract E2E: real daemon process + scripted fake extension.
+      # Pins the cross-layer contracts (waiter attach, deadline 408, dispatched
+      # disconnect, profile fallback, graceful shutdown) end to end with the
+      # actual daemon binary — no browser required, deterministic on every OS.
+      - name: Run daemon transport contract E2E
+        run: npx vitest run --project e2e-fixed-port tests/e2e/daemon-transport.test.ts --reporter=verbose
 
       - name: Run E2E tests (Linux, via xvfb)
         if: runner.os == 'Linux'

@@ -206,6 +206,16 @@ function findChromeExecutable(): string | null {
 
 function launchChrome(chromePath: string, userDataDir: string, startUrl: string): ChildProcess {
   return spawn(chromePath, [
+    // This smoke's contract is "the extension bridge works in a real Chrome",
+    // not "a window appears": new headless is a full browser (MV3 service
+    // worker + chrome.debugger + --load-extension all supported) with no
+    // dependency on a display server or a GUI login session. That dependency
+    // is exactly what broke hosted runners: Linux needed xvfb, and macOS
+    // runners fail Mach port rendezvous for Chrome's child processes because
+    // CI jobs do not run in a regular Aqua session (bootstrap_look_up
+    // MachPortRendezvousServer → "Unknown service name"). Headed mode stays
+    // available for local debugging via OPENCLI_E2E_HEADED=1.
+    ...(process.env.OPENCLI_E2E_HEADED === '1' ? [] : ['--headless=new']),
     `--user-data-dir=${userDataDir}`,
     `--disable-extensions-except=${EXTENSION_DIR}`,
     `--load-extension=${EXTENSION_DIR}`,
@@ -270,10 +280,10 @@ function axText(axTree: unknown): string {
 }
 
 function shouldFailOnBridgeUnavailable(): boolean {
-  // Linux is the release-blocking real-extension gate. Hosted macOS runners
-  // can refuse command-line unpacked extension startup depending on the image
-  // and Chrome build; keep that visible but do not block releases on it.
-  return process.env.CI === 'true' && process.platform !== 'darwin';
+  // Release-blocking on every CI platform: with the smoke running Chrome in
+  // new-headless mode there is no display-server/GUI-session dependency left,
+  // so an unavailable bridge means a real product or packaging regression.
+  return process.env.CI === 'true';
 }
 
 describe('Browser Bridge AX real Chrome smoke', () => {
