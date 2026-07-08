@@ -146,15 +146,34 @@ async function uploadContentImage(page, imagePath) {
             throw new CommandExecutionError(`Image upload fallback failed: ${fallbackResult?.error || 'unknown error'}`);
         }
     }
-    await page.wait(8);
-
-    const cdnCount = await page.evaluate(`(() => {
-        var editor = document.querySelector('#ueditor_0');
-        return editor ? editor.querySelectorAll('img[src*="mmbiz"]').length : 0;
-    })()`);
-    if (cdnCount === 0) {
+    const uploadState = await waitForContentImageUpload(page);
+    if (!uploadState?.ok) {
         throw new CommandExecutionError('Image did not upload to WeChat CDN');
     }
+}
+
+async function waitForContentImageUpload(page) {
+    for (let attempt = 0; attempt < 30; attempt++) {
+        await page.wait(2);
+        const state = await page.evaluate(`(() => {
+            var editor = document.querySelector('#ueditor_0');
+            var cdnCount = editor
+                ? editor.querySelectorAll('img[src*="mmbiz"], img[src*="qpic.cn"], img[data-src*="mmbiz"], img[data-src*="qpic.cn"]').length
+                : 0;
+            if (cdnCount > 0) return { ok: true, cdnCount: cdnCount };
+
+            var uploading = Array.from(document.querySelectorAll('.upload_file, .progress_bar, .progress_bar_thumb')).some(function(el) {
+                return !!(el.offsetWidth || el.offsetHeight || el.getClientRects().length);
+            });
+            var errorText = Array.from(document.querySelectorAll('.weui-desktop-tips, .weui-desktop-toast, .js_msgSenderTips')).map(function(el) {
+                return (el.innerText || el.textContent || '').trim();
+            }).filter(Boolean).join('\\n');
+            return { ok: false, cdnCount: 0, uploading: uploading, errorText: errorText };
+        })()`);
+        if (state?.ok) return state;
+        if (state?.errorText && /(无法解析|上传失败|过大|频繁|不支持|错误)/.test(state.errorText)) return state;
+    }
+    return { ok: false, timeout: true };
 }
 
 async function selectCoverFromContent(page) {
