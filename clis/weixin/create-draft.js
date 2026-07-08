@@ -3,6 +3,20 @@ import { CommandExecutionError } from '@jackwener/opencli/errors';
 
 const WEIXIN_DOMAIN = 'mp.weixin.qq.com';
 const WEIXIN_HOME = 'https://mp.weixin.qq.com/';
+const IMAGE_FILE_INPUT_SELECTOR = 'input[type="file"][name="file"]';
+
+function isRecoverableFileInputError(error) {
+    const msg = error instanceof Error ? error.message : String(error);
+    return /unknown action|not supported|not[-\s]?allowed|notallowederror/i.test(msg);
+}
+
+function imageMimeType(pathModule, absPath) {
+    const ext = pathModule.extname(absPath).toLowerCase();
+    if (ext === '.png') return 'image/png';
+    if (ext === '.gif') return 'image/gif';
+    if (ext === '.webp') return 'image/webp';
+    return 'image/jpeg';
+}
 
 async function getToken(page) {
     return page.evaluate(`(window.location.href.match(/token=(\\d+)/)||[])[1]`);
@@ -60,9 +74,6 @@ async function uploadContentImage(page, imagePath) {
     if (!fs.default.existsSync(absPath)) {
         throw new CommandExecutionError(`Image not found: ${absPath}`);
     }
-    if (!page.setFileInput) {
-        throw new CommandExecutionError('Image upload requires Browser Bridge with CDP support');
-    }
 
     await page.evaluate(`(() => {
         var li = document.querySelector('#js_editor_insertimage');
@@ -75,7 +86,66 @@ async function uploadContentImage(page, imagePath) {
     })()`);
     await page.wait(1);
 
-    await page.setFileInput([absPath], 'input[type="file"][name="file"]');
+    let uploaded = false;
+    if (page.setFileInput) {
+        try {
+            await page.setFileInput([absPath], IMAGE_FILE_INPUT_SELECTOR);
+            uploaded = true;
+        } catch (error) {
+            if (!isRecoverableFileInputError(error)) throw error;
+        }
+    }
+    if (!uploaded) {
+        const base64 = fs.default.readFileSync(absPath).toString('base64');
+        if (base64.length > 500_000) {
+            console.warn(`[warn] Image base64 payload is ${(base64.length / 1024 / 1024).toFixed(1)}MB. ` +
+                'This may fail with the browser bridge. Update Browser Bridge for CDP-based upload, or compress the image.');
+        }
+        const mimeType = imageMimeType(path.default, absPath);
+        const fallbackResult = await page.evaluate(`(() => {
+            var input = document.querySelector(${JSON.stringify(IMAGE_FILE_INPUT_SELECTOR)});
+            if (!input) {
+                var inputs = Array.from(document.querySelectorAll('input[type="file"]'));
+                input = inputs.find(function(el) {
+                    var accept = el.getAttribute('accept') || '';
+                    return accept.includes('image') || accept.includes('.jpg') || accept.includes('.jpeg') || accept.includes('.png') || accept.includes('.gif') || accept.includes('.webp');
+                });
+            }
+            if (!input) return { ok: false, error: 'image file input not found' };
+
+            var binary = atob(${JSON.stringify(base64)});
+            var bytes = new Uint8Array(binary.length);
+            for (var i = 0; i < binary.length; i++) bytes[i] = binary.charCodeAt(i);
+
+            var dt = new DataTransfer();
+            var blob = new Blob([bytes], { type: ${JSON.stringify(mimeType)} });
+            dt.items.add(new File([blob], ${JSON.stringify(path.default.basename(absPath))}, { type: ${JSON.stringify(mimeType)} }));
+
+            var assigned = false;
+            try {
+                Object.defineProperty(input, 'files', { value: dt.files, writable: false, configurable: true });
+                assigned = input.files && input.files.length > 0;
+            } catch (e) {
+                try {
+                    var descriptor = Object.getOwnPropertyDescriptor(window.HTMLInputElement.prototype, 'files');
+                    if (descriptor && descriptor.set) {
+                        descriptor.set.call(input, dt.files);
+                        assigned = input.files && input.files.length > 0;
+                    }
+                } catch (e2) {
+                    assigned = false;
+                }
+            }
+            if (!assigned) return { ok: false, error: 'could not assign files to input' };
+
+            input.dispatchEvent(new Event('input', { bubbles: true }));
+            input.dispatchEvent(new Event('change', { bubbles: true }));
+            return { ok: true, count: input.files.length };
+        })()`);
+        if (!fallbackResult?.ok) {
+            throw new CommandExecutionError(`Image upload fallback failed: ${fallbackResult?.error || 'unknown error'}`);
+        }
+    }
     await page.wait(8);
 
     const cdnCount = await page.evaluate(`(() => {
