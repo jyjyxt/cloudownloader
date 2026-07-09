@@ -26972,37 +26972,37 @@
     "args": [
       {
         "name": "image",
-        "type": "str",
+        "type": "string",
         "required": true,
         "help": "Local image path (jpg/jpeg/png/webp/gif)"
       },
       {
         "name": "board",
-        "type": "str",
+        "type": "string",
         "required": true,
         "help": "Pinterest board name to publish into"
       },
       {
         "name": "title",
-        "type": "str",
+        "type": "string",
         "required": false,
         "help": "Pin title"
       },
       {
         "name": "description",
-        "type": "str",
+        "type": "string",
         "required": false,
         "help": "Pin description"
       },
       {
         "name": "link",
-        "type": "str",
+        "type": "string",
         "required": false,
         "help": "Destination link URL"
       },
       {
         "name": "alt-text",
-        "type": "str",
+        "type": "string",
         "required": false,
         "help": "Image alt text, when Pinterest exposes the field"
       },

@@ -7,6 +7,13 @@ const PINTEREST_DOMAIN = 'www.pinterest.com';
 const CREATE_PIN_URL = 'https://www.pinterest.com/pin-builder/';
 const IMAGE_SELECTOR = 'input[type="file"]';
 const SUPPORTED_EXTENSIONS = new Set(['.jpg', '.jpeg', '.png', '.webp', '.gif']);
+const MIME_BY_EXTENSION = {
+    '.jpg': 'image/jpeg',
+    '.jpeg': 'image/jpeg',
+    '.png': 'image/png',
+    '.webp': 'image/webp',
+    '.gif': 'image/gif',
+};
 const DEFAULT_TIMEOUT = 90;
 
 function normalizeText(value, label, { required = false, max = 0 } = {}) {
@@ -117,6 +124,76 @@ async function waitForUploadPreview(page, timeoutSeconds) {
         await page.wait({ time: 1 });
     }
     throw new TimeoutError('pinterest image upload', timeoutSeconds);
+}
+
+function isRecoverableFileInputError(err) {
+    const msg = err instanceof Error ? err.message : String(err);
+    const lower = msg.toLowerCase();
+    return lower.includes('not allowed')
+        || lower.includes('unknown action')
+        || lower.includes('not supported')
+        || lower.includes('setfileinput returned no count');
+}
+
+async function uploadImageViaDataTransfer(page, imagePath) {
+    const ext = path.extname(imagePath).toLowerCase();
+    const file = {
+        name: path.basename(imagePath),
+        mime: MIME_BY_EXTENSION[ext] || 'image/jpeg',
+        base64: fs.readFileSync(imagePath).toString('base64'),
+    };
+    const result = await page.evaluate(`(() => {
+        const visible = el => !!el && !!(el.offsetWidth || el.offsetHeight || el.getClientRects().length);
+        const inputs = Array.from(document.querySelectorAll('input[type="file"]'));
+        const input = inputs.find(el => {
+            const accept = String(el.getAttribute('accept') || '').toLowerCase();
+            return visible(el) || accept.includes('image') || accept.includes('.jpg') || accept.includes('.jpeg') || accept.includes('.png') || accept.includes('.webp') || accept.includes('.gif') || !accept;
+        });
+        if (!input) return { ok: false, error: 'No image file input found on page' };
+
+        const file = ${JSON.stringify(file)};
+        const bin = atob(file.base64);
+        const bytes = new Uint8Array(bin.length);
+        for (let i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i);
+        const blob = new Blob([bytes], { type: file.mime });
+        const dt = new DataTransfer();
+        dt.items.add(new File([blob], file.name, { type: file.mime }));
+
+        let assigned = false;
+        try {
+            Object.defineProperty(input, 'files', { value: dt.files, writable: false, configurable: true });
+            assigned = input.files && input.files.length === 1;
+        } catch (e) {
+            try {
+                const descriptor = Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, 'files');
+                if (descriptor && descriptor.set) {
+                    descriptor.set.call(input, dt.files);
+                    assigned = input.files && input.files.length === 1;
+                }
+            } catch (e2) {}
+        }
+        if (!assigned) return { ok: false, error: 'Could not assign files to input' };
+
+        input.dispatchEvent(new Event('input', { bubbles: true }));
+        input.dispatchEvent(new Event('change', { bubbles: true }));
+        return { ok: true, count: input.files.length };
+    })()`);
+    if (!result?.ok) {
+        throw new CommandExecutionError(`Pinterest image upload fallback failed: ${result?.error || 'unknown error'}`);
+    }
+    return result;
+}
+
+async function uploadImage(page, imagePath) {
+    if (page.setFileInput) {
+        try {
+            await page.setFileInput([imagePath], IMAGE_SELECTOR);
+            return;
+        } catch (err) {
+            if (!isRecoverableFileInputError(err)) throw err;
+        }
+    }
+    await uploadImageViaDataTransfer(page, imagePath);
 }
 
 async function fillPinterestField(page, field, value) {
@@ -292,10 +369,6 @@ cli({
     columns: ['status', 'board', 'title', 'url'],
     func: async (page, kwargs) => {
         if (!page) throw new CommandExecutionError('Browser session required for pinterest create-pin');
-        if (!page.setFileInput) {
-            throw new CommandExecutionError('Browser Bridge file upload support is required for pinterest create-pin');
-        }
-
         const imagePath = normalizeImagePath(kwargs.image);
         const board = normalizeText(kwargs.board, 'board', { required: true, max: 180 });
         const title = normalizeText(kwargs.title, 'title', { max: 100 });
@@ -308,7 +381,7 @@ cli({
         await page.wait({ time: 2 });
         await requireLoggedIn(page);
         await waitForImageInput(page, Math.min(timeoutSeconds, 30));
-        await page.setFileInput([imagePath], IMAGE_SELECTOR);
+        await uploadImage(page, imagePath);
         await waitForUploadPreview(page, Math.min(timeoutSeconds, 90));
 
         await fillPinterestField(page, 'title', title);
