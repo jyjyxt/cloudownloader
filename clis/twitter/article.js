@@ -65,7 +65,7 @@ cli({
         const queryId = await resolveTwitterQueryId(page, 'TweetResultByRestId', TWEET_RESULT_BY_REST_ID_QUERY_ID);
         const rawResult = unwrapBrowserResult(await page.evaluate(`
       async () => {
-        const tweetId = "${tweetId}";
+        const tweetId = ${JSON.stringify(tweetId)};
         const ct0 = ${JSON.stringify(ct0)};
 
         const bearer = ${JSON.stringify(TWITTER_BEARER_TOKEN)};
