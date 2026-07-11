@@ -4,7 +4,7 @@ import path from 'node:path';
 import { JSDOM } from 'jsdom';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { ArgumentError, AuthRequiredError, CommandExecutionError } from '@jackwener/opencli/errors';
-import { __test__, getChatGPTDetailRows, getChatGPTImageAssets, getChatGPTResponsePairCounts, getChatGPTVisibleImageUrls, getCurrentChatGPTModel, getCurrentChatGPTTool, isGenerating, navigateToProject, openChatGPTConversation, prepareChatGPTImagePaths, selectChatGPTModel, selectChatGPTTool, sendChatGPTMessage, uploadChatGPTImages, waitForChatGPTDetailRows, waitForChatGPTImages, waitForChatGPTResponse } from './utils.js';
+import { __test__, getChatGPTDetailRows, getChatGPTImageAssets, getChatGPTResponsePairCounts, getChatGPTVisibleImageUrls, getCurrentChatGPTModel, getCurrentChatGPTTool, getVisibleMessages, isGenerating, navigateToProject, openChatGPTConversation, prepareChatGPTImagePaths, selectChatGPTModel, selectChatGPTTool, sendChatGPTMessage, uploadChatGPTImages, waitForChatGPTDetailRows, waitForChatGPTImages, waitForChatGPTResponse } from './utils.js';
 
 const tempDirs = [];
 
@@ -20,6 +20,7 @@ function createPageMock({ location = '', generating = [], imageUrls = [] } = {})
     let imageIndex = 0;
     return {
         wait: vi.fn().mockResolvedValue(undefined),
+        sleep: vi.fn().mockResolvedValue(undefined),
         goto: vi.fn().mockResolvedValue(undefined),
         evaluate: vi.fn((script) => {
             if (script === 'window.location.href') return Promise.resolve(location);
@@ -662,6 +663,7 @@ describe('chatgpt detail completion state', () => {
     function createDetailPageMock({ generating = false, messages = [] } = {}) {
         return {
             wait: vi.fn().mockResolvedValue(undefined),
+            sleep: vi.fn().mockResolvedValue(undefined),
             evaluate: vi.fn((script) => {
                 if (script.includes('Stop generating') || script.includes('Thinking')) {
                     return Promise.resolve(generating);
@@ -721,6 +723,7 @@ describe('chatgpt ask response extraction boundary', () => {
         let messageIndex = 0;
         return {
             wait: vi.fn().mockResolvedValue(undefined),
+            sleep: vi.fn().mockResolvedValue(undefined),
             evaluate: vi.fn((script) => {
                 if (script === 'window.location.href') return Promise.resolve(url);
                 if (script.includes('Stop generating') || script.includes('Thinking')) {
@@ -856,6 +859,48 @@ describe('chatgpt ask response extraction boundary', () => {
             conversationUrl: 'https://chatgpt.com/c/demo',
         })).rejects.toThrow(/navigated away from the target conversation/);
     });
+
+    it('polls with pure client-side sleeps instead of the DOM-stable numeric wait', async () => {
+        mockAdvancingClock();
+        const page = createResponseWaitPage([[], [], []]);
+
+        await expect(waitForChatGPTResponse(page, 0, 'unmatched prompt', 4, {}))
+            .rejects.toThrow(/chatgpt ask timed out/);
+
+        // The poll interval must not hit page.wait(number), whose DOM-stable
+        // path installs a whole-body MutationObserver and pins renderer CPU
+        // for the full 10-20 min a streamed answer takes to settle.
+        expect(page.sleep).toHaveBeenCalled();
+        expect(page.wait).not.toHaveBeenCalled();
+    });
+
+    it('uses textContent instead of layout-triggering innerText in text-only message polls', async () => {
+        const page = createDomEvaluatePage(`
+            <article data-testid="conversation-turn-2">
+              <div data-message-author-role="assistant">
+                <div class="markdown">done answer</div>
+              </div>
+            </article>
+        `);
+        for (const node of page.dom.window.document.querySelectorAll('*')) {
+            node.getBoundingClientRect = () => ({ width: 120, height: 36 });
+        }
+        Object.defineProperty(page.dom.window.HTMLElement.prototype, 'innerText', {
+            configurable: true,
+            get() {
+                throw new Error('innerText should not be read during text-only polls');
+            },
+        });
+
+        await expect(getVisibleMessages(page, { textOnly: true })).resolves.toEqual([
+            {
+                Index: 1,
+                Role: 'Assistant',
+                Text: 'done answer',
+                Html: '',
+            },
+        ]);
+    });
 });
 
 describe('chatgpt generation state', () => {
@@ -868,6 +913,73 @@ describe('chatgpt generation state', () => {
         };
 
         await expect(isGenerating(page)).resolves.toBe(true);
+    });
+
+    it('detects a plain-text thinking pill inside a bare [data-message-author-role] turn', async () => {
+        // Regression: the scoped scan must cover both message shapes from
+        // CONVERSATION_MESSAGE_SELECTOR, not just article conversation turns —
+        // with no stop button and no aria-label, a plain-text pill in the
+        // role-attribute shape must still read as generating.
+        const page = createDomEvaluatePage(`
+            <div data-message-author-role="assistant">正在思考中…部分回答内容</div>
+        `);
+
+        await expect(isGenerating(page)).resolves.toBe(true);
+    });
+
+    it('detects a plain-text Thinking pill inside the last article turn', async () => {
+        const page = createDomEvaluatePage(`
+            <article data-testid="conversation-turn-2">
+              <div data-message-author-role="assistant">partial answer</div>
+              <div>Thinking</div>
+            </article>
+        `);
+
+        await expect(isGenerating(page)).resolves.toBe(true);
+    });
+
+    it('reports idle when no generation indicator is present in either shape', async () => {
+        const page = createDomEvaluatePage(`
+            <div data-message-author-role="assistant">done answer</div>
+        `);
+
+        await expect(isGenerating(page)).resolves.toBe(false);
+    });
+
+    it('stays idle when the composer shows Thinking as the selected model', async () => {
+        // Regression: 'Thinking' is a supported idle model label (see
+        // CHATGPT_MODEL_TARGETS.advanced), rendered as a composer-form button
+        // with or without an aria-label. It must not read as generating.
+        const page = createDomEvaluatePage(`
+            <article data-testid="conversation-turn-2">
+              <div data-message-author-role="assistant"><div class="markdown"><p>done answer</p></div></div>
+            </article>
+            <form>
+              <div id="prompt-textarea" contenteditable="true"></div>
+              <button aria-label="Thinking"><span data-testid="model-switcher-gpt-5-5-thinking">Thinking</span></button>
+            </form>
+        `);
+
+        await expect(isGenerating(page)).resolves.toBe(false);
+    });
+
+    it('ignores answers that merely mention Thinking in prose or code spans', async () => {
+        // Regression: a finished review of isGenerating itself contains the
+        // literal words "Thinking" / "正在思考" in prose and backticked code
+        // spans inside .markdown. That is message content, not a status pill —
+        // reading it as generating would block every follow-up send.
+        const page = createDomEvaluatePage(`
+            <article data-testid="conversation-turn-2">
+              <div data-message-author-role="assistant">
+                <div class="markdown">
+                  <p>这个 PR 修改了检测逻辑，旧代码对全页文本匹配 Thinking 与正在思考，存在误报，建议改为在局部范围内检查停止生成按钮的状态。</p>
+                  <p>位置见 <code>isGenerating</code>，匹配词是 <code>Thinking</code> 和 <code>正在思考</code>。</p>
+                </div>
+              </div>
+            </article>
+        `);
+
+        await expect(isGenerating(page)).resolves.toBe(false);
     });
 });
 
@@ -1203,6 +1315,7 @@ describe('chatgpt image upload helper', () => {
         const page = {
             setFileInput: vi.fn().mockResolvedValue(undefined),
             wait: vi.fn().mockResolvedValue(undefined),
+            sleep: vi.fn().mockResolvedValue(undefined),
             evaluate: vi.fn().mockResolvedValue(true),
         };
 
@@ -1254,6 +1367,7 @@ describe('chatgpt image upload helper', () => {
         const page = {
             setFileInput: vi.fn().mockRejectedValue(new Error('No element found')),
             wait: vi.fn().mockResolvedValue(undefined),
+            sleep: vi.fn().mockResolvedValue(undefined),
             evaluate: vi.fn((script) => {
                 if (String(script).includes('new DataTransfer()')) {
                     return Promise.resolve({ ok: true });
@@ -1289,6 +1403,7 @@ describe('chatgpt image upload helper', () => {
         const page = {
             setFileInput: vi.fn().mockResolvedValue(undefined),
             wait: vi.fn().mockResolvedValue(undefined),
+            sleep: vi.fn().mockResolvedValue(undefined),
             evaluate: vi.fn((script) => Promise.resolve(dom.window.eval(String(script)))),
         };
 
@@ -1319,6 +1434,7 @@ describe('chatgpt image upload helper', () => {
         const page = {
             setFileInput: vi.fn().mockResolvedValue(undefined),
             wait: vi.fn().mockResolvedValue(undefined),
+            sleep: vi.fn().mockResolvedValue(undefined),
             evaluate: vi.fn((script) => Promise.resolve(dom.window.eval(String(script)))),
         };
 

@@ -1060,8 +1060,13 @@ export async function sendChatGPTMessage(page, text) {
     return true;
 }
 
-export async function getVisibleMessages(page) {
+export async function getVisibleMessages(page, { textOnly = false } = {}) {
+    // textOnly skips the per-turn innerHTML read (used only for --markdown
+    // rendering) so poll loops that need only role + text don't allocate a
+    // second conversation-sized string on every tick.
+    const includeHtml = textOnly ? 'false' : 'true';
     const result = requireArrayEvaluateResult(unwrapEvaluateResult(await page.evaluate(`(() => {
+        const includeHtml = ${includeHtml};
         const isVisible = (el) => {
             if (!(el instanceof HTMLElement)) return false;
             const style = window.getComputedStyle(el);
@@ -1098,8 +1103,11 @@ export async function getVisibleMessages(page) {
                 || node.querySelector('.markdown')
                 || node.querySelector('[data-message-author-role]')
                 || node;
-            const html = contentNode instanceof HTMLElement ? (contentNode.innerHTML || '') : '';
-            const text = normalize(contentNode instanceof HTMLElement ? (contentNode.innerText || contentNode.textContent || '') : '');
+            const html = includeHtml && contentNode instanceof HTMLElement ? (contentNode.innerHTML || '') : '';
+            const rawText = contentNode instanceof HTMLElement
+                ? (includeHtml ? (contentNode.innerText || contentNode.textContent || '') : (contentNode.textContent || ''))
+                : '';
+            const text = normalize(rawText);
             if (!text) continue;
             const key = role + '\\n' + text;
             if (seen.has(key)) continue;
@@ -1170,7 +1178,7 @@ export async function waitForChatGPTDetailRows(page, { wantMarkdown = false, tim
             lastKey = key;
             stableStartedAt = 0;
         }
-        await page.wait(3);
+        await page.sleep(3);
     }
 
     throw new TimeoutError(
@@ -1822,7 +1830,7 @@ export async function waitForChatGPTDeepResearchResult(page, { conversationId = 
                 stableStartedAt = Date.now();
             }
         }
-        await page.wait(3);
+        await page.sleep(3);
     }
 
     throw new TimeoutError(
@@ -1913,7 +1921,7 @@ export async function waitForChatGPTResponse(page, baselineCount, prompt, timeou
     const baselinePairCounts = normalizeBaselinePairCounts(options);
 
     while (Date.now() - startTime < timeoutSeconds * 1000) {
-        await page.wait(3);
+        await page.sleep(3);
         if (options.conversationUrl) {
             const currentUrl = await currentChatGPTUrl(page);
             if (currentUrl && !isSameChatGPTConversation(currentUrl, options.conversationUrl)) {
@@ -1927,7 +1935,7 @@ export async function waitForChatGPTResponse(page, baselineCount, prompt, timeou
             continue;
         }
 
-        const messages = await getVisibleMessages(page);
+        const messages = await getVisibleMessages(page, { textOnly: true });
         const candidate = findLatestNewAssistantResponse(messages, prompt, baselinePairCounts);
         if (!candidate || candidate === String(prompt || '').trim()) continue;
 
@@ -2057,7 +2065,7 @@ export async function prepareChatGPTImagePaths(imagePaths) {
 async function waitForChatGPTUploadPreview(page, fileNames) {
     const namesJson = JSON.stringify(fileNames);
     for (let attempt = 0; attempt < 10; attempt += 1) {
-        await page.wait(1);
+        await page.sleep(1);
         const ready = requireBooleanEvaluateResult(unwrapEvaluateResult(await page.evaluate(`
             (() => {
                 const names = ${namesJson};
@@ -2169,17 +2177,57 @@ export async function uploadChatGPTImages(page, imagePaths) {
  * Check if ChatGPT is still generating a response.
  */
 export async function isGenerating(page) {
+    // Deliberately avoids document.body.innerText: reading it forces a full-page
+    // layout/reflow and allocates a conversation-sized string on every poll,
+    // which during a 10-20 min streamed answer pins the renderer at high CPU.
+    // Cheap signals only — control aria-labels, the stop-button test id, and a
+    // textContent (no reflow) scan scoped to the composer + last turn.
     return requireBooleanEvaluateResult(unwrapEvaluateResult(await page.evaluate(`
         (() => {
-            const text = (document.body?.innerText || '').replace(/\\s+/g, ' ');
-            if (/正在思考|停止生成|Thinking/.test(text)) return true;
-            return Array.from(document.querySelectorAll('button')).some(b => {
-                const label = b.getAttribute('aria-label') || '';
-                return label === 'Stop generating'
-                    || label.includes('Thinking')
+            if (document.querySelector('[data-testid="stop-button"]')) return true;
+            // No bare 'Thinking' here: the model picker renders 'Thinking' as
+            // an idle model label (see CHATGPT_MODEL_TARGETS.advanced), and an
+            // English streaming state always comes with the stop button above.
+            const controls = Array.from(document.querySelectorAll('button, [role="button"], [aria-label]'));
+            for (const control of controls) {
+                const label = control.getAttribute('aria-label') || '';
+                if (label.includes('Stop generating')
                     || label.includes('停止生成')
-                    || label.includes('正在思考');
-            });
+                    || label.includes('正在思考')) return true;
+            }
+            // The "正在思考 / Thinking" pill can render as plain text without an
+            // aria-label. Scope the text scan to small containers and use
+            // textContent (does not trigger layout) instead of body.innerText.
+            const scopes = [];
+            // Cover both message shapes from CONVERSATION_MESSAGE_SELECTOR:
+            // prefer the article turn (the wider container, so a pill outside
+            // the message div is still seen), fall back to bare
+            // [data-message-author-role] nodes when articles are absent.
+            // Bare 'Thinking' only counts inside the last turn — the composer
+            // area shows 'Thinking' as an idle model label.
+            const turns = document.querySelectorAll('article[data-testid*="conversation-turn"]');
+            const messages = turns.length ? turns : document.querySelectorAll('[data-message-author-role]');
+            if (messages.length) scopes.push([messages[messages.length - 1], /正在思考|停止生成|Thinking/]);
+            const composer = document.querySelector('#prompt-textarea, [aria-label="Chat with ChatGPT"]');
+            if (composer) {
+                let root = composer;
+                for (let i = 0; i < 4 && root.parentElement; i += 1) root = root.parentElement;
+                scopes.push([root, /正在思考|停止生成/]);
+            }
+            // Only a short leaf element OUTSIDE rendered message content
+            // counts as a status pill. Testing whole scope text would flag any
+            // answer that merely *mentions* "Thinking" (prose or a backticked
+            // code span in a conversation about this very code) as still
+            // generating, permanently blocking follow-up sends.
+            for (const [scope, pattern] of scopes) {
+                for (const el of [scope, ...scope.querySelectorAll('*')]) {
+                    if (el.children.length) continue;
+                    if (el.closest('.markdown, pre, code')) continue;
+                    const text = (el.textContent || '').trim();
+                    if (text && text.length <= 40 && pattern.test(text)) return true;
+                }
+            }
+            return false;
         })()
     `)), 'chatgpt generation state');
 }
@@ -2320,7 +2368,7 @@ export async function waitForChatGPTImages(page, beforeUrls, timeoutSeconds, con
     let stableCount = 0;
 
     for (let i = 0; i < maxPolls; i++) {
-        await page.wait(i === 0 ? 3 : pollIntervalSeconds);
+        await page.sleep(i === 0 ? 3 : pollIntervalSeconds);
 
         let currentUrl = '';
         if (convUrl && convUrl.includes('/c/')) {
