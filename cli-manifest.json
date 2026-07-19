@@ -12596,7 +12596,7 @@
         "type": "string",
         "default": "turnover",
         "required": false,
-        "help": "排序：turnover / change / drop / price / premium"
+        "help": "排序：turnover / change / drop / price / premium / value / put-trigger"
       },
       {
         "name": "limit",
@@ -12619,8 +12619,8 @@
       "convPrice",
       "convValue",
       "convPremiumPct",
-      "remainingYears",
-      "ytm",
+      "pureBondPremiumPct",
+      "putTriggerPrice",
       "listDate"
     ],
     "type": "js",
