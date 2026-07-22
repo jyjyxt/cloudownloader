@@ -6491,7 +6491,7 @@
   {
     "site": "chatgpt",
     "name": "model",
-    "description": "Switch ChatGPT web intelligence level (fast, balanced, advanced, very-high, pro)",
+    "description": "Switch ChatGPT web model or intelligence level (GPT-5.6 Pro, fast, balanced, advanced, very-high, pro)",
     "access": "write",
     "domain": "chatgpt.com",
     "strategy": "cookie",
@@ -6502,7 +6502,7 @@
         "type": "str",
         "required": true,
         "positional": true,
-        "help": "Intelligence level to switch to",
+        "help": "ChatGPT model or intelligence level to switch to",
         "choices": [
           "fast",
           "speed",
@@ -6522,6 +6522,14 @@
           "x-high",
           "extra-high",
           "超高",
+          "gpt-5.6-pro",
+          "gpt-5-6-pro",
+          "gpt-5.6-sol-pro",
+          "gpt-5-6-sol-pro",
+          "gpt-5.6",
+          "gpt-5-6",
+          "5.6-pro",
+          "5.6",
           "pro",
           "professional",
           "专业"
@@ -8871,6 +8879,187 @@
   },
   {
     "site": "ctrip",
+    "name": "attraction",
+    "description": "列出携程某城市的热门景点（评分/点评数，城市 id 经 ctrip search 获取）",
+    "access": "read",
+    "domain": "you.ctrip.com",
+    "strategy": "cookie",
+    "browser": true,
+    "args": [
+      {
+        "name": "city",
+        "type": "str",
+        "required": true,
+        "positional": true,
+        "help": "Numeric Ctrip city id (from `ctrip search`, e.g. 1 for 北京)"
+      },
+      {
+        "name": "limit",
+        "type": "str",
+        "default": 20,
+        "required": false,
+        "help": "Number of attractions (1-50)"
+      }
+    ],
+    "columns": [
+      "rank",
+      "name",
+      "rating",
+      "reviews",
+      "url"
+    ],
+    "type": "js",
+    "modulePath": "ctrip/attraction.js",
+    "sourceFile": "ctrip/attraction.js",
+    "navigateBefore": false
+  },
+  {
+    "site": "ctrip",
+    "name": "bus",
+    "description": "搜索携程汽车票（按出发/到达城市名 + 日期）",
+    "access": "read",
+    "domain": "bus.ctrip.com",
+    "strategy": "cookie",
+    "browser": true,
+    "args": [
+      {
+        "name": "from",
+        "type": "str",
+        "required": true,
+        "positional": true,
+        "help": "Departure city name (e.g. 北京 / 上海)"
+      },
+      {
+        "name": "to",
+        "type": "str",
+        "required": true,
+        "positional": true,
+        "help": "Arrival city name (e.g. 天津 / 杭州)"
+      },
+      {
+        "name": "date",
+        "type": "str",
+        "required": true,
+        "help": "Departure date (YYYY-MM-DD)"
+      },
+      {
+        "name": "limit",
+        "type": "str",
+        "default": 20,
+        "required": false,
+        "help": "Number of departures (1-50)"
+      }
+    ],
+    "columns": [
+      "rank",
+      "departureTime",
+      "fromStation",
+      "toStation",
+      "duration",
+      "price",
+      "status",
+      "url"
+    ],
+    "type": "js",
+    "modulePath": "ctrip/bus.js",
+    "sourceFile": "ctrip/bus.js",
+    "navigateBefore": false
+  },
+  {
+    "site": "ctrip",
+    "name": "cruise",
+    "description": "搜索携程邮轮线路（按出发港名）",
+    "access": "read",
+    "domain": "cruise.ctrip.com",
+    "strategy": "cookie",
+    "browser": true,
+    "args": [
+      {
+        "name": "port",
+        "type": "str",
+        "required": true,
+        "positional": true,
+        "help": "Departure cruise port name (e.g. 上海 / 威尼斯 / 罗马)"
+      },
+      {
+        "name": "limit",
+        "type": "str",
+        "default": 20,
+        "required": false,
+        "help": "Number of cruises (1-50)"
+      }
+    ],
+    "columns": [
+      "rank",
+      "title",
+      "star",
+      "boarding",
+      "sailingDate",
+      "tags",
+      "price",
+      "url"
+    ],
+    "type": "js",
+    "modulePath": "ctrip/cruise.js",
+    "sourceFile": "ctrip/cruise.js",
+    "navigateBefore": false
+  },
+  {
+    "site": "ctrip",
+    "name": "ferry",
+    "description": "搜索携程船票（按出发/到达城市名 + 日期）",
+    "access": "read",
+    "domain": "ship.ctrip.com",
+    "strategy": "cookie",
+    "browser": true,
+    "args": [
+      {
+        "name": "from",
+        "type": "str",
+        "required": true,
+        "positional": true,
+        "help": "Departure city name (e.g. 大连 / 海口)"
+      },
+      {
+        "name": "to",
+        "type": "str",
+        "required": true,
+        "positional": true,
+        "help": "Arrival city name (e.g. 烟台 / 海安)"
+      },
+      {
+        "name": "date",
+        "type": "str",
+        "required": true,
+        "help": "Departure date (YYYY-MM-DD)"
+      },
+      {
+        "name": "limit",
+        "type": "str",
+        "default": 20,
+        "required": false,
+        "help": "Number of sailings (1-50)"
+      }
+    ],
+    "columns": [
+      "rank",
+      "shipName",
+      "departureTime",
+      "fromPort",
+      "arrivalTime",
+      "toPort",
+      "duration",
+      "price",
+      "status",
+      "url"
+    ],
+    "type": "js",
+    "modulePath": "ctrip/ferry.js",
+    "sourceFile": "ctrip/ferry.js",
+    "navigateBefore": false
+  },
+  {
+    "site": "ctrip",
     "name": "flight",
     "description": "搜索携程一程机票（按出发/到达 IATA 三字码 + 日期）",
     "access": "read",
@@ -8900,7 +9089,7 @@
       },
       {
         "name": "limit",
-        "type": "int",
+        "type": "str",
         "default": 20,
         "required": false,
         "help": "Number of flights (1-50)"
@@ -8924,6 +9113,108 @@
     "type": "js",
     "modulePath": "ctrip/flight.js",
     "sourceFile": "ctrip/flight.js",
+    "navigateBefore": false
+  },
+  {
+    "site": "ctrip",
+    "name": "flight-round",
+    "description": "搜索携程往返机票（按出发/到达 IATA 三字码 + 去/返日期，返回去程腿含往返总价）",
+    "access": "read",
+    "domain": "flights.ctrip.com",
+    "strategy": "cookie",
+    "browser": true,
+    "args": [
+      {
+        "name": "from",
+        "type": "str",
+        "required": true,
+        "positional": true,
+        "help": "Departure IATA code (e.g. BJS / PEK)"
+      },
+      {
+        "name": "to",
+        "type": "str",
+        "required": true,
+        "positional": true,
+        "help": "Arrival IATA code (e.g. SHA / PVG)"
+      },
+      {
+        "name": "depart",
+        "type": "str",
+        "required": true,
+        "help": "Outbound date (YYYY-MM-DD)"
+      },
+      {
+        "name": "return",
+        "type": "str",
+        "required": true,
+        "help": "Return date (YYYY-MM-DD), on or after depart"
+      },
+      {
+        "name": "limit",
+        "type": "str",
+        "default": 20,
+        "required": false,
+        "help": "Number of flights (1-50)"
+      }
+    ],
+    "columns": [
+      "rank",
+      "airline",
+      "flightNo",
+      "aircraft",
+      "departureTime",
+      "departureAirport",
+      "arrivalTime",
+      "arrivalAirport",
+      "terminal",
+      "price",
+      "currency",
+      "cabin",
+      "url"
+    ],
+    "type": "js",
+    "modulePath": "ctrip/flight-round.js",
+    "sourceFile": "ctrip/flight-round.js",
+    "navigateBefore": false
+  },
+  {
+    "site": "ctrip",
+    "name": "hotel",
+    "description": "查看携程单个酒店详情（评分细分、热门设施、入离政策、位置）",
+    "access": "read",
+    "domain": "hotels.ctrip.com",
+    "strategy": "cookie",
+    "browser": true,
+    "args": [
+      {
+        "name": "id",
+        "type": "str",
+        "required": true,
+        "positional": true,
+        "help": "Numeric Ctrip hotel id (use `ctrip hotel-suggest` to discover; e.g. 375539)"
+      }
+    ],
+    "columns": [
+      "hotelId",
+      "name",
+      "enName",
+      "star",
+      "score",
+      "scoreLabel",
+      "reviewCount",
+      "ratingBreakdown",
+      "facilities",
+      "checkInOut",
+      "cityName",
+      "address",
+      "lat",
+      "lon",
+      "url"
+    ],
+    "type": "js",
+    "modulePath": "ctrip/hotel.js",
+    "sourceFile": "ctrip/hotel.js",
     "navigateBefore": false
   },
   {
@@ -8956,7 +9247,7 @@
       },
       {
         "name": "limit",
-        "type": "int",
+        "type": "str",
         "default": 10,
         "required": false,
         "help": "Number of hotels (1-30); SSR first page returns ~13 entries"
@@ -9002,7 +9293,7 @@
       },
       {
         "name": "limit",
-        "type": "int",
+        "type": "str",
         "default": 15,
         "required": false,
         "help": "Number of results (1-50)"
@@ -9062,6 +9353,46 @@
   },
   {
     "site": "ctrip",
+    "name": "package",
+    "description": "搜索携程机+酒自由行套餐（按目的地关键词）",
+    "access": "read",
+    "domain": "vacations.ctrip.com",
+    "strategy": "cookie",
+    "browser": true,
+    "args": [
+      {
+        "name": "destination",
+        "type": "str",
+        "required": true,
+        "positional": true,
+        "help": "Destination keyword (e.g. 三亚 / 北京 / 曼谷)"
+      },
+      {
+        "name": "limit",
+        "type": "str",
+        "default": 20,
+        "required": false,
+        "help": "Number of packages (1-50)"
+      }
+    ],
+    "columns": [
+      "rank",
+      "title",
+      "subtitle",
+      "tags",
+      "score",
+      "sold",
+      "reviews",
+      "price",
+      "url"
+    ],
+    "type": "js",
+    "modulePath": "ctrip/package.js",
+    "sourceFile": "ctrip/package.js",
+    "navigateBefore": false
+  },
+  {
+    "site": "ctrip",
     "name": "search",
     "description": "搜索携程目的地、景区、火车站和地标联想结果",
     "access": "read",
@@ -9077,7 +9408,7 @@
       },
       {
         "name": "limit",
-        "type": "int",
+        "type": "str",
         "default": 15,
         "required": false,
         "help": "Number of results (1-50)"
@@ -9102,6 +9433,100 @@
     "type": "js",
     "modulePath": "ctrip/search.js",
     "sourceFile": "ctrip/search.js"
+  },
+  {
+    "site": "ctrip",
+    "name": "tour",
+    "description": "搜索携程旅游线路（按目的地关键词，跟团/自由行）",
+    "access": "read",
+    "domain": "vacations.ctrip.com",
+    "strategy": "cookie",
+    "browser": true,
+    "args": [
+      {
+        "name": "destination",
+        "type": "str",
+        "required": true,
+        "positional": true,
+        "help": "Destination keyword (e.g. 北京 / 三亚 / 马尔代夫)"
+      },
+      {
+        "name": "limit",
+        "type": "str",
+        "default": 20,
+        "required": false,
+        "help": "Number of packages (1-50)"
+      }
+    ],
+    "columns": [
+      "rank",
+      "title",
+      "subtitle",
+      "tags",
+      "score",
+      "sold",
+      "reviews",
+      "price",
+      "url"
+    ],
+    "type": "js",
+    "modulePath": "ctrip/tour.js",
+    "sourceFile": "ctrip/tour.js",
+    "navigateBefore": false
+  },
+  {
+    "site": "ctrip",
+    "name": "train",
+    "description": "搜索携程火车票（按出发/到达站名 + 日期）",
+    "access": "read",
+    "domain": "trains.ctrip.com",
+    "strategy": "cookie",
+    "browser": true,
+    "args": [
+      {
+        "name": "from",
+        "type": "str",
+        "required": true,
+        "positional": true,
+        "help": "Departure station or city name (e.g. 北京 / 上海虹桥)"
+      },
+      {
+        "name": "to",
+        "type": "str",
+        "required": true,
+        "positional": true,
+        "help": "Arrival station or city name (e.g. 上海 / 杭州东)"
+      },
+      {
+        "name": "date",
+        "type": "str",
+        "required": true,
+        "help": "Departure date (YYYY-MM-DD)"
+      },
+      {
+        "name": "limit",
+        "type": "str",
+        "default": 20,
+        "required": false,
+        "help": "Number of trains (1-50)"
+      }
+    ],
+    "columns": [
+      "rank",
+      "trainNo",
+      "departureTime",
+      "departureStation",
+      "arrivalTime",
+      "arrivalStation",
+      "duration",
+      "fromPrice",
+      "seats",
+      "url"
+    ],
+    "type": "js",
+    "modulePath": "ctrip/train.js",
+    "sourceFile": "ctrip/train.js",
+    "navigateBefore": false
   },
   {
     "site": "ctrip",
@@ -9802,6 +10227,34 @@
     "modulePath": "deepseek/status.js",
     "sourceFile": "deepseek/status.js",
     "navigateBefore": false,
+    "siteSession": "persistent"
+  },
+  {
+    "site": "deepseek",
+    "name": "usage",
+    "description": "Read DeepSeek platform usage: balance, cumulative spending, time-dimension spending, API requests, and Tokens.",
+    "access": "read",
+    "domain": "platform.deepseek.com",
+    "strategy": "cookie",
+    "browser": true,
+    "args": [],
+    "columns": [
+      "balance",
+      "bonusBalance",
+      "cumulativeSpend",
+      "monthlySpend",
+      "monthlyApiCalls",
+      "monthlyTokens",
+      "currentTokenEstimation",
+      "timePeriod",
+      "periodSpend",
+      "periodApiCalls",
+      "periodTokens"
+    ],
+    "type": "js",
+    "modulePath": "deepseek/usage.js",
+    "sourceFile": "deepseek/usage.js",
+    "navigateBefore": true,
     "siteSession": "persistent"
   },
   {
@@ -12596,7 +13049,7 @@
         "type": "string",
         "default": "turnover",
         "required": false,
-        "help": "排序：turnover / change / drop / price / premium"
+        "help": "排序：turnover / change / drop / price / premium / value / put-trigger"
       },
       {
         "name": "limit",
@@ -12619,8 +13072,8 @@
       "convPrice",
       "convValue",
       "convPremiumPct",
-      "remainingYears",
-      "ytm",
+      "pureBondPremiumPct",
+      "putTriggerPrice",
       "listDate"
     ],
     "type": "js",
@@ -14631,6 +15084,59 @@
     "type": "js",
     "modulePath": "github-trending/repos.js",
     "sourceFile": "github-trending/repos.js"
+  },
+  {
+    "site": "google",
+    "name": "images",
+    "description": "Search Google Images for photos and image results",
+    "access": "read",
+    "domain": "google.com",
+    "strategy": "public",
+    "browser": true,
+    "args": [
+      {
+        "name": "keyword",
+        "type": "str",
+        "required": true,
+        "positional": true,
+        "help": "Image search query"
+      },
+      {
+        "name": "limit",
+        "type": "int",
+        "default": 20,
+        "required": false,
+        "help": "Number of image results (1-100)"
+      },
+      {
+        "name": "lang",
+        "type": "str",
+        "default": "en",
+        "required": false,
+        "help": "Language short code (e.g. en, zh)"
+      },
+      {
+        "name": "resolve",
+        "type": "bool",
+        "default": true,
+        "required": false,
+        "help": "Click image previews to resolve original imgurl values"
+      }
+    ],
+    "columns": [
+      "rank",
+      "title",
+      "imageUrl",
+      "thumbnailUrl",
+      "sourceUrl",
+      "source",
+      "width",
+      "height"
+    ],
+    "type": "js",
+    "modulePath": "google/images.js",
+    "sourceFile": "google/images.js",
+    "navigateBefore": false
   },
   {
     "site": "google",
@@ -21123,21 +21629,25 @@
   {
     "site": "kimi",
     "name": "usage",
-    "description": "Read Kimi Code console usage cards: weekly quota, rate limit, membership, and model permission.",
+    "description": "Read Kimi membership quota usage from the subscription page: total usage, rate limits, gift quota, and booster balance.",
     "access": "read",
     "domain": "kimi.com",
     "strategy": "cookie",
     "browser": true,
     "args": [],
     "columns": [
-      "weeklyUsagePct",
-      "weeklyResetIn",
-      "rateLimitPct",
-      "rateLimitResetIn",
       "membershipName",
-      "membershipTier",
-      "modelPermission",
-      "modelCost"
+      "membershipValidUntil",
+      "totalUsagePct",
+      "totalResetIn",
+      "fiveHourUsagePct",
+      "fiveHourResetIn",
+      "sevenDayUsagePct",
+      "sevenDayResetIn",
+      "giftUsagePct",
+      "giftValidUntil",
+      "balance",
+      "monthlySpend"
     ],
     "type": "js",
     "modulePath": "kimi/usage.js",
@@ -30196,7 +30706,8 @@
       "likes",
       "time",
       "is_reply",
-      "reply_to"
+      "reply_to",
+      "images"
     ],
     "type": "js",
     "modulePath": "rednote/comments.js",
@@ -34257,9 +34768,9 @@
     "name": "hot-rank",
     "description": "同花顺热股榜",
     "access": "read",
-    "domain": "eq.10jqka.com.cn",
-    "strategy": "cookie",
-    "browser": true,
+    "domain": "dq.10jqka.com.cn",
+    "strategy": "public",
+    "browser": false,
     "args": [
       {
         "name": "limit",
@@ -34278,8 +34789,7 @@
     ],
     "type": "js",
     "modulePath": "ths/hot-rank.js",
-    "sourceFile": "ths/hot-rank.js",
-    "navigateBefore": true
+    "sourceFile": "ths/hot-rank.js"
   },
   {
     "site": "tieba",
@@ -35111,6 +35621,46 @@
     "navigateBefore": false,
     "siteSession": "persistent",
     "defaultWindowMode": "foreground"
+  },
+  {
+    "site": "toutiao",
+    "name": "recommend",
+    "description": "今日头条频道推荐流（公开 API，无需登录）",
+    "access": "read",
+    "domain": "www.toutiao.com",
+    "strategy": "public",
+    "browser": false,
+    "args": [
+      {
+        "name": "category",
+        "type": "string",
+        "default": "__all__",
+        "required": false,
+        "help": "频道 (__all__, news_tech, news_finance, news_world, news_sports, news_entertainment, news_military)"
+      },
+      {
+        "name": "limit",
+        "type": "int",
+        "default": 20,
+        "required": false,
+        "help": "返回条数 (1-50)"
+      }
+    ],
+    "columns": [
+      "rank",
+      "group_id",
+      "title",
+      "abstract",
+      "source",
+      "tag",
+      "comments",
+      "published_at",
+      "url",
+      "image_url"
+    ],
+    "type": "js",
+    "modulePath": "toutiao/recommend.js",
+    "sourceFile": "toutiao/recommend.js"
   },
   {
     "site": "toutiao",
@@ -36462,6 +37012,566 @@
     "type": "js",
     "modulePath": "trae-solo/workspaces-fs.js",
     "sourceFile": "trae-solo/workspaces-fs.js"
+  },
+  {
+    "site": "trip",
+    "name": "attraction",
+    "description": "Search Trip.com attractions and experiences by destination keyword",
+    "access": "read",
+    "domain": "trip.com",
+    "strategy": "cookie",
+    "browser": true,
+    "args": [
+      {
+        "name": "query",
+        "type": "str",
+        "required": true,
+        "positional": true,
+        "help": "Destination or attraction keyword (e.g. Tokyo / Paris / Louvre)"
+      },
+      {
+        "name": "limit",
+        "type": "int",
+        "default": 20,
+        "required": false,
+        "help": "Number of results (1-50)"
+      }
+    ],
+    "columns": [
+      "rank",
+      "name",
+      "rating",
+      "reviews",
+      "booked",
+      "price",
+      "currency",
+      "url"
+    ],
+    "type": "js",
+    "modulePath": "trip/attraction.js",
+    "sourceFile": "trip/attraction.js",
+    "navigateBefore": false
+  },
+  {
+    "site": "trip",
+    "name": "car",
+    "description": "List Trip.com car-rental vehicles for a city (category, model, seats, daily price)",
+    "access": "read",
+    "domain": "trip.com",
+    "strategy": "cookie",
+    "browser": true,
+    "args": [
+      {
+        "name": "city",
+        "type": "str",
+        "required": true,
+        "positional": true,
+        "help": "Numeric Trip.com carhire city id (discover via the carhire search box)"
+      },
+      {
+        "name": "limit",
+        "type": "int",
+        "default": 20,
+        "required": false,
+        "help": "Number of vehicles (1-50)"
+      }
+    ],
+    "columns": [
+      "rank",
+      "category",
+      "vehicle",
+      "seats",
+      "price",
+      "currency",
+      "url"
+    ],
+    "type": "js",
+    "modulePath": "trip/car.js",
+    "sourceFile": "trip/car.js",
+    "navigateBefore": false
+  },
+  {
+    "site": "trip",
+    "name": "deals",
+    "description": "List Trip.com live promotions from the Top Deals hub: campaign title, offer, discount, and link",
+    "access": "read",
+    "domain": "trip.com",
+    "strategy": "cookie",
+    "browser": true,
+    "args": [
+      {
+        "name": "limit",
+        "type": "int",
+        "default": 20,
+        "required": false,
+        "help": "Number of deals (1-50)"
+      }
+    ],
+    "columns": [
+      "rank",
+      "title",
+      "offer",
+      "discount",
+      "url"
+    ],
+    "type": "js",
+    "modulePath": "trip/deals.js",
+    "sourceFile": "trip/deals.js",
+    "navigateBefore": false
+  },
+  {
+    "site": "trip",
+    "name": "flight",
+    "description": "Search Trip.com one-way flights by IATA route + departure date",
+    "access": "read",
+    "domain": "trip.com",
+    "strategy": "cookie",
+    "browser": true,
+    "args": [
+      {
+        "name": "from",
+        "type": "str",
+        "required": true,
+        "positional": true,
+        "help": "Departure IATA code (e.g. LON / LHR)"
+      },
+      {
+        "name": "to",
+        "type": "str",
+        "required": true,
+        "positional": true,
+        "help": "Arrival IATA code (e.g. NYC / JFK)"
+      },
+      {
+        "name": "date",
+        "type": "str",
+        "required": true,
+        "help": "Departure date (YYYY-MM-DD)"
+      },
+      {
+        "name": "limit",
+        "type": "int",
+        "default": 20,
+        "required": false,
+        "help": "Number of flights (1-50)"
+      }
+    ],
+    "columns": [
+      "rank",
+      "airline",
+      "departureTime",
+      "departureAirport",
+      "arrivalTime",
+      "arrivalAirport",
+      "duration",
+      "stops",
+      "price",
+      "currency",
+      "url"
+    ],
+    "type": "js",
+    "modulePath": "trip/flight.js",
+    "sourceFile": "trip/flight.js",
+    "navigateBefore": false
+  },
+  {
+    "site": "trip",
+    "name": "flight-round",
+    "description": "Search Trip.com round-trip flights by IATA route + depart/return dates",
+    "access": "read",
+    "domain": "trip.com",
+    "strategy": "cookie",
+    "browser": true,
+    "args": [
+      {
+        "name": "from",
+        "type": "str",
+        "required": true,
+        "positional": true,
+        "help": "Departure IATA code (e.g. LON / LHR)"
+      },
+      {
+        "name": "to",
+        "type": "str",
+        "required": true,
+        "positional": true,
+        "help": "Arrival IATA code (e.g. NYC / JFK)"
+      },
+      {
+        "name": "depart",
+        "type": "str",
+        "required": true,
+        "help": "Outbound date (YYYY-MM-DD)"
+      },
+      {
+        "name": "return",
+        "type": "str",
+        "required": true,
+        "help": "Return date (YYYY-MM-DD)"
+      },
+      {
+        "name": "limit",
+        "type": "int",
+        "default": 20,
+        "required": false,
+        "help": "Number of flights (1-50)"
+      }
+    ],
+    "columns": [
+      "rank",
+      "airline",
+      "departureTime",
+      "departureAirport",
+      "arrivalTime",
+      "arrivalAirport",
+      "duration",
+      "stops",
+      "price",
+      "currency",
+      "url"
+    ],
+    "type": "js",
+    "modulePath": "trip/flight-round.js",
+    "sourceFile": "trip/flight-round.js",
+    "navigateBefore": false
+  },
+  {
+    "site": "trip",
+    "name": "hotel",
+    "description": "Show a Trip.com hotel detail by id (rating breakdown, amenities, check-in/out policy)",
+    "access": "read",
+    "domain": "trip.com",
+    "strategy": "cookie",
+    "browser": true,
+    "args": [
+      {
+        "name": "id",
+        "type": "str",
+        "required": true,
+        "positional": true,
+        "help": "Numeric Trip.com hotel id (discover via the hotels list; e.g. 715233)"
+      }
+    ],
+    "columns": [
+      "hotelId",
+      "name",
+      "enName",
+      "star",
+      "score",
+      "scoreLabel",
+      "reviewCount",
+      "ratingBreakdown",
+      "facilities",
+      "checkInOut",
+      "cityName",
+      "address",
+      "lat",
+      "lon",
+      "url"
+    ],
+    "type": "js",
+    "modulePath": "trip/hotel.js",
+    "sourceFile": "trip/hotel.js",
+    "navigateBefore": false
+  },
+  {
+    "site": "trip",
+    "name": "hotel-search",
+    "description": "List Trip.com hotels for a city id + check-in/out date range",
+    "access": "read",
+    "domain": "trip.com",
+    "strategy": "cookie",
+    "browser": true,
+    "args": [
+      {
+        "name": "city",
+        "type": "str",
+        "required": true,
+        "positional": true,
+        "help": "Numeric Trip.com city id (discover via the hotels search box; e.g. 338 for London)"
+      },
+      {
+        "name": "checkin",
+        "type": "str",
+        "required": true,
+        "help": "Check-in date (YYYY-MM-DD)"
+      },
+      {
+        "name": "checkout",
+        "type": "str",
+        "required": true,
+        "help": "Check-out date (YYYY-MM-DD)"
+      },
+      {
+        "name": "limit",
+        "type": "int",
+        "default": 20,
+        "required": false,
+        "help": "Number of hotels (1-50)"
+      }
+    ],
+    "columns": [
+      "rank",
+      "name",
+      "score",
+      "reviewLabel",
+      "reviews",
+      "location",
+      "room",
+      "price",
+      "currency",
+      "url"
+    ],
+    "type": "js",
+    "modulePath": "trip/hotel-search.js",
+    "sourceFile": "trip/hotel-search.js",
+    "navigateBefore": false
+  },
+  {
+    "site": "trip",
+    "name": "package",
+    "description": "Search Trip.com flight+hotel packages by route + dates; lists the package flight options priced at the bundle rate",
+    "access": "read",
+    "domain": "trip.com",
+    "strategy": "public",
+    "browser": false,
+    "args": [
+      {
+        "name": "from",
+        "type": "str",
+        "required": true,
+        "positional": true,
+        "help": "Origin city keyword (e.g. Seoul / London / Bangkok)"
+      },
+      {
+        "name": "to",
+        "type": "str",
+        "required": true,
+        "positional": true,
+        "help": "Destination city keyword (e.g. Tokyo / Paris / Singapore)"
+      },
+      {
+        "name": "depart",
+        "type": "str",
+        "required": true,
+        "help": "Outbound date (YYYY-MM-DD)"
+      },
+      {
+        "name": "return",
+        "type": "str",
+        "required": true,
+        "help": "Return date (YYYY-MM-DD)"
+      },
+      {
+        "name": "adults",
+        "type": "int",
+        "default": 2,
+        "required": false,
+        "help": "Number of adults (1-9, default 2)"
+      },
+      {
+        "name": "limit",
+        "type": "int",
+        "default": 20,
+        "required": false,
+        "help": "Number of packages (1-50)"
+      }
+    ],
+    "columns": [
+      "rank",
+      "airline",
+      "flightNo",
+      "from",
+      "to",
+      "departure",
+      "arrival",
+      "stops",
+      "price",
+      "currency"
+    ],
+    "type": "js",
+    "modulePath": "trip/package.js",
+    "sourceFile": "trip/package.js"
+  },
+  {
+    "site": "trip",
+    "name": "search",
+    "description": "Suggest Trip.com destinations (cities, airports) for a keyword; resolves the ids the other commands take",
+    "access": "read",
+    "domain": "trip.com",
+    "strategy": "public",
+    "browser": false,
+    "args": [
+      {
+        "name": "query",
+        "type": "str",
+        "required": true,
+        "positional": true,
+        "help": "Destination keyword (e.g. Tokyo / Bali / London)"
+      },
+      {
+        "name": "limit",
+        "type": "int",
+        "default": 20,
+        "required": false,
+        "help": "Number of suggestions (1-50)"
+      }
+    ],
+    "columns": [
+      "rank",
+      "name",
+      "type",
+      "cityId",
+      "airportCode",
+      "province",
+      "country"
+    ],
+    "type": "js",
+    "modulePath": "trip/search.js",
+    "sourceFile": "trip/search.js"
+  },
+  {
+    "site": "trip",
+    "name": "tour",
+    "description": "Search Trip.com tour packages by destination keyword (private or group tours)",
+    "access": "read",
+    "domain": "trip.com",
+    "strategy": "cookie",
+    "browser": true,
+    "args": [
+      {
+        "name": "query",
+        "type": "str",
+        "required": true,
+        "positional": true,
+        "help": "Destination or tour keyword (e.g. Tokyo / Kyoto / Bali)"
+      },
+      {
+        "name": "type",
+        "type": "str",
+        "default": "private",
+        "required": false,
+        "help": "Tour line: private or group (default private)"
+      },
+      {
+        "name": "limit",
+        "type": "int",
+        "default": 20,
+        "required": false,
+        "help": "Number of tours (1-50)"
+      }
+    ],
+    "columns": [
+      "rank",
+      "name",
+      "type",
+      "rating",
+      "reviews",
+      "price",
+      "currency",
+      "url"
+    ],
+    "type": "js",
+    "modulePath": "trip/tour.js",
+    "sourceFile": "trip/tour.js",
+    "navigateBefore": false
+  },
+  {
+    "site": "trip",
+    "name": "train",
+    "description": "Show a Trip.com train route timetable (departure/arrival times, duration, changes)",
+    "access": "read",
+    "domain": "trip.com",
+    "strategy": "cookie",
+    "browser": true,
+    "args": [
+      {
+        "name": "from",
+        "type": "str",
+        "required": true,
+        "positional": true,
+        "help": "Departure city (e.g. London / Paris / Shanghai)"
+      },
+      {
+        "name": "to",
+        "type": "str",
+        "required": true,
+        "positional": true,
+        "help": "Arrival city (e.g. Manchester / Lyon / Beijing)"
+      },
+      {
+        "name": "country",
+        "type": "str",
+        "required": true,
+        "help": "Route country slug (e.g. uk / france / italy / spain / germany / china)"
+      },
+      {
+        "name": "limit",
+        "type": "int",
+        "default": 20,
+        "required": false,
+        "help": "Number of journeys (1-50)"
+      }
+    ],
+    "columns": [
+      "rank",
+      "departureTime",
+      "fromStation",
+      "arrivalTime",
+      "toStation",
+      "duration",
+      "changes",
+      "url"
+    ],
+    "type": "js",
+    "modulePath": "trip/train.js",
+    "sourceFile": "trip/train.js",
+    "navigateBefore": false
+  },
+  {
+    "site": "trip",
+    "name": "transfer",
+    "description": "List Trip.com airport-transfer vehicles for a city + airport (type, seats, from-price)",
+    "access": "read",
+    "domain": "trip.com",
+    "strategy": "cookie",
+    "browser": true,
+    "args": [
+      {
+        "name": "city",
+        "type": "str",
+        "required": true,
+        "positional": true,
+        "help": "Airport city (e.g. Bangkok / Beijing / Da Nang)"
+      },
+      {
+        "name": "airport",
+        "type": "str",
+        "required": true,
+        "positional": true,
+        "help": "3-letter airport IATA code (e.g. DMK / PKX / DAD)"
+      },
+      {
+        "name": "limit",
+        "type": "int",
+        "default": 20,
+        "required": false,
+        "help": "Number of vehicles (1-50)"
+      }
+    ],
+    "columns": [
+      "rank",
+      "type",
+      "passengers",
+      "luggage",
+      "price",
+      "currency",
+      "url"
+    ],
+    "type": "js",
+    "modulePath": "trip/transfer.js",
+    "sourceFile": "trip/transfer.js",
+    "navigateBefore": false
   },
   {
     "site": "tvmaze",
@@ -41569,7 +42679,8 @@
       "likes",
       "time",
       "is_reply",
-      "reply_to"
+      "reply_to",
+      "images"
     ],
     "type": "js",
     "modulePath": "xiaohongshu/comments.js",

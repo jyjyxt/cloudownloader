@@ -34,7 +34,10 @@ async function runCommentsExtract(html) {
     globalThis.document = dom.window.document;
     globalThis.location = dom.window.location;
     try {
-        return await eval(buildCommentsExtractJs(false));
+        // limit=1 so the scroll-loading loop's initial "already have enough"
+        // check short-circuits instead of burning through stall retries — the
+        // JSDOM fixtures below are fully static, there's nothing more to load.
+        return await eval(buildCommentsExtractJs(false, 1));
     } finally {
         globalThis.document = previousDocument;
         globalThis.location = previousLocation;
@@ -145,6 +148,59 @@ describe('xiaohongshu comments', () => {
             limit: 5,
         })).resolves.toEqual([]);
     });
+    it('fails typed for malformed comments payloads instead of returning success-shaped output', async () => {
+        const page = createPageMock({ loginWall: false, results: { rows: [] } });
+        await expect(command.func(page, {
+            'note-id': 'https://www.xiaohongshu.com/search_result/abc123?xsec_token=tok',
+            limit: 5,
+        })).rejects.toMatchObject({
+            code: 'COMMAND_EXEC',
+            message: expect.stringContaining('malformed comments payload'),
+        });
+    });
+    it('fails typed for malformed comment image payloads', async () => {
+        const page = createPageMock({
+            loginWall: false,
+            results: [
+                { author: 'Alice', text: 'Great note!', likes: 10, time: '2024-01-01', is_reply: false, reply_to: '', images: 'https://sns-img-qc.xhscdn.com/comment.jpg' },
+            ],
+        });
+        await expect(command.func(page, {
+            'note-id': 'https://www.xiaohongshu.com/search_result/abc123?xsec_token=tok',
+            limit: 5,
+        })).rejects.toMatchObject({
+            code: 'COMMAND_EXEC',
+            message: expect.stringContaining('malformed comment row images'),
+        });
+    });
+    it('fails typed for non-stable comment image URLs', async () => {
+        const page = createPageMock({
+            loginWall: false,
+            results: [
+                { author: 'Alice', text: 'Great note!', likes: 10, time: '2024-01-01', is_reply: false, reply_to: '', images: ['data:image/png;base64,AAAA'] },
+            ],
+        });
+        await expect(command.func(page, {
+            'note-id': 'https://www.xiaohongshu.com/search_result/abc123?xsec_token=tok',
+            limit: 5,
+        })).rejects.toMatchObject({
+            code: 'COMMAND_EXEC',
+            message: expect.stringContaining('malformed comment row image URL'),
+        });
+    });
+    it('preserves normalized valid comment image URLs in output rows', async () => {
+        const page = createPageMock({
+            loginWall: false,
+            results: [
+                { author: 'Alice', text: 'Great note!', likes: 10, time: '2024-01-01', is_reply: false, reply_to: '', images: [' https://sns-img-qc.xhscdn.com/comment.jpg '] },
+            ],
+        });
+        const rows = await command.func(page, {
+            'note-id': 'https://www.xiaohongshu.com/search_result/abc123?xsec_token=tok',
+            limit: 5,
+        });
+        expect(rows[0]).toMatchObject({ images: ['https://sns-img-qc.xhscdn.com/comment.jpg'] });
+    });
     it('uses condition-based comment scrolling instead of a fixed blind loop', async () => {
         const page = createPageMock({ loginWall: false, results: [] });
         await command.func(page, {
@@ -152,9 +208,33 @@ describe('xiaohongshu comments', () => {
             limit: 5,
         });
         const script = page.evaluate.mock.calls[0][0];
-        expect(script).toContain("const beforeCount = scroller.querySelectorAll('.parent-comment').length");
-        expect(script).toContain("const afterCount = scroller.querySelectorAll('.parent-comment').length");
-        expect(script).toContain('if (afterCount <= beforeCount) break');
+        expect(script).toContain("const beforeCount = document.querySelectorAll('.parent-comment').length");
+        expect(script).toContain("const afterCount = document.querySelectorAll('.parent-comment').length");
+        expect(script).toContain('if (beforeCount >= targetCount) break');
+        expect(script).toContain('if (stall >= 6) break');
+    });
+
+    it('drives scroll growth through the scroller, scrollIntoView, and window.scrollTo together', async () => {
+        const page = createPageMock({ loginWall: false, results: [] });
+        await command.func(page, {
+            'note-id': 'https://www.xiaohongshu.com/search_result/abc123?xsec_token=tok',
+            limit: 5,
+        });
+        const script = page.evaluate.mock.calls[0][0];
+        expect(script).toContain('scroller.scrollTo(0, scroller.scrollHeight)');
+        expect(script).toContain("last.scrollIntoView({ block: 'end' })");
+        expect(script).toContain('window.scrollTo(0, document.body.scrollHeight)');
+    });
+
+    it('scrolls toward the requested --limit instead of stopping after one stalled round', async () => {
+        const page = createPageMock({ loginWall: false, results: [] });
+        await command.func(page, {
+            'note-id': 'https://www.xiaohongshu.com/search_result/abc123?xsec_token=tok',
+            limit: 50,
+        });
+        const script = page.evaluate.mock.calls[0][0];
+        expect(script).toContain('const targetCount = 50');
+        expect(script).toContain('for (let i = 0; i < 60; i++)');
     });
     it('extracts shortform like counts from the shared xiaohongshu/rednote DOM script', async () => {
         const data = await runCommentsExtract(`
@@ -178,9 +258,55 @@ describe('xiaohongshu comments', () => {
         `);
 
         expect(data.results).toEqual([
-            { author: 'Alice', authorHrefRaw: '', text: 'Great note', likes: 21000, time: 'today', is_reply: false, reply_to: '' },
-            { author: 'Bob', authorHrefRaw: '', text: 'Malformed count', likes: 0, time: '', is_reply: false, reply_to: '' },
+            { author: 'Alice', authorHrefRaw: '', text: 'Great note', likes: 21000, time: 'today', is_reply: false, reply_to: '', images: [] },
+            { author: 'Bob', authorHrefRaw: '', text: 'Malformed count', likes: 0, time: '', is_reply: false, reply_to: '', images: [] },
         ]);
+    });
+
+    it('extracts attached comment photos while excluding avatars and inline emoji', async () => {
+        const data = await runCommentsExtract(`
+          <main>
+            <section class="parent-comment">
+              <div class="comment-item">
+                <div class="author-wrapper">
+                  <img class="avatar-item" src="https://sns-avatar-qc.xhscdn.com/avatar/abc.jpg" />
+                  <span class="name">Alice</span>
+                </div>
+                <div class="content">Great note <img class="note-content-emoji" src="https://picasso-static.xiaohongshu.com/fe-platform/emoji.png" /></div>
+                <div class="comment-pic"><img src="https://sns-img-qc.xhscdn.com/comment-photo.jpg" /></div>
+                <span class="count">1</span>
+                <span class="date">today</span>
+              </div>
+              <div class="reply-container">
+                <div class="comment-item-sub">
+                  <span class="name">Bob</span>
+                  <div class="content">Nice</div>
+                  <div class="reply-pic"><img src="https://sns-img-qc.xhscdn.com/reply-photo.jpg" /></div>
+                </div>
+              </div>
+            </section>
+          </main>
+        `);
+
+        expect(data.results[0]).toMatchObject({ author: 'Alice', text: 'Great note', images: ['https://sns-img-qc.xhscdn.com/comment-photo.jpg'] });
+    });
+    it('does not project author badges or action icons as comment images', async () => {
+        const data = await runCommentsExtract(`
+          <main>
+            <section class="parent-comment">
+              <div class="comment-item">
+                <div class="author-wrapper">
+                  <span class="name">Alice</span>
+                  <img class="author-badge" src="https://sns-img-qc.xhscdn.com/badge.png" />
+                </div>
+                <div class="content">No attached photo</div>
+                <button class="like-action"><img src="https://sns-img-qc.xhscdn.com/like-icon.png" /></button>
+              </div>
+            </section>
+          </main>
+        `);
+
+        expect(data.results[0]).toMatchObject({ author: 'Alice', text: 'No attached photo', images: [] });
     });
     it('extracts authorHrefRaw from /user/profile/ anchor wrapping the name', async () => {
         const data = await runCommentsExtract(`
