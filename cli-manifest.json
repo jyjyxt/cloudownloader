@@ -12802,7 +12802,7 @@
         "type": "string",
         "required": true,
         "positional": true,
-        "help": "用户 sec_uid（URL 末尾部分）"
+        "help": "用户 sec_uid（个人主页 URL 末尾部分，也可直接传整条主页 URL）"
       },
       {
         "name": "limit",
@@ -12854,14 +12854,7 @@
         "type": "int",
         "default": 20,
         "required": false,
-        "help": "每页数量"
-      },
-      {
-        "name": "page",
-        "type": "int",
-        "default": 1,
-        "required": false,
-        "help": "页码"
+        "help": "最多返回多少个作品（跨页自动收集）"
       },
       {
         "name": "status",
@@ -12883,6 +12876,10 @@
       "status",
       "play_count",
       "digg_count",
+      "comment_count",
+      "collect_count",
+      "share_count",
+      "duration",
       "create_time"
     ],
     "type": "js",
