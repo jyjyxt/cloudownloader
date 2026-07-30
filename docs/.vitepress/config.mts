@@ -78,6 +78,7 @@ export default defineConfig({
                 { text: 'SMZDM', link: '/adapters/browser/smzdm' },
                 { text: 'Jike', link: '/adapters/browser/jike' },
                 { text: 'Jimeng', link: '/adapters/browser/jimeng' },
+                { text: 'Midjourney', link: '/adapters/browser/midjourney' },
                 { text: 'Yollomi', link: '/adapters/browser/yollomi' },
                 { text: 'LINUX DO', link: '/adapters/browser/linux-do' },
                 { text: 'Band', link: '/adapters/browser/band' },
