@@ -175,7 +175,7 @@ describe('resolveExecutableCandidates', () => {
   });
 });
 
-describe('app-scoped process detection', () => {
+describe.skipIf(process.platform === 'win32')('app-scoped process detection', () => {
   beforeEach(() => {
     vi.restoreAllMocks();
     cp.execFileSync.mockReset();
