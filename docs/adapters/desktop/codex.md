@@ -8,8 +8,10 @@ Control the **OpenAI Codex Desktop App** headless or headfully via Chrome DevToo
 2. Launch it via the terminal and expose the remote debugging port:
    ```bash
    # macOS
-   /Applications/Codex.app/Contents/MacOS/Codex --remote-debugging-port=9238
+   /Applications/Codex.app/Contents/MacOS/ChatGPT --remote-debugging-port=9238 --remote-allow-origins=*
    ```
+
+   > Depending on your installation, the executable might be named differently, e.g., `Codex` instead of `ChatGPT`. OpenCLI's auto-launch path tries `ChatGPT` first, then `Codex`.
 
 ## Setup
 
