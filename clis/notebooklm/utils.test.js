@@ -1,7 +1,15 @@
 import { describe, expect, it } from 'vitest';
 import { buildNotebooklmRpcBody, classifyNotebooklmPage, extractNotebooklmHistoryPreview, extractNotebooklmRpcResult, getNotebooklmPageState, isPlainObject, normalizeNotebooklmTitle, parseNotebooklmHistoryThreadIdsResult, parseNotebooklmIdFromUrl, parseNotebooklmListResult, parseNotebooklmNoteListRawRows, parseNotebooklmNotebookDetailResult, parseNotebooklmNotebookTarget, parseNotebooklmSourceFulltextResult, parseNotebooklmSourceGuideResult, parseNotebooklmSourceListResult, } from './utils.js';
 import { CliError } from '@jackwener/opencli/errors';
+import { isNotebooklmHost } from './shared.js';
 describe('notebooklm utils', () => {
+    it('matches only the two exact NotebookLM hosts', () => {
+        expect(isNotebooklmHost('notebooklm.google.com')).toBe(true);
+        expect(isNotebooklmHost('notebook.google.com')).toBe(true);
+        expect(isNotebooklmHost('evil.notebooklm.google.com')).toBe(false);
+        expect(isNotebooklmHost('notebooklm.google.com.evil.test')).toBe(false);
+        expect(isNotebooklmHost('google.com')).toBe(false);
+    });
     it('isPlainObject distinguishes objects from arrays / null / primitives', () => {
         expect(isPlainObject({})).toBe(true);
         expect(isPlainObject({ a: 1 })).toBe(true);
@@ -17,6 +25,10 @@ describe('notebooklm utils', () => {
     it('parseNotebooklmNotebookTarget accepts a notebook url with uuid', () => {
         const id = '17e2b882-aaaa-bbbb-cccc-abcdef012345';
         expect(parseNotebooklmNotebookTarget(`https://notebooklm.google.com/notebook/${id}?pli=1`)).toBe(id);
+    });
+    it('parseNotebooklmNotebookTarget accepts NotebookLM redirect-host urls', () => {
+        const id = '17e2b882-aaaa-bbbb-cccc-abcdef012345';
+        expect(parseNotebooklmNotebookTarget(`https://notebook.google.com/notebook/${id}?pli=1`)).toBe(id);
     });
     it('parseNotebooklmNotebookTarget rejects non-uuid bare ids', () => {
         expect(() => parseNotebooklmNotebookTarget('nb-demo')).toThrow(CliError);
@@ -44,6 +56,8 @@ describe('notebooklm utils', () => {
     it('classifies notebook pages correctly', () => {
         expect(classifyNotebooklmPage('https://notebooklm.google.com/notebook/demo-id')).toBe('notebook');
         expect(classifyNotebooklmPage('https://notebooklm.google.com/')).toBe('home');
+        expect(classifyNotebooklmPage('https://notebook.google.com/notebook/demo-id')).toBe('notebook');
+        expect(classifyNotebooklmPage('https://notebook.google.com/')).toBe('home');
         expect(classifyNotebooklmPage('https://example.com/notebook/demo-id')).toBe('unknown');
     });
     it('normalizes notebook titles', () => {
@@ -444,6 +458,28 @@ describe('notebooklm utils', () => {
             notebookId: 'nb-demo',
             loginRequired: false,
             notebookCount: 0,
+        });
+    });
+    it('accepts page state from the NotebookLM redirect host', async () => {
+        const page = {
+            evaluate: async () => ({
+                url: 'https://notebook.google.com/notebook/nb-demo',
+                title: 'Demo Notebook - NotebookLM',
+                hostname: 'notebook.google.com',
+                kind: 'notebook',
+                notebookId: 'nb-demo',
+                loginRequired: false,
+                notebookCount: 2,
+            }),
+        };
+        await expect(getNotebooklmPageState(page)).resolves.toEqual({
+            url: 'https://notebook.google.com/notebook/nb-demo',
+            title: 'Demo Notebook - NotebookLM',
+            hostname: 'notebook.google.com',
+            kind: 'notebook',
+            notebookId: 'nb-demo',
+            loginRequired: false,
+            notebookCount: 2,
         });
     });
 });
