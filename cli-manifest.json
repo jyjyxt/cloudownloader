@@ -12731,7 +12731,7 @@
   {
     "site": "douyin",
     "name": "stats",
-    "description": "作品数据分析",
+    "description": "获取单个作品的创作者中心深层指标",
     "access": "read",
     "domain": "creator.douyin.com",
     "strategy": "cookie",
