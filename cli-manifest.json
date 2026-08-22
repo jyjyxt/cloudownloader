@@ -5469,7 +5469,7 @@
     "description": "BOSS直聘查看职位详情",
     "access": "read",
     "domain": "www.zhipin.com",
-    "strategy": "cookie",
+    "strategy": "ui",
     "browser": true,
     "args": [
       {
@@ -5477,7 +5477,7 @@
         "type": "str",
         "required": true,
         "positional": true,
-        "help": "Security ID from search results (securityId field)"
+        "help": "Security ID from search results (security_id field)"
       }
     ],
     "columns": [
@@ -5486,7 +5486,7 @@
       "experience",
       "degree",
       "city",
-      "district",
+      "address",
       "description",
       "skills",
       "welfare",
@@ -5497,13 +5497,14 @@
       "industry",
       "scale",
       "stage",
-      "address",
       "url"
     ],
     "type": "js",
     "modulePath": "boss/detail.js",
     "sourceFile": "boss/detail.js",
-    "navigateBefore": false
+    "navigateBefore": false,
+    "siteSession": "persistent",
+    "defaultWindowMode": "background"
   },
   {
     "site": "boss",
@@ -5794,7 +5795,7 @@
     "description": "BOSS直聘搜索职位（不带关键词时返回为你推荐职位）",
     "access": "read",
     "domain": "www.zhipin.com",
-    "strategy": "cookie",
+    "strategy": "intercept",
     "browser": true,
     "args": [
       {
@@ -5877,7 +5878,9 @@
     "type": "js",
     "modulePath": "boss/search.js",
     "sourceFile": "boss/search.js",
-    "navigateBefore": false
+    "navigateBefore": false,
+    "siteSession": "persistent",
+    "defaultWindowMode": "background"
   },
   {
     "site": "boss",
