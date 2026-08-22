@@ -1,4 +1,4 @@
-import { CommandExecutionError } from '@jackwener/opencli/errors';
+import { CommandExecutionError, TimeoutError } from '@jackwener/opencli/errors';
 import { cli, Strategy } from '@jackwener/opencli/registry';
 cli({
     site: 'twitter',
@@ -19,6 +19,7 @@ cli({
         await page.goto(`https://x.com/${username}`);
         await page.wait({ selector: '[data-testid="primaryColumn"]' });
         const result = await page.evaluate(`(async () => {
+        let writeStarted = false;
         try {
             let attempts = 0;
 
@@ -64,26 +65,33 @@ cli({
 
             // Confirm the block in the dialog
             const confirmBtn = document.querySelector('[data-testid="confirmationSheetConfirm"]');
-            if (confirmBtn) {
-                confirmBtn.click();
-                await new Promise(r => setTimeout(r, 1500));
+            if (!confirmBtn) {
+                return { ok: false, message: 'Block confirmation dialog did not appear.' };
             }
+            writeStarted = true;
+            confirmBtn.click();
+            await new Promise(r => setTimeout(r, 1500));
 
             // Verify
             const verify = document.querySelector('[data-testid$="-unblock"]');
             if (verify) {
                 return { ok: true, message: 'Successfully blocked @${username}.' };
             } else {
-                return { ok: false, message: 'Block action initiated but UI did not update.' };
+                return { ok: false, unconfirmed: true, message: 'Block action initiated but UI did not update.' };
             }
         } catch (e) {
-            return { ok: false, message: e.toString() };
+            return { ok: false, unconfirmed: writeStarted, message: e.toString() };
         }
     })()`);
-        if (result.ok)
-            await page.wait(2);
+        if (result.unconfirmed) {
+            throw new TimeoutError('twitter block confirmation', 1.5, `${result.message} Check the profile before retrying; the block may already have succeeded.`);
+        }
+        if (!result.ok) {
+            throw new CommandExecutionError(result.message, 'Nothing changed. Open the profile in the browser and retry.');
+        }
+        await page.wait(2);
         return [{
-                status: result.ok ? 'success' : 'failed',
+                status: 'success',
                 message: result.message
             }];
     }
