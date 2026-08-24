@@ -24,6 +24,16 @@ export interface DownloadOptions {
   timeout?: number;
   onProgress?: (received: number, total: number) => void;
   maxRedirects?: number;
+  /** Include the final response MIME type in the result. */
+  includeContentType?: boolean;
+}
+
+export interface HttpDownloadResult {
+  success: boolean;
+  size: number;
+  error?: string;
+  contentType?: string;
+  finalUrl?: string;
 }
 
 export interface YtdlpOptions {
@@ -103,8 +113,10 @@ export async function httpDownload(
   destPath: string,
   options: DownloadOptions = {},
   redirectCount = 0,
-): Promise<{ success: boolean; size: number; error?: string }> {
-  const { cookies, headers = {}, timeout = 30000, onProgress, maxRedirects = 10 } = options;
+): Promise<HttpDownloadResult> {
+  const {
+    cookies, headers = {}, timeout = 30000, onProgress, maxRedirects = 10, includeContentType = false,
+  } = options;
 
   const requestHeaders: Record<string, string> = {
     'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.36',
@@ -183,7 +195,15 @@ export async function httpDownload(
         fs.createWriteStream(tempPath),
       );
       await fs.promises.rename(tempPath, destPath);
-      return { success: true, size: received };
+      const contentType = includeContentType
+        ? response.headers.get('content-type')?.split(';', 1)[0]?.trim().toLowerCase()
+        : undefined;
+      return {
+        success: true,
+        size: received,
+        ...(includeContentType && { finalUrl: url }),
+        ...(contentType && { contentType }),
+      };
     } catch (err) {
       await cleanupTempFile();
       return { success: false, size: 0, error: getErrorMessage(err) };
