@@ -29115,6 +29115,137 @@
   },
   {
     "site": "pixiv",
+    "name": "bookmark-download",
+    "description": "Batch download current Pixiv account bookmarks for illustrations or novels",
+    "access": "read",
+    "domain": "www.pixiv.net",
+    "strategy": "cookie",
+    "browser": true,
+    "args": [
+      {
+        "name": "type",
+        "type": "str",
+        "default": "illust",
+        "required": false,
+        "help": "Bookmark type: illust or novel"
+      },
+      {
+        "name": "limit",
+        "type": "int",
+        "default": 20,
+        "required": false,
+        "help": "Number of bookmarks to download"
+      },
+      {
+        "name": "offset",
+        "type": "int",
+        "default": 0,
+        "required": false,
+        "help": "Pagination offset"
+      },
+      {
+        "name": "visibility",
+        "type": "str",
+        "default": "show",
+        "required": false,
+        "help": "Bookmark visibility: show(public) or hide(private)"
+      },
+      {
+        "name": "output",
+        "type": "str",
+        "default": "./pixiv-downloads/bookmarks",
+        "required": false,
+        "help": "Output directory"
+      },
+      {
+        "name": "file-format",
+        "type": "str",
+        "default": "txt",
+        "required": false,
+        "help": "Novel output file format: txt or md"
+      },
+      {
+        "name": "execute",
+        "type": "boolean",
+        "default": false,
+        "required": false,
+        "help": "Actually write the local archive"
+      }
+    ],
+    "columns": [
+      "rank",
+      "type",
+      "id",
+      "title",
+      "download_status",
+      "path"
+    ],
+    "type": "js",
+    "modulePath": "pixiv/bookmark-download.js",
+    "sourceFile": "pixiv/bookmark-download.js",
+    "navigateBefore": "https://www.pixiv.net"
+  },
+  {
+    "site": "pixiv",
+    "name": "bookmarks",
+    "description": "List the current Pixiv account bookmarks for illustrations or novels",
+    "access": "read",
+    "domain": "www.pixiv.net",
+    "strategy": "cookie",
+    "browser": true,
+    "args": [
+      {
+        "name": "type",
+        "type": "str",
+        "default": "illust",
+        "required": false,
+        "help": "Bookmark type: illust or novel"
+      },
+      {
+        "name": "limit",
+        "type": "int",
+        "default": 20,
+        "required": false,
+        "help": "Number of bookmarks to list"
+      },
+      {
+        "name": "offset",
+        "type": "int",
+        "default": 0,
+        "required": false,
+        "help": "Pagination offset"
+      },
+      {
+        "name": "visibility",
+        "type": "str",
+        "default": "show",
+        "required": false,
+        "help": "Bookmark visibility: show(public) or hide(private)"
+      }
+    ],
+    "columns": [
+      "rank",
+      "type",
+      "bookmark_owner_id",
+      "title",
+      "author",
+      "user_id",
+      "illust_id",
+      "novel_id",
+      "pages",
+      "words",
+      "bookmarks",
+      "tags",
+      "created",
+      "url"
+    ],
+    "type": "js",
+    "modulePath": "pixiv/bookmarks.js",
+    "sourceFile": "pixiv/bookmarks.js",
+    "navigateBefore": "https://www.pixiv.net"
+  },
+  {
+    "site": "pixiv",
     "name": "detail",
     "description": "View illustration details (tags, stats, URLs)",
     "access": "read",
@@ -29252,6 +29383,156 @@
     "navigateBefore": false,
     "siteSession": "persistent",
     "defaultWindowMode": "foreground"
+  },
+  {
+    "site": "pixiv",
+    "name": "me",
+    "description": "Show the currently logged-in Pixiv account",
+    "access": "read",
+    "domain": "www.pixiv.net",
+    "strategy": "cookie",
+    "browser": true,
+    "args": [],
+    "columns": [
+      "user_id",
+      "name",
+      "premium",
+      "profile_image",
+      "url"
+    ],
+    "type": "js",
+    "modulePath": "pixiv/me.js",
+    "sourceFile": "pixiv/me.js",
+    "navigateBefore": "https://www.pixiv.net"
+  },
+  {
+    "site": "pixiv",
+    "name": "novel",
+    "description": "View Pixiv novel metadata (title, author, series, tags, stats)",
+    "access": "read",
+    "domain": "www.pixiv.net",
+    "strategy": "cookie",
+    "browser": true,
+    "args": [
+      {
+        "name": "id",
+        "type": "str",
+        "required": true,
+        "positional": true,
+        "help": "Novel ID"
+      }
+    ],
+    "columns": [
+      "novel_id",
+      "title",
+      "author",
+      "user_id",
+      "series_id",
+      "series_title",
+      "series_order",
+      "words",
+      "characters",
+      "bookmarks",
+      "likes",
+      "views",
+      "tags",
+      "created",
+      "url"
+    ],
+    "type": "js",
+    "modulePath": "pixiv/novel.js",
+    "sourceFile": "pixiv/novel.js",
+    "navigateBefore": "https://www.pixiv.net"
+  },
+  {
+    "site": "pixiv",
+    "name": "novel-download",
+    "description": "Download Pixiv novel text as txt or markdown",
+    "access": "read",
+    "domain": "www.pixiv.net",
+    "strategy": "cookie",
+    "browser": true,
+    "args": [
+      {
+        "name": "novel-id",
+        "type": "str",
+        "required": true,
+        "positional": true,
+        "help": "Novel ID"
+      },
+      {
+        "name": "output",
+        "type": "str",
+        "default": "./pixiv-downloads/novels",
+        "required": false,
+        "help": "Output directory"
+      },
+      {
+        "name": "file-format",
+        "type": "str",
+        "default": "txt",
+        "required": false,
+        "help": "Output file format: txt or md"
+      },
+      {
+        "name": "execute",
+        "type": "boolean",
+        "default": false,
+        "required": false,
+        "help": "Actually write the local novel file"
+      }
+    ],
+    "columns": [
+      "novel_id",
+      "title",
+      "format",
+      "status",
+      "path"
+    ],
+    "type": "js",
+    "modulePath": "pixiv/novel-download.js",
+    "sourceFile": "pixiv/novel-download.js",
+    "navigateBefore": "https://www.pixiv.net"
+  },
+  {
+    "site": "pixiv",
+    "name": "novels",
+    "description": "List a Pixiv user's novels",
+    "access": "read",
+    "domain": "www.pixiv.net",
+    "strategy": "cookie",
+    "browser": true,
+    "args": [
+      {
+        "name": "user-id",
+        "type": "str",
+        "required": true,
+        "positional": true,
+        "help": "Pixiv user ID"
+      },
+      {
+        "name": "limit",
+        "type": "int",
+        "default": 20,
+        "required": false,
+        "help": "Number of results"
+      }
+    ],
+    "columns": [
+      "rank",
+      "title",
+      "novel_id",
+      "words",
+      "characters",
+      "bookmarks",
+      "tags",
+      "created",
+      "url"
+    ],
+    "type": "js",
+    "modulePath": "pixiv/novels.js",
+    "sourceFile": "pixiv/novels.js",
+    "navigateBefore": "https://www.pixiv.net"
   },
   {
     "site": "pixiv",
