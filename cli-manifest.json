@@ -3583,6 +3583,35 @@
   },
   {
     "site": "bilibili",
+    "name": "creator-stats",
+    "description": "读取当前账号最近稿件的核心创作指标（需登录创作中心）",
+    "access": "read",
+    "example": "opencli bilibili creator-stats <bvid-or-video-url> -f json",
+    "domain": "member.bilibili.com",
+    "strategy": "cookie",
+    "browser": true,
+    "args": [
+      {
+        "name": "bvid",
+        "type": "string",
+        "required": true,
+        "positional": true,
+        "help": "Exact case-sensitive BV ID or bilibili.com video URL"
+      }
+    ],
+    "columns": [
+      "bvid",
+      "metric",
+      "value",
+      "unit"
+    ],
+    "type": "js",
+    "modulePath": "bilibili/creator-stats.js",
+    "sourceFile": "bilibili/creator-stats.js",
+    "navigateBefore": "https://member.bilibili.com/platform/home"
+  },
+  {
+    "site": "bilibili",
     "name": "download",
     "description": "下载B站视频（需要 yt-dlp）",
     "access": "read",
