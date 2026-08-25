@@ -360,7 +360,7 @@ async function fillPinterestDescriptionField(page, value) {
 
 async function expandPinterestDescriptionField(page) {
     let result;
-    for (let i = 0; i < 5; i++) {
+    for (let i = 0; i < 15; i++) {
         result = await page.evaluate(EXPAND_DESCRIPTION_FIELD_SCRIPT);
         if (result?.ok) return;
         await page.wait({ time: result?.needsWait ? 0.8 : 0.5 });
@@ -370,9 +370,9 @@ async function expandPinterestDescriptionField(page) {
 
 const EXPAND_DESCRIPTION_FIELD_SCRIPT = `(() => {
     const visible = el => !!el && !!(el.offsetWidth || el.offsetHeight || el.getClientRects().length);
-    const editor = document.querySelector('[aria-label="Describe your Pin"][contenteditable="true"]');
+    const editor = document.querySelector('[aria-label="Describe your Pin"][contenteditable="true"], [role="combobox"][contenteditable="true"][aria-label*="Describe"]');
     if (editor && visible(editor)) return { ok: true };
-    const container = document.querySelector('[data-test-id="storyboard-description-field-container"]');
+    const container = document.querySelector('[data-test-id="storyboard-description-field-container"], #dweb-comment-editor-container');
     if (!container || !visible(container)) return { ok: false, message: 'Pinterest description container not found' };
     const opener = Array.from(container.querySelectorAll('button, [role="button"], [tabindex]'))
         .filter(visible)
