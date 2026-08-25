@@ -7,7 +7,7 @@ const IMAGE_FILE_INPUT_SELECTOR = 'input[type="file"][name="file"]';
 
 function isRecoverableFileInputError(error) {
     const msg = error instanceof Error ? error.message : String(error);
-    return /unknown action|not supported|not[-\s]?allowed|notallowederror/i.test(msg);
+    return /unknown action|not supported|not[-\s]?allowed|notallowederror|filechooseropened not received/i.test(msg);
 }
 
 function imageMimeType(pathModule, absPath) {

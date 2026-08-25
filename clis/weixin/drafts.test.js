@@ -110,4 +110,39 @@ describe('weixin create-draft command', () => {
         expect(page.nativeClick).toHaveBeenCalledWith(20, 30);
         expect(result).toEqual([{ status: 'draft saved', detail: '"测试草稿" (with cover)' }]);
     });
+
+    it('falls back to DataTransfer when Browser Bridge times out waiting for a file chooser', async () => {
+        const command = getRegistry().get('weixin/create-draft');
+        const evaluate = vi.fn().mockImplementation(async (script) => {
+            if (script.includes('window.location.href.match')) return '123456';
+            if (script.includes('!!document.querySelector("textarea#title")')) return true;
+            if (script.includes("reason: 'content editor not found'")) return { ok: true };
+            if (script.includes('var range = document.createRange()')) return true;
+            if (script.includes('var assigned = false')) return { ok: true, count: 1 };
+            if (script.includes('var imageSelector =') && script.includes('errorText')) return { ok: true, cdnCount: 1 };
+            if (script.includes('return { ok: images.length > 0')) return { ok: true, count: 1 };
+            if (script.includes('return { count: editor ?')) return { count: 1 };
+            if (script.includes("['dragenter', 'dragover', 'drop']")) return true;
+            if (script.includes("var area = document.querySelector('#js_cover_area')")) return true;
+            if (script.includes("=== '保存为草稿'")) return { ok: true };
+            if (script.includes("document.querySelector('#js_save_success')")) return true;
+            if (script.includes('var el = document.querySelector')) return { ok: true };
+            return undefined;
+        });
+        const page = createPageMock({ evaluate });
+        page.setFileInput.mockRejectedValue(
+            new Error('Page.fileChooserOpened not received within 5s — the input may not have opened a file chooser'),
+        );
+
+        const result = await command.func(page, {
+            title: '回退测试',
+            content: '测试正文',
+            'cover-image': new URL('../../package.json', import.meta.url).pathname,
+            reward: false,
+        });
+
+        expect(page.setFileInput).toHaveBeenCalledOnce();
+        expect(evaluate.mock.calls.some(([script]) => script.includes('var assigned = false'))).toBe(true);
+        expect(result).toEqual([{ status: 'draft saved', detail: '"回退测试" (with cover)' }]);
+    });
 });
