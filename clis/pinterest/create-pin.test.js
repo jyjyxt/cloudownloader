@@ -56,7 +56,7 @@ describe('pinterest create-pin command', () => {
             { ok: true, action: 'pin' },
             { ok: true, selector: 'input[type="file"]' },
             { ok: true, count: 1 },
-            { ok: true, count: 1 },
+            { ok: true, count: 1, mediaSelected: true },
             { ok: true, field: 'title' },
             { ok: true, kind: 'textarea' },
             { ok: true, field: 'description' },
@@ -77,6 +77,10 @@ describe('pinterest create-pin command', () => {
         });
 
         const evaluateCalls = page.evaluate.mock.calls.map((args) => String(args[0]));
+        expect(page.goto).toHaveBeenCalledWith('https://www.pinterest.com/janedoe/ideas/', {
+            waitUntil: 'load',
+            settleMs: 3000,
+        });
         expect(setFileInput).toHaveBeenCalledWith(['/abs/ant.jpg'], 'input[type="file"]');
         expect(evaluateCalls.some((code) => code.includes('new DataTransfer()'))).toBe(true);
         expect(evaluateCalls.some((code) => code.includes('Could not assign files to input'))).toBe(true);

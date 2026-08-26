@@ -207,13 +207,19 @@ async function waitForUploadPreview(page, timeoutSeconds) {
     for (let i = 0; i < attempts; i++) {
         const result = await page.evaluate(`(() => {
             const visible = el => !!el && !!(el.offsetWidth || el.offsetHeight || el.getClientRects().length);
-            const images = Array.from(document.querySelectorAll('img')).filter(img => {
+            const uploadArea = document.querySelector('[data-test-id="storyboard-draft-upload-container"], [data-test-id="storyboard-upload-container"]');
+            const images = Array.from(uploadArea?.querySelectorAll('img') || []).filter(img => {
                 const src = String(img.currentSrc || img.src || '');
                 const alt = String(img.alt || '').toLowerCase();
                 return visible(img) && (src.startsWith('blob:') || src.startsWith('data:') || alt.includes('image') || alt.includes('pin'));
             });
+            const fileInput = document.querySelector('[data-test-id="storyboard-upload-input"], input[type="file"]');
+            const mediaSelected = Number(fileInput?.files?.length || 0) > 0;
+            const titleInput = document.querySelector('[data-test-id="storyboard-title-input"], input[type="text"]');
             const busyText = (document.body?.innerText || '').toLowerCase();
-            if (images.length > 0) return { ok: true, count: images.length };
+            if (images.length > 0 || (mediaSelected && titleInput && !titleInput.disabled)) {
+                return { ok: true, count: images.length, mediaSelected };
+            }
             if (/upload failed|couldn't upload|上传失败|不支持|too large/.test(busyText)) {
                 return { ok: false, message: 'Pinterest reported image upload failure' };
             }
