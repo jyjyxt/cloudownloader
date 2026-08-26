@@ -46,9 +46,12 @@ function makePage(evaluateResults = [], overrides = {}) {
 describe('pinterest create-pin command', () => {
     const getCommand = () => getRegistry().get('pinterest/create-pin');
 
-    it('falls back to DataTransfer upload when CDP file input is not allowed', async () => {
+    it.each([
+        'Chrome Not allowed',
+        'Page.fileChooserOpened not received within 5s — the input may not have opened a file chooser',
+    ])('falls back to DataTransfer upload for recoverable file input error: %s', async (fileInputError) => {
         const command = getCommand();
-        const setFileInput = vi.fn().mockRejectedValue(new Error('Chrome Not allowed'));
+        const setFileInput = vi.fn().mockRejectedValue(new Error(fileInputError));
         const page = makePage([
             { loggedIn: true, hasCreateSurface: true },
             { ok: true, profile: 'janedoe' },
@@ -90,5 +93,48 @@ describe('pinterest create-pin command', () => {
             title: 'Life Cycle of an Ant',
             url: 'https://www.pinterest.com/pin/123456789/',
         }]);
+    });
+
+    it('uploads through the generic CDP channel before using the chooser path', async () => {
+        const command = getCommand();
+        const cdp = vi.fn(async (method) => {
+            if (method === 'DOM.getDocument') return { root: { nodeId: 1 } };
+            if (method === 'DOM.querySelector') return { nodeId: 42 };
+            return {};
+        });
+        const page = makePage([
+            { loggedIn: true, hasCreateSurface: true },
+            { ok: true, profile: 'janedoe' },
+            { loggedIn: true, hasCreateSurface: true },
+            { ok: true, action: 'pin' },
+            { ok: true, selector: 'input[type="file"]' },
+            { ok: true, count: 1 },
+            { ok: true, count: 1, mediaSelected: true },
+            { ok: true, field: 'title' },
+            { ok: true, kind: 'textarea' },
+            { ok: true, field: 'description' },
+            { ok: true, label: 'Publish', x: 100, y: 50 },
+            { ok: false },
+            { ok: true, url: 'https://www.pinterest.com/pin/123456789/' },
+        ], {
+            cdp,
+            nativeClick: vi.fn().mockResolvedValue(undefined),
+        });
+
+        await command.func(page, {
+            image: 'ant.jpg',
+            board: 'Ideas',
+            title: 'Life Cycle of an Ant',
+            description: 'Ant metamorphosis diagram.',
+            timeout: 30,
+        });
+
+        expect(cdp).toHaveBeenCalledWith('DOM.setFileInputFiles', {
+            files: ['/abs/ant.jpg'],
+            nodeId: 42,
+        });
+        expect(page.evaluate.mock.calls.some(([code]) => String(code).includes("new Event('change'"))).toBe(true);
+        expect(page.evaluate.mock.calls.some(([code]) => String(code).includes('image uploaded for pin creation'))).toBe(true);
+        expect(page.setFileInput).not.toHaveBeenCalled();
     });
 });

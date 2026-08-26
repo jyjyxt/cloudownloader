@@ -352,14 +352,32 @@ export async function setFileInputFiles(
   await sendDebuggerCommand({ tabId }, 'DOM.enable');
   await sendDebuggerCommand({ tabId }, 'Page.enable');
 
-  // Find the file input element (used to trigger the chooser).
+  // Find the file input element.
   const query = selector || 'input[type="file"]';
-  const found = await sendDebuggerCommand({ tabId }, 'Runtime.evaluate', {
-    expression: `!!document.querySelector(${JSON.stringify(query)})`,
-    returnByValue: true,
-  }) as { result?: { value?: boolean } };
-  if (!found.result?.value) {
+  const document = await sendDebuggerCommand({ tabId }, 'DOM.getDocument', {}) as {
+    root?: { nodeId?: number };
+  };
+  const rootNodeId = document.root?.nodeId;
+  if (typeof rootNodeId !== 'number') {
+    throw new Error('DOM.getDocument returned no root node');
+  }
+  const matched = await sendDebuggerCommand({ tabId }, 'DOM.querySelector', {
+    nodeId: rootNodeId,
+    selector: query,
+  }) as { nodeId?: number };
+  const nodeId = matched.nodeId;
+  if (typeof nodeId !== 'number' || nodeId <= 0) {
     throw new Error(`No element found matching selector: ${query}`);
+  }
+
+  // Modern Chrome accepts the input node directly and this avoids relying on
+  // a synthetic click to emit Page.fileChooserOpened (which some sites block).
+  try {
+    await sendDebuggerCommand({ tabId }, 'DOM.setFileInputFiles', { files, nodeId });
+    return;
+  } catch (err) {
+    const message = err instanceof Error ? err.message.toLowerCase() : String(err).toLowerCase();
+    if (!message.includes('not allowed')) throw err;
   }
 
   // Chrome rejects DOM.setFileInputFiles with a plain nodeId/backendNodeId when

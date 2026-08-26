@@ -213,12 +213,16 @@ async function waitForUploadPreview(page, timeoutSeconds) {
                 const alt = String(img.alt || '').toLowerCase();
                 return visible(img) && (src.startsWith('blob:') || src.startsWith('data:') || alt.includes('image') || alt.includes('pin'));
             });
+            const uploadedPreview = Array.from(document.querySelectorAll('[role="img"][aria-label]')).find(el => {
+                const label = String(el.getAttribute('aria-label') || '').toLowerCase();
+                return visible(el) && (label.includes('image uploaded for pin creation') || label.includes('uploaded image'));
+            });
             const fileInput = document.querySelector('[data-test-id="storyboard-upload-input"], input[type="file"]');
             const mediaSelected = Number(fileInput?.files?.length || 0) > 0;
-            const titleInput = document.querySelector('[data-test-id="storyboard-title-input"], input[type="text"]');
+            const titleInput = document.querySelector('[data-test-id="storyboard-title-input"], #storyboard-selector-title, input[type="text"]');
             const busyText = (document.body?.innerText || '').toLowerCase();
-            if (images.length > 0 || (mediaSelected && titleInput && !titleInput.disabled)) {
-                return { ok: true, count: images.length, mediaSelected };
+            if (uploadedPreview || images.length > 0 || (mediaSelected && titleInput && !titleInput.disabled)) {
+                return { ok: true, count: images.length, mediaSelected, uploadedPreview: !!uploadedPreview };
             }
             if (/upload failed|couldn't upload|上传失败|不支持|too large/.test(busyText)) {
                 return { ok: false, message: 'Pinterest reported image upload failure' };
@@ -238,7 +242,8 @@ function isRecoverableFileInputError(err) {
     return lower.includes('not allowed')
         || lower.includes('unknown action')
         || lower.includes('not supported')
-        || lower.includes('setfileinput returned no count');
+        || lower.includes('setfileinput returned no count')
+        || lower.includes('filechooseropened not received');
 }
 
 async function uploadImageViaDataTransfer(page, imagePath) {
@@ -290,7 +295,47 @@ async function uploadImageViaDataTransfer(page, imagePath) {
     return result;
 }
 
+async function uploadImageViaCDP(page, imagePath) {
+    if (!page.cdp) return false;
+    try {
+        await page.cdp('DOM.enable', {});
+        const document = await page.cdp('DOM.getDocument', {});
+        const rootNodeId = document?.root?.nodeId;
+        if (typeof rootNodeId !== 'number') return false;
+        const matched = await page.cdp('DOM.querySelector', {
+            nodeId: rootNodeId,
+            selector: IMAGE_SELECTOR,
+        });
+        const nodeId = matched?.nodeId;
+        if (typeof nodeId !== 'number' || nodeId <= 0) return false;
+        await page.cdp('DOM.setFileInputFiles', { files: [imagePath], nodeId });
+        const dispatched = await page.evaluate(`(() => {
+            const input = document.querySelector(${JSON.stringify(IMAGE_SELECTOR)});
+            if (!input || !input.files || input.files.length === 0) {
+                return { ok: false, count: input?.files?.length || 0 };
+            }
+            input.dispatchEvent(new Event('input', { bubbles: true, composed: true }));
+            input.dispatchEvent(new Event('change', { bubbles: true, composed: true }));
+            return { ok: true, count: input.files.length };
+        })()`);
+        if (!dispatched?.ok) {
+            throw new CommandExecutionError('Pinterest CDP upload did not populate the image input');
+        }
+        return true;
+    } catch (err) {
+        const message = err instanceof Error ? err.message.toLowerCase() : String(err).toLowerCase();
+        if (!message.includes('not allowed')
+            && !message.includes('not permitted')
+            && !message.includes('unknown action')
+            && !message.includes('not supported')) {
+            throw err;
+        }
+        return false;
+    }
+}
+
 async function uploadImage(page, imagePath) {
+    if (await uploadImageViaCDP(page, imagePath)) return;
     if (page.setFileInput) {
         try {
             await page.setFileInput([imagePath], IMAGE_SELECTOR);

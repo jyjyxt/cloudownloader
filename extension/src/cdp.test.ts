@@ -553,6 +553,41 @@ describe('cdp network capture correctness', () => {
   });
 });
 
+describe('cdp file input upload', () => {
+  beforeEach(() => {
+    vi.resetModules();
+  });
+
+  afterEach(() => {
+    vi.unstubAllGlobals();
+  });
+
+  it('sets files directly on the matched DOM node without opening a chooser', async () => {
+    const { chrome, debuggerApi } = createChromeMock();
+    debuggerApi.sendCommand = vi.fn(async (_target: unknown, method: string) => {
+      if (method === 'Runtime.evaluate') return { result: { value: 'ok' } };
+      if (method === 'DOM.getDocument') return { root: { nodeId: 1 } };
+      if (method === 'DOM.querySelector') return { nodeId: 42 };
+      return {};
+    });
+    vi.stubGlobal('chrome', chrome);
+
+    const mod = await import('./cdp');
+    await mod.setFileInputFiles(1, ['/tmp/example.webp'], 'input[type="file"]');
+
+    expect(debuggerApi.sendCommand).toHaveBeenCalledWith(
+      { tabId: 1 },
+      'DOM.setFileInputFiles',
+      { files: ['/tmp/example.webp'], nodeId: 42 },
+    );
+    expect(debuggerApi.sendCommand).not.toHaveBeenCalledWith(
+      { tabId: 1 },
+      'Page.setInterceptFileChooserDialog',
+      expect.anything(),
+    );
+  });
+});
+
 describe('cdp evaluateInFrame stale context fallback', () => {
   beforeEach(() => {
     vi.resetModules();
