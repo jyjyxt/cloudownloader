@@ -124,15 +124,44 @@ export function extractShotRows(limit) {
     if (!root) {
         return { ok: false, reason: 'shot result root was not found', title: document.title || '' };
     }
+    const searchEmpty = /^\/search\/shots\/(?:following|popular|recent)\/?$/.test(document.location.pathname)
+        && document.body?.id === 'search-results'
+        && document.querySelector('#wrap > .no-results');
+    const portfolioEmpty = /^\/[A-Za-z0-9_-]+\/(?:shots|likes)\/?$/.test(document.location.pathname)
+        && root.querySelector('.empty-shots-list');
+    if (cards.length === 0 && !searchEmpty && !portfolioEmpty) {
+        return { ok: false, reason: 'shot cards and the empty-state marker were not found', title: document.title || '' };
+    }
 
-    const rows = cards.map((el, index) => {
-        const shotLink = [...el.querySelectorAll('a[href]')]
-            .find((anchor) => /^\/shots\/\d+(?:-|\/|$)/.test(anchor.getAttribute('href') || ''));
-        if (!shotLink) return null;
+    const parsedCards = cards.map((el) => {
+        const anchors = [...el.querySelectorAll('a[href]')];
+        const shotLink = anchors.find((anchor) => {
+            try {
+                const target = new URL(anchor.getAttribute('href') || '', location.href);
+                return /(^|\.)dribbble\.com$/i.test(target.hostname)
+                    && /^\/shots\/\d+(?:-[^/]+)?\/?$/.test(target.pathname);
+            } catch {
+                return false;
+            }
+        });
+        if (!shotLink) {
+            const hasOutboundTarget = anchors.some((anchor) => {
+                try {
+                    return !/(^|\.)dribbble\.com$/i.test(
+                        new URL(anchor.getAttribute('href') || '', location.href).hostname,
+                    );
+                } catch {
+                    return false;
+                }
+            });
+            const isPromoted = hasOutboundTarget
+                && anchors.some((anchor) => /^\/advertise\/?$/.test(anchor.getAttribute('href') || ''));
+            return { promoted: isPromoted };
+        }
         const profileLink = el.querySelector('.user-information a[href], a[data-search-profile-clicked][href]');
         const image = el.querySelector('img');
-        return {
-            rank: index + 1,
+        const row = {
+            rank: 0,
             id: clean(el.getAttribute('data-thumbnail-id') || el.id.replace(/^screenshot-/, '')),
             title: clean(el.querySelector('.shot-title')?.textContent || image?.getAttribute('alt') || ''),
             designer: clean(profileLink?.textContent || ''),
@@ -141,9 +170,19 @@ export function extractShotRows(limit) {
             imageUrl: clean(image?.currentSrc || image?.getAttribute('src') || image?.getAttribute('data-src') || ''),
             url: new URL(shotLink.getAttribute('href'), location.href).href,
         };
-    }).filter((row) => row && row.id && row.title && row.url);
+        return { row };
+    });
+    if (parsedCards.some((card) => !card.promoted && (!card.row || !card.row.id || !card.row.title || !card.row.url))) {
+        return { ok: false, reason: 'one or more shot cards were missing required identity fields' };
+    }
+    const parsedRows = parsedCards
+        .flatMap((card) => card.row ? [card.row] : [])
+        .map((row, index) => ({ ...row, rank: index + 1 }));
+    if (parsedRows.length === 0 && cards.length > 0) {
+        return { ok: false, reason: 'shot results contained only promoted cards' };
+    }
 
-    return { ok: true, rows: rows.slice(0, limit) };
+    return { ok: true, rows: parsedRows.slice(0, limit) };
 }
 
 export function extractDesignerRows(limit) {
@@ -157,8 +196,11 @@ export function extractDesignerRows(limit) {
     if (!root) {
         return { ok: false, reason: 'designer result root was not found', title: document.title || '' };
     }
+    if (cards.length === 0 && !root.querySelector('[data-designer-search-infinite-scroll][disabled]')) {
+        return { ok: false, reason: 'designer cards and the completed empty-state marker were not found', title: document.title || '' };
+    }
 
-    const rows = cards.map((el, index) => {
+    const parsedRows = cards.map((el, index) => {
         const profilePath = el.getAttribute('data-profile-path') || '';
         const subheading = [...el.querySelectorAll('.user-card-profile__subheading-item')]
             .map((item) => clean(item.textContent))
@@ -186,9 +228,12 @@ export function extractDesignerRows(limit) {
             url: profilePath ? new URL(profilePath, document.location.href).href : '',
             avatarUrl: clean(el.querySelector('img')?.src || ''),
         };
-    }).filter((row) => row.username && row.name && row.url);
+    });
+    if (parsedRows.some((row) => !row.username || !row.name || !row.url)) {
+        return { ok: false, reason: 'one or more designer cards were missing required identity fields' };
+    }
 
-    return { ok: true, rows: rows.slice(0, limit) };
+    return { ok: true, rows: parsedRows.slice(0, limit) };
 }
 
 export function extractProfileRow(username) {
@@ -279,8 +324,11 @@ export function extractServiceRows(designer) {
     if (/whoops, that page is gone/i.test(document.body?.textContent || '')) {
         return { ok: true, empty: true, reason: `Dribbble profile "${designer}" was not found` };
     }
+    if (cards.length === 0 && !document.querySelector('li.services.active.empty')) {
+        return { ok: false, reason: 'service cards and the empty profile-tab marker were not found', title: document.title || '' };
+    }
 
-    const rows = cards.map((el, index) => {
+    const parsedRows = cards.map((el, index) => {
         const button = el.querySelector('button[data-remote-url], button[data-remote-route-url]');
         const detailPath = button?.getAttribute('data-remote-route-url') || button?.getAttribute('data-remote-url') || '';
         const meta = [...el.querySelectorAll('.service-card__content .display-flex.gap-8 span')]
@@ -301,9 +349,12 @@ export function extractServiceRows(designer) {
             imageUrl: clean(el.querySelector('img')?.currentSrc || el.querySelector('img')?.src || el.querySelector('img')?.getAttribute('data-src') || ''),
             designer,
         };
-    }).filter((row) => row.id && row.title && row.url);
+    });
+    if (parsedRows.some((row) => !row.id || !row.title || !row.url)) {
+        return { ok: false, reason: 'one or more service cards were missing required identity fields' };
+    }
 
-    return { ok: true, rows };
+    return { ok: true, rows: parsedRows };
 }
 
 export function extractShotDetailRow(shotId) {
@@ -370,7 +421,7 @@ export function extractCollectionRows(designer, limit) {
     }
 
     const prefix = `/${designer}/collections/`.toLowerCase();
-    const rows = [...root.querySelectorAll('a[href]')]
+    const parsedRows = [...root.querySelectorAll('a[href]')]
         .map((anchor) => ({ anchor, href: anchor.getAttribute('href') || '' }))
         .filter(({ href }) => href.toLowerCase().startsWith(prefix))
         .map(({ anchor, href }, index) => {
@@ -388,10 +439,16 @@ export function extractCollectionRows(designer, limit) {
                 designerCount: Number.isFinite(designerCount) ? designerCount : null,
                 url: new URL(href, location.href).href,
             };
-        })
-        .filter((row) => row.id && row.title)
+        });
+    if (parsedRows.some((row) => !row.id || !row.title)) {
+        return { ok: false, reason: 'one or more collection cards were missing required identity fields' };
+    }
+    const rows = parsedRows
         .filter((row, index, rows) => rows.findIndex((entry) => entry.id === row.id) === index)
         .slice(0, limit);
+    if (rows.length === 0 && !document.querySelector('li.collections.active.empty')) {
+        return { ok: false, reason: 'collection cards and the empty profile-tab marker were not found' };
+    }
     return { ok: true, rows };
 }
 
@@ -400,15 +457,16 @@ export function extractMemberRows(designer, limit) {
     const root = document.querySelector('main, [role="main"]');
     if (!root) return { ok: false, reason: 'member result root was not found' };
     if (/whoops, that page is gone/i.test(document.body?.textContent || '')) {
-        return { ok: true, empty: true, reason: `Dribbble profile "${designer}" was not found` };
+        return { ok: true, empty: true, reason: `Dribbble profile "${designer}" does not expose a team member directory` };
     }
 
-    const rows = [...root.querySelectorAll('li')].map((card, index) => {
-        const follow = card.querySelector('a[href$="/followers"]');
-        const profile = follow ? [...card.querySelectorAll('a[href]')].find((anchor) => {
+    const cards = [...root.querySelectorAll('li[data-user-id]')]
+        .filter((card) => card.querySelector('a[href$="/followers"]'));
+    const parsedRows = cards.map((card, index) => {
+        const profile = [...card.querySelectorAll('a[href]')].find((anchor) => {
             const href = anchor.getAttribute('href') || '';
             return /^\/[A-Za-z0-9_-]+$/.test(href) && href !== '/pro';
-        }) : null;
+        });
         const href = profile?.getAttribute('href') || '';
         if (!profile || !href) return null;
         const shotUrls = [...card.querySelectorAll('a[href^="/shots/"]')]
@@ -424,12 +482,18 @@ export function extractMemberRows(designer, limit) {
             avatarUrl: card.querySelector('img')?.currentSrc || card.querySelector('img')?.src || null,
             recentShotUrls: shotUrls,
         };
-    }).filter((row) => row && row.username && row.name);
+    });
+    if (parsedRows.some((row) => !row || !row.username || !row.name)) {
+        return { ok: false, reason: 'one or more team member cards were missing required identity fields' };
+    }
 
-    const uniqueRows = rows
+    const uniqueRows = parsedRows
         .filter((row, index, items) => items.findIndex((item) => item.username === row.username) === index)
         .slice(0, limit)
         .map((row, index) => ({ ...row, rank: index + 1 }));
+    if (uniqueRows.length === 0) {
+        return { ok: false, reason: 'team member cards were not found' };
+    }
     return {
         ok: true,
         rows: uniqueRows,
