@@ -1,6 +1,6 @@
 {
   "name": "@jackwener/opencli",
-  "version": "1.8.7",
+  "version": "1.8.8",
   "publishConfig": {
     "access": "public"
   },
@@ -37,7 +37,9 @@
     "cli-manifest.json",
     "scripts/",
     "README.md",
-    "LICENSE"
+    "LICENSE",
+    "!**/*.test.*",
+    "!**/__fixtures__/"
   ],
   "scripts": {
     "dev": "tsx src/main.ts",
