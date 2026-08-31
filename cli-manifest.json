@@ -14355,6 +14355,43 @@
   },
   {
     "site": "facebook",
+    "name": "post",
+    "description": "Publish a Facebook post with optional image",
+    "access": "write",
+    "domain": "www.facebook.com",
+    "strategy": "ui",
+    "browser": true,
+    "args": [
+      {
+        "name": "text",
+        "type": "string",
+        "required": true,
+        "positional": true,
+        "help": "Post text content"
+      },
+      {
+        "name": "image",
+        "type": "string",
+        "required": false,
+        "help": "Optional local image path (jpg/png/gif/webp)"
+      }
+    ],
+    "columns": [
+      "status",
+      "message",
+      "text",
+      "image",
+      "verification"
+    ],
+    "type": "js",
+    "modulePath": "facebook/post.js",
+    "sourceFile": "facebook/post.js",
+    "navigateBefore": false,
+    "siteSession": "persistent",
+    "defaultWindowMode": "foreground"
+  },
+  {
+    "site": "facebook",
     "name": "profile",
     "description": "Get Facebook user/page profile info",
     "access": "read",

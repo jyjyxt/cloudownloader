@@ -12,6 +12,7 @@
 | `opencli facebook search` | Search people, pages, posts |
 | `opencli facebook marketplace-listings` | List your Marketplace seller listings |
 | `opencli facebook marketplace-inbox` | List recent Marketplace buyer/seller conversations |
+| `opencli facebook post` | Publish a text post with an optional image |
 
 ## Usage Examples
 
@@ -31,6 +32,10 @@ opencli facebook search "OpenAI" --limit 5
 # Marketplace seller listings and inbox
 opencli facebook marketplace-listings --limit 10
 opencli facebook marketplace-inbox --limit 10
+
+# Publish a post
+opencli facebook post "Hello from OpenCLI"
+opencli facebook post "Photo update" --image /path/to/photo.jpg
 
 # JSON output
 opencli facebook profile zuck -f json
