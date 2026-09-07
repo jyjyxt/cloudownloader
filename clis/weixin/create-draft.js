@@ -216,22 +216,7 @@ async function waitForContentImageUpload(page) {
     return { ok: false, timeout: true };
 }
 
-async function hasSelectedCover(page) {
-    return page.evaluate(`(() => {
-        var area = document.querySelector('#js_cover_area');
-        if (!area) return false;
-        var preview = area.querySelector('.js_cover_preview_new');
-        if (preview) {
-            var style = window.getComputedStyle(preview);
-            var bg = style.backgroundImage || '';
-            if (style.display !== 'none' && bg !== 'none' && !/url\\(["']?["']?\\)/.test(bg)) return true;
-        }
-        var selectedLabel = area.querySelector('.js_share_type_image');
-        return !!(selectedLabel && window.getComputedStyle(selectedLabel).display !== 'none');
-    })()`);
-}
-
-async function setCoverFromImageUpload(page, imagePath) {
+async function setCoverFromImageUpload(page) {
     const contentImageState = await page.evaluate(`(() => {
         var editor = document.querySelector('#ueditor_0 .ProseMirror');
         var imageSelector = 'img[src*="mmbiz"], img[src*="qpic.cn"], img[data-src*="mmbiz"], img[data-src*="qpic.cn"]';
@@ -241,57 +226,11 @@ async function setCoverFromImageUpload(page, imagePath) {
         return false;
     }
 
-    const fs = await import('node:fs');
-    const path = await import('node:path');
-    const absPath = path.default.resolve(imagePath);
-    const file = {
-        name: path.default.basename(absPath),
-        mime: imageMimeType(path.default, absPath),
-        base64: fs.default.readFileSync(absPath).toString('base64'),
-    };
-    const dropped = await page.evaluate(`(() => {
-        var target = document.querySelector('#js_cover_area .cover_drop_inner_wrp, #js_cover_area');
-        if (!target) return false;
-        var file = ${JSON.stringify(file)};
-        var binary = atob(file.base64);
-        var bytes = new Uint8Array(binary.length);
-        for (var i = 0; i < binary.length; i++) bytes[i] = binary.charCodeAt(i);
-        var dt = new DataTransfer();
-        dt.items.add(new File([new Blob([bytes], { type: file.mime })], file.name, { type: file.mime }));
-        ['dragenter', 'dragover', 'drop'].forEach(function(type) {
-            target.dispatchEvent(new DragEvent(type, { bubbles: true, cancelable: true, dataTransfer: dt }));
-        });
-        return true;
-    })()`);
-    if (dropped) {
-        for (let attempt = 0; attempt < 15; attempt++) {
-            await page.wait(1);
-            if (await hasSelectedCover(page)) return true;
-            const finishLabel = await page.evaluate(`(() => {
-                function visible(el) {
-                    return !!(el && (el.offsetWidth || el.offsetHeight || el.getClientRects().length));
-                }
-                var buttons = Array.from(document.querySelectorAll('button, a, div[role="button"], span'));
-                var button = buttons.reverse().find(function(el) {
-                    var text = (el.innerText || el.textContent || '').trim();
-                    return visible(el) && !el.disabled && (text === '完成' || text === '确认');
-                });
-                return button ? (button.innerText || button.textContent || '').trim() : '';
-            })()`);
-            if (finishLabel) {
-                await clickVisibleDialogButton(page, '编辑封面', finishLabel);
-                await page.wait(3);
-                const cropDialogClosed = await page.evaluate(`(() => {
-                    function visible(el) {
-                        return !!(el && (el.offsetWidth || el.offsetHeight || el.getClientRects().length));
-                    }
-                    return !Array.from(document.querySelectorAll('.weui-desktop-dialog__wrp, .weui-desktop-dialog, [role="dialog"]'))
-                        .some(function(el) { return visible(el) && (el.innerText || '').includes('编辑封面'); });
-                })()`);
-                if (cropDialogClosed || await hasSelectedCover(page)) return true;
-            }
-        }
-    }
+    // Do not embed the local image as Base64 in page.evaluate. Browser Bridge
+    // commands have a finite payload size, and the cover upload path used to
+    // fail here after the article image had already uploaded successfully.
+    // The caller will use installCoverRequestFallback(), which reuses the
+    // uploaded CDN metadata without sending the image bytes again.
     return false;
 }
 
@@ -665,7 +604,7 @@ export const createDraftCommand = cli({
         let usedCoverRequestFallback = false;
         if (kwargs['cover-image']) {
             await uploadContentImage(page, kwargs['cover-image']);
-            const coverSet = await setCoverFromImageUpload(page, kwargs['cover-image']);
+            const coverSet = await setCoverFromImageUpload(page);
             if (!coverSet) {
                 await installCoverRequestFallback(page);
                 usedCoverRequestFallback = true;

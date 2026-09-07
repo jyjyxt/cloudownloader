@@ -76,7 +76,7 @@ describe('weixin drafts command', () => {
 });
 
 describe('weixin create-draft command', () => {
-    it('uploads the cover separately and confirms the crop dialog', async () => {
+    it('reuses the uploaded article image metadata for the cover without a Base64 page command', async () => {
         const command = getRegistry().get('weixin/create-draft');
         const evaluate = vi.fn().mockImplementation(async (script) => {
             if (script.includes('window.location.href.match')) return '123456';
@@ -86,12 +86,8 @@ describe('weixin create-draft command', () => {
             if (script.includes('var imageSelector =') && script.includes('errorText')) return { ok: true, cdnCount: 1 };
             if (script.includes('return { ok: images.length > 0')) return { ok: true, count: 1 };
             if (script.includes('return { count: editor ?')) return { count: 1 };
-            if (script.includes("['dragenter', 'dragover', 'drop']")) return true;
-            if (script.includes("var area = document.querySelector('#js_cover_area')")) return false;
-            if (script.includes("text === '完成' || text === '确认'")) return '完成';
-            if (script.includes('var dialogText = "编辑封面"')) return { ok: true };
-            if (script.includes('getBoundingClientRect()') && script.includes('data-opencli-target')) return { x: 20, y: 30 };
-            if (script.includes("includes('编辑封面')")) return true;
+            if (script.includes('!!window.__opencliWeixinCoverPatch?.applied')) return true;
+            if (script.includes('window.__opencliWeixinCoverPatch')) return { ok: true, fileId: '110000001', cdnUrl: 'https://mmbiz.qpic.cn/test.jpg' };
             if (script.includes("=== '保存为草稿'")) return { ok: true };
             if (script.includes("document.querySelector('#js_save_success')")) return true;
             if (script.includes('var el = document.querySelector')) return { ok: true };
@@ -107,11 +103,11 @@ describe('weixin create-draft command', () => {
         });
 
         expect(page.setFileInput).toHaveBeenCalledOnce();
-        expect(page.nativeClick).toHaveBeenCalledWith(20, 30);
+        expect(evaluate.mock.calls.some(([script]) => script.includes('base64'))).toBe(false);
         expect(result).toEqual([{ status: 'draft saved', detail: '"测试草稿" (with cover)' }]);
     });
 
-    it('falls back to DataTransfer when Browser Bridge times out waiting for a file chooser', async () => {
+    it('does not send a large DataTransfer payload when the cover fallback is needed', async () => {
         const command = getRegistry().get('weixin/create-draft');
         const evaluate = vi.fn().mockImplementation(async (script) => {
             if (script.includes('window.location.href.match')) return '123456';
@@ -122,8 +118,8 @@ describe('weixin create-draft command', () => {
             if (script.includes('var imageSelector =') && script.includes('errorText')) return { ok: true, cdnCount: 1 };
             if (script.includes('return { ok: images.length > 0')) return { ok: true, count: 1 };
             if (script.includes('return { count: editor ?')) return { count: 1 };
-            if (script.includes("['dragenter', 'dragover', 'drop']")) return true;
-            if (script.includes("var area = document.querySelector('#js_cover_area')")) return true;
+            if (script.includes('!!window.__opencliWeixinCoverPatch?.applied')) return true;
+            if (script.includes('window.__opencliWeixinCoverPatch')) return { ok: true, fileId: '110000002', cdnUrl: 'https://mmbiz.qpic.cn/test-2.jpg' };
             if (script.includes("=== '保存为草稿'")) return { ok: true };
             if (script.includes("document.querySelector('#js_save_success')")) return true;
             if (script.includes('var el = document.querySelector')) return { ok: true };
@@ -142,7 +138,7 @@ describe('weixin create-draft command', () => {
         });
 
         expect(page.setFileInput).toHaveBeenCalledOnce();
-        expect(evaluate.mock.calls.some(([script]) => script.includes('var assigned = false'))).toBe(true);
+        expect(evaluate.mock.calls.some(([script]) => script.includes("['dragenter', 'dragover', 'drop']"))).toBe(false);
         expect(result).toEqual([{ status: 'draft saved', detail: '"回退测试" (with cover)' }]);
     });
 });
