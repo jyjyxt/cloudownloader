@@ -7,7 +7,7 @@
  *
  * ## Exit codes
  *
- * opencli follows Unix conventions (sysexits.h) for process exit codes:
+ * ClouDownloader follows Unix conventions (sysexits.h) for process exit codes:
  *
  *   0   Success
  *   1   Generic / unexpected error

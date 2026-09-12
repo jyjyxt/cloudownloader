@@ -109,7 +109,7 @@ describe('daemonStatus', () => {
 // behaviour collapsed multi-profile-no-default + profile-disconnected
 // + zero-profile all to "Extension: disconnected", sending users on
 // reinstall-everything debug paths when the actual fix was
-// `opencli profile use <name>`.
+// `ClouDownloader profile use <name>`.
 // ────────────────────────────────────────────────────────────────────
 
 describe('daemonStatus extension label states (#1575)', () => {
@@ -150,7 +150,7 @@ describe('daemonStatus extension label states (#1575)', () => {
     });
     expect(line).not.toBe('Extension: disconnected');
     expect(line).toContain('2 profiles connected');
-    expect(line).toContain('opencli profile use');
+    expect(line).toContain('ClouDownloader profile use');
   });
 
   it('defensively uses singular grammar for a one-profile profile-required payload', async () => {
@@ -168,7 +168,7 @@ describe('daemonStatus extension label states (#1575)', () => {
       profileDisconnected: true,
     });
     expect(line).not.toBe('Extension: disconnected');
-    expect(line).toContain('opencli profile use');
+    expect(line).toContain('ClouDownloader profile use');
   });
 
   it('keeps the plain "disconnected" label when zero profiles are connected', async () => {

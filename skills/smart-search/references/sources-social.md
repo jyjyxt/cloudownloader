@@ -7,42 +7,42 @@
 ### twitter
 
 - 适用：Twitter/X 原始帖子、作者、实时讨论
-- 使用前先运行：`opencli twitter -h`
+- 使用前先运行：`ClouDownloader twitter -h`
 
 ### weibo
 
 - 适用：微博热点、话题、中文舆论
-- 使用前先运行：`opencli weibo -h`
+- 使用前先运行：`ClouDownloader weibo -h`
 
 ### xiaohongshu
 
 - 适用：生活方式、穿搭、美妆、旅行、真实体验
-- 使用前先运行：`opencli xiaohongshu -h`
+- 使用前先运行：`ClouDownloader xiaohongshu -h`
 
 ### zhihu
 
 - 适用：中文深度问答、专业解释、行业经验
-- 使用前先运行：`opencli zhihu -h`
+- 使用前先运行：`ClouDownloader zhihu -h`
 
 ### tieba
 
 - 适用：兴趣圈子、历史帖子、粉丝社区
-- 使用前先运行：`opencli tieba -h`
+- 使用前先运行：`ClouDownloader tieba -h`
 
 ### instagram
 
 - 适用：账号搜索、图片社交线索
-- 使用前先运行：`opencli instagram -h`
+- 使用前先运行：`ClouDownloader instagram -h`
 
 ### facebook
 
 - 适用：主页、人物、帖子线索
-- 使用前先运行：`opencli facebook -h`
+- 使用前先运行：`ClouDownloader facebook -h`
 
 ### bluesky
 
 - 适用：Bluesky 用户与账号搜索
-- 使用前先运行：`opencli bluesky -h`
+- 使用前先运行：`ClouDownloader bluesky -h`
 
 ## 路由提示
 

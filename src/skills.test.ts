@@ -41,7 +41,7 @@ function makePackageRoot(): string {
   return root;
 }
 
-describe('opencli skills content', () => {
+describe('ClouDownloader skills content', () => {
   it('lists only opencli-prefixed skills', () => {
     const root = makePackageRoot();
 

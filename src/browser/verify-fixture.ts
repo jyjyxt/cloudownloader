@@ -1,5 +1,5 @@
 /**
- * Verify fixture: structural expectations for `opencli browser verify` output.
+ * Verify fixture: structural expectations for `ClouDownloader browser verify` output.
  *
  * The adapter-author skill runbook says every published adapter must write a
  * fixture under `~/.opencli/sites/<site>/verify/<command>.json` so later verify

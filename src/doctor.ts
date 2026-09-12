@@ -1,5 +1,5 @@
 /**
- * opencli doctor — diagnose browser connectivity.
+ * ClouDownloader doctor — diagnose browser connectivity.
  *
  * Simplified for the daemon-based architecture.
  */
@@ -123,7 +123,7 @@ export async function runBrowserDoctor(opts: DoctorOptions = {}): Promise<Doctor
       'This usually means the daemon crashed or exited right after serving the live probe.',
     );
   } else if (!daemonRunning) {
-    issues.push('Daemon is not running. It should start automatically when you run an opencli browser command.');
+    issues.push('Daemon is not running. It should start automatically when you run an ClouDownloader browser command.');
   }
   if (daemonStale && opts.cliVersion) {
     issues.push(staleDaemonIssue(health.status, opts.cliVersion));
@@ -137,7 +137,7 @@ export async function runBrowserDoctor(opts: DoctorOptions = {}): Promise<Doctor
     if (health.state === 'profile-required') {
       issues.push(
         'Multiple Chrome profiles are connected to the daemon, but no default profile was selected.\n' +
-        '  Run opencli profile list, then opencli profile use <name>, or pass --profile <name>.',
+        '  Run ClouDownloader profile list, then ClouDownloader profile use <name>, or pass --profile <name>.',
       );
     } else if (health.state === 'profile-disconnected') {
       issues.push(
@@ -147,7 +147,7 @@ export async function runBrowserDoctor(opts: DoctorOptions = {}): Promise<Doctor
     } else {
       issues.push(
         'Daemon is running but the Chrome/Chromium extension is not connected.\n' +
-        'If the extension is already installed, try: opencli daemon restart\n' +
+        'If the extension is already installed, try: ClouDownloader daemon restart\n' +
         'If the extension is not installed:\n' +
         '  1. Download from https://github.com/jackwener/opencli/releases\n' +
         '  2. Open chrome://extensions/ → Enable Developer Mode\n' +
@@ -180,7 +180,7 @@ export async function runBrowserDoctor(opts: DoctorOptions = {}): Promise<Doctor
     issues.push(
       `Default browser profile is stale: ${label} is not connected (the extension instance it names no longer exists).\n` +
       `  ${fallbackNote}\n` +
-      '  Refresh it with: opencli profile list, then opencli profile use <name>.',
+      '  Refresh it with: ClouDownloader profile list, then ClouDownloader profile use <name>.',
     );
   }
   const extensionCompatRange = health.status?.extensionCompatRange;
@@ -234,7 +234,7 @@ export async function runBrowserDoctor(opts: DoctorOptions = {}): Promise<Doctor
 }
 
 export function renderBrowserDoctorReport(report: DoctorReport): string {
-  const lines = [`opencli v${report.cliVersion ?? 'unknown'} doctor` + ` (${getRuntimeLabel()})`, ''];
+  const lines = [`ClouDownloader v${report.cliVersion ?? 'unknown'} doctor` + ` (${getRuntimeLabel()})`, ''];
 
   // Daemon status
   const daemonIcon = report.daemonFlaky

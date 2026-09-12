@@ -1,5 +1,5 @@
 /**
- * Public API for opencli plugins.
+ * Public API for ClouDownloader plugins.
  *
  * TS plugins should import from '@jackwener/opencli/registry' which resolves to
  * this file. It re-exports ONLY the core registration API — no serialization,

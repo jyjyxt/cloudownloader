@@ -4,7 +4,7 @@ export const COMMAND_RESULT_UNKNOWN_HINT =
   'Inspect the browser/session state before retrying. Do not blindly retry write commands such as navigate, click, type, or eval.';
 
 export const PROFILE_DISCONNECTED_HINT =
-  'Open that Chrome profile and make sure the OpenCLI extension is enabled, or choose another profile with opencli profile use <name>.';
+  'Open that Chrome profile and make sure the OpenCLI extension is enabled, or choose another profile with ClouDownloader profile use <name>.';
 
 export type DaemonFailureContract = {
   message: string;
@@ -85,15 +85,15 @@ export function resolveProfileRoute(input: ProfileRouteInput): ProfileRouteResul
         ? `Default browser profile "${preferred}" is not connected and multiple profiles are available; choose one with --profile.`
         : 'Multiple Browser Bridge profiles are connected; choose one with --profile.',
       errorHint: preferred
-        ? 'Run opencli profile list, then update the stale default with opencli profile use <name> or pass --profile <name>.'
-        : 'Run opencli profile list, then use opencli --profile <name> ... or opencli profile use <name>.',
+        ? 'Run ClouDownloader profile list, then update the stale default with ClouDownloader profile use <name> or pass --profile <name>.'
+        : 'Run ClouDownloader profile list, then use ClouDownloader --profile <name> ... or ClouDownloader profile use <name>.',
     };
   }
 
   return {
     ok: false,
     errorCode: 'extension_not_connected',
-    error: 'Extension not connected. Please install the opencli Browser Bridge extension.',
+    error: 'Extension not connected. Please install the ClouDownloader Browser Bridge extension.',
   };
 }
 

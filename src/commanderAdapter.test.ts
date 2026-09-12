@@ -49,7 +49,7 @@ describe('commanderAdapter arg passing', () => {
     const siteCmd = program.command('paperreview');
     registerCommandToProgram(siteCmd, cmd);
 
-    await program.parseAsync(['node', 'opencli', 'paperreview', 'submit', './paper.pdf', '--dry-run', 'false']);
+    await program.parseAsync(['node', 'ClouDownloader', 'paperreview', 'submit', './paper.pdf', '--dry-run', 'false']);
 
     expect(mockExecuteCommand).toHaveBeenCalled();
     const kwargs = mockExecuteCommand.mock.calls[0][1];
@@ -62,7 +62,7 @@ describe('commanderAdapter arg passing', () => {
     const siteCmd = program.command('paperreview');
     registerCommandToProgram(siteCmd, cmd);
 
-    await program.parseAsync(['node', 'opencli', 'paperreview', 'submit', './paper.pdf', '--prepare-only']);
+    await program.parseAsync(['node', 'ClouDownloader', 'paperreview', 'submit', './paper.pdf', '--prepare-only']);
 
     expect(mockExecuteCommand).toHaveBeenCalled();
     const kwargs = mockExecuteCommand.mock.calls[0][1];
@@ -75,7 +75,7 @@ describe('commanderAdapter arg passing', () => {
     const siteCmd = program.command('paperreview');
     registerCommandToProgram(siteCmd, cmd);
 
-    await program.parseAsync(['node', 'opencli', 'paperreview', 'submit', './paper.pdf', '--prepare-only']);
+    await program.parseAsync(['node', 'ClouDownloader', 'paperreview', 'submit', './paper.pdf', '--prepare-only']);
 
     expect(mockExecuteCommand).toHaveBeenCalled();
     const kwargs = mockExecuteCommand.mock.calls[0][1];
@@ -89,7 +89,7 @@ describe('commanderAdapter arg passing', () => {
     const siteCmd = program.command('paperreview');
     registerCommandToProgram(siteCmd, cmd);
 
-    await program.parseAsync(['node', 'opencli', 'paperreview', 'submit', './paper.pdf', '--trace', 'retain-on-failure']);
+    await program.parseAsync(['node', 'ClouDownloader', 'paperreview', 'submit', './paper.pdf', '--trace', 'retain-on-failure']);
 
     expect(mockExecuteCommand).toHaveBeenCalledWith(
       expect.objectContaining({ site: 'paperreview', name: 'submit' }),
@@ -104,7 +104,7 @@ describe('commanderAdapter arg passing', () => {
     const siteCmd = program.command('paperreview');
     registerCommandToProgram(siteCmd, cmd);
 
-    await program.parseAsync(['node', 'opencli', 'paperreview', 'submit', './paper.pdf', '--dry-run', 'maybe']);
+    await program.parseAsync(['node', 'ClouDownloader', 'paperreview', 'submit', './paper.pdf', '--dry-run', 'maybe']);
 
     // prepareCommandArgs validates bools before dispatch; executeCommand should not be reached
     expect(mockExecuteCommand).not.toHaveBeenCalled();
@@ -137,7 +137,7 @@ describe('commanderAdapter boolean alias support', () => {
     const siteCmd = program.command('reddit');
     registerCommandToProgram(siteCmd, cmd);
 
-    await program.parseAsync(['node', 'opencli', 'reddit', 'save', 't3_abc123']);
+    await program.parseAsync(['node', 'ClouDownloader', 'reddit', 'save', 't3_abc123']);
 
     expect(mockExecuteCommand).toHaveBeenCalled();
     const kwargs = mockExecuteCommand.mock.calls[0][1];
@@ -150,7 +150,7 @@ describe('commanderAdapter boolean alias support', () => {
     const siteCmd = program.command('reddit');
     registerCommandToProgram(siteCmd, cmd);
 
-    await program.parseAsync(['node', 'opencli', 'reddit', 'save', 't3_abc123', '--undo', 'false']);
+    await program.parseAsync(['node', 'ClouDownloader', 'reddit', 'save', 't3_abc123', '--undo', 'false']);
 
     expect(mockExecuteCommand).toHaveBeenCalled();
     const kwargs = mockExecuteCommand.mock.calls[0][1];
@@ -192,7 +192,7 @@ describe('commanderAdapter value-required optional options', () => {
     registerCommandToProgram(siteCmd, cmd);
 
     await expect(
-      program.parseAsync(['node', 'opencli', 'instagram', 'post', '--image']),
+      program.parseAsync(['node', 'ClouDownloader', 'instagram', 'post', '--image']),
     ).rejects.toMatchObject({ code: 'commander.optionMissingArgument' });
     expect(mockExecuteCommand).not.toHaveBeenCalled();
   });
@@ -202,7 +202,7 @@ describe('commanderAdapter value-required optional options', () => {
     const siteCmd = program.command('instagram');
     registerCommandToProgram(siteCmd, cmd);
 
-    await program.parseAsync(['node', 'opencli', 'instagram', 'post', 'caption only']);
+    await program.parseAsync(['node', 'ClouDownloader', 'instagram', 'post', 'caption only']);
 
     expect(mockExecuteCommand).not.toHaveBeenCalled();
     expect(process.exitCode).toBeDefined();
@@ -234,7 +234,7 @@ describe('commanderAdapter command aliases', () => {
     const siteCmd = program.command('notebooklm');
     registerCommandToProgram(siteCmd, cmd);
 
-    await program.parseAsync(['node', 'opencli', 'notebooklm', 'metadata']);
+    await program.parseAsync(['node', 'ClouDownloader', 'notebooklm', 'metadata']);
 
     expect(mockExecuteCommand).toHaveBeenCalledWith(cmd, {}, false, { prepared: true });
   });
@@ -264,7 +264,7 @@ describe('commanderAdapter validation preparation', () => {
       func: vi.fn(),
     });
 
-    await program.parseAsync(['node', 'opencli', 'test', 'run']);
+    await program.parseAsync(['node', 'ClouDownloader', 'test', 'run']);
 
     expect(validateArgs).toHaveBeenCalledTimes(1);
     expect(mockExecuteCommand).toHaveBeenCalledWith(
@@ -301,7 +301,7 @@ describe('commanderAdapter default formats', () => {
     const siteCmd = program.command('gemini');
     registerCommandToProgram(siteCmd, cmd);
 
-    await program.parseAsync(['node', 'opencli', 'gemini', 'ask']);
+    await program.parseAsync(['node', 'ClouDownloader', 'gemini', 'ask']);
 
     expect(mockRenderOutput).toHaveBeenCalledWith(
       [{ response: 'hello' }],
@@ -314,7 +314,7 @@ describe('commanderAdapter default formats', () => {
     const siteCmd = program.command('gemini');
     registerCommandToProgram(siteCmd, cmd);
 
-    await program.parseAsync(['node', 'opencli', 'gemini', 'ask', '--format', 'json']);
+    await program.parseAsync(['node', 'ClouDownloader', 'gemini', 'ask', '--format', 'json']);
 
     expect(mockRenderOutput).toHaveBeenCalledWith(
       [{ response: 'hello' }],
@@ -355,14 +355,14 @@ describe('commanderAdapter error envelope output', () => {
       ),
     );
 
-    await program.parseAsync(['node', 'opencli', 'xiaohongshu', 'note', '69ca3927000000001a020fd5']);
+    await program.parseAsync(['node', 'ClouDownloader', 'xiaohongshu', 'note', '69ca3927000000001a020fd5']);
 
     const output = stderrSpy.mock.calls.map(c => String(c[0])).join('');
     expect(output).toContain('ok: false');
     expect(output).toContain('code: EMPTY_RESULT');
     expect(output).toContain('xsec_token');
     expect(output).toContain('--trace=retain-on-failure');
-    expect(output).toContain('opencli xiaohongshu note --trace retain-on-failure');
+    expect(output).toContain('ClouDownloader xiaohongshu note --trace retain-on-failure');
 
     stderrSpy.mockRestore();
   });
@@ -377,7 +377,7 @@ describe('commanderAdapter error envelope output', () => {
       selectorError('.note-title', 'The note title selector no longer matches the current page.'),
     );
 
-    await program.parseAsync(['node', 'opencli', 'xiaohongshu', 'note', '69ca3927000000001a020fd5']);
+    await program.parseAsync(['node', 'ClouDownloader', 'xiaohongshu', 'note', '69ca3927000000001a020fd5']);
 
     const output = stderrSpy.mock.calls.map(c => String(c[0])).join('');
     expect(output).toContain('ok: false');
@@ -398,7 +398,7 @@ describe('commanderAdapter error envelope output', () => {
 
     await program.parseAsync([
       'node',
-      'opencli',
+      'ClouDownloader',
       'xiaohongshu',
       'note',
       '69ca3927000000001a020fd5',
@@ -435,7 +435,7 @@ describe('commanderAdapter error envelope output', () => {
 
     await program.parseAsync([
       'node',
-      'opencli',
+      'ClouDownloader',
       'xiaohongshu',
       'note',
       '69ca3927000000001a020fd5',

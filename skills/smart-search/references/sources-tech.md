@@ -7,32 +7,32 @@
 ### arxiv
 
 - 适用：论文、研究、模型、算法、学术背景
-- 使用前先运行：`opencli arxiv -h`
+- 使用前先运行：`ClouDownloader arxiv -h`
 
 ### stackoverflow
 
 - 适用：具体报错、API 用法、代码模式、实现细节
-- 使用前先运行：`opencli stackoverflow -h`
+- 使用前先运行：`ClouDownloader stackoverflow -h`
 
 ### hackernews
 
 - 适用：技术社区讨论、开发者观点、创业和产品话题
-- 使用前先运行：`opencli hackernews -h`
+- 使用前先运行：`ClouDownloader hackernews -h`
 
 ### reddit
 
 - 适用：英文社区问答、经验贴、推荐、对比讨论
-- 使用前先运行：`opencli reddit -h`
+- 使用前先运行：`ClouDownloader reddit -h`
 
 ### linux-do
 
 - 适用：人工智能、开源工具、中文技术社区
-- 使用前先运行：`opencli linux-do -h`
+- 使用前先运行：`ClouDownloader linux-do -h`
 
 ### v2ex
 
 - 适用：中文技术社区
-- 使用前先运行：`opencli linux-do 
+- 使用前先运行：`ClouDownloader linux-do
 
 ## 路由提示
 

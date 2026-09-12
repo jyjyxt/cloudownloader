@@ -1,6 +1,6 @@
 # 退出码
 
-`opencli` 遵循 Unix `sysexits.h` 惯例，可无缝接入 shell 管道和 CI 脚本。
+`ClouDownloader` 遵循 Unix `sysexits.h` 惯例，可无缝接入 shell 管道和 CI 脚本。
 
 | 退出码 | 含义 | 触发场景 |
 |--------|------|----------|
@@ -17,7 +17,7 @@
 ## 示例：根据退出码分支
 
 ```bash
-opencli bilibili hot 2>/dev/null
+ClouDownloader bilibili hot 2>/dev/null
 case $? in
   0)   echo "ok" ;;
   69)  echo "请先启动 Browser Bridge" ;;

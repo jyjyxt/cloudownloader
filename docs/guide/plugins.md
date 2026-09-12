@@ -6,22 +6,22 @@ OpenCLI supports community-contributed plugins. Install third-party adapters fro
 
 ```bash
 # Install a plugin
-opencli plugin install github:ByteYue/opencli-plugin-github-trending
+ClouDownloader plugin install github:ByteYue/opencli-plugin-github-trending
 
 # List installed plugins
-opencli plugin list
+ClouDownloader plugin list
 
 # Update one plugin
-opencli plugin update github-trending
+ClouDownloader plugin update github-trending
 
 # Update all installed plugins
-opencli plugin update --all
+ClouDownloader plugin update --all
 
 # Use the plugin (it's just a regular command)
-opencli github-trending repos --limit 10
+ClouDownloader github-trending repos --limit 10
 
 # Remove a plugin
-opencli plugin uninstall github-trending
+ClouDownloader plugin uninstall github-trending
 ```
 
 ## How Plugins Work
@@ -32,18 +32,18 @@ Plugins live in `~/.opencli/plugins/<name>/`. Each subdirectory is scanned at st
 
 ```bash
 # GitHub shorthand
-opencli plugin install github:user/repo
-opencli plugin install github:user/repo/subplugin   # install specific sub-plugin from monorepo
-opencli plugin install https://github.com/user/repo
+ClouDownloader plugin install github:user/repo
+ClouDownloader plugin install github:user/repo/subplugin   # install specific sub-plugin from monorepo
+ClouDownloader plugin install https://github.com/user/repo
 
 # Any git-cloneable URL
-opencli plugin install https://gitlab.example.com/team/repo.git
-opencli plugin install ssh://git@gitlab.example.com/team/repo.git
-opencli plugin install git@gitlab.example.com:team/repo.git
+ClouDownloader plugin install https://gitlab.example.com/team/repo.git
+ClouDownloader plugin install ssh://git@gitlab.example.com/team/repo.git
+ClouDownloader plugin install git@gitlab.example.com:team/repo.git
 
 # Local plugin (for development)
-opencli plugin install file:///path/to/plugin
-opencli plugin install /path/to/plugin
+ClouDownloader plugin install file:///path/to/plugin
+ClouDownloader plugin install /path/to/plugin
 ```
 
 The repo name prefix `opencli-plugin-` is automatically stripped for the local directory name. For example, `opencli-plugin-hot-digest` becomes `hot-digest`.
@@ -65,7 +65,7 @@ Plugins can include an `opencli-plugin.json` manifest file at the repo root to d
 |-------|-------------|
 | `name` | Plugin name (overrides repo-derived name) |
 | `version` | Semantic version |
-| `opencli` | Required opencli version range (e.g. `>=1.0.0`, `^1.2.0`) |
+| `opencli` | Required ClouDownloader version range (e.g. `>=1.0.0`, `^1.2.0`) |
 | `description` | Human-readable description |
 | `plugins` | Monorepo sub-plugin declarations (see below) |
 
@@ -104,10 +104,10 @@ A single repository can contain multiple plugins by declaring a `plugins` field 
 
 ```bash
 # Install ALL enabled sub-plugins from a monorepo
-opencli plugin install github:user/opencli-plugins
+ClouDownloader plugin install github:user/opencli-plugins
 
 # Install a SPECIFIC sub-plugin
-opencli plugin install github:user/opencli-plugins/polymarket
+ClouDownloader plugin install github:user/opencli-plugins/polymarket
 ```
 
 ### How It Works
@@ -123,20 +123,20 @@ opencli plugin install github:user/opencli-plugins/polymarket
 Updating any sub-plugin from a monorepo pulls the entire repo and refreshes all sub-plugins:
 
 ```bash
-opencli plugin update polymarket   # updates the monorepo, refreshes all
+ClouDownloader plugin update polymarket   # updates the monorepo, refreshes all
 ```
 
 ### Uninstalling
 
 ```bash
-opencli plugin uninstall polymarket   # removes just this sub-plugin's symlink
+ClouDownloader plugin uninstall polymarket   # removes just this sub-plugin's symlink
 ```
 
 When the last sub-plugin from a monorepo is uninstalled, the monorepo clone is automatically cleaned up.
 
 ## Version Tracking
 
-OpenCLI records installed plugin versions in `~/.opencli/plugins.lock.json`. Each entry stores the plugin source, current git commit hash, install time, and last update time. `opencli plugin list` shows the short commit hash when version metadata is available.
+OpenCLI records installed plugin versions in `~/.opencli/plugins.lock.json`. Each entry stores the plugin source, current git commit hash, install time, and last update time. `ClouDownloader plugin list` shows the short commit hash when version metadata is available.
 
 ## Creating a Plugin
 
@@ -172,7 +172,7 @@ cli({
   name: 'my-command',
   description: 'My custom command',
   access: 'read', // 'read' | 'write'
-  example: 'opencli my-plugin my-command -f yaml',
+  example: 'ClouDownloader my-plugin my-command -f yaml',
   strategy: Strategy.PUBLIC,
   browser: false,
   args: [
@@ -192,7 +192,7 @@ cli({
 
 ### TS Plugin Install Lifecycle
 
-When you run `opencli plugin install`, TS plugins are automatically set up:
+When you run `ClouDownloader plugin install`, TS plugins are automatically set up:
 
 1. **Clone** — `git clone --depth 1` from GitHub
 2. **npm install** — Resolves regular dependencies
@@ -215,13 +215,13 @@ On startup, if both `my-command.ts` and `my-command.js` exist, the `.js` version
 
 ### Command not found after install
 
-Restart opencli (or open a new terminal) — plugins are discovered at startup.
+Restart ClouDownloader (or open a new terminal) — plugins are discovered at startup.
 
 ### TS plugin import errors
 
 If you see `Cannot find module '@jackwener/opencli/registry'`, the host symlink may be broken. Reinstall the plugin:
 
 ```bash
-opencli plugin uninstall my-plugin
-opencli plugin install github:user/opencli-plugin-my-plugin
+ClouDownloader plugin uninstall my-plugin
+ClouDownloader plugin install github:user/opencli-plugin-my-plugin
 ```

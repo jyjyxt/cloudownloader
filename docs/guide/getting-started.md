@@ -15,25 +15,28 @@ OpenCLI turns **any website** or **Electron app** into a command-line interface 
 - **Browser Automation** — `browser` gives AI agents direct browser control: click, type/fill, extract, screenshot — fully scriptable.
 - **Website → CLI** — Turn any website into a deterministic CLI: 100+ site surfaces are already registered, or author your own with the `opencli-adapter-author` skill.
 - **Account-safe** — Reuses Chrome's logged-in state; your credentials never leave the browser.
-- **AI Agent ready** — `opencli browser *` primitives (`open` / `network` / `state` / `eval` / `init` / `verify`) drive the adapter-authoring loop.
+- **AI Agent ready** — `ClouDownloader browser *` primitives (`open` / `network` / `state` / `eval` / `init` / `verify`) drive the adapter-authoring loop.
 - **Zero LLM cost** — No tokens consumed at runtime. Run 10,000 times and pay nothing.
 - **Deterministic** — Same command, same output schema, every time. Pipeable, scriptable, CI-friendly.
 
 ## Quick Start
 
-### Install via npm
+### Install from source
 
 ```bash
-npm install -g @jackwener/opencli
+git clone https://github.com/jyjyxt/cloudownloader.git
+cd cloudownloader
+npm install
+npm link
 ```
 
 ### Basic Usage
 
 ```bash
-opencli list                              # See all commands
-opencli hackernews top --limit 5          # Public API, no browser
-opencli bilibili hot --limit 5            # Browser command
-opencli zhihu hot -f json                 # JSON output
+ClouDownloader list                              # See all commands
+ClouDownloader hackernews top --limit 5          # Public API, no browser
+ClouDownloader bilibili hot --limit 5            # Browser command
+ClouDownloader zhihu hot -f json                 # JSON output
 ```
 
 ### Output Formats
@@ -41,12 +44,12 @@ opencli zhihu hot -f json                 # JSON output
 All built-in commands support `--format` / `-f`:
 
 ```bash
-opencli bilibili hot -f table   # Default: rich terminal table
-opencli bilibili hot -f json    # JSON (pipe to jq or LLMs)
-opencli bilibili hot -f yaml    # YAML (human-readable)
-opencli bilibili hot -f md      # Markdown
-opencli bilibili hot -f csv     # CSV
-opencli bilibili hot -v         # Verbose: show pipeline debug
+ClouDownloader bilibili hot -f table   # Default: rich terminal table
+ClouDownloader bilibili hot -f json    # JSON (pipe to jq or LLMs)
+ClouDownloader bilibili hot -f yaml    # YAML (human-readable)
+ClouDownloader bilibili hot -f md      # Markdown
+ClouDownloader bilibili hot -f csv     # CSV
+ClouDownloader bilibili hot -v         # Verbose: show pipeline debug
 ```
 
 ### Tab Completion
@@ -55,13 +58,13 @@ OpenCLI supports intelligent tab completion to speed up command input:
 
 ```bash
 # Add shell completion to your startup config
-echo 'eval "$(opencli completion zsh)"' >> ~/.zshrc              # Zsh
-echo 'eval "$(opencli completion bash)"' >> ~/.bashrc            # Bash
-echo 'opencli completion fish | source' >> ~/.config/fish/config.fish  # Fish
+echo 'eval "$(ClouDownloader completion zsh)"' >> ~/.zshrc              # Zsh
+echo 'eval "$(ClouDownloader completion bash)"' >> ~/.bashrc            # Bash
+echo 'ClouDownloader completion fish | source' >> ~/.config/fish/config.fish  # Fish
 
 # Restart your shell, then press Tab to complete:
-opencli [Tab]          # Complete site names (bilibili, zhihu, twitter...)
-opencli bilibili [Tab] # Complete commands (hot, search, me, download...)
+ClouDownloader [Tab]          # Complete site names (bilibili, zhihu, twitter...)
+ClouDownloader bilibili [Tab] # Complete commands (hot, search, me, download...)
 ```
 
 The completion includes:

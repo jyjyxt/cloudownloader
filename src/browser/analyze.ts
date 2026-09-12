@@ -507,15 +507,15 @@ export function analyzeSite(
   } else if (pattern.pattern === 'A') {
     next = 'Inspect `api_candidates`, then replay the best endpoint and record the status/content-type/sample shape in your strategy note; do not choose API strategy from XHR count alone.';
   } else if (pattern.pattern === 'B') {
-    next = 'Read the SSR global via `opencli browser eval "JSON.stringify(window.__INITIAL_STATE__ ?? window.__NUXT__ ?? window.__NEXT_DATA__ ?? window.__APOLLO_STATE__)"` — no API needed.';
+    next = 'Read the SSR global via `ClouDownloader browser eval "JSON.stringify(window.__INITIAL_STATE__ ?? window.__NUXT__ ?? window.__NEXT_DATA__ ?? window.__APOLLO_STATE__)"` — no API needed.';
   } else if (pattern.pattern === 'C') {
-    next = 'No API visible — use SSR HTML scrape (e.g. `opencli browser extract`) against the rendered page.';
+    next = 'No API visible — use SSR HTML scrape (e.g. `ClouDownloader browser extract`) against the rendered page.';
   } else if (pattern.pattern === 'D') {
     next = 'Endpoints need auth. Re-open the page from a signed-in session, then retry analyze; see `field-decode-playbook` §4 for token tracing.';
   } else if (pattern.pattern === 'E') {
     next = 'WebSocket stream detected — find the underlying HTTP poll/long-poll endpoint; raw WS is not supported.';
   } else {
-    next = 'No strong signal. Manually inspect `opencli browser network --all` and pick a pattern.';
+    next = 'No strong signal. Manually inspect `ClouDownloader browser network --all` and pick a pattern.';
   }
 
   return {

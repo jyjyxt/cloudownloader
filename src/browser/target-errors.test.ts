@@ -6,7 +6,7 @@ describe('TargetError', () => {
     const err = new TargetError({
       code: 'not_found',
       message: 'ref=99 not found in DOM',
-      hint: 'Re-run `opencli browser state` to get a fresh snapshot.',
+      hint: 'Re-run `ClouDownloader browser state` to get a fresh snapshot.',
     });
 
     expect(err).toBeInstanceOf(Error);
@@ -71,7 +71,7 @@ describe('TargetError', () => {
     const err = new TargetError({
       code: 'stale_ref',
       message: 'ref=12 was <button>"Login" but now points to <div>"Header"',
-      hint: 'Re-run `opencli browser state` to refresh.',
+      hint: 'Re-run `ClouDownloader browser state` to refresh.',
     });
 
     expect(err.code).toBe('stale_ref');

@@ -79,7 +79,7 @@ describe('adapter imports use package exports', () => {
     expect(violations).toEqual([]);
   });
 
-  it('non-test adapters only import node builtins, relative modules, or opencli public APIs', () => {
+  it('non-test adapters only import node builtins, relative modules, or ClouDownloader public APIs', () => {
     const violations: Array<{ file: string; specifier: string }> = [];
 
     for (const file of runtimeAdapterFiles) {

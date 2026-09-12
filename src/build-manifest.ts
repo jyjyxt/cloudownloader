@@ -255,7 +255,7 @@ export function serializeManifest(manifest: ManifestEntry[]): string {
  * Metadata audit: every positional arg must carry a non-empty `help` string.
  *
  * Why this is a hard gate (not advisory):
- *   - `opencli twitter followers --help` rendered `Arguments:\n  user  ` with
+ *   - `ClouDownloader twitter followers --help` rendered `Arguments:\n  user  ` with
  *     an empty trailing column. Agents and humans both saw a blank field —
  *     impossible to recover the parameter's purpose without reading source.
  *   - This is metadata completeness, not stylistic taste; failing closed is
@@ -390,7 +390,7 @@ async function main(): Promise<void> {
     }
     process.stderr.write(
       `\nEvery positional arg must declare a non-empty \`help\` string so\n`
-      + `\`opencli <site> <cmd> --help\` shows callers what the parameter is for.\n`
+      + `\`ClouDownloader <site> <cmd> --help\` shows callers what the parameter is for.\n`
       + `Add \`help: '...'\` to each arg above and re-run the build.\n`,
     );
     process.exit(1);

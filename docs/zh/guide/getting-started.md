@@ -8,16 +8,19 @@ OpenCLI 将**任何网站**或 **Electron 应用**变成命令行界面 — Bili
 ## 安装
 
 ```bash
-npm install -g @jackwener/opencli
+git clone https://github.com/jyjyxt/cloudownloader.git
+cd cloudownloader
+npm install
+npm link
 ```
 
 ## 基本使用
 
 ```bash
-opencli list                              # 查看所有命令
-opencli hackernews top --limit 5          # 公开 API，无需浏览器
-opencli bilibili hot --limit 5            # 浏览器命令
-opencli zhihu hot -f json                 # JSON 输出
+ClouDownloader list                              # 查看所有命令
+ClouDownloader hackernews top --limit 5          # 公开 API，无需浏览器
+ClouDownloader bilibili hot --limit 5            # 浏览器命令
+ClouDownloader zhihu hot -f json                 # JSON 输出
 ```
 
 ## 输出格式
@@ -25,11 +28,11 @@ opencli zhihu hot -f json                 # JSON 输出
 所有命令支持 `--format` / `-f`：
 
 ```bash
-opencli bilibili hot -f table   # 默认：终端表格
-opencli bilibili hot -f json    # JSON
-opencli bilibili hot -f yaml    # YAML
-opencli bilibili hot -f md      # Markdown
-opencli bilibili hot -f csv     # CSV
+ClouDownloader bilibili hot -f table   # 默认：终端表格
+ClouDownloader bilibili hot -f json    # JSON
+ClouDownloader bilibili hot -f yaml    # YAML
+ClouDownloader bilibili hot -f md      # Markdown
+ClouDownloader bilibili hot -f csv     # CSV
 ```
 
 ## 终端自动补全
@@ -38,13 +41,13 @@ OpenCLI 支持智能的 Tab 自动补全，加快命令输入：
 
 ```bash
 # 把自动补全加入 shell 启动配置
-echo 'eval "$(opencli completion zsh)"' >> ~/.zshrc              # Zsh
-echo 'eval "$(opencli completion bash)"' >> ~/.bashrc            # Bash
-echo 'opencli completion fish | source' >> ~/.config/fish/config.fish  # Fish
+echo 'eval "$(ClouDownloader completion zsh)"' >> ~/.zshrc              # Zsh
+echo 'eval "$(ClouDownloader completion bash)"' >> ~/.bashrc            # Bash
+echo 'ClouDownloader completion fish | source' >> ~/.config/fish/config.fish  # Fish
 
 # 重启 shell 后，按 Tab 键补全：
-opencli [Tab]          # 补全站点名称（bilibili、zhihu、twitter...）
-opencli bilibili [Tab] # 补全命令（hot、search、me、download...）
+ClouDownloader [Tab]          # 补全站点名称（bilibili、zhihu、twitter...）
+ClouDownloader bilibili [Tab] # 补全命令（hot、search、me、download...）
 ```
 
 补全功能包含：

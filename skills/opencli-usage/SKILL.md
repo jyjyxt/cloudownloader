@@ -1,42 +1,40 @@
 ---
 name: opencli-usage
-description: Use at the start of any OpenCLI session — this is the top-level map of what `opencli` can do, how to discover adapters, what flags and output formats are universal, and which specialized skill to load next. Point here when an agent asks "what can opencli do?" or "how do I find the right command?".
+description: Use at the start of any OpenCLI session — this is the top-level map of what `ClouDownloader` can do, how to discover adapters, what flags and output formats are universal, and which specialized skill to load next. Point here when an agent asks "what can ClouDownloader do?" or "how do I find the right command?".
 allowed-tools: Bash(opencli:*), Read
 ---
 
 # opencli-usage
 
-OpenCLI turns any website, Electron desktop app, or external CLI into a uniform `opencli <site> <command>` surface that agents can drive without screen-scraping. This skill is the orientation layer — once you know what you want to do, load one of the specialized skills below.
+OpenCLI turns any website, Electron desktop app, or external CLI into a uniform `ClouDownloader <site> <command>` surface that agents can drive without screen-scraping. This skill is the orientation layer — once you know what you want to do, load one of the specialized skills below.
 
 ## The three pillars
 
-- **Adapter commands** — `opencli <site> <command> [...]`. Built-in adapters live in `clis/`, user adapters in `~/.opencli/clis/`. Each is backed by a strategy (`PUBLIC | COOKIE | INTERCEPT | UI | LOCAL`) that tells you whether a Chrome session is needed.
-- **Browser driving** — `opencli browser *` subcommands (`open`, `state`, `click`, `type`, `select`, `find`, `extract`, `network`, …) for ad-hoc interaction and scraping when no adapter covers the task. See `opencli-browser`.
-- **Current-tab binding** — `opencli browser <session> bind` attaches the Chrome tab the user already opened/logged into to that browser session. Follow-up commands use `opencli browser <session> ...`. See `opencli-browser` before using it; bound sessions still block tab mutation.
-- **External CLI passthrough** — `opencli gh`, `opencli docker`, `opencli vercel`, etc. Managed via `opencli external install <name>` (auto-install from `external-clis.yaml`) or `opencli external register <name>` (bring your own).
+- **Adapter commands** — `ClouDownloader <site> <command> [...]`. Built-in adapters live in `clis/`, user adapters in `~/.opencli/clis/`. Each is backed by a strategy (`PUBLIC | COOKIE | INTERCEPT | UI | LOCAL`) that tells you whether a Chrome session is needed.
+- **Browser driving** — `ClouDownloader browser *` subcommands (`open`, `state`, `click`, `type`, `select`, `find`, `extract`, `network`, …) for ad-hoc interaction and scraping when no adapter covers the task. See `opencli-browser`.
+- **Current-tab binding** — `ClouDownloader browser <session> bind` attaches the Chrome tab the user already opened/logged into to that browser session. Follow-up commands use `ClouDownloader browser <session> ...`. See `opencli-browser` before using it; bound sessions still block tab mutation.
+- **External CLI passthrough** — `ClouDownloader gh`, `ClouDownloader docker`, `ClouDownloader vercel`, etc. Managed via `ClouDownloader external install <name>` (auto-install from `external-clis.yaml`) or `ClouDownloader external register <name>` (bring your own).
 
 ## Install
 
 ```bash
-# npm global
-npm install -g @jackwener/opencli          # binary: opencli, requires Node >= 21
-opencli doctor                              # run before browser-dependent work (see below)
-
-# From source
-git clone git@github.com:jackwener/OpenCLI.git
-cd OpenCLI && npm install
-npx tsx src/main.ts <command>               # same surface, no global install
+# Node.js >= 20.18.1
+git clone https://github.com/jyjyxt/cloudownloader.git
+cd cloudownloader
+npm install
+npm link
+ClouDownloader doctor
 ```
 
-`opencli doctor` prints a structured `DoctorReport` — daemon status, extension connection, version checks, and a live browser connectivity probe. Scope is narrow: it diagnoses the **browser bridge** (daemon + extension + Chrome wiring). `PUBLIC` / `LOCAL` adapters, `opencli list`, `validate`, `verify`, plugin commands, and external-CLI passthrough don't need it to be green — only `COOKIE` / `INTERCEPT` / `UI` adapters and the `opencli browser *` subcommands do. Flag: `-v` (verbose).
+`ClouDownloader doctor` prints a structured `DoctorReport` — daemon status, extension connection, version checks, and a live browser connectivity probe. Scope is narrow: it diagnoses the **browser bridge** (daemon + extension + Chrome wiring). `PUBLIC` / `LOCAL` adapters, `ClouDownloader list`, `validate`, `verify`, plugin commands, and external-CLI passthrough don't need it to be green — only `COOKIE` / `INTERCEPT` / `UI` adapters and the `ClouDownloader browser *` subcommands do. Flag: `-v` (verbose).
 
 ## Prerequisites by command type
 
-| Strategy tag on `opencli list` | What it needs |
+| Strategy tag on `ClouDownloader list` | What it needs |
 |--------------------------------|---------------|
 | `PUBLIC` | Nothing — pure HTTP, no browser. |
 | `COOKIE` | Chrome logged into the target site + **OpenCLI** extension installed from the [Chrome Web Store](https://chromewebstore.google.com/detail/opencli/ildkmabpimmkaediidaifkhjpohdnifk). Command captures the credential from your live session — no re-login. |
-| `INTERCEPT` | Same as COOKIE, plus opencli opens an automation window to capture a signed request. |
+| `INTERCEPT` | Same as COOKIE, plus ClouDownloader opens an automation window to capture a signed request. |
 | `UI` | Same as COOKIE, full DOM interaction. |
 | `LOCAL` | No browser; talks to a local/dev endpoint. |
 
@@ -45,16 +43,16 @@ Electron desktop apps (cursor, codex, chatwise, discord-app, doubao-app, antigra
 ## Discover what's installed — don't read this file, run a command
 
 ```bash
-opencli list                    # table, grouped by site
-opencli list -f json            # machine-readable; pipe to jq or your agent
-opencli list | grep -i twitter  # find commands for a specific site
-opencli <site> --help           # see that site's commands + flags
-opencli <site> <command> --help # see positional args and command-specific flags
+ClouDownloader list                    # table, grouped by site
+ClouDownloader list -f json            # machine-readable; pipe to jq or your agent
+ClouDownloader list | grep -i twitter  # find commands for a specific site
+ClouDownloader <site> --help           # see that site's commands + flags
+ClouDownloader <site> <command> --help # see positional args and command-specific flags
 ```
 
-Do not hard-code adapter lists — there are 100+ sites and the count moves every week. `opencli list -f json` is the source of truth; it emits one entry per command with `{site, name, aliases, description, strategy, browser, args, columns, ...}`. For an agent, that is always better than grepping a doc.
+Do not hard-code adapter lists — there are 100+ sites and the count moves every week. `ClouDownloader list -f json` is the source of truth; it emits one entry per command with `{site, name, aliases, description, strategy, browser, args, columns, ...}`. For an agent, that is always better than grepping a doc.
 
-Before falling back to raw `opencli browser` commands on high-change authenticated sites, check whether a site adapter already exposes the workflow. For example, ChatGPT web has higher-level commands for conversation reads and Deep Research result extraction; discover the current surface with `opencli chatgpt --help` or `opencli list -f json`.
+Before falling back to raw `ClouDownloader browser` commands on high-change authenticated sites, check whether a site adapter already exposes the workflow. For example, ChatGPT web has higher-level commands for conversation reads and Deep Research result extraction; discover the current surface with `ClouDownloader chatgpt --help` or `ClouDownloader list -f json`.
 
 ## Universal flags (work on every adapter command)
 
@@ -100,10 +98,10 @@ Two-path storage:
 Scaffolding & verification:
 
 ```bash
-opencli browser init <site>/<command>   # generates a skeleton
-opencli validate [target]               # semantic checks on the loaded registry (description, domain, pipeline step names, func|pipeline|_lazy presence, arg duplicates) — no network, no browser
-opencli verify [target] [--smoke]       # run the command with synthetic args
-opencli browser verify <site>/<command> # end-to-end smoke inside the bridge
+ClouDownloader browser init <site>/<command>   # generates a skeleton
+ClouDownloader validate [target]               # semantic checks on the loaded registry (description, domain, pipeline step names, func|pipeline|_lazy presence, arg duplicates) — no network, no browser
+ClouDownloader verify [target] [--smoke]       # run the command with synthetic args
+ClouDownloader browser verify <site>/<command> # end-to-end smoke inside the bridge
 ```
 
 Adapters import only `@jackwener/opencli/registry` and `@jackwener/opencli/errors`. `columns` must align 1:1 (in name and order) with keys of the object returned by `func`. For the full workflow see `opencli-adapter-author`.
@@ -113,26 +111,26 @@ Adapters import only `@jackwener/opencli/registry` and `@jackwener/opencli/error
 Plugins are third-party extensions pulled from git, separate from the main adapter registry:
 
 ```bash
-opencli plugin install github:user/repo    # install
-opencli plugin list [-f json]              # see installed
-opencli plugin update [name] | --all       # keep current
-opencli plugin uninstall <name>
-opencli plugin create <name>               # scaffold a new plugin
+ClouDownloader plugin install github:user/repo    # install
+ClouDownloader plugin list [-f json]              # see installed
+ClouDownloader plugin update [name] | --all       # keep current
+ClouDownloader plugin uninstall <name>
+ClouDownloader plugin create <name>               # scaffold a new plugin
 ```
 
 ## External CLI passthrough
 
-Wraps external command-line tools so you can discover + invoke them through the same `opencli …` entrypoint:
+Wraps external command-line tools so you can discover + invoke them through the same `ClouDownloader …` entrypoint:
 
 ```bash
-opencli external install gh    # auto-install via brew/apt/npm per external-clis.yaml
-opencli external register my-tool \
+ClouDownloader external install gh    # auto-install via brew/apt/npm per external-clis.yaml
+ClouDownloader external register my-tool \
     --binary my-tool \
     --install "npm i -g my-tool" \
     --desc "My internal CLI"
-opencli external list
-opencli gh pr list --limit 5   # passthrough; stdio is inherited, exit code propagated
-opencli docker ps
+ClouDownloader external list
+ClouDownloader gh pr list --limit 5   # passthrough; stdio is inherited, exit code propagated
+ClouDownloader docker ps
 ```
 
 Built-in entries live in `src/external-clis.yaml`; user overrides and additions in `~/.opencli/external-clis.yaml`. Commonly shipped: `gh`, `docker`, `vercel`, `lark-cli`, `longbridge`, `dws`, `wecom-cli`, `obsidian`, `ntn`, `tg(tg-cli)`, `discord(discord-cli)`, `wx(wx-cli)`.
@@ -142,7 +140,7 @@ Some official CLIs use shell-script installers instead of a shell-free package-m
 ## Shell completion
 
 ```bash
-opencli completion bash   # also: zsh, fish
+ClouDownloader completion bash   # also: zsh, fish
 # -> script on stdout; source or save per your shell's convention
 ```
 
@@ -159,12 +157,12 @@ opencli completion bash   # also: zsh, fish
 
 The following were removed in the PR #1094 consolidation — don't try to invoke them:
 
-- `opencli explore <url>` — superseded by `opencli browser network` + `opencli browser find` for live API discovery, and by the `opencli-adapter-author` workflow for capture.
-- `opencli record <url>` — removed; manual capture now lives in `opencli browser network --detail`.
-- `opencli web read` / `opencli desktop *` as top-level groups — folded into their respective adapters (`opencli web read` still exists as the `web` adapter's `read` command, but there is no standalone `web` / `desktop` top-level group command).
+- `ClouDownloader explore <url>` — superseded by `ClouDownloader browser network` + `ClouDownloader browser find` for live API discovery, and by the `opencli-adapter-author` workflow for capture.
+- `ClouDownloader record <url>` — removed; manual capture now lives in `ClouDownloader browser network --detail`.
+- `ClouDownloader web read` / `ClouDownloader desktop *` as top-level groups — folded into their respective adapters (`ClouDownloader web read` still exists as the `web` adapter's `read` command, but there is no standalone `web` / `desktop` top-level group command).
 
 ## Don't
 
-- Don't paste this skill's command list into your plan; it will rot. Call `opencli list -f json` at the start of a task instead.
+- Don't paste this skill's command list into your plan; it will rot. Call `ClouDownloader list -f json` at the start of a task instead.
 - Don't assume every adapter needs a browser — strategy `PUBLIC` and `LOCAL` don't. Check the `strategy` field.
 - Don't silently fall back from a failing adapter to a hand-rolled `fetch` — `--trace retain-on-failure` gives you the browser evidence and adapter source path. Do that first.

@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * opencli — Make any website your CLI. AI-powered.
+ * ClouDownloader — Make any website your CLI. AI-powered.
  */
 
 // Ensure standard system paths are available for child processes.
@@ -37,7 +37,7 @@ const argv = process.argv.slice(2);
 if (typeof (globalThis as { Bun?: unknown }).Bun === 'undefined' && !isSupportedNodeVersion(process.version)) {
   process.stderr.write(
     [
-      `OpenCLI requires Node.js >= ${MIN_SUPPORTED_NODE_MAJOR}.0.0.`,
+      `ClouDownloader requires Node.js >= ${MIN_SUPPORTED_NODE_MAJOR}.0.0.`,
       `Current runtime: ${process.version}`,
       'Upgrade Node.js, then retry the same command.',
       '',
@@ -52,7 +52,7 @@ if (!isIgnorableDaemonPortEnv(process.env.OPENCLI_DAEMON_PORT)) {
 }
 
 // Fast path: --version (only when it's the top-level intent, not passed to a subcommand)
-// e.g. `opencli --version` or `opencli -V`, but NOT `opencli gh --version`
+// e.g. `ClouDownloader --version` or `ClouDownloader -V`, but NOT `ClouDownloader gh --version`
 if (argv[0] === '--version' || argv[0] === '-V') {
   process.stdout.write(PKG_VERSION + '\n');
   process.exit(EXIT_CODES.SUCCESS);
@@ -152,9 +152,9 @@ if (getCompIdx !== -1) {
   process.exit(EXIT_CODES.SUCCESS);
 }
 
-// Rewrite `opencli browser <session> <subcommand> ...` so commander (which
+// Rewrite `ClouDownloader browser <session> <subcommand> ...` so commander (which
 // can't combine a parent positional with subcommand dispatch) sees the internal
-// `--session <name>` flag form. Also refuses the retired `opencli browser
+// `--session <name>` flag form. Also refuses the retired `ClouDownloader browser
 // --session foo ...` user form with a friendly usage error.
 const { rewriteBrowserArgv, BrowserSessionArgvError, escapeLeadingDashPositional } = await import('./cli-argv-preprocess.js');
 try {

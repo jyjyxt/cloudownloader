@@ -24,42 +24,42 @@ export const BUILTIN_COMMANDS = [
 // ── Shell script generators ────────────────────────────────────────────────
 
 export function bashCompletionScript(): string {
-  return `# Bash completion for opencli
-# Add to ~/.bashrc:  eval "$(opencli completion bash)"
-_opencli_completions() {
+  return `# Bash completion for ClouDownloader
+# Add to ~/.bashrc:  eval "$(ClouDownloader completion bash)"
+_ClouDownloader_completions() {
   local cur words cword
   _get_comp_words_by_ref -n : cur words cword
 
   local completions
-  completions=$(opencli --get-completions --cursor "$cword" "\${words[@]:1}" 2>/dev/null)
+  completions=$(ClouDownloader --get-completions --cursor "$cword" "\${words[@]:1}" 2>/dev/null)
 
   COMPREPLY=( $(compgen -W "$completions" -- "$cur") )
   __ltrim_colon_completions "$cur"
 }
-complete -F _opencli_completions opencli
+complete -F _ClouDownloader_completions ClouDownloader
 `;
 }
 
 export function zshCompletionScript(): string {
-  return `# Zsh completion for opencli
-# Add to ~/.zshrc:  eval "$(opencli completion zsh)"
-_opencli() {
+  return `# Zsh completion for ClouDownloader
+# Add to ~/.zshrc:  eval "$(ClouDownloader completion zsh)"
+_ClouDownloader() {
   local -a completions
   local cword=$((CURRENT - 1))
-  completions=(\${(f)"$(opencli --get-completions --cursor "$cword" "\${words[@]:1}" 2>/dev/null)"})
+  completions=(\${(f)"$(ClouDownloader --get-completions --cursor "$cword" "\${words[@]:1}" 2>/dev/null)"})
   compadd -a completions
 }
-compdef _opencli opencli
+compdef _ClouDownloader ClouDownloader
 `;
 }
 
 export function fishCompletionScript(): string {
-  return `# Fish completion for opencli
-# Add to ~/.config/fish/config.fish:  opencli completion fish | source
-complete -c opencli -f -a '(
+  return `# Fish completion for ClouDownloader
+# Add to ~/.config/fish/config.fish:  ClouDownloader completion fish | source
+complete -c ClouDownloader -f -a '(
   set -l tokens (commandline -cop)
   set -l cursor (count (commandline -cop))
-  opencli --get-completions --cursor $cursor $tokens[2..] 2>/dev/null
+  ClouDownloader --get-completions --cursor $cursor $tokens[2..] 2>/dev/null
 )'
 `;
 }

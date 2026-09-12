@@ -1,19 +1,19 @@
 ---
 name: opencli-autofix
-description: Automatically fix broken OpenCLI adapters when commands fail. Load this skill when an opencli command fails — it guides you through collecting a trace artifact, patching the adapter, retrying, and filing an upstream GitHub issue after a verified fix. Works with any AI agent.
+description: Automatically fix broken OpenCLI adapters when commands fail. Load this skill when an ClouDownloader command fails — it guides you through collecting a trace artifact, patching the adapter, retrying, and filing an upstream GitHub issue after a verified fix. Works with any AI agent.
 allowed-tools: Bash(opencli:*), Bash(gh:*), Read, Edit, Write
 ---
 
 # OpenCLI AutoFix — Automatic Adapter Self-Repair
 
-When an `opencli` command fails because a website changed its DOM, API, or response schema, **automatically diagnose, fix the adapter, and retry** — don't just report the error.
+When an `ClouDownloader` command fails because a website changed its DOM, API, or response schema, **automatically diagnose, fix the adapter, and retry** — don't just report the error.
 
 ## Safety Boundaries
 
 **Before starting any repair, check these hard stops:**
 
 - **`AUTH_REQUIRED`** (exit code 77) — **STOP.** Do not modify code. Tell the user to log into the site in Chrome.
-- **`BROWSER_CONNECT`** (exit code 69) — **STOP.** Do not modify code. Tell the user to run `opencli doctor`.
+- **`BROWSER_CONNECT`** (exit code 69) — **STOP.** Do not modify code. Tell the user to run `ClouDownloader doctor`.
 - **CAPTCHA / rate limiting** — **STOP.** Not an adapter issue.
 
 **Scope constraint:**
@@ -25,12 +25,12 @@ When an `opencli` command fails because a website changed its DOM, API, or respo
 ## Prerequisites
 
 ```bash
-opencli doctor    # Verify extension + daemon connectivity
+ClouDownloader doctor    # Verify extension + daemon connectivity
 ```
 
 ## When to Use This Skill
 
-Use when `opencli <site> <command>` fails with repairable errors:
+Use when `ClouDownloader <site> <command>` fails with repairable errors:
 - **SELECTOR** — element not found (DOM changed)
 - **EMPTY_RESULT** — no data returned (API response changed)
 - **API_ERROR** / **NETWORK** — endpoint moved or broke
@@ -42,8 +42,8 @@ Use when `opencli <site> <command>` fails with repairable errors:
 
 `EMPTY_RESULT` — and sometimes a structurally-valid `SELECTOR` that returns nothing — is often **not an adapter bug**. Platforms actively degrade results under anti-scrape heuristics, and a "not found" response from the site doesn't mean the content is actually missing. Rule this out **before** committing to a repair round:
 
-- **Retry with an alternative query or entry point.** If `opencli xiaohongshu search "X"` returns 0 but `opencli xiaohongshu search "X 攻略"` returns 20, the adapter is fine — the platform was shaping results for the first query.
-- **Spot-check in a normal Chrome tab.** If the data is visible in the user's own browser but the adapter comes back empty, the issue is usually authentication state, rate limiting, or a soft block — not a code bug. The fix is `opencli doctor` / re-login, not editing source.
+- **Retry with an alternative query or entry point.** If `ClouDownloader xiaohongshu search "X"` returns 0 but `ClouDownloader xiaohongshu search "X 攻略"` returns 20, the adapter is fine — the platform was shaping results for the first query.
+- **Spot-check in a normal Chrome tab.** If the data is visible in the user's own browser but the adapter comes back empty, the issue is usually authentication state, rate limiting, or a soft block — not a code bug. The fix is `ClouDownloader doctor` / re-login, not editing source.
 - **Look for soft 404s.** Sites like xiaohongshu / weibo / douyin return HTTP 200 with an empty payload instead of a real 404 when an item is hidden or deleted. The snapshot will look structurally correct. A retry 2-3 seconds later often distinguishes "temporarily hidden" from "actually gone".
 - **"0 results" from a search is an answer.** If the adapter successfully reached the search endpoint, got an HTTP 200, and the platform returned `results: []`, that is a valid answer — report it to the user as "no matches for this query" rather than patching the adapter.
 
@@ -54,7 +54,7 @@ Only proceed to Step 1 if the empty/selector-missing result is **reproducible ac
 Run the failing command with failure-retained trace enabled:
 
 ```bash
-opencli <site> <command> [args...] --trace retain-on-failure 2>trace-error.yaml
+ClouDownloader <site> <command> [args...] --trace retain-on-failure 2>trace-error.yaml
 ```
 
 On failure, stderr contains the normal error envelope plus a small `trace` block:
@@ -126,13 +126,13 @@ Read the trace summary and the adapter source. Classify the root cause:
 
 ## Step 3: Explore the Current Website
 
-Use `opencli browser` to inspect the live website. **Never use the broken adapter** — it will just fail again.
+Use `ClouDownloader browser` to inspect the live website. **Never use the broken adapter** — it will just fail again.
 
 ### DOM changed (SELECTOR errors)
 
 ```bash
 # Open the page and inspect current DOM
-opencli browser open https://example.com/target-page && opencli browser state
+ClouDownloader browser open https://example.com/target-page && ClouDownloader browser state
 
 # Look for elements that match the adapter's intent
 # Compare the snapshot with what the adapter expects
@@ -142,16 +142,16 @@ opencli browser open https://example.com/target-page && opencli browser state
 
 ```bash
 # Open page with network interceptor, then trigger the action manually
-opencli browser open https://example.com/target-page && opencli browser state
+ClouDownloader browser open https://example.com/target-page && ClouDownloader browser state
 
 # Interact to trigger API calls
-opencli browser click <N> && opencli browser network
+ClouDownloader browser click <N> && ClouDownloader browser network
 
 # Narrow to the request you care about by the fields its body should have
-opencli browser network --filter author,text,likes
+ClouDownloader browser network --filter author,text,likes
 
 # Inspect specific API response (key is the `key` field from the default JSON output)
-opencli browser network --detail <key>
+ClouDownloader browser network --detail <key>
 ```
 
 ## Step 4: Patch the Adapter
@@ -199,7 +199,7 @@ Use the `Read` tool on the exact path from summary.md front matter.
 
 ```bash
 # Run the command normally
-opencli <site> <command> [args...]
+ClouDownloader <site> <command> [args...]
 ```
 
 If it still fails, go back to Step 1 and collect a fresh trace. You have a budget of **3 repair rounds** (trace → fix → retry). If the same error persists after a fix, try a different approach. After 3 rounds, stop and report what was tried.
@@ -228,7 +228,7 @@ OpenCLI autofix repaired this adapter locally, and the retry passed.
 ## Adapter
 - Site: `<site>`
 - Command: `<command>`
-- OpenCLI version: `<version from opencli --version>`
+- OpenCLI version: `<version from ClouDownloader --version>`
 
 ## Original failure
 - Error code: `<error_code>`
@@ -275,20 +275,20 @@ In all stop cases, clearly communicate the situation to the user rather than mak
 ## Example Repair Session
 
 ```
-1. User runs: opencli zhihu hot
+1. User runs: ClouDownloader zhihu hot
    → Fails: SELECTOR "Could not find element: .HotList-item"
 
-2. AI runs: opencli zhihu hot --trace retain-on-failure 2>trace-error.yaml
+2. AI runs: ClouDownloader zhihu hot --trace retain-on-failure 2>trace-error.yaml
    → Gets trace summary with final state and failed action evidence
 
 3. AI reads summary/state: page loaded but uses ".HotItem" instead of ".HotList-item"
 
-4. AI explores: opencli browser open https://www.zhihu.com/hot && opencli browser state
+4. AI explores: ClouDownloader browser open https://www.zhihu.com/hot && ClouDownloader browser state
    → Confirms new class name ".HotItem" with child ".HotItem-content"
 
 5. AI patches: Edit adapter at `adapterSourcePath` — replace ".HotList-item" with ".HotItem"
 
-6. AI verifies: opencli zhihu hot
+6. AI verifies: ClouDownloader zhihu hot
    → Success: returns hot topics
 
 7. AI prepares upstream issue draft, shows it to the user

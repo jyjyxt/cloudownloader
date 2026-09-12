@@ -4,6 +4,17 @@ import { Strategy } from './registry.js';
 import { formatCommandExample, formatRegistryHelpText, serializeCommand } from './serialization.js';
 
 describe('formatRegistryHelpText', () => {
+  it('renders upstream adapter examples with the fork command without changing their arguments', () => {
+    const cmd: CliCommand = {
+      site: 'demo', name: 'search', access: 'read', description: 'Search',
+      strategy: Strategy.PUBLIC, browser: false, args: [],
+      example: '  opencli demo search "opencli docs" -f json  ',
+    };
+    expect(formatCommandExample(cmd)).toBe('ClouDownloader demo search "opencli docs" -f json');
+    expect(serializeCommand(cmd).example).toBe('ClouDownloader demo search "opencli docs" -f json');
+    expect(cmd.example).toBe('  opencli demo search "opencli docs" -f json  ');
+  });
+
   it('summarizes long choices lists so help text stays readable', () => {
     const cmd: CliCommand = {
       site: 'demo',
@@ -55,14 +66,14 @@ describe('formatRegistryHelpText', () => {
       args: [],
     };
 
-    expect(formatCommandExample(cmd)).toBe('opencli bilibili hot -f yaml');
+    expect(formatCommandExample(cmd)).toBe('ClouDownloader bilibili hot -f yaml');
     expect(serializeCommand(cmd)).toMatchObject({
       command: 'bilibili/hot',
       access: 'read',
-      example: 'opencli bilibili hot -f yaml',
+      example: 'ClouDownloader bilibili hot -f yaml',
     });
     expect(formatRegistryHelpText(cmd)).toContain('Access: read');
-    expect(formatRegistryHelpText(cmd)).toContain('Example: opencli bilibili hot -f yaml');
+    expect(formatRegistryHelpText(cmd)).toContain('Example: ClouDownloader bilibili hot -f yaml');
     expect(formatRegistryHelpText(cmd)).not.toContain('Strategy:');
   });
 

@@ -94,7 +94,7 @@ cli({
 cli({
   site: 'eastmoney',          // 第一级命名空间，目录名一致
   name: 'convertible',        // 第二级，CLI 上的子命令
-  description: '...',         // 一句话，出现在 `opencli list` 和 `opencli <site> -h`
+  description: '...',         // 一句话，出现在 `ClouDownloader list` 和 `ClouDownloader <site> -h`
   domain: 'push2.eastmoney.com',  // 主要请求域名（诊断面板用）
   strategy: Strategy.PUBLIC,  // PUBLIC / COOKIE / INTERCEPT / UI
   browser: false,             // PUBLIC 几乎总是 false；COOKIE/INTERCEPT/UI 一律 true
@@ -327,7 +327,7 @@ const SEND_BUTTON_SELECTORS = [
 5. **失败要 typed fail-fast**：找不到 control 应该 `CommandExecutionError` / send-failed，不要返回空 rows 或假成功
 6. **不要给 framework 加 `--i18n "zh:提交,ja:送信"` 这种 flag** —— 等于把 fallback list 从 adapter 挪到 CLI，多一层 indirection 还要维护翻译字典。这是 over-engineering，已经在评审时被否
 
-为什么不在 daemon 端固定 Chrome locale？因为 opencli **不启动 Chrome**——daemon 是连用户已经在跑的 Chrome（CDP via extension），用户可能就是中文 UI / 中文资料检索需求。强制 en-US 会破坏用户的正当工作流。
+为什么不在 daemon 端固定 Chrome locale？因为 ClouDownloader **不启动 Chrome**——daemon 是连用户已经在跑的 Chrome（CDP via extension），用户可能就是中文 UI / 中文资料检索需求。强制 en-US 会破坏用户的正当工作流。
 
 ### Cookie 域的双查
 
@@ -385,7 +385,7 @@ if (/暂时没有提醒内容/.test(html)) {
 
 ## Verify fixture（每个 adapter 配一份 `~/.opencli/sites/<site>/verify/<name>.json`）
 
-verify fixture 是"adapter 产出长什么样"的结构锚点。没有它，`opencli browser verify` 只能证"adapter 能跑完不抛"，证不出数据没错位。**必写**。
+verify fixture 是"adapter 产出长什么样"的结构锚点。没有它，`ClouDownloader browser verify` 只能证"adapter 能跑完不抛"，证不出数据没错位。**必写**。
 
 详细 schema 见 `site-memory.md` 的 `verify/<cmd>.json` 节。这里只讲两个容易踩的地方：
 
@@ -428,7 +428,7 @@ named-flag adapter（`hot` / `latest` 类）可以直接让工具生成种子：
 
 ```bash
 # 1. 让 verify 先跑一遍，--write-fixture 生成种子（默认追加 --limit 3）
-opencli browser verify 1point3acres/hot --write-fixture
+ClouDownloader browser verify 1point3acres/hot --write-fixture
 
 # 2. 手改 ~/.opencli/sites/1point3acres/verify/hot.json
 #    - patterns: 加 URL / 日期 / ID 正则
@@ -436,20 +436,20 @@ opencli browser verify 1point3acres/hot --write-fixture
 #    - rowCount: 收紧到业务合理区间
 
 # 3. 再跑 verify，fixture 吃得动就 OK
-opencli browser verify 1point3acres/hot
+ClouDownloader browser verify 1point3acres/hot
 ```
 
 positional adapter 目前 `--write-fixture` 没法表达主语，**首份 fixture 要手写**：
 
 ```bash
 # 1. 先直跑 adapter 看输出长啥样
-opencli 1point3acres thread 1173710 --limit 2 --format json | head
+ClouDownloader 1point3acres thread 1173710 --limit 2 --format json | head
 
 # 2. 照着响应手写 ~/.opencli/sites/1point3acres/verify/thread.json
 #    （args 一定用数组: ["1173710", "--limit", "2"]）
 
 # 3. 跑 verify 核对
-opencli browser verify 1point3acres/thread
+ClouDownloader browser verify 1point3acres/thread
 ```
 
 机器生成的种子只有 rowCount.min=1 / columns / types，挡不住字段值错位。**patterns + notEmpty 无论哪种情形都是肉写的**。
@@ -465,7 +465,7 @@ clis/<site>/<name>.js               # repo 贡献
 
 **两者在 `cli({...})` 层面完全一样**。差别只在运行入口：
 
-- 私人：写完立即可跑（`opencli <site> <name>`）
+- 私人：写完立即可跑（`ClouDownloader <site> <name>`）
 - repo：要 `npm run build` 才被注册
 
 先在 `~/.opencli/clis/` 调通再拷贝到 `clis/`。

@@ -4,8 +4,8 @@
 
 ### "Extension not connected"
 
-- Ensure the opencli Browser Bridge extension is installed and **enabled** in `chrome://extensions`.
-- Run `opencli doctor` to diagnose connectivity.
+- Ensure the ClouDownloader Browser Bridge extension is installed and **enabled** in `chrome://extensions`.
+- Run `ClouDownloader doctor` to diagnose connectivity.
 
 ### Empty data or 'Unauthorized' error
 
@@ -16,11 +16,11 @@
 
 - A healthy Browser Bridge connection does not guarantee that the current page target exposes the data your adapter expects.
 - Some browser adapters are sensitive to the active host or page context.
-- Example: `opencli 1688 item` may fail with `did not expose product context` if the target is too broad.
+- Example: `ClouDownloader 1688 item` may fail with `did not expose product context` if the target is too broad.
 - Retry on a real item page, refresh the page in Chrome, and if needed narrow the target, for example:
 
 ```bash
-OPENCLI_CDP_TARGET=detail.1688.com opencli 1688 item 841141931191 -f json
+OPENCLI_CDP_TARGET=detail.1688.com ClouDownloader 1688 item 841141931191 -f json
 ```
 
 ### Node API errors
@@ -34,15 +34,15 @@ OPENCLI_CDP_TARGET=detail.1688.com opencli 1688 item 841141931191 -f json
 curl localhost:19825/logs
 
 # Stop the daemon
-opencli daemon stop
+ClouDownloader daemon stop
 
 # Full diagnostics
-opencli doctor
+ClouDownloader doctor
 ```
 
-> The daemon is persistent and stays alive until explicitly stopped (`opencli daemon stop`) or the package is uninstalled.
+> The daemon is persistent and stays alive until explicitly stopped (`ClouDownloader daemon stop`) or the package is uninstalled.
 
-> When the CLI detects a stale daemon (version mismatch after `npm install -g @jackwener/opencli@latest`), it first asks the daemon to shut down via `/shutdown`, then falls back to `SIGKILL` if the daemon does not release the port within 3 seconds. Manual `opencli daemon stop` is only needed if SIGKILL itself is rejected (cross-user owner / cross-machine PID file).
+> When the CLI detects a stale daemon (version mismatch after updating the source checkout and rebuilding), it first asks the daemon to shut down via `/shutdown`, then falls back to `SIGKILL` if the daemon does not release the port within 3 seconds. Manual `ClouDownloader daemon stop` is only needed if SIGKILL itself is rejected (cross-user owner / cross-machine PID file).
 
 ### Desktop adapter connection issues
 
@@ -66,4 +66,4 @@ npx tsc --noEmit
 ## Getting Help
 
 - [GitHub Issues](https://github.com/jackwener/opencli/issues) — Bug reports and feature requests
-- Run `opencli doctor` for comprehensive diagnostics
+- Run `ClouDownloader doctor` for comprehensive diagnostics

@@ -102,8 +102,8 @@ function buildUpdateNotices({ cliVersion, cache, now }: NoticeInputs): NoticeLin
   const lines: NoticeLines = {};
   if (cache.latestVersion && isNewer(cache.latestVersion, cliVersion)) {
     lines.cli =
-      `\n  Update available: v${cliVersion} → v${cache.latestVersion}\n` +
-      `  Run: npm install -g @jackwener/opencli\n`;
+      `\n  Upstream OpenCLI update available: v${cliVersion} → v${cache.latestVersion}\n` +
+      `  ClouDownloader updates: https://github.com/jyjyxt/cloudownloader\n`;
   }
   const { currentExtensionVersion, latestExtensionVersion, extensionLastSeenAt } = cache;
   if (
@@ -223,7 +223,7 @@ export function recordExtensionVersion(version: string): void {
 
 /**
  * Get the cached latest extension version (if available).
- * Used by `opencli doctor` to report extension updates.
+ * Used by `ClouDownloader doctor` to report extension updates.
  */
 export function getCachedLatestExtensionVersion(): string | undefined {
   return _cache?.latestExtensionVersion;

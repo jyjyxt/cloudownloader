@@ -128,7 +128,7 @@ export async function ensureBrowserBridgeReady(
       throw new BrowserConnectError(
         'Stale daemon could not be replaced',
         `A stale daemon (${reason}) is running but did not shut down (graceful + SIGKILL both failed).\n` +
-        '  Run manually: opencli daemon stop',
+        '  Run manually: ClouDownloader daemon stop',
         'daemon-not-running',
       );
     }
@@ -162,8 +162,8 @@ function browserConnectErrorFromHealth(health: DaemonHealth, contextId?: string)
   if (health.state === 'profile-required') {
     return new BrowserConnectError(
       'Multiple Browser Bridge profiles are connected',
-      'Select one with --profile <name>, OPENCLI_PROFILE=<name>, or opencli profile use <name>.\n' +
-      'Run opencli profile list to see connected profiles.',
+      'Select one with --profile <name>, OPENCLI_PROFILE=<name>, or ClouDownloader profile use <name>.\n' +
+      'Run ClouDownloader profile list to see connected profiles.',
       'profile-required',
     );
   }
@@ -171,7 +171,7 @@ function browserConnectErrorFromHealth(health: DaemonHealth, contextId?: string)
     const label = contextId ?? health.status.contextId ?? 'unknown';
     return new BrowserConnectError(
       `Browser profile "${label}" is not connected`,
-      'Open the matching Chrome profile and make sure the OpenCLI extension is enabled, or choose another profile with opencli profile use <name>.',
+      'Open the matching Chrome profile and make sure the OpenCLI extension is enabled, or choose another profile with ClouDownloader profile use <name>.',
       'profile-disconnected',
     );
   }
@@ -186,7 +186,7 @@ function browserConnectErrorFromHealth(health: DaemonHealth, contextId?: string)
     );
   }
   return new BrowserConnectError(
-    'Failed to start opencli daemon',
+    'Failed to start ClouDownloader daemon',
     `Try running manually:\n  node ${resolveDaemonLaunchSpec().scriptPath}\nMake sure port ${DEFAULT_DAEMON_PORT} is available.`,
     'daemon-not-running',
   );

@@ -82,6 +82,6 @@ export function formatAdapterShadowIssue(shadows: AdapterShadow[]): string {
   if (shadows.length > visible.length) {
     lines.push(`  ... and ${shadows.length - visible.length} more`);
   }
-  lines.push('Remove the local ~/.opencli/clis copy, or run opencli adapter reset <site>, when you want packaged updates.');
+  lines.push('Remove the local ~/.opencli/clis copy, or run ClouDownloader adapter reset <site>, when you want packaged updates.');
   return lines.join('\n');
 }

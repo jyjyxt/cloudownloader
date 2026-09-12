@@ -1,5 +1,5 @@
 /**
- * HTTP client for communicating with the opencli daemon.
+ * HTTP client for communicating with the ClouDownloader daemon.
  *
  * Provides a typed send() function that posts a Command and returns a Result.
  */

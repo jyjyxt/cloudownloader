@@ -11,7 +11,7 @@
   "type": "module",
   "main": "dist/src/main.js",
   "bin": {
-    "opencli": "dist/src/main.js"
+    "ClouDownloader": "dist/src/main.js"
   },
   "exports": {
     ".": "./dist/src/main.js",
@@ -78,7 +78,7 @@
   "license": "Apache-2.0",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/jackwener/opencli.git"
+    "url": "git+https://github.com/jyjyxt/cloudownloader.git"
   },
   "dependencies": {
     "@mozilla/readability": "^0.6.0",

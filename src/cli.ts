@@ -574,7 +574,7 @@ async function resolveBrowserTargetInSession(
     }
     throw new Error(
       `Target tab ${candidate} could not be validated in the current browser session. ` +
-      'The Browser Bridge session may have restarted; re-run "opencli browser tab list" and choose a current target.',
+      'The Browser Bridge session may have restarted; re-run "ClouDownloader browser tab list" and choose a current target.',
       { cause: err },
     );
   }
@@ -590,7 +590,7 @@ async function resolveBrowserTargetInSession(
 
   throw new Error(
     `Target tab ${candidate} is not part of the current browser session. ` +
-    'The Browser Bridge session may have restarted; re-run "opencli browser tab list" and choose a current target.',
+    'The Browser Bridge session may have restarted; re-run "ClouDownloader browser tab list" and choose a current target.',
   );
 }
 
@@ -672,12 +672,12 @@ function getCommandOption(command: Command | undefined, option: string): unknown
 }
 
 function getBrowserSession(command?: Command): string {
-  // The CLI surface is `opencli browser <session> <subcommand>`. main.ts rewrites
+  // The CLI surface is `ClouDownloader browser <session> <subcommand>`. main.ts rewrites
   // argv to insert `--session <name>` before commander parses it; this helper
   // reads back the rewritten flag.
   const raw = getCommandOption(command, 'session');
   if (typeof raw === 'string' && raw.trim()) return raw.trim();
-  throw new Error('<session> is a required positional argument: opencli browser <session> <command>');
+  throw new Error('<session> is a required positional argument: ClouDownloader browser <session> <command>');
 }
 
 function getBrowserProfileSelection(command?: Command): ProfileSelection | undefined {
@@ -793,7 +793,7 @@ export function createProgram(BUILTIN_CLIS: string, USER_CLIS: string): Command 
   // enablePositionalOptions: prevents parent from consuming flags meant for subcommands;
   // prerequisite for passThroughOptions to forward --help/--version to external binaries
   program
-    .name('opencli')
+    .name('ClouDownloader')
     .description('Make any website your CLI. Zero setup. AI-powered.')
     .version(PKG_VERSION)
     .option('--profile <name>', 'Chrome profile/context alias for Browser Bridge commands')
@@ -830,7 +830,7 @@ export function createProgram(BUILTIN_CLIS: string, USER_CLIS: string): Command 
           columns: ['command', 'site', 'name', 'aliases', 'description', 'access', 'strategy', 'browser', 'args',
                      ...(isStructured ? ['columns', 'domain'] : [])],
           title: 'opencli/list',
-          source: 'opencli list',
+          source: 'ClouDownloader list',
         });
         return;
       }
@@ -861,7 +861,7 @@ export function createProgram(BUILTIN_CLIS: string, USER_CLIS: string): Command 
       };
 
       console.log();
-      console.log('  opencli' + ' — available commands');
+      console.log('  ClouDownloader' + ' — available commands');
       console.log();
 
       if (appsBySite.size > 0) {
@@ -929,7 +929,7 @@ export function createProgram(BUILTIN_CLIS: string, USER_CLIS: string): Command 
         fmtExplicit: !!opts.format,
         columns: ['name', 'description', 'version', 'path'],
         title: 'opencli/skills/list',
-        source: 'opencli skills list',
+        source: 'ClouDownloader skills list',
       });
     });
 
@@ -1000,12 +1000,12 @@ export function createProgram(BUILTIN_CLIS: string, USER_CLIS: string): Command 
 <session> is a required positional: pass the name of the browser session every subcommand should operate on. Reuse the same name across calls to keep the tab/state alive; pick a different name to isolate parallel browser work.
 
 Examples:
-  $ opencli browser work open https://x.com
-  $ opencli browser work open https://x.com --window background
-  $ opencli browser work click 12
-  $ opencli browser work state
-  $ opencli browser work bind
-  $ opencli browser work unbind
+  $ ClouDownloader browser work open https://x.com
+  $ ClouDownloader browser work open https://x.com --window background
+  $ ClouDownloader browser work click 12
+  $ ClouDownloader browser work state
+  $ ClouDownloader browser work bind
+  $ ClouDownloader browser work unbind
 `);
   const originalBrowserDescription = browser.description();
 
@@ -1072,7 +1072,7 @@ Examples:
       error: {
         code: 'javascript_dialog_open',
         message,
-        hint: 'Handle the modal first: opencli browser dialog accept (or dismiss). Use --text for prompt dialogs.',
+        hint: 'Handle the modal first: ClouDownloader browser dialog accept (or dismiss). Use --text for prompt dialogs.',
       },
     }, null, 2));
   }
@@ -1713,7 +1713,7 @@ Examples:
           error: {
             code: 'usage_error',
             message: '--css <selector> or a semantic locator flag is required',
-            hint: 'Examples: opencli browser find --css ".btn.primary"; opencli browser find --role button --name Save',
+            hint: 'Examples: ClouDownloader browser find --css ".btn.primary"; ClouDownloader browser find --role button --name Save',
           },
         }, null, 2));
         process.exitCode = EXIT_CODES.USAGE_ERROR;
@@ -2004,7 +2004,7 @@ Examples:
         error: {
           code: 'usage_error',
           message: 'At least one file path is required.',
-          hint: 'Example: opencli browser upload "input[type=file]" ./receipt.pdf',
+          hint: 'Example: ClouDownloader browser upload "input[type=file]" ./receipt.pdf',
         },
       };
     }
@@ -2892,7 +2892,7 @@ cli({
   name: '${command}',
   description: '', // TODO: describe what this command does
   access: 'read',  // TODO: 'read' for queries, 'write' for remote/account state changes
-  example: 'opencli ${site} ${command} -f yaml',
+  example: 'ClouDownloader ${site} ${command} -f yaml',
   domain: '${domain}',
   strategy: Strategy.PUBLIC, // TODO: PUBLIC (no auth), COOKIE (needs login), UI (DOM interaction)
   browser: false,            // TODO: set true if needs browser
@@ -2911,8 +2911,8 @@ cli({
         fs.mkdirSync(dir, { recursive: true });
         fs.writeFileSync(filePath, template, 'utf-8');
         console.log(`Created: ${filePath}`);
-        console.log('First time on this site? Run: opencli browser analyze <url>');
-        console.log(`Edit the file to implement your adapter, then run: opencli browser verify ${name}`);
+        console.log('First time on this site? Run: ClouDownloader browser analyze <url>');
+        console.log(`Edit the file to implement your adapter, then run: ClouDownloader browser verify ${name}`);
       } catch (err) {
         console.error(`Error: ${err instanceof Error ? err.message : String(err)}`);
         process.exitCode = EXIT_CODES.GENERIC_ERROR;
@@ -2946,7 +2946,7 @@ cli({
         const filePath = path.join(os.homedir(), '.opencli', 'clis', site, `${command}.js`);
         if (!fs.existsSync(filePath)) {
           console.error(`Adapter not found: ${filePath}`);
-          console.error(`Run "opencli browser init ${name}" to create it.`);
+          console.error(`Run "ClouDownloader browser init ${name}" to create it.`);
           process.exitCode = EXIT_CODES.GENERIC_ERROR;
           return;
         }
@@ -2985,7 +2985,7 @@ cli({
             ...(invocation.shell ? { shell: true } : {}),
           });
         } catch (err) {
-          console.log(`  Executing: opencli ${site} ${command} ${argDisplay}\n`);
+          console.log(`  Executing: ClouDownloader ${site} ${command} ${argDisplay}\n`);
           const execErr = err as { stdout?: string | Buffer; stderr?: string | Buffer };
           if (execErr.stdout) console.log(String(execErr.stdout));
           if (execErr.stderr) console.error(String(execErr.stderr).slice(0, 500));
@@ -2994,7 +2994,7 @@ cli({
           return;
         }
 
-        console.log(`  Executing: opencli ${site} ${command} ${argDisplay}\n`);
+        console.log(`  Executing: ClouDownloader ${site} ${command} ${argDisplay}\n`);
 
         let rows: Record<string, unknown>[];
         try {
@@ -3089,7 +3089,7 @@ cli({
 
   program
     .command('doctor')
-    .description('Diagnose opencli browser bridge connectivity')
+    .description('Diagnose ClouDownloader browser bridge connectivity')
     .option('-v, --verbose', 'Debug output')
     .action(async (opts) => {
       applyVerbose(opts);
@@ -3108,7 +3108,7 @@ cli({
 
   // ── Plugin management ──────────────────────────────────────────────────────
 
-  const pluginCmd = program.command('plugin').description('Manage opencli plugins');
+  const pluginCmd = program.command('plugin').description('Manage ClouDownloader plugins');
   // Snapshot before applyRootSubcommandSummaries() rewrites .description() to a child-name listing.
   const originalPluginDescription = pluginCmd.description();
 
@@ -3223,7 +3223,7 @@ cli({
       const plugins = listPlugins();
       if (plugins.length === 0) {
         console.log('  No plugins installed.');
-        console.log('  Install one with: opencli plugin install github:user/repo');
+        console.log('  Install one with: ClouDownloader plugin install github:user/repo');
         return;
       }
       if (opts.format === 'json') {
@@ -3231,7 +3231,7 @@ cli({
           fmt: 'json',
           columns: ['name', 'commands', 'source'],
           title: 'opencli/plugins',
-          source: 'opencli plugin list',
+          source: 'ClouDownloader plugin list',
         });
         return;
       }
@@ -3295,8 +3295,8 @@ cli({
         console.log();
         console.log('  Next steps:');
         console.log(`    cd ${result.dir}`);
-        console.log(`    opencli plugin install file://${result.dir}`);
-        console.log(`    opencli ${name} hello`);
+        console.log(`    ClouDownloader plugin install file://${result.dir}`);
+        console.log(`    ClouDownloader ${name} hello`);
       } catch (err) {
         console.error(`Error: ${getErrorMessage(err)}`);
         process.exitCode = EXIT_CODES.GENERIC_ERROR;
@@ -3362,7 +3362,7 @@ cli({
 
       try {
         await fs.promises.access(userSiteDir);
-        console.error(`Site "${site}" already exists in ~/.opencli/clis/. Use "opencli adapter reset ${site}" first to restore official version.`);
+        console.error(`Site "${site}" already exists in ~/.opencli/clis/. Use "ClouDownloader adapter reset ${site}" first to restore official version.`);
         process.exitCode = EXIT_CODES.USAGE_ERROR;
         return;
       } catch { /* good, doesn't exist yet */ }
@@ -3435,17 +3435,17 @@ cli({
       const config = loadProfileConfig();
       const profiles = status?.profiles ?? [];
       if (!status) {
-        console.log('Daemon is not running. Run opencli doctor after opening Chrome.');
+        console.log('Daemon is not running. Run ClouDownloader doctor after opening Chrome.');
         return;
       }
       if (isDaemonStale(status, PKG_VERSION) || !Array.isArray(status.profiles)) {
         console.log(`Daemon ${formatDaemonVersion(status)} is stale for CLI v${PKG_VERSION}.`);
-        console.log('Run: opencli daemon restart');
+        console.log('Run: ClouDownloader daemon restart');
         return;
       }
       if (profiles.length === 0) {
         console.log('No Browser Bridge profiles connected.');
-        console.log('Open a Chrome profile with the OpenCLI extension installed, then run opencli profile list again.');
+        console.log('Open a Chrome profile with the OpenCLI extension installed, then run ClouDownloader profile list again.');
         return;
       }
 
@@ -3479,7 +3479,7 @@ cli({
   profileCmd
     .command('rename')
     .description('Assign a local alias to a connected Browser Bridge profile')
-    .argument('<contextId>', 'Profile contextId from opencli profile list')
+    .argument('<contextId>', 'Profile contextId from ClouDownloader profile list')
     .argument('<alias>', 'Local alias, e.g. work or personal')
     .action((contextId: string, alias: string) => {
       try {
@@ -3506,7 +3506,7 @@ cli({
     });
 
   // ── Built-in: daemon ──────────────────────────────────────────────────────
-  const daemonCmd = program.command('daemon').description('Manage the opencli daemon');
+  const daemonCmd = program.command('daemon').description('Manage the ClouDownloader daemon');
   // Snapshot before applyRootSubcommandSummaries() rewrites .description() to a child-name listing.
   const originalDaemonDescription = daemonCmd.description();
   daemonCmd
@@ -3573,7 +3573,7 @@ cli({
         fmt: opts.format,
         columns: ['name', 'package', 'binary', 'installed', 'description', 'homepage', 'tags'],
         title: 'opencli/external/list',
-        source: 'opencli external list',
+        source: 'ClouDownloader external list',
       });
     });
 
@@ -3658,8 +3658,8 @@ cli({
   // When an ancestor command declares a leading positional via `.usage(...)`
   // (e.g. `browser` -> `<session> <command> [options]`), inject the positional
   // between that ancestor's name and the next path segment so the help Usage
-  // line is accurate: `Usage: opencli browser <session> click [target] [options]`
-  // instead of `opencli browser click [target] [options]`. Commander does NOT
+  // line is accurate: `Usage: ClouDownloader browser <session> click [target] [options]`
+  // instead of `ClouDownloader browser click [target] [options]`. Commander does NOT
   // inherit configureHelp into subcommands, so we walk the descendant tree and
   // apply the override on each.
   const ancestorAwareCommandUsage = (cmd: Command): string => {
@@ -3687,7 +3687,7 @@ cli({
     const binary = operands[0];
     console.error(`error: unknown command '${binary}'`);
     if (isBinaryInstalled(binary)) {
-      console.error(`  Tip: '${binary}' exists on your PATH. Use 'opencli external register ${binary}' to add it as an external CLI.`);
+      console.error(`  Tip: '${binary}' exists on your PATH. Use 'ClouDownloader external register ${binary}' to add it as an external CLI.`);
     }
     program.outputHelp();
     process.exitCode = EXIT_CODES.USAGE_ERROR;
@@ -3734,7 +3734,7 @@ export function resolveBrowserVerifyInvocation(opts: {
 
   const sourceEntry = path.join(projectRoot, 'src', 'main.ts');
   if (!fileExists(sourceEntry)) {
-    throw new Error(`Could not find opencli entrypoint under ${projectRoot}. Expected built entry from package.json or src/main.ts.`);
+    throw new Error(`Could not find ClouDownloader entrypoint under ${projectRoot}. Expected built entry from package.json or src/main.ts.`);
   }
 
   const localTsxBin = path.join(projectRoot, 'node_modules', '.bin', platform === 'win32' ? 'tsx.cmd' : 'tsx');

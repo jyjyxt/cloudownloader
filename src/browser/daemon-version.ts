@@ -11,5 +11,5 @@ export function formatDaemonVersion(status: Pick<DaemonStatus, 'daemonVersion'> 
 
 export function staleDaemonIssue(status: Pick<DaemonStatus, 'daemonVersion'> | null | undefined, cliVersion: string): string {
   return `Stale daemon detected: daemon ${formatDaemonVersion(status)} != CLI v${cliVersion}.\n` +
-    '  Run: opencli daemon restart';
+    '  Run: ClouDownloader daemon restart';
 }

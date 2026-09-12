@@ -31,7 +31,7 @@ Keep Chrome, the extension, and the daemon **all on your local machine**. Use a 
                        (SSH -R / frpc / VPN)
 ```
 
-The remote `opencli` process needs **no flags, no env vars, no extension changes** — it connects to its own loopback, which the tunnel forwards to your laptop.
+The remote `ClouDownloader` process needs **no flags, no env vars, no extension changes** — it connects to its own loopback, which the tunnel forwards to your laptop.
 
 ## Option A — SSH reverse port forward (recommended)
 
@@ -45,8 +45,8 @@ While that session is open, anything on the remote connecting to `localhost:1982
 
 ```bash
 # On the remote server
-opencli twitter feed
-opencli browser open https://example.com
+ClouDownloader twitter feed
+ClouDownloader browser open https://example.com
 ```
 
 ::: tip
@@ -65,7 +65,7 @@ Or as a systemd unit / launchd plist on the local side.
 
 - The daemon stays bound to `127.0.0.1` on your machine.
 - The tunnel rides on SSH's authenticated transport — no new auth surface.
-- If the SSH session drops, the tunnel drops; the remote `opencli` simply fails to connect rather than reaching some stale endpoint.
+- If the SSH session drops, the tunnel drops; the remote `ClouDownloader` simply fails to connect rather than reaching some stale endpoint.
 
 ## Option B — frp reverse TCP proxy
 
@@ -89,7 +89,7 @@ If SSH from your local machine to the remote isn't an option (NAT, firewalls), u
    remotePort = 19825
    ```
 
-3. On the remote server, run a second **frpc** that maps the relay's exposed port back to the remote's `localhost:19825` (a `stcp` visitor or a plain `tcp` client+visitor pair). This way `opencli` on the remote keeps talking to its own loopback.
+3. On the remote server, run a second **frpc** that maps the relay's exposed port back to the remote's `localhost:19825` (a `stcp` visitor or a plain `tcp` client+visitor pair). This way `ClouDownloader` on the remote keeps talking to its own loopback.
 
 ::: warning
 - Always set a strong `auth.token` on frps and frpc. Without it, anyone who learns the relay address has full control of your browser.
@@ -104,13 +104,13 @@ After setting up the tunnel, confirm the remote sees the daemon:
 ```bash
 # On the remote server
 curl -sf http://127.0.0.1:19825/ping && echo "daemon reachable"
-opencli doctor
+ClouDownloader doctor
 ```
 
-`opencli doctor` from the remote should report the same extension version your local Chrome is running.
+`ClouDownloader doctor` from the remote should report the same extension version your local Chrome is running.
 
 ## Caveats
 
-- **Local Chrome must be running** for the duration of the remote command. Closing Chrome closes the extension's WebSocket; remote `opencli` calls will fail with a "no daemon" error until Chrome is reopened.
+- **Local Chrome must be running** for the duration of the remote command. Closing Chrome closes the extension's WebSocket; remote `ClouDownloader` calls will fail with a "no daemon" error until Chrome is reopened.
 - **Tunnel latency adds to every call**. Each browser command crosses the tunnel twice; expect 50–200ms overhead per call on a typical SSH link, more on transcontinental links.
 - **One tunnel per local daemon**. If you start multiple SSH sessions all forwarding 19825, only the first wins; the rest log a "remote port already in use" warning.

@@ -4,7 +4,7 @@
  * Focus: regression guards for the "single source of truth" link between
  * pipeline step registry (src/pipeline/registry.ts) and validate.ts step
  * allowlist. A new step registered via `registerStep()` must automatically
- * be allowlisted by `opencli validate` — no parallel hand-maintained list.
+ * be allowlisted by `ClouDownloader validate` — no parallel hand-maintained list.
  */
 
 import { describe, it, expect } from 'vitest';

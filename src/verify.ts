@@ -3,7 +3,7 @@
  *
  * The smoke test is intentionally kept as a stub — full browser-based
  * smoke testing requires a running browser session and is better suited
- * to the `opencli test` command or CI pipelines.
+ * to the `ClouDownloader test` command or CI pipelines.
  */
 
 import { validateClisWithTarget, renderValidationReport, type ValidationReport } from './validate.js';

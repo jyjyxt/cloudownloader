@@ -1,5 +1,5 @@
 /**
- * Runtime detection — identify whether opencli is running under Node.js or Bun.
+ * Runtime detection — identify whether ClouDownloader is running under Node.js or Bun.
  *
  * Bun injects `globalThis.Bun` at startup, making detection trivial.
  * This module centralises the check so other code can adapt behaviour

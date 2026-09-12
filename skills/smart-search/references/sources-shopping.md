@@ -7,22 +7,22 @@
 ### amazon
 
 - 适用：全球商品搜索、价格参考、英文电商
-- 使用前先运行：`opencli amazon -h`
+- 使用前先运行：`ClouDownloader amazon -h`
 
 ### smzdm
 
 - 适用：国内好价、优惠、导购、商品讨论
-- 使用前先运行：`opencli smzdm -h`
+- 使用前先运行：`ClouDownloader smzdm -h`
 
 ### coupang
 
 - 适用：韩国电商商品搜索
-- 使用前先运行：`opencli coupang -h`
+- 使用前先运行：`ClouDownloader coupang -h`
 
 ### douban
 
 - 适用：图书、影视、音乐类口碑补充，不是标准电商，但可用于消费决策补充
-- 使用前先运行：`opencli douban -h`
+- 使用前先运行：`ClouDownloader douban -h`
 
 ## 路由提示
 

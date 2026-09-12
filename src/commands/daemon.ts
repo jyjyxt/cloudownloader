@@ -1,8 +1,8 @@
 /**
  * CLI commands for daemon lifecycle:
- *   opencli daemon status — show daemon state
- *   opencli daemon stop   — graceful shutdown
- *   opencli daemon restart — graceful shutdown, then start a fresh daemon
+ *   ClouDownloader daemon status — show daemon state
+ *   ClouDownloader daemon stop   — graceful shutdown
+ *   ClouDownloader daemon restart — graceful shutdown, then start a fresh daemon
  */
 
 import { fetchDaemonStatus, requestDaemonShutdown } from '../browser/daemon-transport.js';
@@ -32,9 +32,9 @@ export async function daemonStatus(): Promise<void> {
       : 'connected (version unknown)';
   } else if (status.profileRequired) {
     const count = status.profiles?.length ?? 0;
-    extensionLabel = `${count} ${count === 1 ? 'profile' : 'profiles'} connected, none selected — run \`opencli profile use <name>\``;
+    extensionLabel = `${count} ${count === 1 ? 'profile' : 'profiles'} connected, none selected — run \`ClouDownloader profile use <name>\``;
   } else if (status.profileDisconnected) {
-    extensionLabel = 'requested profile not connected — run `opencli profile use <name>`';
+    extensionLabel = 'requested profile not connected — run `ClouDownloader profile use <name>`';
   } else {
     extensionLabel = 'disconnected';
   }
@@ -42,7 +42,7 @@ export async function daemonStatus(): Promise<void> {
   const daemonVersion = formatDaemonVersion(status);
   const stale = isDaemonStale(status, PKG_VERSION);
   console.log(`Daemon: ${stale ? 'stale' : 'running'} (PID ${status.pid})`);
-  console.log(`Version: ${daemonVersion}${stale ? ` (CLI v${PKG_VERSION}; run: opencli daemon restart)` : ''}`);
+  console.log(`Version: ${daemonVersion}${stale ? ` (CLI v${PKG_VERSION}; run: ClouDownloader daemon restart)` : ''}`);
   console.log(`Uptime: ${formatDuration(Math.round(status.uptime * 1000))}`);
   console.log(`Extension: ${extensionLabel}`);
   if (status.profiles && status.profiles.length > 0) {

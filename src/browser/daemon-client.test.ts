@@ -586,7 +586,7 @@ describe('daemon-client', () => {
         ok: false,
         errorCode: 'profile_required',
         error: 'Multiple Browser Bridge profiles are connected; choose one with --profile.',
-        errorHint: 'Run opencli profile list, then opencli profile use <name>.',
+        errorHint: 'Run ClouDownloader profile list, then ClouDownloader profile use <name>.',
       }),
     } as Response);
 

@@ -54,7 +54,7 @@ describe('network request sanitization', () => {
 
         expect(request?.body_kind).toBe('form');
         expect(request?.body).toEqual({
-            q: 'opencli',
+            q: 'ClouDownloader',
             tag: ['one', 'two'],
             access_token: '<redacted>',
             xsrf: '<redacted>',

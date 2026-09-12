@@ -1,6 +1,6 @@
 ---
 name: opencli-browser
-description: Use when an agent needs to drive a real Chrome window via opencli — inspect a page, fill forms, click through logged-in flows, or extract data ad-hoc. Covers the selector-first target contract, compound form fields, stale-ref handling, network capture, and the agent-native envelopes the CLI returns. Not for writing adapters — see opencli-adapter-author for that.
+description: Use when an agent needs to drive a real Chrome window via ClouDownloader — inspect a page, fill forms, click through logged-in flows, or extract data ad-hoc. Covers the selector-first target contract, compound form fields, stale-ref handling, network capture, and the agent-native envelopes the CLI returns. Not for writing adapters — see opencli-adapter-author for that.
 allowed-tools: Bash(opencli:*), Read, Edit, Write
 ---
 
@@ -15,7 +15,7 @@ This skill is for **driving a live browser** to accomplish an agent task. If you
 ## Prerequisites
 
 ```bash
-opencli doctor
+ClouDownloader doctor
 ```
 
 Until `doctor` is green, nothing else will work. Typical failures: Chrome not running, extension not installed, debug port blocked by 1Password / other extensions. The doctor output tells you which.
@@ -24,23 +24,23 @@ Until `doctor` is green, nothing else will work. Typical failures: Chrome not ru
 
 ## Session lifecycle
 
-- `opencli browser *` commands require a `<session>` positional immediately after `browser`. Use the same session name for a multi-step flow; use a different name to isolate parallel browser work.
-- Use a stable session name for any multi-command or human-paced browser workflow. Example: `opencli browser fb-yaya-warmup open https://example.com`, then reuse `opencli browser fb-yaya-warmup state`, `extract`, `click`, etc.
-- Owned browser sessions keep a tab lease alive between calls. Release it with `opencli browser <session> close` or let the idle timeout expire.
-- `opencli browser <session> bind` binds the Chrome tab you already have open to that session. Use this for logged-in pages, SSO flows, or pages you manually positioned before handing control to the agent.
+- `ClouDownloader browser *` commands require a `<session>` positional immediately after `browser`. Use the same session name for a multi-step flow; use a different name to isolate parallel browser work.
+- Use a stable session name for any multi-command or human-paced browser workflow. Example: `ClouDownloader browser fb-yaya-warmup open https://example.com`, then reuse `ClouDownloader browser fb-yaya-warmup state`, `extract`, `click`, etc.
+- Owned browser sessions keep a tab lease alive between calls. Release it with `ClouDownloader browser <session> close` or let the idle timeout expire.
+- `ClouDownloader browser <session> bind` binds the Chrome tab you already have open to that session. Use this for logged-in pages, SSO flows, or pages you manually positioned before handing control to the agent.
 - `--window foreground|background` (or `OPENCLI_WINDOW=foreground|background`) chooses whether OpenCLI creates/focuses a foreground browser window or uses a background browser window for owned sessions.
 
 ### Bind Tab
 
 ```bash
-opencli browser gmail bind
-opencli browser gmail state
-opencli browser gmail click "Search"
-opencli browser gmail network
-opencli browser gmail unbind
+ClouDownloader browser gmail bind
+ClouDownloader browser gmail state
+ClouDownloader browser gmail click "Search"
+ClouDownloader browser gmail network
+ClouDownloader browser gmail unbind
 ```
 
-Binding never owns the user window and never closes the user tab. It fails closed if the tab is closed or becomes non-debuggable. Re-run `opencli browser <session> bind` when you switch to a different real tab.
+Binding never owns the user window and never closes the user tab. It fails closed if the tab is closed or becomes non-debuggable. Re-run `ClouDownloader browser <session> bind` when you switch to a different real tab.
 
 Navigation is allowed on bound sessions because the session now represents explicit agent ownership of that tab. Tab mutation (`tab new`, `tab select`, `tab close`) is still blocked for bound sessions. Use an owned session when you want OpenCLI to manage tab lifecycle.
 
@@ -60,7 +60,7 @@ Bound sessions have no OpenCLI idle-close timer; the binding lasts until `unbind
 ## Critical rules
 
 1. **Always inspect before you act.** Run `state` or `find` first. Never hard-code a ref or selector from memory across sessions — indices are per-snapshot.
-2. **Prefer site adapters before raw browser driving.** If `opencli <site> <command>` already covers the task, use that adapter command first (`opencli facebook notifications`, `opencli reddit read`, `opencli chatgpt model <level>`, etc.). Use `opencli browser ...` only for gaps, debugging, or one-off UI flows the adapter does not expose.
+2. **Prefer site adapters before raw browser driving.** If `ClouDownloader <site> <command>` already covers the task, use that adapter command first (`ClouDownloader facebook notifications`, `ClouDownloader reddit read`, `ClouDownloader chatgpt model <level>`, etc.). Use `ClouDownloader browser ...` only for gaps, debugging, or one-off UI flows the adapter does not expose.
 3. **Prefer numeric ref over CSS once you have it.** Numeric refs survive mild DOM shifts because the CLI fingerprints each tagged element. A CSS selector written by hand will break the first time the site re-renders.
 4. **Read `match_level` after every write.** `exact` = all good. `stable` = the element is the same but some soft attrs drifted — your action still applied. `reidentified` = the original ref was gone and the CLI found a unique replacement; double-check you hit the right element.
 5. **Use the `compound` field for form controls.** Do not regex-guess a date format, do not `state` twice to get the full `<select>` options list. The compound envelope has the format string, full option list up to 50, `options_total` for overflow, and `accept`/`multiple` for `<input type=file>`.
@@ -189,7 +189,7 @@ state, elapsedMs}` on success and a JSON error envelope on timeout/failure.
 
 ### Extract
 
-- **`web read --url <url>`** — One-shot Markdown reader for arbitrary pages. It expands relevant same-origin iframes by default, so old iframe-shell sites work better than with a top-document-only scrape. Use `--frames all-same-origin` when completeness matters more than Markdown noise. For AJAX shell pages use `opencli web read --url <url> --wait-for "<selector>" --wait-until networkidle --diagnose`; diagnostics show frame URLs, empty containers, and API-like XHRs. If the value you need is table/API data, switch to `browser network` or a dedicated adapter instead of relying on Markdown.
+- **`web read --url <url>`** — One-shot Markdown reader for arbitrary pages. It expands relevant same-origin iframes by default, so old iframe-shell sites work better than with a top-document-only scrape. Use `--frames all-same-origin` when completeness matters more than Markdown noise. For AJAX shell pages use `ClouDownloader web read --url <url> --wait-for "<selector>" --wait-until networkidle --diagnose`; diagnostics show frame URLs, empty containers, and API-like XHRs. If the value you need is table/API data, switch to `browser network` or a dedicated adapter instead of relying on Markdown.
 - **`browser eval <js> [--frame N]`** — Run an expression in the page (or in a cross-origin frame via `--frame`). Wrap in an IIFE and return JSON. Read-only: no `document.forms[0].submit()`, no clicks, no navigations. If the result is a string, stdout is the raw string; otherwise it's JSON.
 - **`browser extract [--selector <css>] [--chunk-size N] [--start N]`** — Markdown extraction of long-form content with a continuation cursor. Returns `{url, title, selector, total_chars, chunk_size, start, end, next_start_char, content}`. Loop on `next_start_char` until it is `null`. Auto-scopes to `<main>`/`<article>`/`<body>` if you don't pass `--selector`.
 
@@ -307,9 +307,9 @@ Rule of thumb: **one `state` per page transition, one `find` per follow-up query
 **Good — one shell, live session:**
 
 ```bash
-opencli browser hn open "https://news.ycombinator.com" \
-  && opencli browser hn state \
-  && opencli browser hn click 3
+ClouDownloader browser hn open "https://news.ycombinator.com" \
+  && ClouDownloader browser hn state \
+  && ClouDownloader browser hn click 3
 ```
 
 **Bad — each line is a fresh shell, refs from call 1 are already forgotten when call 2 runs.** (Only a problem if you rely on shell-scoped state; browser refs themselves persist in-page, but interleaving unrelated shells invites races.) Prefer `&&` when the steps are meant to be atomic.
@@ -323,24 +323,24 @@ opencli browser hn open "https://news.ycombinator.com" \
 ### Fill a login form
 
 ```bash
-opencli browser login open "https://example.com/login"
-opencli browser login state                          # find [N] for email, password, submit
-opencli browser login type 4 "me@example.com"
-opencli browser login type 5 "hunter2"
-opencli browser login get value 4                    # verify (autocomplete can eat chars)
-opencli browser login click 6                        # submit
-opencli browser login wait selector "[data-testid=account-menu]" --timeout 15000
-opencli browser login state                          # fresh refs on the logged-in page
+ClouDownloader browser login open "https://example.com/login"
+ClouDownloader browser login state                          # find [N] for email, password, submit
+ClouDownloader browser login type 4 "me@example.com"
+ClouDownloader browser login type 5 "hunter2"
+ClouDownloader browser login get value 4                    # verify (autocomplete can eat chars)
+ClouDownloader browser login click 6                        # submit
+ClouDownloader browser login wait selector "[data-testid=account-menu]" --timeout 15000
+ClouDownloader browser login state                          # fresh refs on the logged-in page
 ```
 
 ### Pick from a long dropdown
 
 ```bash
-opencli browser form state                          # sidebar shows [12] <select name=country>
-opencli browser form find --css "select[name=country]"
+ClouDownloader browser form state                          # sidebar shows [12] <select name=country>
+ClouDownloader browser form find --css "select[name=country]"
 # the compound.options_total is 137, but compound.current is "" — unselected.
-opencli browser form select 12 "Uruguay"
-opencli browser form get value 12                   # { value: "uy", match_level: "exact" }
+ClouDownloader browser form select 12 "Uruguay"
+ClouDownloader browser form get value 12                   # { value: "uy", match_level: "exact" }
 ```
 
 ### Pick from a custom React dropdown
@@ -349,13 +349,13 @@ Use this for Radix, shadcn, Material UI, Mercury-style category fields, and
 other controls that are not native `<select>`.
 
 ```bash
-opencli browser mercury state                          # find category trigger ref
+ClouDownloader browser mercury state                          # find category trigger ref
 # If the trigger/option is not clear, use AX:
-opencli browser mercury state --source ax              # look for combobox/button/listbox/option names
-opencli browser mercury click 7                        # click category trigger
-opencli browser mercury state --source ax              # fresh refs after the portal/listbox opens
-opencli browser mercury click 12                       # click option
-opencli browser mercury get text 7                     # verify visible selected label
+ClouDownloader browser mercury state --source ax              # look for combobox/button/listbox/option names
+ClouDownloader browser mercury click 7                        # click category trigger
+ClouDownloader browser mercury state --source ax              # fresh refs after the portal/listbox opens
+ClouDownloader browser mercury click 12                       # click option
+ClouDownloader browser mercury get text 7                     # verify visible selected label
 ```
 
 Do not use `browser select` on these widgets. `browser select` is only for
@@ -368,7 +368,7 @@ When deciding whether AX refs are better for a page, collect metrics without
 sharing page contents:
 
 ```bash
-opencli browser compare state --compare-sources
+ClouDownloader browser compare state --compare-sources
 ```
 
 Report `sources.dom.refs`, `sources.ax.refs`, `frame_sections`,
@@ -378,28 +378,28 @@ arguing that AX should become the default on a site.
 ### Scrape a list via network instead of DOM
 
 ```bash
-opencli browser hn open "https://news.ycombinator.com"
-opencli browser hn network --filter "title,score"
+ClouDownloader browser hn open "https://news.ycombinator.com"
+ClouDownloader browser hn network --filter "title,score"
 # -> find the /topstories entry, note its key
-opencli browser hn network --detail topstories-a1b2
+ClouDownloader browser hn network --detail topstories-a1b2
 ```
 
 ### Read a long article in chunks
 
 ```bash
-opencli browser article open "https://blog.example.com/long-post"
-opencli browser article extract --chunk-size 8000
+ClouDownloader browser article open "https://blog.example.com/long-post"
+ClouDownloader browser article extract --chunk-size 8000
 # -> content + next_start_char: 8000
-opencli browser article extract --start 8000 --chunk-size 8000
+ClouDownloader browser article extract --start 8000 --chunk-size 8000
 # ...until next_start_char is null
 ```
 
 ### Cross-origin iframe
 
 ```bash
-opencli browser checkout frames
+ClouDownloader browser checkout frames
 # -> [{"index": 0, "url": "https://checkout.stripe.com/...", ...}]
-opencli browser checkout eval "(() => document.querySelector('input[name=cardnumber]')?.value)()" --frame 0
+ClouDownloader browser checkout eval "(() => document.querySelector('input[name=cardnumber]')?.value)()" --frame 0
 ```
 
 `browser state --source ax` may omit cross-origin iframe contents or fail to
@@ -425,7 +425,7 @@ normal DOM `state`, or navigate/bind directly to the iframe URL when possible.
 
 | symptom | fix |
 |---------|-----|
-| `opencli doctor` red: "Browser not connected" | Start Chrome with `--remote-debugging-port=9222`, or install the extension from the [Chrome Web Store](https://chromewebstore.google.com/detail/opencli/ildkmabpimmkaediidaifkhjpohdnifk). |
+| `ClouDownloader doctor` red: "Browser not connected" | Start Chrome with `--remote-debugging-port=9222`, or install the extension from the [Chrome Web Store](https://chromewebstore.google.com/detail/opencli/ildkmabpimmkaediidaifkhjpohdnifk). |
 | `attach failed: chrome-extension://...` | Disable 1Password / other CDP-hungry extensions temporarily. |
 | `selector_not_found` right after `state` | Page mutated. `wait selector "..."` then retry. |
 | `stale_ref` across every command | You are reusing refs from a prior page. Re-`state`. |

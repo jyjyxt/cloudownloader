@@ -41,7 +41,7 @@ describe('rewriteBrowserArgv', () => {
     expect(rewriteBrowserArgv(['browser', '-h'])).toEqual(['browser', '-h']);
   });
 
-  it('refuses the retired `opencli browser --session foo ...` user form', () => {
+  it('refuses the retired `ClouDownloader browser --session foo ...` user form', () => {
     // The flag form is no longer a public entrance. Tests calling
     // program.parseAsync directly bypass the preprocessor, so internal
     // callers still work; but the user-facing pipeline throws.
@@ -65,7 +65,7 @@ describe('rewriteBrowserArgv', () => {
   });
 
   it('only rewrites when `browser` is the root command, not deeper in argv', () => {
-    // `opencli adapter init browser/x` — the literal `browser` is a path argument,
+    // `ClouDownloader adapter init browser/x` — the literal `browser` is a path argument,
     // not the root command. Must not be touched.
     expect(rewriteBrowserArgv(['adapter', 'init', 'browser', 'x'])).toEqual([
       'adapter',

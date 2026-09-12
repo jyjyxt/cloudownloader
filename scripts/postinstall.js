@@ -23,36 +23,36 @@ import { createRequire } from 'node:module';
 
 // ── Completion script content ──────────────────────────────────────────────
 
-const BASH_COMPLETION = `# Bash completion for opencli (auto-installed)
-_opencli_completions() {
+const BASH_COMPLETION = `# Bash completion for ClouDownloader (auto-installed)
+_ClouDownloader_completions() {
   local cur words cword
   _get_comp_words_by_ref -n : cur words cword
 
   local completions
-  completions=$(opencli --get-completions --cursor "$cword" "\${words[@]:1}" 2>/dev/null)
+  completions=$(ClouDownloader --get-completions --cursor "$cword" "\${words[@]:1}" 2>/dev/null)
 
   COMPREPLY=( $(compgen -W "$completions" -- "$cur") )
   __ltrim_colon_completions "$cur"
 }
-complete -F _opencli_completions opencli
+complete -F _ClouDownloader_completions ClouDownloader
 `;
 
-const ZSH_COMPLETION = `#compdef opencli
-# Zsh completion for opencli (auto-installed)
-_opencli() {
+const ZSH_COMPLETION = `#compdef ClouDownloader
+# Zsh completion for ClouDownloader (auto-installed)
+_ClouDownloader() {
   local -a completions
   local cword=$((CURRENT - 1))
-  completions=(\${(f)"$(opencli --get-completions --cursor "$cword" "\${words[@]:1}" 2>/dev/null)"})
+  completions=(\${(f)"$(ClouDownloader --get-completions --cursor "$cword" "\${words[@]:1}" 2>/dev/null)"})
   compadd -a completions
 }
-_opencli
+_ClouDownloader
 `;
 
-const FISH_COMPLETION = `# Fish completion for opencli (auto-installed)
-complete -c opencli -f -a '(
+const FISH_COMPLETION = `# Fish completion for ClouDownloader (auto-installed)
+complete -c ClouDownloader -f -a '(
   set -l tokens (commandline -cop)
   set -l cursor (count (commandline -cop))
-  opencli --get-completions --cursor $cursor $tokens[2..] 2>/dev/null
+  ClouDownloader --get-completions --cursor $cursor $tokens[2..] 2>/dev/null
 )'
 `;
 
@@ -117,7 +117,7 @@ function main() {
     switch (shell) {
       case 'zsh': {
         const completionsDir = join(home, '.zsh', 'completions');
-        const completionFile = join(completionsDir, '_opencli');
+        const completionFile = join(completionsDir, '_ClouDownloader');
         ensureDir(completionsDir);
         writeFileSync(completionFile, ZSH_COMPLETION, 'utf8');
 
@@ -133,7 +133,7 @@ function main() {
       }
       case 'bash': {
         const userCompDir = join(home, '.bash_completion.d');
-        const completionFile = join(userCompDir, 'opencli');
+        const completionFile = join(userCompDir, 'ClouDownloader');
         ensureDir(userCompDir);
         writeFileSync(completionFile, BASH_COMPLETION, 'utf8');
 
@@ -147,7 +147,7 @@ function main() {
       }
       case 'fish': {
         const completionsDir = join(home, '.config', 'fish', 'completions');
-        const completionFile = join(completionsDir, 'opencli.fish');
+        const completionFile = join(completionsDir, 'ClouDownloader.fish');
         ensureDir(completionsDir);
         writeFileSync(completionFile, FISH_COMPLETION, 'utf8');
 
@@ -176,7 +176,7 @@ function main() {
       'utf8'
     );
     console.log(`✓ Spotify credentials template created at ${spotifyEnvFile}`);
-    console.log(`  Edit the file and add your Client ID and Secret, then run: opencli spotify auth`);
+    console.log(`  Edit the file and add your Client ID and Secret, then run: ClouDownloader spotify auth`);
   }
 
   // ── Browser Bridge setup hint ───────────────────────────────────────
