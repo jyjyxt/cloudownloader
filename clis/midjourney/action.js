@@ -118,7 +118,7 @@ cli({
   name: 'action',
   access: 'write',
   description: 'Run a typed Creation Action: vary, upscale, rerun, edit, animate, loop, extend, or cancel',
-  example: 'opencli midjourney action <job> vary-subtle --index 1 --dry-run',
+  example: 'cloudl midjourney action <job> vary-subtle --index 1 --dry-run',
   domain: 'www.midjourney.com',
   strategy: Strategy.UI,
   browser: true,
@@ -399,7 +399,7 @@ cli({
       throw new TimeoutError(
         `Midjourney action ${operation}`,
         timeout,
-        `The child job ${childId} was submitted; check it with \`opencli midjourney status ${childId}\`.`,
+        `The child job ${childId} was submitted; check it with \`cloudl midjourney status ${childId}\`.`,
       );
     }
     await waitForCompletedJob(page, childId, remainingSeconds);

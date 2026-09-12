@@ -6,15 +6,15 @@ Browser adapter for [Doubao Chat](https://www.doubao.com/chat).
 
 | Command | Description |
 |---------|-------------|
-| `opencli doubao status` | Check whether the page is reachable and whether Doubao appears logged in |
-| `opencli doubao new` | Start a new Doubao conversation |
-| `opencli doubao send "..."` | Send a message to the current Doubao chat |
-| `opencli doubao read` | Read the visible Doubao conversation |
-| `opencli doubao ask "..."` | Send a prompt and wait for a reply |
-| `opencli doubao detail <id>` | 对话详情 |
-| `opencli doubao history` | 历史对话列表 |
-| `opencli doubao meeting-summary <id>` | 会议总结 |
-| `opencli doubao meeting-transcript <id>` | 会议记录 |
+| `cloudl doubao status` | Check whether the page is reachable and whether Doubao appears logged in |
+| `cloudl doubao new` | Start a new Doubao conversation |
+| `cloudl doubao send "..."` | Send a message to the current Doubao chat |
+| `cloudl doubao read` | Read the visible Doubao conversation |
+| `cloudl doubao ask "..."` | Send a prompt and wait for a reply |
+| `cloudl doubao detail <id>` | 对话详情 |
+| `cloudl doubao history` | 历史对话列表 |
+| `cloudl doubao meeting-summary <id>` | 会议总结 |
+| `cloudl doubao meeting-transcript <id>` | 会议记录 |
 
 ## Prerequisites
 
@@ -25,11 +25,11 @@ Browser adapter for [Doubao Chat](https://www.doubao.com/chat).
 ## Examples
 
 ```bash
-opencli doubao status
-opencli doubao new
-opencli doubao send "帮我总结这段文档"
-opencli doubao read
-opencli doubao ask "请写一个 Python 快速排序示例" --timeout 90
+cloudl doubao status
+cloudl doubao new
+cloudl doubao send "帮我总结这段文档"
+cloudl doubao read
+cloudl doubao ask "请写一个 Python 快速排序示例" --timeout 90
 ```
 
 ## Notes

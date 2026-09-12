@@ -6,67 +6,67 @@
 
 | Command | Description |
 |---------|-------------|
-| `opencli tiktok profile` | Get user profile info |
-| `opencli tiktok search` | Search videos |
-| `opencli tiktok explore` | Trending videos from explore page |
-| `opencli tiktok user` | Get recent videos from a user via page-context APIs |
-| `opencli tiktok following` | List accounts you follow |
-| `opencli tiktok friends` | Friend suggestions |
-| `opencli tiktok live` | Browse live streams |
-| `opencli tiktok notifications` | Get notifications |
-| `opencli tiktok creator-videos` | List TikTok Studio creator videos and metrics |
-| `opencli tiktok like` | Like a video |
-| `opencli tiktok unlike` | Unlike a video |
-| `opencli tiktok save` | Add to Favorites |
-| `opencli tiktok unsave` | Remove from Favorites |
-| `opencli tiktok follow` | Follow a user |
-| `opencli tiktok unfollow` | Unfollow a user |
-| `opencli tiktok comment` | Comment on a video |
+| `cloudl tiktok profile` | Get user profile info |
+| `cloudl tiktok search` | Search videos |
+| `cloudl tiktok explore` | Trending videos from explore page |
+| `cloudl tiktok user` | Get recent videos from a user via page-context APIs |
+| `cloudl tiktok following` | List accounts you follow |
+| `cloudl tiktok friends` | Friend suggestions |
+| `cloudl tiktok live` | Browse live streams |
+| `cloudl tiktok notifications` | Get notifications |
+| `cloudl tiktok creator-videos` | List TikTok Studio creator videos and metrics |
+| `cloudl tiktok like` | Like a video |
+| `cloudl tiktok unlike` | Unlike a video |
+| `cloudl tiktok save` | Add to Favorites |
+| `cloudl tiktok unsave` | Remove from Favorites |
+| `cloudl tiktok follow` | Follow a user |
+| `cloudl tiktok unfollow` | Unfollow a user |
+| `cloudl tiktok comment` | Comment on a video |
 
 ## Usage Examples
 
 ```bash
 # View a user's profile
-opencli tiktok profile --username tiktok
+cloudl tiktok profile --username tiktok
 
 # Search videos
-opencli tiktok search "cooking" --limit 10
+cloudl tiktok search "cooking" --limit 10
 
 # Trending explore videos
-opencli tiktok explore --limit 20
+cloudl tiktok explore --limit 20
 
 # Recent videos from a user
-opencli tiktok user dictogo --limit 20
+cloudl tiktok user dictogo --limit 20
 
 # Browse live streams
-opencli tiktok live --limit 10
+cloudl tiktok live --limit 10
 
 # List who you follow
-opencli tiktok following
+cloudl tiktok following
 
 # List your TikTok Studio creator videos
-opencli tiktok creator-videos --limit 20
+cloudl tiktok creator-videos --limit 20
 
 # Friend suggestions
-opencli tiktok friends --limit 10
+cloudl tiktok friends --limit 10
 
 # Like/unlike a video
-opencli tiktok like "https://www.tiktok.com/@user/video/123"
-opencli tiktok unlike "https://www.tiktok.com/@user/video/123"
+cloudl tiktok like "https://www.tiktok.com/@user/video/123"
+cloudl tiktok unlike "https://www.tiktok.com/@user/video/123"
 
 # Save/unsave (Favorites)
-opencli tiktok save "https://www.tiktok.com/@user/video/123"
-opencli tiktok unsave "https://www.tiktok.com/@user/video/123"
+cloudl tiktok save "https://www.tiktok.com/@user/video/123"
+cloudl tiktok unsave "https://www.tiktok.com/@user/video/123"
 
 # Follow/unfollow
-opencli tiktok follow nasa
-opencli tiktok unfollow nasa
+cloudl tiktok follow nasa
+cloudl tiktok unfollow nasa
 
 # Comment on a video
-opencli tiktok comment "https://www.tiktok.com/@user/video/123" "Great!"
+cloudl tiktok comment "https://www.tiktok.com/@user/video/123" "Great!"
 
 # JSON output
-opencli tiktok profile --username tiktok -f json
+cloudl tiktok profile --username tiktok -f json
 ```
 
 ## Output

@@ -6,20 +6,20 @@
 
 | Command | Description |
 |---------|-------------|
-| `opencli jianyu search "<query>" --limit <n> [--since_days <n>]` | Search Jianyu bid notices and keep only accessible detail links |
-| `opencli jianyu detail "<url>"` | Extract detail-page evidence blocks from a search URL |
+| `cloudl jianyu search "<query>" --limit <n> [--since_days <n>]` | Search Jianyu bid notices and keep only accessible detail links |
+| `cloudl jianyu detail "<url>"` | Extract detail-page evidence blocks from a search URL |
 
 ## Usage Examples
 
 ```bash
 # Search by keyword
-opencli jianyu search "procurement" --limit 20 -f json
+cloudl jianyu search "procurement" --limit 20 -f json
 
 # Search another keyword with an explicit recency window
-opencli jianyu search "substation" --limit 10 --since_days 30 -f json
+cloudl jianyu search "substation" --limit 10 --since_days 30 -f json
 
 # Extract structured detail evidence
-opencli jianyu detail "https://www.jianyu360.cn/nologin/content/....html" -f json
+cloudl jianyu detail "https://www.jianyu360.cn/nologin/content/....html" -f json
 ```
 
 ## Prerequisites

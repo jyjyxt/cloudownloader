@@ -20,7 +20,7 @@ for the selected deployment.
 ## Command
 
 ```text
-opencli minimax music [prompt]
+cloudl minimax music [prompt]
 ```
 
 Generation can spend quota, so `--execute` is always required.
@@ -29,25 +29,25 @@ Generation can spend quota, so `--execute` is always required.
 export MINIMAX_API_KEY=<your-api-key>
 
 # Instrumental track; returns a 24-hour download URL
-opencli minimax music "warm lo-fi piano, 80 BPM" \
+cloudl minimax music "warm lo-fi piano, 80 BPM" \
   --instrumental --execute
 
 # Vocal track with supplied lyrics
-opencli minimax music "dream pop, shoegaze guitars" \
+cloudl minimax music "dream pop, shoegaze guitars" \
   --lyrics "[Verse]
 Night rain on the window" \
   --audio-format wav --sample-rate 44100 --execute
 
 # Ask MiniMax to generate lyrics from the prompt
-opencli minimax music "anthemic stadium rock" \
+cloudl minimax music "anthemic stadium rock" \
   --lyrics-optimizer --execute
 
 # Decode inline hex audio and atomically save it locally
-opencli minimax music "ambient drone" \
+cloudl minimax music "ambient drone" \
   --instrumental --output-format hex --op ~/Music/minimax --execute
 
 # China deployment with its optional AIGC watermark
-opencli minimax music "国风古筝，慢板" \
+cloudl minimax music "国风古筝，慢板" \
   --instrumental --region cn --aigc-watermark --execute
 ```
 

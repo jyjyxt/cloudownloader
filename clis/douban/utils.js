@@ -91,7 +91,7 @@ async function ensureDoubanReady(page) {
     })()
   `);
     if (state?.blocked) {
-        throw new CliError('AUTH_REQUIRED', 'Douban requires a logged-in browser session before these commands can load data.', 'Please sign in to douban.com in the browser that opencli reuses, then rerun the command.');
+        throw new CliError('AUTH_REQUIRED', 'Douban requires a logged-in browser session before these commands can load data.', 'Please sign in to douban.com in the browser that cloudl reuses, then rerun the command.');
     }
 }
 function isDetachedPageError(error) {

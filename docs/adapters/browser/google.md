@@ -6,11 +6,11 @@
 
 | Command | Description |
 |---------|-------------|
-| `opencli google images <keyword>` | Search Google Images and extract visible photo/image results |
-| `opencli google news [keyword]` | Get Google News headlines (top stories or search) |
-| `opencli google search <keyword>` | Search Google and extract results from the page |
-| `opencli google suggest <keyword>` | Get Google search suggestions |
-| `opencli google trends` | Get Google Trends daily trending searches |
+| `cloudl google images <keyword>` | Search Google Images and extract visible photo/image results |
+| `cloudl google news [keyword]` | Get Google News headlines (top stories or search) |
+| `cloudl google search <keyword>` | Search Google and extract results from the page |
+| `cloudl google suggest <keyword>` | Get Google search suggestions |
+| `cloudl google trends` | Get Google Trends daily trending searches |
 
 ## What works today
 
@@ -33,28 +33,28 @@
 
 ```bash
 # Search Google Images / photos
-opencli google images "golden gate bridge at sunset" --limit 10
+cloudl google images "golden gate bridge at sunset" --limit 10
 
 # Faster thumbnail-only image search
-opencli google images "golden gate bridge at sunset" --limit 10 --resolve false
+cloudl google images "golden gate bridge at sunset" --limit 10 --resolve false
 
 # Get top news headlines
-opencli google news --limit 5
+cloudl google news --limit 5
 
 # Search news for a topic
-opencli google news "artificial intelligence" --limit 10 --lang en --region US
+cloudl google news "artificial intelligence" --limit 10 --lang en --region US
 
 # Search Google
-opencli google search "typescript tutorial" --limit 10
+cloudl google search "typescript tutorial" --limit 10
 
 # Get search suggestions
-opencli google suggest python
+cloudl google suggest python
 
 # Output as JSON
-opencli google search "machine learning" -f json
+cloudl google search "machine learning" -f json
 
 # Get trending searches in Japan
-opencli google trends --region JP --limit 10
+cloudl google trends --region JP --limit 10
 ```
 
 ## Prerequisites

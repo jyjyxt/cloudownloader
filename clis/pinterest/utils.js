@@ -82,7 +82,7 @@ export function tryParseBoardRef(raw) {
     throw new ArgumentError(
       `"${raw}" is a Pinterest /${username}/ URL, not a board`,
       username.toLowerCase() === 'pin'
-        ? 'Pass the board this pin lives on, e.g. janedoe/my-board (`opencli pinterest pin <id>` reports it)'
+        ? 'Pass the board this pin lives on, e.g. janedoe/my-board (`cloudl pinterest pin <id>` reports it)'
         : 'Pass <username>/<slug>, a board URL, or a numeric board id',
     );
   }
@@ -300,7 +300,7 @@ export async function resolveBoardTarget(page, raw) {
   );
   const url = board && board.url;
   if (!url) {
-    throw new ArgumentError(`No board with id "${trimmed}"`, 'Check the id with `opencli pinterest user-boards <username>`');
+    throw new ArgumentError(`No board with id "${trimmed}"`, 'Check the id with `cloudl pinterest user-boards <username>`');
   }
   const parts = decodeSegment(url).split('/').filter(Boolean);
   if (parts.length < 2) {
@@ -320,7 +320,7 @@ export async function resolveSection(page, boardId, sectionValue, sourceUrl) {
   const { results } = await pinterestResourceFetch(page, 'BoardSectionsResource', { board_id: String(boardId) }, sourceUrl);
   const sections = results.filter((section) => section && section.id);
   if (sections.length === 0) {
-    throw new ArgumentError(`Board has no sections, so --section "${wanted}" cannot be used`, 'Create one first with `opencli pinterest board-section-create`');
+    throw new ArgumentError(`Board has no sections, so --section "${wanted}" cannot be used`, 'Create one first with `cloudl pinterest board-section-create`');
   }
   const folded = normalizeForMatch(wanted);
   const match = sections.find((section) => String(section.id) === wanted)
@@ -349,7 +349,7 @@ export async function movePinToSection(page, pinId, boardId, sectionId, sourceUr
   } catch (err) {
     throw new CommandExecutionError(
       `Pin ${pinId} was created but could not be moved into section ${sectionId}: ${err.message}`,
-      `The pin is on the board root — move it with \`opencli pinterest pin-update ${pinId} --board <board> --section ${sectionId}\``,
+      `The pin is on the board root — move it with \`cloudl pinterest pin-update ${pinId} --board <board> --section ${sectionId}\``,
     );
   }
 }

@@ -37,7 +37,7 @@ cli({
     func: async (page, kwargs) => {
         const uid = String(kwargs.uid ?? '');
         if (!/^\d+$/.test(uid)) {
-            throw new ArgumentError(`Invalid user ID: ${uid}`, 'Example: opencli pixiv user 123456');
+            throw new ArgumentError(`Invalid user ID: ${uid}`, 'Example: cloudl pixiv user 123456');
         }
         const body = await pixivFetch(page, `/ajax/user/${uid}`, {
             params: { full: 1 },

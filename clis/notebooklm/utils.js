@@ -33,14 +33,14 @@ export function parseNotebooklmIdFromUrl(url) {
 const NOTEBOOK_UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 function ensureNotebookUuid(candidate) {
     if (!NOTEBOOK_UUID_RE.test(candidate)) {
-        throw new CliError('NOTEBOOKLM_INVALID_NOTEBOOK', `NotebookLM notebook id "${candidate}" is not a valid UUID`, `Pass a notebook id from \`opencli notebooklm list\` or a full notebook URL like ${NOTEBOOKLM_HOME_URL}notebook/<uuid>.`);
+        throw new CliError('NOTEBOOKLM_INVALID_NOTEBOOK', `NotebookLM notebook id "${candidate}" is not a valid UUID`, `Pass a notebook id from \`cloudl notebooklm list\` or a full notebook URL like ${NOTEBOOKLM_HOME_URL}notebook/<uuid>.`);
     }
     return candidate;
 }
 export function parseNotebooklmNotebookTarget(value) {
     const normalized = value.trim();
     if (!normalized) {
-        throw new CliError('NOTEBOOKLM_INVALID_NOTEBOOK', 'NotebookLM notebook id is required', 'Pass a notebook id from `opencli notebooklm list` or a full notebook URL.');
+        throw new CliError('NOTEBOOKLM_INVALID_NOTEBOOK', 'NotebookLM notebook id is required', 'Pass a notebook id from `cloudl notebooklm list` or a full notebook URL.');
     }
     if (/^https?:\/\//i.test(normalized)) {
         let parsed;
@@ -51,7 +51,7 @@ export function parseNotebooklmNotebookTarget(value) {
             throw new CliError('NOTEBOOKLM_INVALID_NOTEBOOK', 'NotebookLM notebook URL is invalid', `Pass a full NotebookLM notebook URL like ${NOTEBOOKLM_HOME_URL}notebook/<uuid>.`);
         }
         if (!parseTrustedNotebooklmUrl(parsed.href)) {
-            throw new CliError('NOTEBOOKLM_INVALID_NOTEBOOK', 'NotebookLM notebook URL must be a NotebookLM URL', 'Pass a notebook id from `opencli notebooklm list` or a full NotebookLM notebook URL.');
+            throw new CliError('NOTEBOOKLM_INVALID_NOTEBOOK', 'NotebookLM notebook URL must be a NotebookLM URL', 'Pass a notebook id from `cloudl notebooklm list` or a full NotebookLM notebook URL.');
         }
         const pathMatch = parsed.pathname.match(/^\/notebook\/([^/]+)\/?$/);
         if (!pathMatch?.[1]) {
@@ -63,7 +63,7 @@ export function parseNotebooklmNotebookTarget(value) {
         catch (error) {
             if (error instanceof CliError)
                 throw error;
-            throw new CliError('NOTEBOOKLM_INVALID_NOTEBOOK', 'NotebookLM notebook URL contains an invalid encoded id', 'Pass a notebook id from `opencli notebooklm list` or a full NotebookLM notebook URL.');
+            throw new CliError('NOTEBOOKLM_INVALID_NOTEBOOK', 'NotebookLM notebook URL contains an invalid encoded id', 'Pass a notebook id from `cloudl notebooklm list` or a full NotebookLM notebook URL.');
         }
     }
     const pathMatch = normalized.match(/(?:^|\/)notebook\/([^/?#]+)/);

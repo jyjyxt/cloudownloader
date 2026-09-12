@@ -12,7 +12,7 @@ cli({
   name: 'settings',
   access: 'read',
   description: 'Read the currently selected Midjourney image and video settings from the visible Create UI',
-  example: 'opencli midjourney settings -f yaml',
+  example: 'cloudl midjourney settings -f yaml',
   domain: MIDJOURNEY_DOMAIN,
   strategy: Strategy.UI,
   browser: true,

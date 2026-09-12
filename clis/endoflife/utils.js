@@ -5,7 +5,7 @@
 import { ArgumentError, CommandExecutionError, EmptyResultError } from '@jackwener/opencli/errors';
 
 export const EOL_BASE = 'https://endoflife.date/api';
-const UA = 'opencli-endoflife-adapter (+https://github.com/jackwener/opencli)';
+const UA = 'opencli-endoflife-adapter (+https://github.com/jyjyxt/cloudownloader)';
 
 // endoflife.date product slugs are lowercase ascii + digits + dashes / dots, up to 80 chars.
 const PRODUCT = /^[a-z0-9][a-z0-9._-]{0,79}$/;

@@ -21,7 +21,7 @@ export const historyCommand = cli({
         const limit = requirePositiveInt(
             Number(kwargs.limit ?? 20),
             'claude history --limit',
-            'Example: opencli claude history --limit 20',
+            'Example: cloudl claude history --limit 20',
         );
         const conversations = await getConversationList(page);
         await ensureClaudeLogin(page, 'Claude history requires a logged-in Claude session.');

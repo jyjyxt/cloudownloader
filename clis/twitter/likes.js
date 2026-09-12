@@ -223,7 +223,7 @@ cli({
         const rawUsername = String(kwargs.username ?? '').trim();
         let username = normalizeTwitterScreenName(rawUsername);
         if (rawUsername && !username) {
-            throw new ArgumentError('twitter likes username must be a valid Twitter/X handle', 'Example: opencli twitter likes @jack --limit 20');
+            throw new ArgumentError('twitter likes username must be a valid Twitter/X handle', 'Example: cloudl twitter likes @jack --limit 20');
         }
         const cookies = await page.getCookies({ url: 'https://x.com' });
         const ct0 = cookies.find((c) => c.name === 'ct0')?.value || null;

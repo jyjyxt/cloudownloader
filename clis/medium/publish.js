@@ -2,7 +2,7 @@
  * Medium story publisher via the logged-in browser editor.
  *
  * Usage:
- *   opencli medium publish "Article body" --title "Article title" --tags ai,writing
+ *   cloudl medium publish "Article body" --title "Article title" --tags ai,writing
  */
 import { cli, Strategy } from '@jackwener/opencli/registry';
 import { ArgumentError, AuthRequiredError, CommandExecutionError, TimeoutError } from '@jackwener/opencli/errors';
@@ -41,7 +41,7 @@ export async function waitForEditor(page) {
         if (state?.hasEditor && String(state.url || '').includes('medium.com/new-story')) return;
         if (attempt < EDITOR_READY_TIMEOUT_SECONDS * 2 - 1) await page.wait({ time: 0.5 });
     }
-    throw new AuthRequiredError('medium.com', 'Medium editor did not load. Run `opencli medium login` and retry.');
+    throw new AuthRequiredError('medium.com', 'Medium editor did not load. Run `cloudl medium login` and retry.');
 }
 
 export async function fillStory(page, title, content) {

@@ -174,7 +174,7 @@ export function strategyLabel(cmd: CliCommand): string {
  * reads (`browser`, `navigateBefore`). After normalization, execution code
  * (resolvePreNav, shouldUseBrowserSession) never reads `cmd.strategy`.
  *
- * `strategy` itself is preserved as metadata for `ClouDownloader list`, cascade
+ * `strategy` itself is preserved as metadata for `cloudl list`, cascade
  * probe, adapter generation, and human documentation.
  *
  * Override priority (highest wins):

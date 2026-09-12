@@ -8,24 +8,24 @@ Search the Online Encyclopedia of Integer Sequences by keyword or pattern, and f
 
 | Command | Description |
 |---------|-------------|
-| `opencli oeis search <query>` | Search OEIS sequences by keyword or numeric pattern |
-| `opencli oeis sequence <id>` | Full OEIS sequence detail by A-number |
+| `cloudl oeis search <query>` | Search OEIS sequences by keyword or numeric pattern |
+| `cloudl oeis sequence <id>` | Full OEIS sequence detail by A-number |
 
 ## Usage Examples
 
 ```bash
 # Keyword search
-opencli oeis search fibonacci
-opencli oeis search "prime gaps" --limit 5
+cloudl oeis search fibonacci
+cloudl oeis search "prime gaps" --limit 5
 
 # Numeric pattern search (find sequences matching a prefix)
-opencli oeis search "1,1,2,3,5,8"            # Fibonacci
-opencli oeis search "2,3,5,7,11,13,17"       # primes
+cloudl oeis search "1,1,2,3,5,8"            # Fibonacci
+cloudl oeis search "2,3,5,7,11,13,17"       # primes
 
 # Sequence detail (A-number round-trips from search)
-opencli oeis sequence A000045                  # Fibonacci
-opencli oeis sequence A000040                  # Primes
-opencli oeis sequence A000041                  # Partitions
+cloudl oeis sequence A000045                  # Fibonacci
+cloudl oeis sequence A000040                  # Primes
+cloudl oeis sequence A000041                  # Partitions
 ```
 
 ## Output Columns

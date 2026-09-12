@@ -8,38 +8,38 @@ Access **Binance** market data from the terminal via the public API (no authenti
 
 | Command | Description |
 |---------|-------------|
-| `opencli binance price` | Get 24h ticker stats for one symbol |
-| `opencli binance prices` | Get latest prices for all symbols |
-| `opencli binance ticker` | Get 24h ticker stats for all symbols |
-| `opencli binance pairs` | List exchange trading pairs |
-| `opencli binance trades` | Get recent trades for one symbol |
-| `opencli binance depth` | Get order-book depth for one symbol |
-| `opencli binance asks` | Show ask-side depth for one symbol |
-| `opencli binance klines` | Get candlestick data |
-| `opencli binance top` | Show top movers by volume |
-| `opencli binance gainers` | Show top gainers |
-| `opencli binance losers` | Show top losers |
+| `cloudl binance price` | Get 24h ticker stats for one symbol |
+| `cloudl binance prices` | Get latest prices for all symbols |
+| `cloudl binance ticker` | Get 24h ticker stats for all symbols |
+| `cloudl binance pairs` | List exchange trading pairs |
+| `cloudl binance trades` | Get recent trades for one symbol |
+| `cloudl binance depth` | Get order-book depth for one symbol |
+| `cloudl binance asks` | Show ask-side depth for one symbol |
+| `cloudl binance klines` | Get candlestick data |
+| `cloudl binance top` | Show top movers by volume |
+| `cloudl binance gainers` | Show top gainers |
+| `cloudl binance losers` | Show top losers |
 
 ## Usage Examples
 
 ```bash
 # One symbol, 24h stats
-opencli binance price BTCUSDT
+cloudl binance price BTCUSDT
 
 # Latest prices for all pairs
-opencli binance prices
+cloudl binance prices
 
 # Recent trades
-opencli binance trades BTCUSDT --limit 20
+cloudl binance trades BTCUSDT --limit 20
 
 # Order-book depth
-opencli binance depth BTCUSDT --limit 20
+cloudl binance depth BTCUSDT --limit 20
 
 # 1h candles
-opencli binance klines BTCUSDT --interval 1h --limit 50
+cloudl binance klines BTCUSDT --interval 1h --limit 50
 
 # JSON output
-opencli binance top -f json
+cloudl binance top -f json
 ```
 
 ## Prerequisites

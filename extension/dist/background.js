@@ -1056,7 +1056,7 @@ function getLeaseKey(session, surface) {
 }
 function getSessionName(session) {
 	const raw = session?.trim();
-	if (!raw) throw new CommandFailure("session_required", "Browser session is required.", "Pass a browser session name, e.g. opencli browser <session> <command>.");
+	if (!raw) throw new CommandFailure("session_required", "Browser session is required.", "Pass a browser session name, e.g. cloudl browser <session> <command>.");
 	return raw;
 }
 function getCommandSurface(cmd) {
@@ -1838,7 +1838,7 @@ async function resolveTab(tabId, leaseKey, initialUrl) {
 			tabId,
 			tab
 		};
-		if (session && !session.owned) throw new CommandFailure(matchesSession ? "bound_tab_not_debuggable" : "bound_tab_mismatch", matchesSession ? `Bound tab for session "${session.session}" is not debuggable (${tab.url ?? "unknown URL"}).` : `Target tab is not the tab bound to session "${session.session}".`, "Run \"opencli browser bind\" again on a debuggable http(s) tab.");
+		if (session && !session.owned) throw new CommandFailure(matchesSession ? "bound_tab_not_debuggable" : "bound_tab_mismatch", matchesSession ? `Bound tab for session "${session.session}" is not debuggable (${tab.url ?? "unknown URL"}).` : `Target tab is not the tab bound to session "${session.session}".`, "Run \"cloudl browser bind\" again on a debuggable http(s) tab.");
 		if (session && !matchesSession && session.preferredTabId === null && isDebuggableUrl(tab.url)) {
 			console.warn(`[opencli] Tab ${tabId} drifted to window ${tab.windowId}, moving back to ${session.windowId}`);
 			try {
@@ -1859,7 +1859,7 @@ async function resolveTab(tabId, leaseKey, initialUrl) {
 		if (err instanceof CommandFailure) throw err;
 		if (existingSession && !existingSession.owned) {
 			automationSessions.delete(leaseKey);
-			throw new CommandFailure("bound_tab_gone", `Bound tab for session "${existingSession.session}" no longer exists.`, "Run \"opencli browser bind\" again, then retry the command.");
+			throw new CommandFailure("bound_tab_gone", `Bound tab for session "${existingSession.session}" no longer exists.`, "Run \"cloudl browser bind\" again, then retry the command.");
 		}
 		console.warn(`[opencli] Tab ${tabId} no longer exists, re-resolving`);
 	}
@@ -1872,11 +1872,11 @@ async function resolveTab(tabId, leaseKey, initialUrl) {
 				tabId: preferredTab.id,
 				tab: preferredTab
 			};
-			if (!session.owned) throw new CommandFailure("bound_tab_not_debuggable", `Bound tab for session "${session.session}" is not debuggable (${preferredTab.url ?? "unknown URL"}).`, "Switch the tab to an http(s) page or run \"opencli browser bind\" on another tab.");
+			if (!session.owned) throw new CommandFailure("bound_tab_not_debuggable", `Bound tab for session "${session.session}" is not debuggable (${preferredTab.url ?? "unknown URL"}).`, "Switch the tab to an http(s) page or run \"cloudl browser bind\" on another tab.");
 		} catch (err) {
 			if (err instanceof CommandFailure) throw err;
 			await removeLeaseSession(leaseKey);
-			if (!session.owned) throw new CommandFailure("bound_tab_gone", `Bound tab for session "${session.session}" no longer exists.`, "Run \"opencli browser bind\" again, then retry the command.");
+			if (!session.owned) throw new CommandFailure("bound_tab_gone", `Bound tab for session "${session.session}" no longer exists.`, "Run \"cloudl browser bind\" again, then retry the command.");
 			return createOwnedTabLease(leaseKey, initialUrl);
 		}
 	}

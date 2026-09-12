@@ -6,39 +6,39 @@
 
 | Command | Description |
 |---------|-------------|
-| `opencli facebook profile` | Get user/page profile info |
-| `opencli facebook notifications` | Get recent notifications with `unread` / `time` / `url` / `notif_id` / `notif_type` |
-| `opencli facebook feed` | Get news feed posts |
-| `opencli facebook search` | Search people, pages, posts |
-| `opencli facebook marketplace-listings` | List your Marketplace seller listings |
-| `opencli facebook marketplace-inbox` | List recent Marketplace buyer/seller conversations |
-| `opencli facebook post` | Publish a text post with an optional image |
+| `cloudl facebook profile` | Get user/page profile info |
+| `cloudl facebook notifications` | Get recent notifications with `unread` / `time` / `url` / `notif_id` / `notif_type` |
+| `cloudl facebook feed` | Get news feed posts |
+| `cloudl facebook search` | Search people, pages, posts |
+| `cloudl facebook marketplace-listings` | List your Marketplace seller listings |
+| `cloudl facebook marketplace-inbox` | List recent Marketplace buyer/seller conversations |
+| `cloudl facebook post` | Publish a text post with an optional image |
 
 ## Usage Examples
 
 ```bash
 # View a profile
-opencli facebook profile zuck
+cloudl facebook profile zuck
 
 # Get notifications (default 15, max 100)
-opencli facebook notifications --limit 10
+cloudl facebook notifications --limit 10
 
 # News feed
-opencli facebook feed --limit 5
+cloudl facebook feed --limit 5
 
 # Search
-opencli facebook search "OpenAI" --limit 5
+cloudl facebook search "OpenAI" --limit 5
 
 # Marketplace seller listings and inbox
-opencli facebook marketplace-listings --limit 10
-opencli facebook marketplace-inbox --limit 10
+cloudl facebook marketplace-listings --limit 10
+cloudl facebook marketplace-inbox --limit 10
 
 # Publish a post
-opencli facebook post "Hello from OpenCLI"
-opencli facebook post "Photo update" --image /path/to/photo.jpg
+cloudl facebook post "Hello from OpenCLI"
+cloudl facebook post "Photo update" --image /path/to/photo.jpg
 
 # JSON output
-opencli facebook profile zuck -f json
+cloudl facebook profile zuck -f json
 ```
 
 ## Output

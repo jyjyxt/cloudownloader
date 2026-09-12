@@ -299,7 +299,7 @@ describe('Browser Bridge AX real Chrome smoke', () => {
     if (!bridge) {
       skipReason = process.env.CI
         ? 'Port 19825 is already in use in CI'
-        : 'Port 19825 is already in use; stop opencli daemon before running this e2e smoke locally';
+        : 'Port 19825 is already in use; stop cloudl daemon before running this e2e smoke locally';
       return;
     }
 

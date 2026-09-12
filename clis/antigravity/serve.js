@@ -6,7 +6,7 @@
  * and returns it in Anthropic format.
  *
  * Usage:
- *   opencli antigravity serve --port 8082
+ *   cloudl antigravity serve --port 8082
  *   ANTHROPIC_BASE_URL=http://localhost:8082 claude
  */
 import { createServer } from 'node:http';

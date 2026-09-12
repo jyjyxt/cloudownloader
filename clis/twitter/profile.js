@@ -85,7 +85,7 @@ cli({
         const rawUsername = String(kwargs.username ?? '').trim();
         let username = normalizeTwitterScreenName(rawUsername);
         if (rawUsername && !username) {
-            throw new ArgumentError('twitter profile username must be a valid Twitter/X handle', 'Example: opencli twitter profile @jack');
+            throw new ArgumentError('twitter profile username must be a valid Twitter/X handle', 'Example: cloudl twitter profile @jack');
         }
         // If no username, detect the logged-in user.
         // Bridge wraps primitive page.evaluate returns as { session, data:<value> };

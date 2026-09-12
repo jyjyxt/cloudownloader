@@ -100,7 +100,7 @@ function runSkillTask(task: SkillTask): TaskResult {
   const urlPart = task.url ? ` Start URL: ${task.url}` : '';
   const criteria = task.judge_context.map((c, i) => `${i + 1}. ${c}`).join('\n');
 
-  const prompt = `Complete this browser task using opencli browser commands:
+  const prompt = `Complete this browser task using cloudl browser commands:
 
 TASK: ${task.task}${urlPart}
 
@@ -110,7 +110,7 @@ ${criteria}
 At the very end of your response, output a JSON verdict on its own line:
 {"success": true/false, "explanation": "brief explanation"}
 
-Always close the browser with 'opencli browser close' when done.`;
+Always close the browser with 'cloudl browser close' when done.`;
 
   try {
     const output = execSync(

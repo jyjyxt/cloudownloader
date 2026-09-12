@@ -1,5 +1,5 @@
 /**
- * `opencli suno generate` — submit a Suno music-generation request, wait for
+ * `cloudl suno generate` — submit a Suno music-generation request, wait for
  * both clips to finish, and download selected formats locally.
  *
  * Targets the /api/generate/v2-web/ endpoint (cookie auth). Each generation
@@ -87,7 +87,7 @@ export const generateCommand = cli({
         if (!isCustom && !description.trim()) {
             throw new ArgumentError(
                 'Either provide a Simple-mode prompt as the positional argument, or pass --lyrics for Custom mode.',
-                'Examples:\n  opencli suno generate "lo-fi study beat, 80 bpm"\n  opencli suno generate --lyrics "[Verse]\\n..." --tags "synthwave, 120 bpm"',
+                'Examples:\n  cloudl suno generate "lo-fi study beat, 80 bpm"\n  cloudl suno generate --lyrics "[Verse]\\n..." --tags "synthwave, 120 bpm"',
             );
         }
         if (!isCustom && (tags || negativeTags)) {

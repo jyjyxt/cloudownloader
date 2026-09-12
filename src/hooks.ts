@@ -64,7 +64,7 @@ export function onAfterExecute(fn: HookFn): void {
   addHook('onAfterExecute', fn);
 }
 
-// ── Emit API (used internally by ClouDownloader core) ─────────────────────────────
+// ── Emit API (used internally by cloudl core) ─────────────────────────────
 
 /**
  * Trigger all registered handlers for a hook.

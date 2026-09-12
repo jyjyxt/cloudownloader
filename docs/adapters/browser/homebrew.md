@@ -8,29 +8,29 @@ Inspect Homebrew formulae and casks, plus the official install-rank analytics, w
 
 | Command | Description |
 |---------|-------------|
-| `opencli homebrew formula <name>` | Single Homebrew core formula's metadata |
-| `opencli homebrew cask <token>` | Single Homebrew cask's (macOS app) metadata |
-| `opencli homebrew popular` | Most-installed formulae or casks (Homebrew analytics ranking) |
+| `cloudl homebrew formula <name>` | Single Homebrew core formula's metadata |
+| `cloudl homebrew cask <token>` | Single Homebrew cask's (macOS app) metadata |
+| `cloudl homebrew popular` | Most-installed formulae or casks (Homebrew analytics ranking) |
 
 ## Usage Examples
 
 ```bash
 # Inspect a formula
-opencli homebrew formula wget
-opencli homebrew formula gcc@13
-opencli homebrew formula imagemagick
+cloudl homebrew formula wget
+cloudl homebrew formula gcc@13
+cloudl homebrew formula imagemagick
 
 # Inspect a cask (macOS package)
-opencli homebrew cask firefox
-opencli homebrew cask visual-studio-code
+cloudl homebrew cask firefox
+cloudl homebrew cask visual-studio-code
 
 # Most popular installs (defaults to formula / 30d / top 30)
-opencli homebrew popular
-opencli homebrew popular --type cask --window 90d --limit 50
-opencli homebrew popular --type formula --window 365d --limit 100
+cloudl homebrew popular
+cloudl homebrew popular --type cask --window 90d --limit 50
+cloudl homebrew popular --type formula --window 365d --limit 100
 
 # JSON output
-opencli homebrew popular -f json
+cloudl homebrew popular -f json
 ```
 
 ## Output Columns

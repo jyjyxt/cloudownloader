@@ -120,12 +120,12 @@ cli({
     site: 'twitter',
     name: 'bookmark-folder',
     access: 'read',
-    description: 'Read the tweets inside a single Twitter/X bookmark folder. Get the folder id from `opencli twitter bookmark-folders`.',
+    description: 'Read the tweets inside a single Twitter/X bookmark folder. Get the folder id from `cloudl twitter bookmark-folders`.',
     domain: 'x.com',
     strategy: Strategy.COOKIE,
     browser: true,
     args: [
-        { name: 'folder-id', positional: true, type: 'string', required: true, help: 'Folder id from `opencli twitter bookmark-folders`.' },
+        { name: 'folder-id', positional: true, type: 'string', required: true, help: 'Folder id from `cloudl twitter bookmark-folders`.' },
         { name: 'limit', type: 'int', default: 20, help: 'Maximum number of bookmarks to return (default 20).' },
         { name: 'top-by-engagement', type: 'int', default: 0, help: 'When set to N>0, re-rank the folder by weighted engagement (likes×1 + retweets×3 + replies×2 + bookmarks×5 + log10(views+1)×0.5) and return the top N. Default 0 keeps the API\'s native (saved-time) ordering.' },
     ],
@@ -134,7 +134,7 @@ cli({
         const folderId = String(kwargs['folder-id'] || '').trim();
         if (!folderId || !FOLDER_ID_PATTERN.test(folderId)) {
             throw new ArgumentError(
-                `Invalid folder-id: ${JSON.stringify(kwargs['folder-id'])}. Expected a safe folder ID from \`opencli twitter bookmark-folders\`.`,
+                `Invalid folder-id: ${JSON.stringify(kwargs['folder-id'])}. Expected a safe folder ID from \`cloudl twitter bookmark-folders\`.`,
             );
         }
         const limit = Number(kwargs.limit ?? 20);

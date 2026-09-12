@@ -6,7 +6,7 @@ cli({
     name: 'reimbursement-plan',
     description: 'Validate Mercury reimbursement inputs and print the draft plan without opening a browser',
     access: 'read',
-    example: 'opencli mercury reimbursement-plan --receipt /tmp/receipt.png --amount 140.00 --currency CNY --date 2026-06-26 --merchant "Example Merchant" --category "Marketing & Advertising" --notes "Example business purpose." -f json',
+    example: 'cloudl mercury reimbursement-plan --receipt /tmp/receipt.png --amount 140.00 --currency CNY --date 2026-06-26 --merchant "Example Merchant" --category "Marketing & Advertising" --notes "Example business purpose." -f json',
     strategy: Strategy.LOCAL,
     browser: false,
     args: [

@@ -14,7 +14,7 @@ cli({
     domain: YOLLOMI_DOMAIN,
     strategy: Strategy.COOKIE,
     args: [
-        { name: 'image', positional: true, required: true, help: 'Image URL (upload via "opencli yollomi upload" first)' },
+        { name: 'image', positional: true, required: true, help: 'Image URL (upload via "cloudl yollomi upload" first)' },
         { name: 'prompt', default: '', help: 'Background description (optional)' },
         { name: 'output', default: './yollomi-output', help: 'Output directory' },
         { name: 'no-download', type: 'boolean', default: false, help: 'Only show URL' },

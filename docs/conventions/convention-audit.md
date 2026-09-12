@@ -1,6 +1,6 @@
 # Convention Audit
 
-`opencli convention-audit` scans adapter metadata plus source files for common
+`cloudl convention-audit` scans adapter metadata plus source files for common
 agent-native convention violations.
 
 The command is intentionally report-first. It gives agents a shared fact base
@@ -9,11 +9,11 @@ before starting a sweep PR; `--strict` can be used later by CI gates.
 ## Usage
 
 ```bash
-opencli convention-audit
-opencli convention-audit --site twitter
-opencli convention-audit twitter/search
-opencli convention-audit --site pixiv -f yaml
-opencli convention-audit --strict
+cloudl convention-audit
+cloudl convention-audit --site twitter
+cloudl convention-audit twitter/search
+cloudl convention-audit --site pixiv -f yaml
+cloudl convention-audit --strict
 ```
 
 Formats:

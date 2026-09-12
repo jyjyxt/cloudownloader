@@ -49,7 +49,7 @@ cli({
         const { id, limit = 5 } = kwargs;
         const questionId = String(id);
         if (!/^\d+$/.test(questionId)) {
-            throw new CliError('INVALID_INPUT', 'Question ID must be numeric', 'Example: opencli zhihu question 123456789');
+            throw new CliError('INVALID_INPUT', 'Question ID must be numeric', 'Example: cloudl zhihu question 123456789');
         }
         const answerLimit = Number(limit);
         if (!Number.isInteger(answerLimit) || answerLimit <= 0 || answerLimit > MAX_LIMIT) {
@@ -57,7 +57,7 @@ cli({
         }
         const sort = String(kwargs.sort || 'default');
         if (sort !== 'default' && sort !== 'created') {
-            throw new CliError('INVALID_INPUT', 'Sort must be one of: default, created', 'Example: opencli zhihu question 123456789 --sort created');
+            throw new CliError('INVALID_INPUT', 'Sort must be one of: default, created', 'Example: cloudl zhihu question 123456789 --sort created');
         }
         await page.goto(sort === 'created'
             ? `https://www.zhihu.com/question/${questionId}/answers/updated`

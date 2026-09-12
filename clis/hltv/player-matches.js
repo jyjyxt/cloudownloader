@@ -6,7 +6,7 @@ cli({
   name: 'player-matches',
   description: 'Read HLTV player match history from the stats Matches tab',
   access: 'read',
-  example: 'opencli hltv player-matches --player 3741/niko --limit 10 -f json',
+  example: 'cloudl hltv player-matches --player 3741/niko --limit 10 -f json',
   domain: 'www.hltv.org',
   strategy: Strategy.UI,
   browser: true,

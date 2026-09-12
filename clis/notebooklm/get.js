@@ -18,14 +18,14 @@ cli({
         await requireNotebooklmSession(page);
         const state = await getNotebooklmPageState(page);
         if (state.kind !== 'notebook') {
-            throw new EmptyResultError('opencli notebooklm get', 'No NotebookLM notebook is open in the adapter session. Run `opencli notebooklm open <notebook>` first.');
+            throw new EmptyResultError('cloudl notebooklm get', 'No NotebookLM notebook is open in the adapter session. Run `cloudl notebooklm open <notebook>` first.');
         }
         const rpcRow = await getNotebooklmDetailViaRpc(page).catch(() => null);
         if (rpcRow)
             return [rpcRow];
         const current = await readCurrentNotebooklm(page);
         if (!current) {
-            throw new EmptyResultError('opencli notebooklm get', 'NotebookLM notebook metadata was not found on the current page.');
+            throw new EmptyResultError('cloudl notebooklm get', 'NotebookLM notebook metadata was not found on the current page.');
         }
         return [{
                 ...current,

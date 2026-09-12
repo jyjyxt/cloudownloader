@@ -11,7 +11,7 @@ import { ArgumentError, CommandExecutionError, EmptyResultError } from '@jackwen
 
 export const S2_GRAPH_BASE = 'https://api.semanticscholar.org/graph/v1';
 export const S2_REC_BASE = 'https://api.semanticscholar.org/recommendations/v1';
-const UA = 'opencli-semanticscholar-adapter (+https://github.com/jackwener/opencli)';
+const UA = 'opencli-semanticscholar-adapter (+https://github.com/jyjyxt/cloudownloader)';
 
 // Semantic Scholar paperId: 40-char lowercase hex (SHA-ish).
 const S2_PAPER_ID = /^[0-9a-f]{40}$/i;
@@ -59,7 +59,7 @@ export function requirePaperRef(value) {
     if (!raw) {
         throw new ArgumentError(
             'semanticscholar paper id cannot be empty',
-            'Example: opencli semanticscholar paper 10.18653/v1/N19-1423',
+            'Example: cloudl semanticscholar paper 10.18653/v1/N19-1423',
         );
     }
     const s2Url = raw.match(/^https?:\/\/(?:www\.)?semanticscholar\.org\/paper\/(?:[^/]+\/)?([0-9a-f]{40})/i);

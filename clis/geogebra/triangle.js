@@ -13,7 +13,7 @@ cli({
   strategy: Strategy.PUBLIC,
   browser: true,
   navigateBefore: false,
-  example: 'opencli geogebra triangle --size 4',
+  example: 'cloudl geogebra triangle --size 4',
   args: [
     { name: 'size', required: false, default: '2', help: 'Side length of the triangle (default: 2)' },
   ],

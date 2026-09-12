@@ -11,8 +11,8 @@ usable from a plain HTTP client).
 
 | Command | Description |
 |---------|-------------|
-| `opencli guazi browse [city]` | Used cars for sale in a city → price / mileage / year |
-| `opencli guazi car <clue_id>` | One listing's detail → price, registration, mileage, specs, condition |
+| `cloudl guazi browse [city]` | Used cars for sale in a city → price / mileage / year |
+| `cloudl guazi car <clue_id>` | One listing's detail → price, registration, mileage, specs, condition |
 
 `car` takes a **clue_id** — get one from `browse` (the `clue_id` column) or paste
 a `https://m.guazi.com/car-detail/c<id>.html` URL.
@@ -21,16 +21,16 @@ a `https://m.guazi.com/car-detail/c<id>.html` URL.
 
 ```bash
 # Browse listings (defaults to Beijing)
-opencli guazi browse
-opencli guazi browse 上海 --limit 30
-opencli guazi browse sz            # city code also works
+cloudl guazi browse
+cloudl guazi browse 上海 --limit 30
+cloudl guazi browse sz            # city code also works
 
 # One listing in detail
-opencli guazi car 168029452296957
-opencli guazi car https://m.guazi.com/car-detail/c168029452296957.html
+cloudl guazi car 168029452296957
+cloudl guazi car https://m.guazi.com/car-detail/c168029452296957.html
 
 # JSON output
-opencli guazi browse 北京 -f json
+cloudl guazi browse 北京 -f json
 ```
 
 ## Output Columns

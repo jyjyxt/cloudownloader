@@ -6,29 +6,29 @@
 
 | Command | Description |
 |---------|-------------|
-| `opencli xiaoe courses` | List purchased courses with course URLs and shop names |
-| `opencli xiaoe detail <url>` | Read course metadata such as title, price, student count, and shop |
-| `opencli xiaoe catalog <url>` | Read the full course outline for normal courses, columns, and big columns |
-| `opencli xiaoe play-url <url>` | Resolve the M3U8 playback URL for video lessons or live replays |
-| `opencli xiaoe content <url>` | Extract rich-text lesson or page content as plain text |
+| `cloudl xiaoe courses` | List purchased courses with course URLs and shop names |
+| `cloudl xiaoe detail <url>` | Read course metadata such as title, price, student count, and shop |
+| `cloudl xiaoe catalog <url>` | Read the full course outline for normal courses, columns, and big columns |
+| `cloudl xiaoe play-url <url>` | Resolve the M3U8 playback URL for video lessons or live replays |
+| `cloudl xiaoe content <url>` | Extract rich-text lesson or page content as plain text |
 
 ## Usage Examples
 
 ```bash
 # List purchased courses
-opencli xiaoe courses
+cloudl xiaoe courses
 
 # Read course metadata
-opencli xiaoe detail "https://appxxxx.h5.xet.citv.cn/p/course/ecourse/v_xxxxx"
+cloudl xiaoe detail "https://appxxxx.h5.xet.citv.cn/p/course/ecourse/v_xxxxx"
 
 # Read the course outline
-opencli xiaoe catalog "https://appxxxx.h5.xet.citv.cn/p/course/ecourse/v_xxxxx"
+cloudl xiaoe catalog "https://appxxxx.h5.xet.citv.cn/p/course/ecourse/v_xxxxx"
 
 # Resolve a lesson M3U8 URL
-opencli xiaoe play-url "https://appxxxx.h5.xet.citv.cn/v1/course/video/v_xxxxx?product_id=p_xxxxx" -f json
+cloudl xiaoe play-url "https://appxxxx.h5.xet.citv.cn/v1/course/video/v_xxxxx?product_id=p_xxxxx" -f json
 
 # Extract page content
-opencli xiaoe content "https://appxxxx.h5.xet.citv.cn/v1/course/text/t_xxxxx"
+cloudl xiaoe content "https://appxxxx.h5.xet.citv.cn/v1/course/text/t_xxxxx"
 ```
 
 ## Output

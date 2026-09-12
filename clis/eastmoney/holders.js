@@ -1,7 +1,7 @@
 // eastmoney holders — top-10 float shareholders of an A-share (F10 data).
 //
-//   opencli eastmoney holders 600519
-//   opencli eastmoney holders sh600519 --limit 10
+//   cloudl eastmoney holders 600519
+//   cloudl eastmoney holders sh600519 --limit 10
 
 import { cli, Strategy } from '@jackwener/opencli/registry';
 import { CliError } from '@jackwener/opencli/errors';

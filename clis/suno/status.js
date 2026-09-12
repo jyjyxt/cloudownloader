@@ -1,5 +1,5 @@
 /**
- * `opencli suno status` — quick health check: login state, plan, credit
+ * `cloudl suno status` — quick health check: login state, plan, credit
  * breakdown, captcha readiness. Lets agents pre-flight before spending
  * generate credits.
  */

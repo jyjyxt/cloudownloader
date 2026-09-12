@@ -69,7 +69,7 @@ cli({
   name: 'generate',
   access: 'write',
   description: 'Generate Midjourney images with references, model routing, cost guards, recovery, and optional download',
-  example: 'opencli midjourney generate "a blue ceramic teapot --ar 1:1" --dry-run',
+  example: 'cloudl midjourney generate "a blue ceramic teapot --ar 1:1" --dry-run',
   domain: 'www.midjourney.com',
   strategy: Strategy.UI,
   browser: true,
@@ -238,7 +238,7 @@ cli({
         throw new TimeoutError(
           'Midjourney generation',
           timeout,
-          `Submitted job ${jobId}; check it with \`opencli midjourney status ${jobId}\`.`,
+          `Submitted job ${jobId}; check it with \`cloudl midjourney status ${jobId}\`.`,
         );
       }
       jobs.push(await waitForCompletedJob(page, jobId, remainingSeconds));

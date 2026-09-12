@@ -50,13 +50,13 @@ describe('buildUpdateNotices', () => {
     expect(buildUpdateNotices({ cliVersion: '1.0.0', cache: null, now })).toEqual({});
   });
 
-  it('emits a CLI notice when registry version is newer', () => {
+  it('does not advertise an upstream npm version as a cloudl update', () => {
     const lines = buildUpdateNotices({
       cliVersion: '1.0.0',
       cache: { lastCheck: now, latestVersion: '1.0.1' },
       now,
     });
-    expect(lines.cli).toContain('v1.0.0 → v1.0.1');
+    expect(lines.cli).toBeUndefined();
     expect(lines.extension).toBeUndefined();
   });
 
@@ -120,7 +120,7 @@ describe('buildUpdateNotices', () => {
     expect(lines.extension).toBeUndefined();
   });
 
-  it('emits both notices when both are out of date', () => {
+  it('emits only the extension notice when the cache also has an upstream npm version', () => {
     const lines = buildUpdateNotices({
       cliVersion: '1.0.0',
       cache: {
@@ -132,7 +132,7 @@ describe('buildUpdateNotices', () => {
       },
       now,
     });
-    expect(lines.cli).toContain('v1.0.0 → v1.1.0');
+    expect(lines.cli).toBeUndefined();
     expect(lines.extension).toContain('v2.0.0 → v2.1.0');
     expect(lines.extension).toContain('https://github.com/jyjyxt/cloudownloader/releases');
   });

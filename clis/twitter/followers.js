@@ -99,7 +99,7 @@ cli({
         const rawUser = String(kwargs.user ?? '').trim();
         let targetUser = normalizeScreenName(rawUser);
         if (rawUser && !targetUser) {
-            throw new ArgumentError('twitter followers user must be a valid Twitter/X handle', 'Example: opencli twitter followers @elonmusk --limit 100');
+            throw new ArgumentError('twitter followers user must be a valid Twitter/X handle', 'Example: cloudl twitter followers @elonmusk --limit 100');
         }
         await page.goto('https://x.com/home');
         await page.wait({ selector: '[data-testid="primaryColumn"]' });
@@ -125,7 +125,7 @@ cli({
             }
         }
         if (!targetUser) {
-            throw new ArgumentError('twitter followers user cannot be empty', 'Example: opencli twitter followers @elonmusk --limit 100');
+            throw new ArgumentError('twitter followers user cannot be empty', 'Example: cloudl twitter followers @elonmusk --limit 100');
         }
 
         await page.installInterceptor('/Followers?');

@@ -8,11 +8,11 @@ Fetch the latest and greatest developer articles from the DEV community without 
 
 | Command | Description |
 |---------|-------------|
-| `opencli devto top` | Top DEV.to articles of the day |
-| `opencli devto latest` | Latest published articles across all tags (paginated) |
-| `opencli devto tag <tag>` | Latest articles for a specific tag |
-| `opencli devto user <username>` | Recent articles from a specific user |
-| `opencli devto read <id>` | Read the body of a single article |
+| `cloudl devto top` | Top DEV.to articles of the day |
+| `cloudl devto latest` | Latest published articles across all tags (paginated) |
+| `cloudl devto tag <tag>` | Latest articles for a specific tag |
+| `cloudl devto user <username>` | Recent articles from a specific user |
+| `cloudl devto read <id>` | Read the body of a single article |
 
 ## Listing columns
 
@@ -53,27 +53,27 @@ does not expose article comments, so this reader does not emit a comment tree.
 
 ```bash
 # Top articles today
-opencli devto top --limit 5
+cloudl devto top --limit 5
 
 # Latest published articles (newest first; supports --page for pagination)
-opencli devto latest --limit 20
-opencli devto latest --limit 20 --page 2
+cloudl devto latest --limit 20
+cloudl devto latest --limit 20 --page 2
 
 # Articles by tag (positional argument)
-opencli devto tag javascript
-opencli devto tag python --limit 20
+cloudl devto tag javascript
+cloudl devto tag python --limit 20
 
 # Articles by a specific author
-opencli devto user ben
-opencli devto user thepracticaldev --limit 5
+cloudl devto user ben
+cloudl devto user thepracticaldev --limit 5
 
 # Read a single article body by id
-opencli devto read 3605688
-opencli devto read 3605688 --max-length 5000
+cloudl devto read 3605688
+cloudl devto read 3605688 --max-length 5000
 
 # JSON output
-opencli devto top -f json
-opencli devto read 3605688 -f json
+cloudl devto top -f json
+cloudl devto read 3605688 -f json
 ```
 
 ## Prerequisites

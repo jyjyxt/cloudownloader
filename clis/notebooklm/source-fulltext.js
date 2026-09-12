@@ -24,21 +24,21 @@ cli({
         await requireNotebooklmSession(page);
         const state = await getNotebooklmPageState(page);
         if (state.kind !== 'notebook') {
-            throw new EmptyResultError('opencli notebooklm source-fulltext', 'No NotebookLM notebook is open in the adapter session. Run `opencli notebooklm open <notebook>` first.');
+            throw new EmptyResultError('cloudl notebooklm source-fulltext', 'No NotebookLM notebook is open in the adapter session. Run `cloudl notebooklm open <notebook>` first.');
         }
         const rpcRows = await listNotebooklmSourcesViaRpc(page).catch(() => []);
         const rows = rpcRows.length > 0 ? rpcRows : await listNotebooklmSourcesFromPage(page);
         if (rows.length === 0) {
-            throw new EmptyResultError('opencli notebooklm source-fulltext', 'No NotebookLM sources were found on the current page.');
+            throw new EmptyResultError('cloudl notebooklm source-fulltext', 'No NotebookLM sources were found on the current page.');
         }
         const query = typeof kwargs.source === 'string' ? kwargs.source : String(kwargs.source ?? '');
         const matched = findNotebooklmSourceRow(rows, query);
         if (!matched) {
-            throw new EmptyResultError('opencli notebooklm source-fulltext', `Source "${query}" was not found in the current notebook.`);
+            throw new EmptyResultError('cloudl notebooklm source-fulltext', `Source "${query}" was not found in the current notebook.`);
         }
         const fulltext = await getNotebooklmSourceFulltextViaRpc(page, matched.id).catch(() => null);
         if (fulltext)
             return [fulltext];
-        throw new EmptyResultError('opencli notebooklm source-fulltext', `NotebookLM fulltext was not available for source "${matched.title}".`);
+        throw new EmptyResultError('cloudl notebooklm source-fulltext', `NotebookLM fulltext was not available for source "${matched.title}".`);
     },
 });

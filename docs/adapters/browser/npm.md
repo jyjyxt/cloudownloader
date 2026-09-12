@@ -8,31 +8,31 @@ Search and inspect packages on the public npm registry without auth or browser. 
 
 | Command | Description |
 |---------|-------------|
-| `opencli npm search <query>` | Search the public npm registry by keyword |
-| `opencli npm package <name>` | Single-package registry metadata (latest version, license, repo, maintainers) |
-| `opencli npm downloads <name>` | Download stats for one package over a fixed period or `YYYY-MM-DD:YYYY-MM-DD` range |
+| `cloudl npm search <query>` | Search the public npm registry by keyword |
+| `cloudl npm package <name>` | Single-package registry metadata (latest version, license, repo, maintainers) |
+| `cloudl npm downloads <name>` | Download stats for one package over a fixed period or `YYYY-MM-DD:YYYY-MM-DD` range |
 
 ## Usage Examples
 
 ```bash
 # Search the registry
-opencli npm search react --limit 10
-opencli npm search "graphql client" --limit 20
+cloudl npm search react --limit 10
+cloudl npm search "graphql client" --limit 20
 
 # Inspect a single package (use `name` from search rows)
-opencli npm package react
-opencli npm package @vercel/og
+cloudl npm package react
+cloudl npm package @vercel/og
 
 # Download stats for a fixed period
-opencli npm downloads react --period last-week
-opencli npm downloads react --period last-month
-opencli npm downloads react --period last-year
+cloudl npm downloads react --period last-week
+cloudl npm downloads react --period last-month
+cloudl npm downloads react --period last-year
 
 # Custom date range (max 365 days, npm API limit)
-opencli npm downloads react --period 2025-01-01:2025-01-31
+cloudl npm downloads react --period 2025-01-01:2025-01-31
 
 # JSON output
-opencli npm package react -f json
+cloudl npm package react -f json
 ```
 
 ## Output Columns

@@ -10,24 +10,24 @@ browser session. DOM extraction happens against the rendered page.
 
 | Command | Description |
 |---------|-------------|
-| `opencli indeed search <query>` | Keyword job search on the US site |
-| `opencli indeed job <jk>` (alias `detail`, `view`) | Read the full job posting by `jk` (job key) |
+| `cloudl indeed search <query>` | Keyword job search on the US site |
+| `cloudl indeed job <jk>` (alias `detail`, `view`) | Read the full job posting by `jk` (job key) |
 
 ## Usage Examples
 
 ```bash
 # Quick start — first run will route through the browser session
-opencli indeed search "rust developer" --limit 10
+cloudl indeed search "rust developer" --limit 10
 
 # Narrow to recent jobs in a location, sorted by date
-opencli indeed search "site reliability engineer" \
+cloudl indeed search "site reliability engineer" \
   --location "Remote" --fromage 7 --sort date
 
 # Read a job posting using the `id` surfaced by `search`
-opencli indeed job dccc07ac5a6a3683
+cloudl indeed job dccc07ac5a6a3683
 
 # JSON output
-opencli indeed search "data engineer" -f json
+cloudl indeed search "data engineer" -f json
 ```
 
 ## Output Columns
@@ -38,7 +38,7 @@ opencli indeed search "data engineer" -f json
 | `job` | `id, title, company, location, salary, job_type, description, url` |
 
 `id` is the Indeed **job key (jk)** — a 16-character lowercase hex
-identifier. Pipe it into `opencli indeed job <jk>` to drill into the full
+identifier. Pipe it into `cloudl indeed job <jk>` to drill into the full
 posting (per the
 [listing↔detail ID pairing convention](../../conventions/listing-detail-id-pairing.md)).
 

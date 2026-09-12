@@ -16,7 +16,7 @@ cli({
   name: 'describe',
   access: 'write',
   description: 'Upload one image and return Midjourney\'s four Describe prompt suggestions without generating images',
-  example: 'opencli midjourney describe /path/reference.png -f json',
+  example: 'cloudl midjourney describe /path/reference.png -f json',
   domain: 'www.midjourney.com',
   strategy: Strategy.UI,
   browser: true,

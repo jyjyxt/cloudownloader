@@ -255,7 +255,7 @@ export function serializeManifest(manifest: ManifestEntry[]): string {
  * Metadata audit: every positional arg must carry a non-empty `help` string.
  *
  * Why this is a hard gate (not advisory):
- *   - `ClouDownloader twitter followers --help` rendered `Arguments:\n  user  ` with
+ *   - `cloudl twitter followers --help` rendered `Arguments:\n  user  ` with
  *     an empty trailing column. Agents and humans both saw a blank field —
  *     impossible to recover the parameter's purpose without reading source.
  *   - This is metadata completeness, not stylistic taste; failing closed is
@@ -390,7 +390,7 @@ async function main(): Promise<void> {
     }
     process.stderr.write(
       `\nEvery positional arg must declare a non-empty \`help\` string so\n`
-      + `\`ClouDownloader <site> <cmd> --help\` shows callers what the parameter is for.\n`
+      + `\`cloudl <site> <cmd> --help\` shows callers what the parameter is for.\n`
       + `Add \`help: '...'\` to each arg above and re-run the build.\n`,
     );
     process.exit(1);
@@ -423,7 +423,7 @@ async function main(): Promise<void> {
   // Restore executable permissions on bin entries.
   // tsc does not preserve the +x bit, so after a clean rebuild the CLI
   // entry-point loses its executable permission, causing "Permission denied".
-  // See: https://github.com/jackwener/opencli/issues/446
+  // See: https://github.com/jyjyxt/cloudownloader/issues/446
   if (process.platform !== 'win32') {
     const projectRoot = PACKAGE_ROOT;
     const pkgPath = path.resolve(projectRoot, 'package.json');

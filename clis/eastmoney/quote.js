@@ -4,8 +4,8 @@
 // Supported inputs (comma / space separated):
 //   600000, sh600000, 000001, sz000001, 00700.HK, hk00700, AAPL, us.AAPL
 //
-//   opencli eastmoney quote 600000 --fields all
-//   opencli eastmoney quote "sh600000,sz000001,00700.HK"
+//   cloudl eastmoney quote 600000 --fields all
+//   cloudl eastmoney quote "sh600000,sz000001,00700.HK"
 
 import { cli, Strategy } from '@jackwener/opencli/registry';
 import { CliError } from '@jackwener/opencli/errors';

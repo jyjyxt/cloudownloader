@@ -6,9 +6,9 @@ allowed-tools: Bash(opencli:*), Bash(jsluice:*), Read, Edit, Write, Grep
 
 # opencli-adapter-author
 
-你是要给一个站点写 adapter 的 agent。这份 skill 目标：简单站点争取 **30 分钟内从零到通过 `ClouDownloader browser verify`**；复杂、私有协议或写操作站点以证据完整和安全为先，不为了时限猜接口。
+你是要给一个站点写 adapter 的 agent。这份 skill 目标：简单站点争取 **30 分钟内从零到通过 `cloudl browser verify`**；复杂、私有协议或写操作站点以证据完整和安全为先，不为了时限猜接口。
 
-全程用现有工具：`ClouDownloader browser *` / `ClouDownloader doctor` / `ClouDownloader browser init` / `ClouDownloader browser verify`。没有新命令。
+全程用现有工具：`cloudl browser *` / `cloudl doctor` / `cloudl browser init` / `cloudl browser verify`。没有新命令。
 
 调试浏览器型 adapter 时，优先直接带上 `--trace on --keep-tab true --window foreground`。`--trace on` 每轮都落 trace artifact，`summary.md` 是失败/成功复盘入口；`--keep-tab true --window foreground` 让 tab lease 保留且浏览器窗口在前台，方便核对最终页面状态。
 
@@ -54,7 +54,7 @@ Strategy classes:
 | `COOKIE_API` | stable | Node-side `fetch` + `page.getCookies()` / header helper 能拿数据 | cookie/CSRF 来源清楚，replay 非空 |
 | `UI_SELECTOR` | visible-ui | publish/upload/click/表单，或页面语义比内部接口更稳 | selector 有语义锚点；错误路径是 typed error |
 | `DOM_STATE` | visible-ui | 数据在 hydration state / bootstrap JSON / SSR HTML 里 | state key / script JSON / HTML 结构明确 |
-| `PAGE_FETCH` | internal-unstable | 只能在页面上下文 `fetch` 才能复用 same-origin/session/runtime | `ClouDownloader browser eval fetch(...)` 非空；必须解释为什么避不开内部接口 |
+| `PAGE_FETCH` | internal-unstable | 只能在页面上下文 `fetch` 才能复用 same-origin/session/runtime | `cloudl browser eval fetch(...)` 非空；必须解释为什么避不开内部接口 |
 | `INTERCEPT` | internal-unstable | 请求签名复杂，但页面自己能自然发出请求 | 触发 UI 后能截到目标 response；必须解释为什么 UI/DOM 不够 |
 
 选择规则：优先 `PUBLIC_API` / `COOKIE_API`。如果 UI/DOM 语义稳定，不要强行升级到 `PAGE_FETCH` / `INTERCEPT`。只有公开/官方接口不可用、UI/DOM 无法表达目标数据或操作时，才承担无契约内部接口的维护成本。
@@ -68,7 +68,7 @@ START
   │
   ▼
 ┌──────────────────────────┐
-│ ClouDownloader doctor 通？      │── no ──→ 修桥接（doctor 输出里的提示）
+│ cloudl doctor 通？      │── no ──→ 修桥接（doctor 输出里的提示）
 └──────────────────────────┘
   │ yes
   ▼
@@ -116,14 +116,14 @@ START
   │
   ▼
 ┌──────────────────────────┐
-│ ClouDownloader browser init      │  生成 ~/.opencli/clis/<site>/<name>.js 骨架
+│ cloudl browser init      │  生成 ~/.opencli/clis/<site>/<name>.js 骨架
 │ 复制最像的邻居 adapter    │
 │ 改 name / URL / 映射三处  │
 └──────────────────────────┘
   │
   ▼
 ┌──────────────────────────┐
-│ ClouDownloader browser verify    │── 失败 ──→ autofix skill，用 --trace retain-on-failure 回对应步骤
+│ cloudl browser verify    │── 失败 ──→ autofix skill，用 --trace retain-on-failure 回对应步骤
 └──────────────────────────┘
   │ 成功
   ▼
@@ -145,14 +145,14 @@ DONE
 ## Runbook（一步一步勾选）
 
 ```
-[ ] 1. ClouDownloader doctor 返回 "Everything looks good"
+[ ] 1. cloudl doctor 返回 "Everything looks good"
 [ ] 2. 读站点记忆：
        [ ] ~/.opencli/sites/<site>/endpoints.json 存在？里面有想要的 endpoint？
        [ ] references/site-memory/<site>.md 存在？看"已知 endpoint"节
        [ ] 命中后：**跳到第 5（endpoint 验证） + 第 7（字段核对）**，不能直接跳第 9 写 adapter
        [ ] memory 写入超过 30 天（看 `verified_at`）→ 当作过期，按冷启动走 Step 3 → 4
 [ ] 3. 侦察（site-recon.md）：
-       [ ] **首选**：`ClouDownloader browser analyze <url>` 一步拿 pattern + 反爬 + 最近 adapter + next step
+       [ ] **首选**：`cloudl browser analyze <url>` 一步拿 pattern + 反爬 + 最近 adapter + next step
        [ ] `analyze` 结论模糊时再手跑：`open` → `wait time 2` (或 `wait xhr <regex>`) → `network`
        [ ] 定 Pattern（A / B / C / D / E）
 [ ] 4. API 发现（api-discovery.md）按 Pattern 选 §：
@@ -188,19 +188,19 @@ DONE
        [ ] 类型 / 单位 / 百分比格式清楚
        [ ] 顺序：识别列 → 业务数字 → metadata
 [ ] 9. 写 adapter（adapter-template.md）：
-       [ ] ClouDownloader browser init <site>/<name>
+       [ ] cloudl browser init <site>/<name>
        [ ] 找同站点或同类型最像的 adapter，cp 过来
        [ ] 改 name / URL / 字段映射
-[ ] 10. ClouDownloader browser verify <site>/<name>
+[ ] 10. cloudl browser verify <site>/<name>
         [ ] 首轮通过后立刻 `--write-fixture` 生成 `~/.opencli/sites/<site>/verify/<cmd>.json` 种子
         [ ] 手改种子：加 `patterns`（URL / 日期 / ID 格式）+ `notEmpty`（核心字段）+ 收紧 `rowCount`
-        [ ] 再跑一次 `ClouDownloader browser verify <site>/<name>`，确认 ✓ matches fixture
+        [ ] 再跑一次 `cloudl browser verify <site>/<name>`，确认 ✓ matches fixture
 [ ] 11. 字段值 vs 网页肉眼比对（别只看 "Adapter works!"）
 [ ] 12. 回写站点记忆（**verify 通过 + 肉眼比对对得上之后**，schema 见 `references/site-memory.md`）：
         [ ] `endpoints.json`：以 endpoint 的短名为 key，value = `{url, method, params.{required,optional}, response, verified_at: YYYY-MM-DD, notes}`
         [ ] `field-map.json`：只追加新代号。key = 字段代号，value = `{meaning, verified_at: YYYY-MM-DD, source}`；**已存在的 key 不要覆盖**，有冲突先和网页肉眼值对齐再写
         [ ] `notes.md`：顶部追加一段 `## YYYY-MM-DD by <agent/user>`，写本次写 adapter 时遇到的新坑 / 新结论
-        [ ] `verify/<cmd>.json`：**必填。** `ClouDownloader browser verify` 的期望值（args / rowCount / columns / types / patterns / notEmpty），Step 10 已经让你生成了，这里只是 checklist
+        [ ] `verify/<cmd>.json`：**必填。** `cloudl browser verify` 的期望值（args / rowCount / columns / types / patterns / notEmpty），Step 10 已经让你生成了，这里只是 checklist
         [ ] `fixtures/<cmd>-<YYYYMMDDHHMM>.json`：仅保存公开数据或可证明完成脱敏的样本；私人邮箱/消息/账号等高敏响应改用合成 fixture，不落盘
         [ ] 原始 dump/capture 只短暂落 `/tmp/` 或受控 cache；安全分级后的长期样本才进 `fixtures/`，任务结束清理原始文件
 [ ] 13. repo 贡献收口（私人 adapter 可跳过）：
@@ -274,7 +274,7 @@ DONE
 
 ## 卡住了
 
-- 诊断类：`ClouDownloader doctor` → 看 `notes.md` → 搜 autofix skill
+- 诊断类：`cloudl doctor` → 看 `notes.md` → 搜 autofix skill
 - 字段解码类：`field-decode-playbook.md` 全三节走完 → 先输出 raw 迭代
 - endpoint 找不到：api-discovery §5 intercept 兜底
 

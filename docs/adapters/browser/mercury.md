@@ -17,9 +17,9 @@ agent must inspect the Review page before any final submission.
 
 | Command | Description |
 |---------|-------------|
-| `opencli mercury reimbursement-plan` | Validate a reimbursement payload locally without opening Mercury |
-| `opencli mercury check-login` | Open Mercury reimbursements and report whether the selected browser profile is logged in |
-| `opencli mercury reimbursement-draft` | Create a reimbursement draft, attach the receipt, correct OCR-overwritten fields, and stop at Review |
+| `cloudl mercury reimbursement-plan` | Validate a reimbursement payload locally without opening Mercury |
+| `cloudl mercury check-login` | Open Mercury reimbursements and report whether the selected browser profile is logged in |
+| `cloudl mercury reimbursement-draft` | Create a reimbursement draft, attach the receipt, correct OCR-overwritten fields, and stop at Review |
 
 `reimbursement-plan` and `reimbursement-draft` take the same business payload:
 
@@ -39,10 +39,10 @@ agent must inspect the Review page before any final submission.
 
 ```bash
 # 1. Confirm the selected browser profile is logged into Mercury
-opencli --profile <profile> mercury check-login -f json
+cloudl --profile <profile> mercury check-login -f json
 
 # 2. Validate the payload locally first
-opencli mercury reimbursement-plan \
+cloudl mercury reimbursement-plan \
   --receipt /absolute/path/to/receipt.png \
   --amount 140.00 \
   --currency CNY \
@@ -53,7 +53,7 @@ opencli mercury reimbursement-plan \
   -f json
 
 # 3. Create the draft and stop at Review
-opencli --profile <profile> mercury reimbursement-draft \
+cloudl --profile <profile> mercury reimbursement-draft \
   --receipt /absolute/path/to/receipt.png \
   --amount 140.00 \
   --currency CNY \

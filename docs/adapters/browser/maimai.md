@@ -6,25 +6,25 @@
 
 | Command | Description |
 |---------|-------------|
-| `opencli maimai search-talents` | Search Maimai talent profiles with keyword and structured filters |
+| `cloudl maimai search-talents` | Search Maimai talent profiles with keyword and structured filters |
 
 ## Usage Examples
 
 ```bash
 # Search by keyword
-opencli maimai search-talents Java
+cloudl maimai search-talents Java
 
 # Narrow by company and city
-opencli maimai search-talents 产品经理 --companies "阿里巴巴,字节跳动" --cities 北京市
+cloudl maimai search-talents 产品经理 --companies "阿里巴巴,字节跳动" --cities 北京市
 
 # Filter by school, degree, and work years
-opencli maimai search-talents 算法 --schools "北京大学,清华大学" --degrees 3 --worktimes 3
+cloudl maimai search-talents 算法 --schools "北京大学,清华大学" --degrees 3 --worktimes 3
 
 # Prioritize recently active candidates
-opencli maimai search-talents 运营 --sortby 1 --is_direct_chat 1
+cloudl maimai search-talents 运营 --sortby 1 --is_direct_chat 1
 
 # JSON output for downstream processing
-opencli maimai search-talents Java --size 10 -f json
+cloudl maimai search-talents Java --size 10 -f json
 ```
 
 ## Key Filters

@@ -18,7 +18,7 @@ source: global
 ## Best path
 
 ```yaml
-adapter: opencli twitter bookmark
+adapter: cloudl twitter bookmark
 adapter_health: healthy
 preconditions:
   - logged_in
@@ -26,13 +26,13 @@ preconditions:
 estimated_turns: 1
 ```
 
-`opencli twitter bookmark <status-url>` add, `opencli twitter unbookmark <status-url>` remove。
+`cloudl twitter bookmark <status-url>` add, `cloudl twitter unbookmark <status-url>` remove。
 
 ## Fallback path
 
 ```yaml
 on_adapter_fail:
-  - adapter_health_update: opencli twitter bookmark -> suspect
+  - adapter_health_update: cloudl twitter bookmark -> suspect
   - goto <status-url> (lands pages/status.md)
   - action:bookmark_tweet in pages/_tweet_card.md
   - verify testid flip + toast "Added to your Bookmarks"
@@ -61,4 +61,4 @@ estimated_turns: 2
 
 - bookmark icon testid 名变（历史从 `bookmark` 改过一次, rebrand 可能再改）
 - toast 文本 i18n 漂
-- adapter `opencli twitter bookmark` 月度 fix 多 → adapter_health audit suspect
+- adapter `cloudl twitter bookmark` 月度 fix 多 → adapter_health audit suspect

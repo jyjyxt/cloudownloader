@@ -7,7 +7,7 @@
 import { ArgumentError, CommandExecutionError, EmptyResultError } from '@jackwener/opencli/errors';
 
 export const GEMS_BASE = 'https://rubygems.org/api/v1';
-const UA = 'opencli-rubygems-adapter (+https://github.com/jackwener/opencli)';
+const UA = 'opencli-rubygems-adapter (+https://github.com/jyjyxt/cloudownloader)';
 
 // RubyGems gem name pattern (mirrors the rubygems-server validation).
 const GEM_NAME = /^[A-Za-z0-9][A-Za-z0-9._-]*$/;

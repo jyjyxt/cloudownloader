@@ -17,7 +17,7 @@ export function dispatchEvaluateResult(r) {
     case 'http':
       throw new CommandExecutionError(`HTTP ${r.status} from ${r.where}`);
     case 'no-server':
-      throw new ConfigError(r.detail, 'Run `opencli slock server-use <slug>` to set the active server.');
+      throw new ConfigError(r.detail, 'Run `cloudl slock server-use <slug>` to set the active server.');
     case 'unresolvable':
       throw new ArgumentError(r.detail);
     case 'no-thread':

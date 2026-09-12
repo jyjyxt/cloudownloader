@@ -26,7 +26,7 @@ cli({
     func: async (args) => {
         const id = String(args.id ?? '').trim().toLowerCase();
         if (!id) {
-            throw new ArgumentError('coingecko coin id cannot be empty', 'Example: opencli coingecko coin bitcoin');
+            throw new ArgumentError('coingecko coin id cannot be empty', 'Example: cloudl coingecko coin bitcoin');
         }
         if (!/^[a-z0-9][a-z0-9-]*$/.test(id)) {
             throw new ArgumentError(`coingecko coin id must look like a CoinGecko slug (got "${args.id}")`);

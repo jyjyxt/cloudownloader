@@ -296,7 +296,7 @@ cli({
   name: 'player-duel',
   description: 'Compare two HLTV players on shared maps, including direct kill matrix when available',
   access: 'read',
-  example: 'opencli hltv player-duel 19230/m0nesy 3741/niko --match https://www.hltv.org/stats/matches/mapstatsid/231594/falcons-vs-natus-vincere -f json',
+  example: 'cloudl hltv player-duel 19230/m0nesy 3741/niko --match https://www.hltv.org/stats/matches/mapstatsid/231594/falcons-vs-natus-vincere -f json',
   domain: 'www.hltv.org',
   strategy: Strategy.UI,
   browser: true,

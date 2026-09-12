@@ -6,38 +6,38 @@
 
 | Command | Description |
 |---------|-------------|
-| `opencli dribbble shot <query>` | Search shots by keyword |
-| `opencli dribbble shot-detail <shot>` | Show one shot's authorship, media, palette, and availability |
-| `opencli dribbble designer` | Browse designers and agencies |
-| `opencli dribbble profile <designer>` | Show a designer's public profile and about fields |
-| `opencli dribbble portfolio <designer>` | List a designer's published or liked shots |
-| `opencli dribbble service <designer>` | List and filter a designer's services |
-| `opencli dribbble collection <designer>` | List a designer's public collections |
-| `opencli dribbble member <designer>` | List a team profile's public members |
-| `opencli dribbble whoami` | Show the signed-in Dribbble identity |
-| `opencli dribbble login` | Open Dribbble's sign-in flow |
+| `cloudl dribbble shot <query>` | Search shots by keyword |
+| `cloudl dribbble shot-detail <shot>` | Show one shot's authorship, media, palette, and availability |
+| `cloudl dribbble designer` | Browse designers and agencies |
+| `cloudl dribbble profile <designer>` | Show a designer's public profile and about fields |
+| `cloudl dribbble portfolio <designer>` | List a designer's published or liked shots |
+| `cloudl dribbble service <designer>` | List and filter a designer's services |
+| `cloudl dribbble collection <designer>` | List a designer's public collections |
+| `cloudl dribbble member <designer>` | List a team profile's public members |
+| `cloudl dribbble whoami` | Show the signed-in Dribbble identity |
+| `cloudl dribbble login` | Open Dribbble's sign-in flow |
 
 ## Usage Examples
 
 ```bash
 # Search Dribbble's public popular or New & Noteworthy views
-opencli dribbble shot "mobile ui" --sort popular --limit 10 -f json
-opencli dribbble shot "mobile ui" --sort recent --limit 10 -f json
+cloudl dribbble shot "mobile ui" --sort popular --limit 10 -f json
+cloudl dribbble shot "mobile ui" --sort recent --limit 10 -f json
 
 # The personalized Following view requires a signed-in browser session
-opencli dribbble shot "mobile ui" --sort following --limit 10 -f json
+cloudl dribbble shot "mobile ui" --sort following --limit 10 -f json
 
 # Inspect a shot and a designer's public surfaces
-opencli dribbble shot-detail 27679566 -f json
-opencli dribbble profile halolab -f json
-opencli dribbble portfolio halolab --type work --limit 10 -f json
-opencli dribbble service halolab --query branding --limit 10 -f json
-opencli dribbble collection halolab --limit 10 -f json
-opencli dribbble member halolab --limit 10 -f json
+cloudl dribbble shot-detail 27679566 -f json
+cloudl dribbble profile halolab -f json
+cloudl dribbble portfolio halolab --type work --limit 10 -f json
+cloudl dribbble service halolab --query branding --limit 10 -f json
+cloudl dribbble collection halolab --limit 10 -f json
+cloudl dribbble member halolab --limit 10 -f json
 
 # Browse designers and verify authentication
-opencli dribbble designer --query product --limit 10 -f json
-opencli dribbble whoami -f json
+cloudl dribbble designer --query product --limit 10 -f json
+cloudl dribbble whoami -f json
 ```
 
 `shot-detail` accepts either a numeric shot id or a full `dribbble.com/shots/...` URL. Designer arguments are Dribbble usernames or profile slugs. List limits must be positive integers and cannot exceed 30.

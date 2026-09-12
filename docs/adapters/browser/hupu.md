@@ -6,41 +6,41 @@
 
 | Command | Description |
 |---------|-------------|
-| `opencli hupu hot` | Read Hupu hot threads |
-| `opencli hupu search <keyword>` | Search Hupu threads by keyword |
-| `opencli hupu detail <tid>` | Read one thread and optional hot replies |
-| `opencli hupu mentions` | Read replies that mentioned you |
-| `opencli hupu reply <tid> <text>` | Reply to a thread or quote one reply |
-| `opencli hupu like <tid> <pid>` | Like one reply |
-| `opencli hupu unlike <tid> <pid>` | Cancel like on one reply |
+| `cloudl hupu hot` | Read Hupu hot threads |
+| `cloudl hupu search <keyword>` | Search Hupu threads by keyword |
+| `cloudl hupu detail <tid>` | Read one thread and optional hot replies |
+| `cloudl hupu mentions` | Read replies that mentioned you |
+| `cloudl hupu reply <tid> <text>` | Reply to a thread or quote one reply |
+| `cloudl hupu like <tid> <pid>` | Like one reply |
+| `cloudl hupu unlike <tid> <pid>` | Cancel like on one reply |
 
 ## Usage Examples
 
 ```bash
 # Hot threads
-opencli hupu hot --limit 5
+cloudl hupu hot --limit 5
 
 # Search threads
-opencli hupu search 湖人 --limit 10
+cloudl hupu search 湖人 --limit 10
 
 # Read one thread and include hot replies
-opencli hupu detail 638234927 --replies true
+cloudl hupu detail 638234927 --replies true
 
 # Read mentions that replied to you
-opencli hupu mentions --limit 20
+cloudl hupu mentions --limit 20
 
 # Reply to the thread
-opencli hupu reply 638234927 "hello from opencli" --topic_id 502
+cloudl hupu reply 638234927 "hello from opencli" --topic_id 502
 
 # Quote one hot reply by pid
-opencli hupu reply 638234927 "replying to this comment" --topic_id 502 --quote_id 174908
+cloudl hupu reply 638234927 "replying to this comment" --topic_id 502 --quote_id 174908
 
 # Like / unlike one reply
-opencli hupu like 638234927 174908 --fid 4860
-opencli hupu unlike 638234927 174908 --fid 4860
+cloudl hupu like 638234927 174908 --fid 4860
+cloudl hupu unlike 638234927 174908 --fid 4860
 
 # JSON output
-opencli hupu detail 638234927 -f json
+cloudl hupu detail 638234927 -f json
 ```
 
 ## Notes

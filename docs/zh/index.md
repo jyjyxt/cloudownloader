@@ -11,7 +11,7 @@ hero:
       link: /zh/guide/getting-started
     - theme: alt
       text: 在 GitHub 查看
-      link: https://github.com/jackwener/opencli
+      link: https://github.com/jyjyxt/cloudownloader
 
 features:
   - icon: 🖥️

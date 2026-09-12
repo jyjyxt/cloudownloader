@@ -6,40 +6,40 @@
 
 | Command | Description |
 |---------|-------------|
-| `opencli claude ask <prompt>` | Send a prompt and get the response |
-| `opencli claude send <prompt>` | Send a prompt without waiting for the response |
-| `opencli claude new` | Start a new conversation |
-| `opencli claude status` | Check login state and page availability |
-| `opencli claude read` | Read the current conversation |
-| `opencli claude history` | List recent conversations from `/recents` |
-| `opencli claude detail <id>` | Open a conversation by ID and read its messages |
+| `cloudl claude ask <prompt>` | Send a prompt and get the response |
+| `cloudl claude send <prompt>` | Send a prompt without waiting for the response |
+| `cloudl claude new` | Start a new conversation |
+| `cloudl claude status` | Check login state and page availability |
+| `cloudl claude read` | Read the current conversation |
+| `cloudl claude history` | List recent conversations from `/recents` |
+| `cloudl claude detail <id>` | Open a conversation by ID and read its messages |
 
 ## Usage Examples
 
 ```bash
 # Ask a question
-opencli claude ask "explain quicksort in 3 sentences"
+cloudl claude ask "explain quicksort in 3 sentences"
 
 # Start a new chat before asking
-opencli claude ask "hello" --new
+cloudl claude ask "hello" --new
 
 # Pick the model (default: sonnet; opus is paid-tier)
-opencli claude ask "quick summary" --model haiku
+cloudl claude ask "quick summary" --model haiku
 
 # Enable Adaptive thinking
-opencli claude ask "prove that sqrt(2) is irrational" --think
+cloudl claude ask "prove that sqrt(2) is irrational" --think
 
 # Attach a file (image / PDF / text, up to ~1 MB raw)
-opencli claude ask "describe this image" --file ./photo.png
+cloudl claude ask "describe this image" --file ./photo.png
 
 # Combine modes
-opencli claude ask "what does this PDF cover?" --file ./paper.pdf --think --new
+cloudl claude ask "what does this PDF cover?" --file ./paper.pdf --think --new
 
 # Custom timeout (default: 120s)
-opencli claude ask "write a long essay" --timeout 240
+cloudl claude ask "write a long essay" --timeout 240
 
 # JSON output
-opencli claude ask "hello" -f json
+cloudl claude ask "hello" -f json
 ```
 
 ### Options (ask)

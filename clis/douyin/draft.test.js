@@ -134,7 +134,7 @@ describe('douyin draft registration', () => {
         const rows = await cmd.func(page, {
             video: videoPath,
             title: '最小修复验证',
-            caption: 'opencli draft e2e',
+            caption: 'cloudl draft e2e',
             cover: '',
             visibility: 'friends',
         });

@@ -1,6 +1,6 @@
 # Comparison Guide
 
-OpenCLI occupies a specific niche in the browser automation ecosystem. This guide honestly evaluates where opencli excels, where it's a viable option, and where other tools are a better fit.
+OpenCLI occupies a specific niche in the browser automation ecosystem. This guide honestly evaluates where cloudl excels, where it's a viable option, and where other tools are a better fit.
 
 ## At a Glance
 
@@ -27,7 +27,7 @@ OpenCLI occupies a specific niche in the browser automation ecosystem. This guid
 | Firecrawl | Viable | Managed service with clean output, but costs scale with volume. |
 | Browser-Use / Stagehand | Poor | LLM inference on every run is slow, expensive, and non-deterministic for repeated tasks. |
 
-**Why opencli wins here:** A command like `opencli bilibili hot -f json` returns the same structured schema every time, costs nothing to run, and finishes in seconds. For recurring data extraction from known sites, pre-built adapters beat LLM-driven approaches on cost, speed, and reliability.
+**Why cloudl wins here:** A command like `cloudl bilibili hot -f json` returns the same structured schema every time, costs nothing to run, and finishes in seconds. For recurring data extraction from known sites, pre-built adapters beat LLM-driven approaches on cost, speed, and reliability.
 
 ### 2. AI Agent Site Operations
 
@@ -40,7 +40,7 @@ OpenCLI occupies a specific niche in the browser automation ecosystem. This guid
 | Browser-Use | Viable | General-purpose, but each operation costs tokens and takes 10-60s. |
 | Stagehand | Viable | Good DX, but same LLM-per-action cost model. |
 
-**Why opencli wins here:** When your agent needs `twitter search "AI news" -f json`, a deterministic command that returns in seconds is strictly better than an LLM clicking through a webpage. The agent saves tokens for reasoning, not navigation.
+**Why cloudl wins here:** When your agent needs `twitter search "AI news" -f json`, a deterministic command that returns in seconds is strictly better than an LLM clicking through a webpage. The agent saves tokens for reasoning, not navigation.
 
 ### 3. Authenticated Operations (Login-Required Sites)
 
@@ -53,7 +53,7 @@ OpenCLI occupies a specific niche in the browser automation ecosystem. This guid
 | Firecrawl | Poor | Cloud service cannot access your authenticated sessions. |
 | Crawl4AI | Poor | Requires manual cookie/session injection. |
 
-**Why opencli wins here:** The Browser Bridge extension reuses your existing Chrome login state in real-time. You log in once in Chrome, and opencli commands work immediately. No OAuth setup, no API keys, no credential files.
+**Why cloudl wins here:** The Browser Bridge extension reuses your existing Chrome login state in real-time. You log in once in Chrome, and cloudl commands work immediately. No OAuth setup, no API keys, no credential files.
 
 ### 4. General Web Browsing & Exploration
 
@@ -67,7 +67,7 @@ OpenCLI occupies a specific niche in the browser automation ecosystem. This guid
 | Skyvern | Good | Visual AI that generalizes across sites. |
 | **opencli** | Poor | Only works with sites that have pre-built adapters. Cannot handle arbitrary websites. |
 
-**opencli is not the right tool here.** If you need to explore unknown websites or handle one-off tasks on sites without adapters, use an LLM-driven browser tool. opencli trades generality for determinism and cost.
+**cloudl is not the right tool here.** If you need to explore unknown websites or handle one-off tasks on sites without adapters, use an LLM-driven browser tool. cloudl trades generality for determinism and cost.
 
 ### 5. Desktop App Control
 
@@ -93,13 +93,13 @@ OpenCLI occupies a specific niche in the browser automation ecosystem. This guid
 
 ### opencli's Limitations
 
-- **Coverage requires adapters** — opencli only works with sites that have pre-built adapters. Adding a new site means writing a TypeScript adapter.
+- **Coverage requires adapters** — cloudl only works with sites that have pre-built adapters. Adding a new site means writing a TypeScript adapter.
 - **Adapter maintenance** — When a website updates its DOM or API, the corresponding adapter may need updating. The community maintains these, but breakage is possible.
-- **Not general-purpose** — Cannot handle arbitrary websites. For unknown sites, pair opencli with a general browser tool as a fallback.
+- **Not general-purpose** — Cannot handle arbitrary websites. For unknown sites, pair cloudl with a general browser tool as a fallback.
 
 ## Complementary Usage
 
-opencli works best alongside general-purpose browser tools, not as a replacement:
+cloudl works best alongside general-purpose browser tools, not as a replacement:
 
 ```
 Has adapter?  ──yes──▶  opencli (fast, free, deterministic)
@@ -112,7 +112,7 @@ One-off task?  ──yes──▶  Browser-Use / Stagehand (LLM-driven)
      no
      │
      ▼
-Recurring?    ──yes──▶  Write an opencli adapter, then use opencli
+Recurring?    ──yes──▶  Write an cloudl adapter, then use opencli
 ```
 
 ## Further Reading

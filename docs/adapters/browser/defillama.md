@@ -8,24 +8,24 @@ Browse top DeFi protocols by TVL and fetch detailed protocol metadata. Both comm
 
 | Command | Description |
 |---------|-------------|
-| `opencli defillama protocols` | Top DeFi protocols by current TVL (slug, name, category, TVL, mcap, change, chains) |
-| `opencli defillama protocol <slug>` | Single protocol details (current TVL, mcap, chains, twitter, github, description) |
+| `cloudl defillama protocols` | Top DeFi protocols by current TVL (slug, name, category, TVL, mcap, change, chains) |
+| `cloudl defillama protocol <slug>` | Single protocol details (current TVL, mcap, chains, twitter, github, description) |
 
 ## Usage Examples
 
 ```bash
 # Top 30 protocols by TVL (default)
-opencli defillama protocols
+cloudl defillama protocols
 
 # Top 100, JSON output
-opencli defillama protocols --limit 100 -f json
+cloudl defillama protocols --limit 100 -f json
 
 # Single protocol details (slug from protocols rows)
-opencli defillama protocol aave-v3
-opencli defillama protocol lido
+cloudl defillama protocol aave-v3
+cloudl defillama protocol lido
 
 # Parent protocols (e.g. "aave") aggregate their children's chains
-opencli defillama protocol aave
+cloudl defillama protocol aave
 ```
 
 ## Output Columns

@@ -6,30 +6,30 @@
 
 | Command | Description |
 |---------|-------------|
-| `opencli steam top-sellers` | Top selling games on Steam |
-| `opencli steam search <query>` | Search the Steam storefront by name keyword |
-| `opencli steam app <id>` | Storefront detail for a single app id (game / DLC / package) |
+| `cloudl steam top-sellers` | Top selling games on Steam |
+| `cloudl steam search <query>` | Search the Steam storefront by name keyword |
+| `cloudl steam app <id>` | Storefront detail for a single app id (game / DLC / package) |
 
 ## Usage Examples
 
 ```bash
 # Top sellers
-opencli steam top-sellers --limit 10
+cloudl steam top-sellers --limit 10
 
 # Free-text search
-opencli steam search "portal" --limit 5
-opencli steam search "stardew" --limit 5
+cloudl steam search "portal" --limit 5
+cloudl steam search "stardew" --limit 5
 
 # App detail (round-trip from search.id)
-opencli steam app 620      # Portal 2
-opencli steam app 413150   # Stardew Valley
+cloudl steam app 620      # Portal 2
+cloudl steam app 413150   # Stardew Valley
 
 # Different storefront / currency
-opencli steam search "portal" --currency cn
-opencli steam app 620 --currency jp
+cloudl steam search "portal" --currency cn
+cloudl steam app 620 --currency jp
 
 # JSON output
-opencli steam app 620 -f json
+cloudl steam app 620 -f json
 ```
 
 ## Output Columns

@@ -6,16 +6,16 @@
 
 | Command | Description |
 |---------|-------------|
-| `opencli uisdc news` | Latest AI/design industry news from 优设读报 |
+| `cloudl uisdc news` | Latest AI/design industry news from 优设读报 |
 
 ## Usage Examples
 
 ```bash
 # Latest UISDC news
-opencli uisdc news --limit 20
+cloudl uisdc news --limit 20
 
 # JSON output
-opencli uisdc news --limit 10 -f json
+cloudl uisdc news --limit 10 -f json
 ```
 
 ## Notes

@@ -8,62 +8,62 @@ Drive **Kimi** (`kimi.com`) from the terminal through your existing browser sess
 
 | Command | Description | Access |
 |---------|-------------|--------|
-| `opencli kimi status` | Check page connection, login state, and current URL | read |
-| `opencli kimi account` | Read sidebar account labels | read |
-| `opencli kimi usage` | Read Kimi membership quota usage, rate limits, gift quota, and booster balance | read |
-| `opencli kimi history` | List visible sidebar conversations | read |
-| `opencli kimi detail <id>` | Open a chat by ID or trusted `/chat/<id>` URL and read messages | read |
-| `opencli kimi read` | Read messages in the current or selected chat | read |
-| `opencli kimi send <prompt>` | Send a prompt without waiting for the assistant reply | write |
-| `opencli kimi ask <prompt>` | Send a prompt and wait for the assistant reply | write |
-| `opencli kimi new` | Start a new chat | write |
-| `opencli kimi model` | Read, list, or switch the active model | write |
-| `opencli kimi mode [name]` | List or navigate to a Kimi work mode | write |
-| `opencli kimi copy-message` | Copy or return the last assistant message | write |
-| `opencli kimi react` | Like or dislike the last assistant message | write |
-| `opencli kimi regenerate` | Regenerate the last assistant message | write |
-| `opencli kimi share` | Open the share dialog for the last assistant message | write |
-| `opencli kimi history-rename --yes` | Rename a chat from the history page | write |
-| `opencli kimi sidebar-toggle` | Toggle the sidebar | write |
-| `opencli kimi view-all-history` | Navigate to the full history page | write |
-| `opencli kimi settings` | Open settings | write |
-| `opencli kimi sign-out --yes` | Sign out from settings | write |
-| `opencli kimi upgrade` | Open the membership/upgrade entry point | write |
-| `opencli kimi dismiss-banner` | Close a visible sidebar banner | write |
-| `opencli kimi templates` | List template cards on a mode page | read |
-| `opencli kimi storage-keys` | List localStorage or sessionStorage keys | read |
-| `opencli kimi storage-get <key>` | Read one storage value | read |
-| `opencli kimi cookies` | List JavaScript-visible cookies | read |
-| `opencli kimi idb-list` | List IndexedDB databases | read |
+| `cloudl kimi status` | Check page connection, login state, and current URL | read |
+| `cloudl kimi account` | Read sidebar account labels | read |
+| `cloudl kimi usage` | Read Kimi membership quota usage, rate limits, gift quota, and booster balance | read |
+| `cloudl kimi history` | List visible sidebar conversations | read |
+| `cloudl kimi detail <id>` | Open a chat by ID or trusted `/chat/<id>` URL and read messages | read |
+| `cloudl kimi read` | Read messages in the current or selected chat | read |
+| `cloudl kimi send <prompt>` | Send a prompt without waiting for the assistant reply | write |
+| `cloudl kimi ask <prompt>` | Send a prompt and wait for the assistant reply | write |
+| `cloudl kimi new` | Start a new chat | write |
+| `cloudl kimi model` | Read, list, or switch the active model | write |
+| `cloudl kimi mode [name]` | List or navigate to a Kimi work mode | write |
+| `cloudl kimi copy-message` | Copy or return the last assistant message | write |
+| `cloudl kimi react` | Like or dislike the last assistant message | write |
+| `cloudl kimi regenerate` | Regenerate the last assistant message | write |
+| `cloudl kimi share` | Open the share dialog for the last assistant message | write |
+| `cloudl kimi history-rename --yes` | Rename a chat from the history page | write |
+| `cloudl kimi sidebar-toggle` | Toggle the sidebar | write |
+| `cloudl kimi view-all-history` | Navigate to the full history page | write |
+| `cloudl kimi settings` | Open settings | write |
+| `cloudl kimi sign-out --yes` | Sign out from settings | write |
+| `cloudl kimi upgrade` | Open the membership/upgrade entry point | write |
+| `cloudl kimi dismiss-banner` | Close a visible sidebar banner | write |
+| `cloudl kimi templates` | List template cards on a mode page | read |
+| `cloudl kimi storage-keys` | List localStorage or sessionStorage keys | read |
+| `cloudl kimi storage-get <key>` | Read one storage value | read |
+| `cloudl kimi cookies` | List JavaScript-visible cookies | read |
+| `cloudl kimi idb-list` | List IndexedDB databases | read |
 
 ## Usage Examples
 
 ```bash
 # Check the current Kimi tab
-opencli kimi status
+cloudl kimi status
 
 # Read Kimi membership quota usage
-opencli kimi usage
+cloudl kimi usage
 
 # Start a new chat and ask a question
-opencli kimi new
-opencli kimi ask "Summarize this plan in three bullets"
+cloudl kimi new
+cloudl kimi ask "Summarize this plan in three bullets"
 
 # Continue the current chat without waiting for a reply
-opencli kimi send "Now expand the second bullet"
+cloudl kimi send "Now expand the second bullet"
 
 # List and read conversations
-opencli kimi history --limit 10
-opencli kimi detail https://kimi.com/chat/<chat-id>
-opencli kimi read --conv /chat/<chat-id>
+cloudl kimi history --limit 10
+cloudl kimi detail https://kimi.com/chat/<chat-id>
+cloudl kimi read --conv /chat/<chat-id>
 
 # Inspect or switch model
-opencli kimi model
-opencli kimi model --list true
-opencli kimi model --set "K2"
+cloudl kimi model
+cloudl kimi model --list true
+cloudl kimi model --set "K2"
 
 # Rename a chat only after explicit confirmation
-opencli kimi history-rename <chat-id> "New title" --yes true
+cloudl kimi history-rename <chat-id> "New title" --yes true
 ```
 
 ## Options

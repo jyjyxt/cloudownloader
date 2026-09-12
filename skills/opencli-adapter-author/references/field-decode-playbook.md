@@ -42,7 +42,7 @@
 
 ```bash
 # 如果是相对路径，拼 domain 回浏览器验证
-ClouDownloader browser eval "window.location.origin + '/<path>'"
+cloudl browser eval "window.location.origin + '/<path>'"
 ```
 
 ---
@@ -68,8 +68,8 @@ ClouDownloader browser eval "window.location.origin + '/<path>'"
    比如 eastmoney，`fid=f2`（最新价）和 `fid=f3`（涨跌幅）：
 
    ```bash
-   ClouDownloader browser eval "fetch('<url>&fid=f2&po=1').then(r=>r.json()).then(d=>d.data.diff.slice(0,3))"
-   ClouDownloader browser eval "fetch('<url>&fid=f3&po=1').then(r=>r.json()).then(d=>d.data.diff.slice(0,3))"
+   cloudl browser eval "fetch('<url>&fid=f2&po=1').then(r=>r.json()).then(d=>d.data.diff.slice(0,3))"
+   cloudl browser eval "fetch('<url>&fid=f3&po=1').then(r=>r.json()).then(d=>d.data.diff.slice(0,3))"
    ```
 
 3. **对比两组数据**：
@@ -81,7 +81,7 @@ ClouDownloader browser eval "window.location.origin + '/<path>'"
 4. **用第三个参数交叉验证**
 
    ```bash
-   ClouDownloader browser eval "fetch('<url>&fid=f6&po=1').then(r=>r.json()).then(d=>d.data.diff.slice(0,3))"  # 成交额
+   cloudl browser eval "fetch('<url>&fid=f6&po=1').then(r=>r.json()).then(d=>d.data.diff.slice(0,3))"  # 成交额
    ```
 
    对照网页上"成交额排行"的前三名。对得上就认。
@@ -90,11 +90,11 @@ ClouDownloader browser eval "window.location.origin + '/<path>'"
 
 ```bash
 # 按价格排，拿一条观察
-ClouDownloader browser eval "fetch('https://push2.eastmoney.com/api/qt/clist/get?fs=b:MK0354&pn=1&pz=1&fid=f2&po=1&fltt=2&fields=f12,f14,f2,f3,f236,f237,f239').then(r=>r.json()).then(d=>d.data.diff[0])"
+cloudl browser eval "fetch('https://push2.eastmoney.com/api/qt/clist/get?fs=b:MK0354&pn=1&pz=1&fid=f2&po=1&fltt=2&fields=f12,f14,f2,f3,f236,f237,f239').then(r=>r.json()).then(d=>d.data.diff[0])"
 # 返回 {f12:'123456', f14:'XX转债', f2:180.5, f3:2.1, f236:98.5, f237:83.2, f239:-4.1}
 
 # 按 f237 排
-ClouDownloader browser eval "fetch('...&fid=f237&po=1...').then(...)"
+cloudl browser eval "fetch('...&fid=f237&po=1...').then(...)"
 # 第一条变了，f237 值变成 400+
 
 # 打开 eastmoney 可转债页，切"溢价率"排序，第一条的溢价率确实是 400+ —— f237 就是溢价率 %
@@ -111,13 +111,13 @@ ClouDownloader browser eval "fetch('...&fid=f237&po=1...').then(...)"
 1. **先数一次嵌套路径**
 
    ```bash
-   ClouDownloader browser eval "fetch('<url>').then(r=>r.json()).then(j=>({keys:Object.keys(j), type:Array.isArray(j)?'array':'object'}))"
+   cloudl browser eval "fetch('<url>').then(r=>r.json()).then(j=>({keys:Object.keys(j), type:Array.isArray(j)?'array':'object'}))"
    ```
 
 2. **一层一层剥**
 
    ```bash
-   ClouDownloader browser eval "fetch('<url>').then(r=>r.json()).then(j=>{const d=j.data; return {keys:Object.keys(d), sample: d[Object.keys(d)[0]]}})"
+   cloudl browser eval "fetch('<url>').then(r=>r.json()).then(j=>{const d=j.data; return {keys:Object.keys(d), sample: d[Object.keys(d)[0]]}})"
    ```
 
 3. **数数组长度对照 pz / pageSize**
@@ -128,7 +128,7 @@ ClouDownloader browser eval "fetch('...&fid=f237&po=1...').then(...)"
 
    ```bash
    # 取前三条的 keys，看哪些 key 的值在变（业务数据），哪些不变（常量/配置）
-   ClouDownloader browser eval "fetch('<url>').then(r=>r.json()).then(d=>d.data.diff.slice(0,3).map(x=>({f2:x.f2,f3:x.f3,f152:x.f152})))"
+   cloudl browser eval "fetch('<url>').then(r=>r.json()).then(d=>d.data.diff.slice(0,3).map(x=>({f2:x.f2,f3:x.f3,f152:x.f152})))"
    ```
 
 ---
@@ -154,7 +154,7 @@ ClouDownloader browser eval "fetch('...&fid=f237&po=1...').then(...)"
 
 1. **补进 `references/field-conventions.md`**：找到对应站点的表格加一行。下次直接查。
 2. **在 adapter 代码里留一条注释**：如果是实测推出来的不常见代号，写一行 `// f237 = convertible premium rate (verified 2026-04-20 against page)` 方便复核。
-3. **通过 `ClouDownloader browser verify` 验一次**：字段值能对上网页上眼见的数字。
+3. **通过 `cloudl browser verify` 验一次**：字段值能对上网页上眼见的数字。
 
 ---
 

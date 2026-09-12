@@ -6,46 +6,46 @@
 
 | Command | Description |
 |---------|-------------|
-| `opencli spotify auth` | Authenticate with Spotify and store tokens locally |
-| `opencli spotify status` | Show current playback status |
-| `opencli spotify play [query]` | Resume playback or search-and-play a track |
-| `opencli spotify pause` | Pause playback |
-| `opencli spotify next` | Skip to the next track |
-| `opencli spotify prev` | Skip to the previous track |
-| `opencli spotify volume <0-100>` | Set playback volume |
-| `opencli spotify search <query>` | Search Spotify tracks |
-| `opencli spotify queue <query>` | Add a track to the playback queue |
-| `opencli spotify shuffle <on|off>` | Toggle shuffle |
-| `opencli spotify repeat <off|track|context>` | Set repeat mode |
+| `cloudl spotify auth` | Authenticate with Spotify and store tokens locally |
+| `cloudl spotify status` | Show current playback status |
+| `cloudl spotify play [query]` | Resume playback or search-and-play a track |
+| `cloudl spotify pause` | Pause playback |
+| `cloudl spotify next` | Skip to the next track |
+| `cloudl spotify prev` | Skip to the previous track |
+| `cloudl spotify volume <0-100>` | Set playback volume |
+| `cloudl spotify search <query>` | Search Spotify tracks |
+| `cloudl spotify queue <query>` | Add a track to the playback queue |
+| `cloudl spotify shuffle <on|off>` | Toggle shuffle |
+| `cloudl spotify repeat <off|track|context>` | Set repeat mode |
 
 ## Usage Examples
 
 ```bash
 # First-time setup
-opencli spotify auth
+cloudl spotify auth
 
 # What is playing right now?
-opencli spotify status
+cloudl spotify status
 
 # Resume playback
-opencli spotify play
+cloudl spotify play
 
 # Search and immediately play a track
-opencli spotify play "Numb Linkin Park"
+cloudl spotify play "Numb Linkin Park"
 
 # Search without playing
-opencli spotify search "Daft Punk" --limit 5 -f json
+cloudl spotify search "Daft Punk" --limit 5 -f json
 
 # Queue a track
-opencli spotify queue "Get Lucky"
+cloudl spotify queue "Get Lucky"
 
 # Playback controls
-opencli spotify pause
-opencli spotify next
-opencli spotify prev
-opencli spotify volume 35
-opencli spotify shuffle on
-opencli spotify repeat track
+cloudl spotify pause
+cloudl spotify next
+cloudl spotify prev
+cloudl spotify volume 35
+cloudl spotify shuffle on
+cloudl spotify repeat track
 ```
 
 ## Setup
@@ -53,7 +53,7 @@ opencli spotify repeat track
 1. Create a Spotify app at <https://developer.spotify.com/dashboard>
 2. Add `http://127.0.0.1:8888/callback` to the app's Redirect URIs
 3. Fill in `SPOTIFY_CLIENT_ID` and `SPOTIFY_CLIENT_SECRET` in `~/.opencli/spotify.env`
-4. Run `opencli spotify auth`
+4. Run `cloudl spotify auth`
 
 ## Notes
 

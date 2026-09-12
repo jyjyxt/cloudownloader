@@ -6,7 +6,7 @@ export const readCommand = cli({
   name: 'read',
   access: 'read',
   description: 'Read the current Trae CN chat conversation',
-  example: 'OPENCLI_CDP_ENDPOINT=http://127.0.0.1:39240 OPENCLI_CDP_TARGET=talk opencli trae-cn read --limit 5 --max-chars 12000 -f json',
+  example: 'OPENCLI_CDP_ENDPOINT=http://127.0.0.1:39240 OPENCLI_CDP_TARGET=talk cloudl trae-cn read --limit 5 --max-chars 12000 -f json',
   domain: 'localhost',
   strategy: Strategy.UI,
   browser: true,

@@ -9,7 +9,7 @@ cli({
   name: 'search',
   description: 'Search HLTV players, teams, events, and articles',
   access: 'read',
-  example: 'opencli hltv search niko --limit 10 -f json',
+  example: 'cloudl hltv search niko --limit 10 -f json',
   domain: 'www.hltv.org',
   strategy: Strategy.UI,
   browser: true,

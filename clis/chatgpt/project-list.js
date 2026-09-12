@@ -25,7 +25,7 @@ export const projectListCommand = cli({
         const limit = requirePositiveInt(
             Number(kwargs.limit ?? 20),
             'chatgpt project-list --limit',
-            'Example: opencli chatgpt project-list --limit 20',
+            'Example: cloudl chatgpt project-list --limit 20',
         );
         await ensureChatGPTLogin(page, 'ChatGPT project-list requires a logged-in ChatGPT session.');
         const projects = await getProjectList(page);

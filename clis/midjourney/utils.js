@@ -70,7 +70,7 @@ export function parseJobId(value) {
   } catch {}
   throw new ArgumentError(
     'job-id must be a Midjourney UUID or https://www.midjourney.com/jobs/<uuid> URL',
-    'Example: opencli midjourney status d5664250-5f1f-4cd0-9637-2ce0153dd30a',
+    'Example: cloudl midjourney status d5664250-5f1f-4cd0-9637-2ce0153dd30a',
   );
 }
 
@@ -93,7 +93,7 @@ export function normalizePrompt(value) {
   if (!prompt) {
     throw new ArgumentError(
       'prompt cannot be empty',
-      'Example: opencli midjourney generate "a blue ceramic teapot --ar 1:1"',
+      'Example: cloudl midjourney generate "a blue ceramic teapot --ar 1:1"',
     );
   }
   return prompt;

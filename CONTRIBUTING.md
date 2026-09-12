@@ -101,26 +101,26 @@ cli({
 });
 ```
 
-Install the [`opencli-adapter-author` skill](./skills/opencli-adapter-author/SKILL.md) if you need the full adapter workflow — recon → API discovery → field decoding → `opencli browser verify`.
+Install the [`opencli-adapter-author` skill](./skills/opencli-adapter-author/SKILL.md) if you need the full adapter workflow — recon → API discovery → field decoding → `cloudl browser verify`.
 
 ### Validate Your Adapter
 
 ```bash
 # Validate adapter
-opencli validate
+cloudl validate
 
 # Test your command
-opencli <site> <command> --limit 3 -f json
+cloudl <site> <command> --limit 3 -f json
 
 # Verbose mode for debugging
-opencli <site> <command> -v
+cloudl <site> <command> -v
 ```
 
 ## Arg Design Convention
 
 Use **positional** for the primary, required argument of a command (the "what" — query, symbol, id, url, username). Use **named options** (`--flag`) for secondary/optional configuration (limit, format, sort, page, filters, language, date).
 
-**Rule of thumb**: Think about how the user will type the command. `opencli xueqiu stock SH600519` is more natural than `opencli xueqiu stock --symbol SH600519`.
+**Rule of thumb**: Think about how the user will type the command. `cloudl xueqiu stock SH600519` is more natural than `cloudl xueqiu stock --symbol SH600519`.
 
 | Arg type | Positional? | Examples |
 |----------|-------------|----------|
@@ -186,7 +186,7 @@ Common scopes: site name (`twitter`, `reddit`) or module name (`browser`, `pipel
    npx tsc --noEmit           # Type check
    npm test                   # Default local gate: unit + extension + adapter
    npm run test:adapter       # Adapter-only project (optional while iterating on adapters)
-   opencli validate           # Adapter validation
+   cloudl validate           # Adapter validation
    ```
 4. Commit using conventional commit format
 5. Push and open a PR

@@ -6,7 +6,7 @@ import {
     runListBatch,
 } from './list-batch-utils.js';
 
-const EXAMPLE = 'Example: opencli twitter list-add-batch 123456789 "@alice,@bob" --interval 5';
+const EXAMPLE = 'Example: cloudl twitter list-add-batch 123456789 "@alice,@bob" --interval 5';
 
 cli({
     site: 'twitter',
@@ -17,7 +17,7 @@ cli({
     strategy: Strategy.UI,
     browser: true,
     args: [
-        { name: 'listId', positional: true, type: 'string', required: true, help: 'Numeric ID of the list you own (e.g. from `opencli twitter lists`)' },
+        { name: 'listId', positional: true, type: 'string', required: true, help: 'Numeric ID of the list you own (e.g. from `cloudl twitter lists`)' },
         { name: 'usernames', positional: true, type: 'string', required: true, help: 'Comma-separated Twitter/X handles to add (with or without @)' },
         { name: 'interval', type: 'int', default: 5, help: 'Seconds to wait between account additions (default: 5)' },
         { name: 'timeout', type: 'int', default: 600, help: 'Max seconds for the overall batch command (default: 600)' },

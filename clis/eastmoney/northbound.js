@@ -1,8 +1,8 @@
 // eastmoney northbound — live realtime cross-border capital flow (北向/南向).
 //
 // Returns the latest non-empty minute snapshot of cumulative net flow in 万元.
-//   opencli eastmoney northbound
-//   opencli eastmoney northbound --direction south
+//   cloudl eastmoney northbound
+//   cloudl eastmoney northbound --direction south
 
 import { cli, Strategy } from '@jackwener/opencli/registry';
 import { CliError } from '@jackwener/opencli/errors';

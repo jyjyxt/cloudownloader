@@ -1,7 +1,7 @@
 /**
  * Preset: Zhihu Command Reliability
  *
- * Optimizes opencli browser commands against the Zhihu test suite.
+ * Optimizes cloudl browser commands against the Zhihu test suite.
  * 60 tasks across 8 difficulty layers (atomic → complex long chain).
  * Zhihu is a React SPA with lazy loading, making it harder than V2EX.
  */

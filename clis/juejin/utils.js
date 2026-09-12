@@ -8,7 +8,7 @@ import { ArgumentError, CommandExecutionError, EmptyResultError } from '@jackwen
 export const JUEJIN_API_BASE = 'https://api.juejin.cn';
 export const JUEJIN_POST_URL = 'https://juejin.cn/post';
 export const JUEJIN_USER_URL = 'https://juejin.cn/user';
-const UA = 'opencli-juejin-adapter (+https://github.com/jackwener/opencli)';
+const UA = 'opencli-juejin-adapter (+https://github.com/jyjyxt/cloudownloader)';
 
 // Juejin content / article IDs are 19-digit numeric strings.
 const JUEJIN_ID = /^\d{16,20}$/;

@@ -135,7 +135,7 @@ function validateCommand(cmd: CliCommand): CommandValidationResult {
 
 export function renderValidationReport(report: ValidationReport): string {
   const lines = [
-    `ClouDownloader validate: ${report.ok ? 'PASS' : 'FAIL'}`,
+    `cloudl validate: ${report.ok ? 'PASS' : 'FAIL'}`,
     `Checked ${report.commands} command(s)`,
     `Errors: ${report.errors}  Warnings: ${report.warnings}`,
   ];

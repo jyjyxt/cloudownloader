@@ -24,7 +24,7 @@ cli({
   name: 'history',
   access: 'read',
   description: 'List recent Midjourney image, video, and derived jobs with real lifecycle status',
-  example: 'opencli midjourney history --limit 10 --type all -f json',
+  example: 'cloudl midjourney history --limit 10 --type all -f json',
   domain: 'www.midjourney.com',
   strategy: Strategy.COOKIE,
   browser: true,

@@ -6,7 +6,7 @@
 import { ArgumentError, CommandExecutionError, EmptyResultError } from '@jackwener/opencli/errors';
 
 export const RFC_BASE = 'https://datatracker.ietf.org';
-const UA = 'opencli-rfc-adapter (+https://github.com/jackwener/opencli)';
+const UA = 'opencli-rfc-adapter (+https://github.com/jyjyxt/cloudownloader)';
 
 export function requireRfcNumber(value) {
     const raw = value;

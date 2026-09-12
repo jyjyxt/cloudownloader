@@ -6,36 +6,36 @@
 
 | Command | Description |
 |---------|-------------|
-| `opencli gmail whoami` | Show the signed-in Gmail identity |
-| `opencli gmail login` | Open Gmail's Google sign-in flow |
-| `opencli gmail search <query>` | Search threads with Gmail search syntax |
-| `opencli gmail inbox` | List inbox threads |
-| `opencli gmail unread` | List unread threads |
-| `opencli gmail starred` | List starred threads |
-| `opencli gmail sent` | List sent threads |
-| `opencli gmail drafts` | List draft threads |
-| `opencli gmail trash` | List trashed threads |
-| `opencli gmail spam` | List spam threads |
-| `opencli gmail snoozed` | List snoozed threads |
-| `opencli gmail important` | List important threads |
-| `opencli gmail labels` | List system and user labels |
-| `opencli gmail thread <thread>` | Read all messages in a thread |
-| `opencli gmail attachments <thread>` | List attachment metadata for a thread |
+| `cloudl gmail whoami` | Show the signed-in Gmail identity |
+| `cloudl gmail login` | Open Gmail's Google sign-in flow |
+| `cloudl gmail search <query>` | Search threads with Gmail search syntax |
+| `cloudl gmail inbox` | List inbox threads |
+| `cloudl gmail unread` | List unread threads |
+| `cloudl gmail starred` | List starred threads |
+| `cloudl gmail sent` | List sent threads |
+| `cloudl gmail drafts` | List draft threads |
+| `cloudl gmail trash` | List trashed threads |
+| `cloudl gmail spam` | List spam threads |
+| `cloudl gmail snoozed` | List snoozed threads |
+| `cloudl gmail important` | List important threads |
+| `cloudl gmail labels` | List system and user labels |
+| `cloudl gmail thread <thread>` | Read all messages in a thread |
+| `cloudl gmail attachments <thread>` | List attachment metadata for a thread |
 
 ## Usage Examples
 
 ```bash
 # Search and use the returned threadId to read a conversation
-opencli gmail search 'from:alerts@example.com newer_than:30d' --limit 20 -f json
-opencli gmail thread 'thread-f:1234567890123456789' -f json
+cloudl gmail search 'from:alerts@example.com newer_than:30d' --limit 20 -f json
+cloudl gmail thread 'thread-f:1234567890123456789' -f json
 
 # Common mailbox views and labels
-opencli gmail inbox --limit 50
-opencli gmail unread --limit 50
-opencli gmail labels -f json
+cloudl gmail inbox --limit 50
+cloudl gmail unread --limit 50
+cloudl gmail labels -f json
 
 # List attachment metadata without downloading files
-opencli gmail attachments 'thread-f:1234567890123456789' -f json
+cloudl gmail attachments 'thread-f:1234567890123456789' -f json
 ```
 
 All list commands accept `--account <index>` for Gmail URLs under `/mail/u/<index>/`. Thread-list commands also accept `--limit` from 1 to 200.
@@ -50,4 +50,4 @@ Reads let Gmail perform its normal search/navigation and parse the resulting bro
 
 - Chrome running and **logged into** Gmail
 - [Browser Bridge extension](/guide/browser-bridge) installed
-- Use `opencli gmail whoami` to verify the active account before reading mail
+- Use `cloudl gmail whoami` to verify the active account before reading mail

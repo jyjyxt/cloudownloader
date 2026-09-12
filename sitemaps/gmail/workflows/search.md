@@ -17,7 +17,7 @@ Return structured Gmail threads using Gmail search syntax or a common mailbox vi
 
 ## Best path
 
-adapter: `opencli gmail search <query>`; use inbox/unread/starred/sent/drafts/trash/spam/snoozed/important shortcuts when applicable
+adapter: `cloudl gmail search <query>`; use inbox/unread/starred/sent/drafts/trash/spam/snoozed/important shortcuts when applicable
 adapter_health: healthy
 preconditions: signed in; limit 1-200
 estimated_turns: 1
@@ -25,7 +25,7 @@ estimated_turns: 1
 ## Fallback path
 
 on_adapter_fail:
-1. `adapter_health_update: opencli gmail search -> suspect`
+1. `adapter_health_update: cloudl gmail search -> suspect`
 2. Verify `input[name="q"]` in current browser state.
 3. Fill the exact Gmail query with native input and submit with a native Enter event.
 4. Read visible `[data-legacy-thread-id]` rows; do not claim pagination completeness.

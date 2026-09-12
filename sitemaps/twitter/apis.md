@@ -35,7 +35,7 @@ twitter 的 adapter family (`clis/twitter/*.js`) 引用了 **34+ 个 GraphQL ope
 
 行动建议（不在本 PoC scope）：
 
-- 跑 `opencli browser network` 抓 twitter session 一次拿到当前 queryId map，全量回写 endpoints.json
+- 跑 `cloudl browser network` 抓 twitter session 一次拿到当前 queryId map，全量回写 endpoints.json
 - step 3 数据显示 twitter COOKIE_API adapter 9 fixes/30 天 → queryId rotation 是主因，集中维护 endpoints.json 比 34 个 adapter 各自硬编码 fallback 价值更高
 
 待 endpoints.json 补齐后，本文件 endpoint 列表会扩到完整。

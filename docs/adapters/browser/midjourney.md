@@ -8,27 +8,27 @@ Generate, inspect, transform, monitor, and download Midjourney creations through
 
 | Command | Description |
 |---------|-------------|
-| `opencli midjourney login` | Open a foreground login flow, or report `already_logged_in` |
-| `opencli midjourney whoami` | Check login, plan, and subscription state without exposing account identity |
-| `opencli midjourney settings` | Read selected image/video defaults from Create |
-| `opencli midjourney quota` | Show live Fast GPU minutes, conservative batch estimates, and local trend data |
-| `opencli midjourney generate <prompt>` | Generate images with model routing, references, cost guards, and optional download |
-| `opencli midjourney describe <image>` | Upload one local image and return four Describe suggestions |
-| `opencli midjourney history` | List and filter recent image, video, and derived jobs |
-| `opencli midjourney status <job>` | Read one job's lifecycle and metadata |
-| `opencli midjourney action <job> <operation>` | Rerun, vary, upscale, edit, animate, loop, extend, or cancel |
-| `opencli midjourney download <job>` | Download image originals, raw video, social MP4, or GIF |
+| `cloudl midjourney login` | Open a foreground login flow, or report `already_logged_in` |
+| `cloudl midjourney whoami` | Check login, plan, and subscription state without exposing account identity |
+| `cloudl midjourney settings` | Read selected image/video defaults from Create |
+| `cloudl midjourney quota` | Show live Fast GPU minutes, conservative batch estimates, and local trend data |
+| `cloudl midjourney generate <prompt>` | Generate images with model routing, references, cost guards, and optional download |
+| `cloudl midjourney describe <image>` | Upload one local image and return four Describe suggestions |
+| `cloudl midjourney history` | List and filter recent image, video, and derived jobs |
+| `cloudl midjourney status <job>` | Read one job's lifecycle and metadata |
+| `cloudl midjourney action <job> <operation>` | Rerun, vary, upscale, edit, animate, loop, extend, or cancel |
+| `cloudl midjourney download <job>` | Download image originals, raw video, social MP4, or GIF |
 
 ## Start safely
 
 ```bash
-opencli midjourney login
-opencli midjourney whoami -f json
-opencli midjourney settings -f yaml
-opencli midjourney quota -f yaml
+cloudl midjourney login
+cloudl midjourney whoami -f json
+cloudl midjourney settings -f yaml
+cloudl midjourney quota -f yaml
 
 # Validate routing and cost without uploading or submitting
-opencli midjourney generate "a blue ceramic teapot --ar 1:1" --dry-run -f yaml
+cloudl midjourney generate "a blue ceramic teapot --ar 1:1" --dry-run -f yaml
 ```
 
 `generate` and paid `action` operations have two independent cost guards:
@@ -43,16 +43,16 @@ Eligible Relax-mode image jobs report `0` estimated Fast GPU minutes because the
 
 ```bash
 # V8.2 Standard/SD; downloads all four candidates by default
-opencli midjourney generate \
+cloudl midjourney generate \
   "a cobalt glass fox, studio product photography --ar 1:1" \
   --model v8.2 --resolution sd --speed fast
 
 # Submit and return the exact job id without waiting
-opencli midjourney generate "minimalist lighthouse --ar 3:2" \
+cloudl midjourney generate "minimalist lighthouse --ar 3:2" \
   --wait false --skip-download
 
 # Higher-resolution V8.2 batch
-opencli midjourney generate "coastal observatory at dusk --ar 16:9" \
+cloudl midjourney generate "coastal observatory at dusk --ar 16:9" \
   --model v8.2 --resolution hd --max-minutes 1.5
 ```
 
@@ -71,20 +71,20 @@ Reference options accept a local PNG/JPEG/WEBP/GIF (up to 10 MB), an HTTPS image
 
 ```bash
 # Content/composition reference; repeat the option as a JSON array for multiple files
-opencli midjourney generate "a small robot crossing a salt flat" \
+cloudl midjourney generate "a small robot crossing a salt flat" \
   --image-ref '["./pose.png","https://example.com/light.png"]' \
   --image-weight 1.2
 
 # Style image or numeric Style Reference code
-opencli midjourney generate "botanical field guide" \
+cloudl midjourney generate "botanical field guide" \
   --style-ref ./ink-style.png --style-weight 250
 
 # V7 Omni Reference; auto routing is explicit in routing_reason
-opencli midjourney generate "the same character in a winter station" \
+cloudl midjourney generate "the same character in a winter station" \
   --omni-ref ./character.png --omni-weight 200 --model auto
 
 # Existing Personalization profile or Moodboard id
-opencli midjourney generate "quiet reading room" --profile <profile-or-moodboard-id>
+cloudl midjourney generate "quiet reading room" --profile <profile-or-moodboard-id>
 ```
 
 Every paid generation clears any manually pinned/stale web-composer references first. This prevents a no-reference CLI call from inheriting hidden browser state.
@@ -98,21 +98,21 @@ Image jobs support:
 Video jobs support `rerun`, `extend-low`, `extend-high`, and `cancel` while active.
 
 ```bash
-opencli midjourney action <image-job> vary-subtle --index 1
-opencli midjourney action <image-job> upscale-creative --index 2
-opencli midjourney action <image-job> open-editor --index 1
+cloudl midjourney action <image-job> vary-subtle --index 1
+cloudl midjourney action <image-job> upscale-creative --index 2
+cloudl midjourney action <image-job> open-editor --index 1
 
 # Start a video and restore account-wide video defaults afterward
-opencli midjourney action <image-job> animate-high --index 1 \
+cloudl midjourney action <image-job> animate-high --index 1 \
   --prompt "slow orbit, the subject turns toward the light" \
   --end-frame ./ending.png --video-resolution sd --batch-size 1
 
-opencli midjourney action <image-job> loop-low --index 1 --batch-size 1
-opencli midjourney action <video-job> extend-high --prompt "the camera rises above the skyline"
+cloudl midjourney action <image-job> loop-low --index 1 --batch-size 1
+cloudl midjourney action <video-job> extend-high --prompt "the camera rises above the skyline"
 
 # Async submit/cancel lifecycle
-opencli midjourney action <image-job> animate-low --wait false --batch-size 1
-opencli midjourney action <returned-video-job> cancel
+cloudl midjourney action <image-job> animate-low --wait false --batch-size 1
+cloudl midjourney action <returned-video-job> cancel
 ```
 
 Video resolution and batch size are account-wide website settings. The adapter requires a readable baseline, applies requested temporary values, and restores the original values even when preparation, submission, or job correlation fails.
@@ -120,17 +120,17 @@ Video resolution and batch size are account-wide website settings. The adapter r
 ## History, status, and downloads
 
 ```bash
-opencli midjourney history --limit 20 --type video --status completed
-opencli midjourney history --query "glass fox" -f json
-opencli midjourney status <job> -f yaml
+cloudl midjourney history --limit 20 --type video --status completed
+cloudl midjourney history --query "glass fox" -f json
+cloudl midjourney status <job> -f yaml
 
 # All image candidates, with validated cache reuse
-opencli midjourney download <image-job> --kind image --index all --output ./midjourney
+cloudl midjourney download <image-job> --kind image --index all --output ./midjourney
 
 # Video exports
-opencli midjourney download <video-job> --kind video-raw --index 1
-opencli midjourney download <video-job> --kind video-social --index 1
-opencli midjourney download <video-job> --kind gif --index 1
+cloudl midjourney download <video-job> --kind video-raw --index 1
+cloudl midjourney download <video-job> --kind video-social --index 1
+cloudl midjourney download <video-job> --kind gif --index 1
 ```
 
 Downloads use atomic writes and validate media bytes before accepting a file. Existing non-empty files are reused only when their magic bytes match the expected format; use `--force` to redownload.

@@ -15,7 +15,7 @@ cli({
     domain: YOLLOMI_DOMAIN,
     strategy: Strategy.COOKIE,
     args: [
-        { name: 'image', positional: true, required: true, help: 'Input image URL (upload via "opencli yollomi upload" first)' },
+        { name: 'image', positional: true, required: true, help: 'Input image URL (upload via "cloudl yollomi upload" first)' },
         { name: 'prompt', positional: true, required: true, help: 'Editing instruction (e.g. "Make it look vintage")' },
         { name: 'model', default: 'qwen-image-edit', choices: ['qwen-image-edit', 'qwen-image-edit-plus'], help: 'Edit model' },
         { name: 'output', default: './yollomi-output', help: 'Output directory' },

@@ -17,7 +17,7 @@ cli({
         await requireNotebooklmSession(page);
         const state = await getNotebooklmPageState(page);
         if (state.kind !== 'notebook') {
-            throw new EmptyResultError('opencli notebooklm source-list', 'No NotebookLM notebook is open in the adapter session. Run `opencli notebooklm open <notebook>` first.');
+            throw new EmptyResultError('cloudl notebooklm source-list', 'No NotebookLM notebook is open in the adapter session. Run `cloudl notebooklm open <notebook>` first.');
         }
         const rpcRows = await listNotebooklmSourcesViaRpc(page).catch(() => []);
         if (rpcRows.length > 0)
@@ -25,6 +25,6 @@ cli({
         const domRows = await listNotebooklmSourcesFromPage(page);
         if (domRows.length > 0)
             return domRows;
-        throw new EmptyResultError('opencli notebooklm source-list', 'No NotebookLM sources were found on the current page.');
+        throw new EmptyResultError('cloudl notebooklm source-list', 'No NotebookLM sources were found on the current page.');
     },
 });

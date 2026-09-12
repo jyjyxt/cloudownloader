@@ -22,21 +22,21 @@ source: global
 
 ### action:open_story_detail
 pre: on /news 或 /，目标 story id 已知（rank 仅作降级匹配）
-do: opencli hackernews story <id> || click `tr.athing[id="<id>"] + tr a[href^="item?id="]`
+do: cloudl hackernews story <id> || click `tr.athing[id="<id>"] + tr a[href^="item?id="]`
 post: URL → /item?id=<id> AND <title> 含 story 标题
 fail: click 落到外部 URL（误点 title link） | athing 不在当前 page
-recover: 误点外站立即 back; athing 找不到时 reload /news 或用 adapter 直 fetch; adapter_health_update: opencli hackernews story -> suspect
-evidence: opencli hackernews top --limit 30 + opencli browser open
+recover: 误点外站立即 back; athing 找不到时 reload /news 或用 adapter 直 fetch; adapter_health_update: cloudl hackernews story -> suspect
+evidence: cloudl hackernews top --limit 30 + cloudl browser open
 
 > **Anchor note**：`tr.athing:nth-child(<rank>)` 不安全 — HN 每个 story 是 athing row + subtext sibling row 两 `<tr>`，nth-child(rank) 不映射到 rank 序号。用 `[id="<id>"]` attribute selector 是 schema v1.1 §2.2 selector_pattern (id-anchored) 的典型案例。
 
 ### action:next_page
 pre: on /news，已滚到底，footer `More` link visible
-do: opencli hackernews top --offset <N> || click `a.morelink`
+do: cloudl hackernews top --offset <N> || click `a.morelink`
 post: URL 加 ?p=<N> 或 ?next=<id>&n=<offset>，新 30 条 stories
 fail: morelink 不存在（HN 默认 ~30 条/页）
-recover: adapter --limit 跨页透明，DOM 翻页是 worse path; adapter_health_update: opencli hackernews top -> suspect
-evidence: opencli hackernews top --offset 30
+recover: adapter --limit 跨页透明，DOM 翻页是 worse path; adapter_health_update: cloudl hackernews top -> suspect
+evidence: cloudl hackernews top --offset 30
 
 ## Linked APIs
 

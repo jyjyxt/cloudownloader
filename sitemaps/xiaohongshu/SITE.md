@@ -41,16 +41,16 @@ login:
 - `/user/profile/<id>` → pages/profile.md（用户 profile）
 - `/explore/<note_id>?xsec_token=...` → pages/note.md（笔记详情，需 signed URL）
 - `creator.xiaohongshu.com/publish/publish?from=menu_left&target=image` → pages/compose.md（图文发布，creator center）
-- `/notifications` → 直接用 adapter `opencli xiaohongshu notifications`，无 workflow
-- `creator.xiaohongshu.com/creator/notes` → 直接用 adapter `opencli xiaohongshu creator-notes`，无 workflow
+- `/notifications` → 直接用 adapter `cloudl xiaohongshu notifications`，无 workflow
+- `creator.xiaohongshu.com/creator/notes` → 直接用 adapter `cloudl xiaohongshu creator-notes`，无 workflow
 
 ## Common goals
 
 - search notes by keyword → workflows/search.md
 - publish an image note → workflows/publish.md
 - comment on a note → workflows/comment.md
-- read a note's full content + comments → 直接用 adapter `opencli xiaohongshu note <url>` + `opencli xiaohongshu comments <url>`
-- read user's notes → 直接用 adapter `opencli xiaohongshu user <id>`
+- read a note's full content + comments → 直接用 adapter `cloudl xiaohongshu note <url>` + `cloudl xiaohongshu comments <url>`
+- read user's notes → 直接用 adapter `cloudl xiaohongshu user <id>`
 
 ## Site-wide pitfalls
 

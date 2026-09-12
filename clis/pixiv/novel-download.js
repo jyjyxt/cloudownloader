@@ -22,7 +22,7 @@ cli({
     }
     const id = String(kwargs['novel-id'] ?? '');
     if (!/^\d+$/.test(id)) {
-      throw new ArgumentError(`Invalid novel ID: ${id}`, 'Example: opencli pixiv novel-download 10588915 --file-format txt');
+      throw new ArgumentError(`Invalid novel ID: ${id}`, 'Example: cloudl pixiv novel-download 10588915 --file-format txt');
     }
     const format = normalizeNovelFileFormat(kwargs['file-format'] ?? kwargs.format);
     const output = normalizePixivOutputRoot(kwargs.output, './pixiv-downloads/novels');

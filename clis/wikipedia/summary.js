@@ -18,7 +18,7 @@ cli({
         const title = encodeURIComponent(args.title.replace(/ /g, '_'));
         const data = (await wikiFetch(lang, `/api/rest_v1/page/summary/${title}`));
         if (!data?.title)
-            throw new CliError('NOT_FOUND', `Article "${args.title}" not found`, 'Try searching first: opencli wikipedia search <keyword>');
+            throw new CliError('NOT_FOUND', `Article "${args.title}" not found`, 'Try searching first: cloudl wikipedia search <keyword>');
         return [formatSummaryRow(data, lang)];
     },
 });

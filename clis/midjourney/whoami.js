@@ -7,7 +7,7 @@ cli({
   name: 'whoami',
   access: 'read',
   description: 'Verify the current Midjourney login and show non-identifying subscription state',
-  example: 'opencli midjourney whoami -f json',
+  example: 'cloudl midjourney whoami -f json',
   domain: MIDJOURNEY_DOMAIN,
   strategy: Strategy.COOKIE,
   browser: true,

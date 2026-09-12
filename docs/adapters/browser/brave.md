@@ -6,7 +6,7 @@
 
 | Command | Description |
 |---------|-------------|
-| `opencli brave search <keyword>` | Search Brave Search and extract results from the page |
+| `cloudl brave search <keyword>` | Search Brave Search and extract results from the page |
 
 ## What works today
 
@@ -25,16 +25,16 @@
 
 ```bash
 # Basic search
-opencli brave search "machine learning"
+cloudl brave search "machine learning"
 
 # Limit results
-opencli brave search "machine learning" --limit 5
+cloudl brave search "machine learning" --limit 5
 
 # Pagination (second page)
-opencli brave search "machine learning" --offset 1
+cloudl brave search "machine learning" --offset 1
 
 # JSON output
-opencli brave search "machine learning" -f json
+cloudl brave search "machine learning" -f json
 ```
 
 ## Prerequisites

@@ -40,7 +40,7 @@ cli({
         if (!target) {
             throw new ArgumentError(
                 'Answer ID must be a numeric id, a Zhihu answer URL, or answer:<qid>:<aid>',
-                'Example: opencli zhihu answer-detail 1937205528846655537',
+                'Example: cloudl zhihu answer-detail 1937205528846655537',
             );
         }
         const { answerId } = target;

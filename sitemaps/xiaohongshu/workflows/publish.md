@@ -16,12 +16,12 @@ source: global
 ## State signature
 
 - entry: 任意 page，logged_in，本地图片路径 ready，标题 / 正文 string ready
-- success: `opencli xiaohongshu creator-notes` 列表里出现新笔记（title 匹配），或 publish toast `发布成功`
+- success: `cloudl xiaohongshu creator-notes` 列表里出现新笔记（title 匹配），或 publish toast `发布成功`
 
 ## Best path
 
 ```yaml
-adapter: opencli xiaohongshu publish
+adapter: cloudl xiaohongshu publish
 adapter_health: healthy
 preconditions:
   - logged_in (creator.xiaohongshu.com 同 cookie 共享)
@@ -31,7 +31,7 @@ preconditions:
 estimated_turns: 1
 ```
 
-直接 `opencli xiaohongshu publish --title "<title>" "<body>" --images /path/a.jpg,/path/b.jpg [--topics 生活,旅行]`。adapter 内部 navigate creator host + CDP file upload + shadow DOM submit。
+直接 `cloudl xiaohongshu publish --title "<title>" "<body>" --images /path/a.jpg,/path/b.jpg [--topics 生活,旅行]`。adapter 内部 navigate creator host + CDP file upload + shadow DOM submit。
 
 ## Fallback path
 
@@ -39,11 +39,11 @@ estimated_turns: 1
 
 ```yaml
 on_adapter_fail:
-  - adapter_health_update: opencli xiaohongshu publish -> suspect
+  - adapter_health_update: cloudl xiaohongshu publish -> suspect
   - if AuthRequiredError:
-    - recovery: opencli xiaohongshu login  # pending: codex task #276
+    - recovery: cloudl xiaohongshu login  # pending: codex task #276
     - 登录后 retry adapter 一次
-  - opencli browser state (verify host + URL)
+  - cloudl browser state (verify host + URL)
   - if host != creator.xiaohongshu.com: goto https://creator.xiaohongshu.com/publish/publish?from=menu_left&target=image
   - action:upload_images in pages/compose.md (CDP DOM.setFileInputFiles)
   - wait 3s for upload settle
@@ -52,7 +52,7 @@ on_adapter_fail:
   - action:submit_publish in pages/compose.md
   - **注意**: publish button 是 closed shadow DOM, host-level click 不响应 -> 必须 evaluate 实例方法 `_onPublish` / `onPublish` / `_onSubmit` / `_handlePublish`
   - verify URL redirect 到 /creator/notes 或 toast "发布成功"
-  - cross-verify: opencli xiaohongshu creator-notes --limit 1 看顶部是否是新发的
+  - cross-verify: cloudl xiaohongshu creator-notes --limit 1 看顶部是否是新发的
 estimated_turns: 8
 ```
 
@@ -67,7 +67,7 @@ estimated_turns: 8
 
 ## Re-entry checkpoints
 
-agent 中断后醒来按 `opencli browser state` URL + creator-notes 比对判断：
+agent 中断后醒来按 `cloudl browser state` URL + creator-notes 比对判断：
 
 - on 非 creator host → 重新走 Best path
 - on `creator.xiaohongshu.com/publish/publish?...`, 图片已上传但 title/body 未填 → Fallback step "fill_text" 起
@@ -76,7 +76,7 @@ agent 中断后醒来按 `opencli browser state` URL + creator-notes 比对判�
 
 ## State validation
 
-- `opencli xiaohongshu creator-notes --limit 5` 顶部出现 title 匹配新 row，或
+- `cloudl xiaohongshu creator-notes --limit 5` 顶部出现 title 匹配新 row，或
 - `creator.xiaohongshu.com/creator/notes` URL 上看到新笔记 card（visible text 匹配）
 - publish toast `发布成功` 出现过
 

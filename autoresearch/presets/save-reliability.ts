@@ -9,7 +9,7 @@
 import type { AutoResearchConfig } from '../config.js';
 
 export const saveReliability: AutoResearchConfig = {
-  goal: 'Increase "Save as CLI" pipeline pass rate to 100%. The flow is: browser init creates a scaffold, user writes adapter code, opencli discovers and runs it. Covers both PUBLIC (fetch API) and COOKIE (browser session) strategies. Focus on: init template correctness, user CLI discovery, adapter loading, verify command robustness, and browser session handling.',
+  goal: 'Increase "Save as CLI" pipeline pass rate to 100%. The flow is: browser init creates a scaffold, user writes adapter code, cloudl discovers and runs it. Covers both PUBLIC (fetch API) and COOKIE (browser session) strategies. Focus on: init template correctness, user CLI discovery, adapter loading, verify command robustness, and browser session handling.',
   scope: [
     'src/cli.ts',
     'src/discovery.ts',

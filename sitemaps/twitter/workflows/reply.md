@@ -18,7 +18,7 @@ source: global
 ## Best path
 
 ```yaml
-adapter: opencli twitter reply
+adapter: cloudl twitter reply
 adapter_health: healthy
 preconditions:
   - logged_in
@@ -27,7 +27,7 @@ preconditions:
 estimated_turns: 1
 ```
 
-直接 `opencli twitter reply --status-url <url> --text "<content>"`。
+直接 `cloudl twitter reply --status-url <url> --text "<content>"`。
 
 **强约束**：reply 含多段 / bullet / 反引号 / `→` / `<url>` 占位 → 多半 silent fail，**改写**或走 Fallback。详 `pitfall:reply_silent_fails_on_rich_content`。
 
@@ -37,7 +37,7 @@ adapter 失败或 reply 内容过 rich 时：
 
 ```yaml
 on_adapter_fail:
-  - adapter_health_update: opencli twitter reply -> suspect
+  - adapter_health_update: cloudl twitter reply -> suspect
   - goto <status-url> (lands pages/status.md)
   - action:open_reply_composer_inline in pages/status.md
   - type content (RTL segmented, rich content per pitfall workaround)
@@ -67,4 +67,4 @@ estimated_turns: 4
 ## Stale markers
 
 - `reply composer can not be verified` 错误率上升 → silent fail 模式可能扩到更多 content 形态，pitfall workaround 需更新
-- adapter `opencli twitter reply` 月度 fix 多 → adapter_health audit 标 suspect
+- adapter `cloudl twitter reply` 月度 fix 多 → adapter_health audit 标 suspect

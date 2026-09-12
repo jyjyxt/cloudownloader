@@ -1,8 +1,8 @@
 // eastmoney kline — historical OHLCV for one stock, any timeframe.
 //
 // Data source: push2his.eastmoney.com (Tier 1 public JSON).
-//   opencli eastmoney kline 600519 --period day --limit 30
-//   opencli eastmoney kline sh600519 --period week --adjust forward
+//   cloudl eastmoney kline 600519 --period day --limit 30
+//   cloudl eastmoney kline sh600519 --period week --adjust forward
 
 import { cli, Strategy } from '@jackwener/opencli/registry';
 import { CliError } from '@jackwener/opencli/errors';

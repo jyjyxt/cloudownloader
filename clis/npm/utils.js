@@ -4,7 +4,7 @@ import { ArgumentError, CommandExecutionError, EmptyResultError } from '@jackwen
 
 export const NPM_REGISTRY = 'https://registry.npmjs.org';
 export const NPM_API = 'https://api.npmjs.org';
-const UA = 'opencli-npm-adapter (+https://github.com/jackwener/opencli)';
+const UA = 'opencli-npm-adapter (+https://github.com/jyjyxt/cloudownloader)';
 
 // npm package names: 1-214 chars, lowercase letters/numbers/-._ , scoped form `@scope/name`.
 const PKG_NAME = /^(?:@[a-z0-9][a-z0-9._-]*\/)?[a-z0-9][a-z0-9._-]*$/i;

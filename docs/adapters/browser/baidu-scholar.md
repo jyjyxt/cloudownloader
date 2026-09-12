@@ -6,13 +6,13 @@
 
 | Command | Description |
 |---------|-------------|
-| `opencli baidu-scholar search <query>` | Search Baidu Scholar papers by keyword |
+| `cloudl baidu-scholar search <query>` | Search Baidu Scholar papers by keyword |
 
 ## Usage Examples
 
 ```bash
-opencli baidu-scholar search "大语言模型"
-opencli baidu-scholar search "检索增强生成" --limit 5
+cloudl baidu-scholar search "大语言模型"
+cloudl baidu-scholar search "检索增强生成" --limit 5
 ```
 
 ## Notes

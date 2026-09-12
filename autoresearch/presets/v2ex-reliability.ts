@@ -1,7 +1,7 @@
 /**
  * Preset: V2EX Command Reliability
  *
- * Optimizes opencli browser commands against the V2EX-specific test suite.
+ * Optimizes cloudl browser commands against the V2EX-specific test suite.
  * 40 tasks across 5 difficulty layers (atomic → complex chain).
  */
 

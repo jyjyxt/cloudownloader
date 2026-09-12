@@ -349,7 +349,7 @@ cli({
             // The poll expiring does not mean the tweet stayed in the composer,
             // so this must not read as a definite failure: the agent workflow
             // retries CommandExecutionError and would post twice (#2255).
-            throw new TimeoutError('twitter post', SUBMIT_TIMEOUT_MS / 1000, `${result.message} Check \`opencli twitter tweets --limit 1\` before retrying; the post may already be live.`);
+            throw new TimeoutError('twitter post', SUBMIT_TIMEOUT_MS / 1000, `${result.message} Check \`cloudl twitter tweets --limit 1\` before retrying; the post may already be live.`);
         }
         if (!result?.ok) {
             throw new CommandExecutionError(result?.message ?? 'Tweet failed to post.', 'Nothing was posted. Open the composer in the browser and retry.');

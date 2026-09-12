@@ -6,32 +6,32 @@
 
 | Command | Description |
 |---------|-------------|
-| `opencli notebooklm status` | Check whether NotebookLM is reachable in the current Chrome session |
-| `opencli notebooklm list` | List notebooks visible from the NotebookLM home page |
-| `opencli notebooklm open <notebook>` | Open one notebook in the NotebookLM adapter session by id or URL |
-| `opencli notebooklm current` | Show metadata for the currently opened notebook in the adapter session |
-| `opencli notebooklm get` | Get richer metadata for the current notebook |
-| `opencli notebooklm source-list` | List sources in the current notebook |
-| `opencli notebooklm source-get <source>` | Resolve one source in the current notebook by id or title |
-| `opencli notebooklm source-fulltext <source>` | Fetch extracted source fulltext through NotebookLM RPC |
-| `opencli notebooklm source-guide <source>` | Fetch guide summary and keywords for one source |
-| `opencli notebooklm history` | List conversation history threads for the current notebook |
-| `opencli notebooklm note-list` | List Studio notes visible in the current notebook |
-| `opencli notebooklm notes-get <note>` | Read the currently visible Studio note by title |
-| `opencli notebooklm summary` | Read the current notebook summary |
-| `opencli notebooklm create <title> --execute` | Create a new NotebookLM notebook |
-| `opencli notebooklm add-source <notebook> (--url <url> \| --content <text> \| --file <path>) --execute` | Add one source to an existing notebook |
-| `opencli notebooklm write-note <notebook> --title <title> --content <markdown> --execute` | Create a Studio note in a notebook |
-| `opencli notebooklm generate-audio <notebook> --execute` | Trigger Audio Overview generation for a notebook |
-| `opencli notebooklm generate-slides <notebook> --execute` | Trigger slide deck generation for a notebook |
+| `cloudl notebooklm status` | Check whether NotebookLM is reachable in the current Chrome session |
+| `cloudl notebooklm list` | List notebooks visible from the NotebookLM home page |
+| `cloudl notebooklm open <notebook>` | Open one notebook in the NotebookLM adapter session by id or URL |
+| `cloudl notebooklm current` | Show metadata for the currently opened notebook in the adapter session |
+| `cloudl notebooklm get` | Get richer metadata for the current notebook |
+| `cloudl notebooklm source-list` | List sources in the current notebook |
+| `cloudl notebooklm source-get <source>` | Resolve one source in the current notebook by id or title |
+| `cloudl notebooklm source-fulltext <source>` | Fetch extracted source fulltext through NotebookLM RPC |
+| `cloudl notebooklm source-guide <source>` | Fetch guide summary and keywords for one source |
+| `cloudl notebooklm history` | List conversation history threads for the current notebook |
+| `cloudl notebooklm note-list` | List Studio notes visible in the current notebook |
+| `cloudl notebooklm notes-get <note>` | Read the currently visible Studio note by title |
+| `cloudl notebooklm summary` | Read the current notebook summary |
+| `cloudl notebooklm create <title> --execute` | Create a new NotebookLM notebook |
+| `cloudl notebooklm add-source <notebook> (--url <url> \| --content <text> \| --file <path>) --execute` | Add one source to an existing notebook |
+| `cloudl notebooklm write-note <notebook> --title <title> --content <markdown> --execute` | Create a Studio note in a notebook |
+| `cloudl notebooklm generate-audio <notebook> --execute` | Trigger Audio Overview generation for a notebook |
+| `cloudl notebooklm generate-slides <notebook> --execute` | Trigger slide deck generation for a notebook |
 
 ## Compatibility Aliases
 
 | Alias | Canonical command |
 |-------|-------------------|
-| `opencli notebooklm select <notebook>` | `opencli notebooklm open <notebook>` |
-| `opencli notebooklm metadata` | `opencli notebooklm get` |
-| `opencli notebooklm notes-list` | `opencli notebooklm note-list` |
+| `cloudl notebooklm select <notebook>` | `cloudl notebooklm open <notebook>` |
+| `cloudl notebooklm metadata` | `cloudl notebooklm get` |
+| `cloudl notebooklm notes-list` | `cloudl notebooklm note-list` |
 
 ## Positioning
 
@@ -46,28 +46,28 @@ Read commands expose NotebookLM metadata, sources, notes, summaries, and history
 ## Usage Examples
 
 ```bash
-opencli notebooklm status
-opencli notebooklm list -f json
-opencli notebooklm open 17e2b882-6a01-4c6c-9262-0738dfa2abee -f json
-opencli notebooklm current -f json
-opencli notebooklm get -f json
-opencli notebooklm source-list -f json
-opencli notebooklm source-get "Quarterly report" -f json
-opencli notebooklm source-guide "Quarterly report" -f json
-opencli notebooklm source-fulltext "Quarterly report" -f json
-opencli notebooklm history -f json
-opencli notebooklm note-list -f json
-opencli notebooklm notes-get "Draft note" -f json
-opencli notebooklm summary -f json
+cloudl notebooklm status
+cloudl notebooklm list -f json
+cloudl notebooklm open 17e2b882-6a01-4c6c-9262-0738dfa2abee -f json
+cloudl notebooklm current -f json
+cloudl notebooklm get -f json
+cloudl notebooklm source-list -f json
+cloudl notebooklm source-get "Quarterly report" -f json
+cloudl notebooklm source-guide "Quarterly report" -f json
+cloudl notebooklm source-fulltext "Quarterly report" -f json
+cloudl notebooklm history -f json
+cloudl notebooklm note-list -f json
+cloudl notebooklm notes-get "Draft note" -f json
+cloudl notebooklm summary -f json
 
 # Write commands refuse to mutate unless --execute is present.
-opencli notebooklm create "Research Brief" --emoji "📒" --execute
-opencli notebooklm add-source 17e2b882-6a01-4c6c-9262-0738dfa2abee --url https://example.com/report --execute
-opencli notebooklm add-source 17e2b882-6a01-4c6c-9262-0738dfa2abee --content "Source text" --title "Pasted source" --execute
-opencli notebooklm add-source 17e2b882-6a01-4c6c-9262-0738dfa2abee --file ./paper.pdf --execute
-opencli notebooklm write-note 17e2b882-6a01-4c6c-9262-0738dfa2abee --title "Open questions" --content "## Next steps" --execute
-opencli notebooklm generate-audio 17e2b882-6a01-4c6c-9262-0738dfa2abee --execute
-opencli notebooklm generate-slides 17e2b882-6a01-4c6c-9262-0738dfa2abee --length 3 --language en --execute
+cloudl notebooklm create "Research Brief" --emoji "📒" --execute
+cloudl notebooklm add-source 17e2b882-6a01-4c6c-9262-0738dfa2abee --url https://example.com/report --execute
+cloudl notebooklm add-source 17e2b882-6a01-4c6c-9262-0738dfa2abee --content "Source text" --title "Pasted source" --execute
+cloudl notebooklm add-source 17e2b882-6a01-4c6c-9262-0738dfa2abee --file ./paper.pdf --execute
+cloudl notebooklm write-note 17e2b882-6a01-4c6c-9262-0738dfa2abee --title "Open questions" --content "## Next steps" --execute
+cloudl notebooklm generate-audio 17e2b882-6a01-4c6c-9262-0738dfa2abee --execute
+cloudl notebooklm generate-slides 17e2b882-6a01-4c6c-9262-0738dfa2abee --length 3 --language en --execute
 ```
 
 ## Prerequisites
@@ -78,7 +78,7 @@ opencli notebooklm generate-slides 17e2b882-6a01-4c6c-9262-0738dfa2abee --length
 
 ## Notes
 
-- Notebook-oriented commands run in OpenCLI's owned NotebookLM adapter session/window. Use `opencli notebooklm open <notebook>` first to choose the current notebook for follow-up commands.
+- Notebook-oriented commands run in OpenCLI's owned NotebookLM adapter session/window. Use `cloudl notebooklm open <notebook>` first to choose the current notebook for follow-up commands.
 - The adapter's semantic strategy is same-origin page fetch against NotebookLM's internal, unstable RPC contract. The manifest's `cookie` label describes the browser session carrier; it is not a stable cookie API.
 - `list` uses the active trusted NotebookLM page origin for RPC. It falls back only to valid, non-empty page rows; authentication and an RPC failure with empty fallbacks remain typed failures rather than empty success.
 - `get`, `source-list`, `history`, `source-fulltext`, and `source-guide` prefer NotebookLM RPC paths and fall back only when the richer path is unavailable.

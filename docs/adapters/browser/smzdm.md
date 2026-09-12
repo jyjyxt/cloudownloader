@@ -6,19 +6,19 @@
 
 | Command | Description |
 |---------|-------------|
-| `opencli smzdm search` | |
+| `cloudl smzdm search` | |
 
 ## Usage Examples
 
 ```bash
 # Quick start
-opencli smzdm search --limit 5
+cloudl smzdm search --limit 5
 
 # JSON output
-opencli smzdm search -f json
+cloudl smzdm search -f json
 
 # Verbose mode
-opencli smzdm search -v
+cloudl smzdm search -v
 ```
 
 ## Prerequisites

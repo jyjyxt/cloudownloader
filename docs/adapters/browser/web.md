@@ -6,25 +6,25 @@
 
 | Command | Description |
 |---------|-------------|
-| `opencli web read --url <url>` | Fetch any web page and export as Markdown |
+| `cloudl web read --url <url>` | Fetch any web page and export as Markdown |
 
 ## Usage Examples
 
 ```bash
 # Read a web page and save as Markdown
-opencli web read --url https://example.com/article
+cloudl web read --url https://example.com/article
 
 # Custom output directory
-opencli web read --url https://example.com/article --output ./my-articles
+cloudl web read --url https://example.com/article --output ./my-articles
 
 # Skip image download
-opencli web read --url https://example.com/article --download-images false
+cloudl web read --url https://example.com/article --download-images false
 
 # JSON output
-opencli web read --url https://example.com/article -f json
+cloudl web read --url https://example.com/article -f json
 
 # Iframe/AJAX shell page: wait for rendered data and print diagnostics
-opencli web read \
+cloudl web read \
   --url https://example.com/shell.html \
   --wait-for "#gridDatas li" \
   --wait-until networkidle \
@@ -44,7 +44,7 @@ opencli web read \
 | `--wait-until networkidle` | Start network capture before navigation and wait until captured requests are quiet. |
 | `--diagnose` | Print frame tree, empty table/list containers, and API-like XHR/fetch requests to stderr. |
 
-Cross-origin iframes are listed in diagnostics but not merged. If diagnostics reveal that the page data comes from an API endpoint, prefer a dedicated adapter or `opencli browser network --detail <key>` for structured data instead of forcing table-like data into Markdown.
+Cross-origin iframes are listed in diagnostics but not merged. If diagnostics reveal that the page data comes from an API endpoint, prefer a dedicated adapter or `cloudl browser network --detail <key>` for structured data instead of forcing table-like data into Markdown.
 
 ## Prerequisites
 

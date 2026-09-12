@@ -54,13 +54,13 @@ describe('brave search', () => {
   it('unwraps browser envelopes and returns ranked HTTPS rows', async () => {
     const page = createPageMock({
       session: 'site:brave',
-      data: [['OpenCLI', 'https://github.com/jackwener/OpenCLI', 'CLI browser tooling']],
+      data: [['OpenCLI', 'https://github.com/jyjyxt/cloudownloader', 'CLI browser tooling']],
     });
 
     await expect(command.func(page, { keyword: 'opencli', limit: 1, offset: 1 })).resolves.toEqual([{
       rank: 19,
       title: 'OpenCLI',
-      url: 'https://github.com/jackwener/OpenCLI',
+      url: 'https://github.com/jyjyxt/cloudownloader',
       snippet: 'CLI browser tooling',
     }]);
   });

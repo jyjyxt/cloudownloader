@@ -128,7 +128,7 @@ export async function ensureBrowserBridgeReady(
       throw new BrowserConnectError(
         'Stale daemon could not be replaced',
         `A stale daemon (${reason}) is running but did not shut down (graceful + SIGKILL both failed).\n` +
-        '  Run manually: ClouDownloader daemon stop',
+        '  Run manually: cloudl daemon stop',
         'daemon-not-running',
       );
     }
@@ -162,8 +162,8 @@ function browserConnectErrorFromHealth(health: DaemonHealth, contextId?: string)
   if (health.state === 'profile-required') {
     return new BrowserConnectError(
       'Multiple Browser Bridge profiles are connected',
-      'Select one with --profile <name>, OPENCLI_PROFILE=<name>, or ClouDownloader profile use <name>.\n' +
-      'Run ClouDownloader profile list to see connected profiles.',
+      'Select one with --profile <name>, OPENCLI_PROFILE=<name>, or cloudl profile use <name>.\n' +
+      'Run cloudl profile list to see connected profiles.',
       'profile-required',
     );
   }
@@ -171,7 +171,7 @@ function browserConnectErrorFromHealth(health: DaemonHealth, contextId?: string)
     const label = contextId ?? health.status.contextId ?? 'unknown';
     return new BrowserConnectError(
       `Browser profile "${label}" is not connected`,
-      'Open the matching Chrome profile and make sure the OpenCLI extension is enabled, or choose another profile with ClouDownloader profile use <name>.',
+      'Open the matching Chrome profile and make sure the OpenCLI extension is enabled, or choose another profile with cloudl profile use <name>.',
       'profile-disconnected',
     );
   }
@@ -180,13 +180,13 @@ function browserConnectErrorFromHealth(health: DaemonHealth, contextId?: string)
       'Browser Bridge extension not connected',
       'Make sure Chrome/Chromium is open and the OpenCLI extension is enabled.\n' +
       'If not installed:\n' +
-      '  1. Download: https://github.com/jackwener/opencli/releases\n' +
+      '  1. Download: https://github.com/jyjyxt/cloudownloader/releases\n' +
       '  2. Open chrome://extensions → Developer Mode → Load unpacked',
       'extension-not-connected',
     );
   }
   return new BrowserConnectError(
-    'Failed to start ClouDownloader daemon',
+    'Failed to start cloudl daemon',
     `Try running manually:\n  node ${resolveDaemonLaunchSpec().scriptPath}\nMake sure port ${DEFAULT_DAEMON_PORT} is available.`,
     'daemon-not-running',
   );

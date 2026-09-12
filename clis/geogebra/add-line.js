@@ -11,7 +11,7 @@ cli({
   strategy: Strategy.PUBLIC,
   browser: true,
   navigateBefore: false,
-  example: 'opencli geogebra add-line --points A,B --type segment',
+  example: 'cloudl geogebra add-line --points A,B --type segment',
   args: [
     { name: 'points', required: true, help: 'Two point labels separated by comma (e.g. "A,B")' },
     { name: 'type', required: false, choices: ['line', 'segment', 'ray'], default: 'line', help: 'Type: line, segment, or ray (default: line)' },

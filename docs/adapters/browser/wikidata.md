@@ -8,21 +8,21 @@ Search Wikidata items by keyword and fetch full entity detail by Q/P/L identifie
 
 | Command | Description |
 |---------|-------------|
-| `opencli wikidata search <query>` | Search Wikidata items by label / alias (returns Q-IDs) |
-| `opencli wikidata entity <id>` | Full entity detail: label, description, aliases, claim & sitelink counts |
+| `cloudl wikidata search <query>` | Search Wikidata items by label / alias (returns Q-IDs) |
+| `cloudl wikidata entity <id>` | Full entity detail: label, description, aliases, claim & sitelink counts |
 
 ## Usage Examples
 
 ```bash
 # Find Q-IDs by keyword
-opencli wikidata search einstein
-opencli wikidata search "san francisco" --limit 10
-opencli wikidata search 哈尔滨 --language zh
+cloudl wikidata search einstein
+cloudl wikidata search "san francisco" --limit 10
+cloudl wikidata search 哈尔滨 --language zh
 
 # Entity detail (Q-IDs round-trip from search)
-opencli wikidata entity Q937           # Albert Einstein
-opencli wikidata entity Q90            # Paris
-opencli wikidata entity Q937 --language zh
+cloudl wikidata entity Q937           # Albert Einstein
+cloudl wikidata entity Q90            # Paris
+cloudl wikidata entity Q937 --language zh
 ```
 
 ## Output Columns

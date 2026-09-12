@@ -12,66 +12,66 @@ and `flights.ctrip.com`.
 
 | Command | Mode | Description |
 |---------|------|-------------|
-| `opencli ctrip search` | Public | Suggest cities, scenic spots, railway stations and landmarks |
-| `opencli ctrip hotel-suggest` | Public | Suggest cities, business areas and individual hotels |
-| `opencli ctrip hotel-search` | Browser (cookie) | List hotels for a city + check-in/out date range |
-| `opencli ctrip hotel` | Browser (cookie) | Single-hotel detail: rating breakdown, facilities, check-in/out policy |
-| `opencli ctrip flight` | Browser (cookie) | One-way flight search by IATA route + departure date |
-| `opencli ctrip flight-round` | Browser (cookie) | Round-trip flight search by IATA route + depart/return dates |
-| `opencli ctrip train` | Browser (cookie) | Train ticket search by station/city name + departure date |
-| `opencli ctrip bus` | Browser (cookie) | Intercity coach ticket search by city name + departure date |
-| `opencli ctrip ferry` | Browser (cookie) | Passenger ferry sailing search by city name + departure date |
-| `opencli ctrip cruise` | Browser (cookie) | Cruise package search by departure port name |
-| `opencli ctrip tour` | Browser (cookie) | Group / self-guided tour package search by destination keyword |
-| `opencli ctrip package` | Browser (cookie) | Flight-plus-hotel (自由行) package search by destination keyword |
-| `opencli ctrip attraction` | Browser (cookie) | Top attractions for a city id (rating, review count, detail link) |
+| `cloudl ctrip search` | Public | Suggest cities, scenic spots, railway stations and landmarks |
+| `cloudl ctrip hotel-suggest` | Public | Suggest cities, business areas and individual hotels |
+| `cloudl ctrip hotel-search` | Browser (cookie) | List hotels for a city + check-in/out date range |
+| `cloudl ctrip hotel` | Browser (cookie) | Single-hotel detail: rating breakdown, facilities, check-in/out policy |
+| `cloudl ctrip flight` | Browser (cookie) | One-way flight search by IATA route + departure date |
+| `cloudl ctrip flight-round` | Browser (cookie) | Round-trip flight search by IATA route + depart/return dates |
+| `cloudl ctrip train` | Browser (cookie) | Train ticket search by station/city name + departure date |
+| `cloudl ctrip bus` | Browser (cookie) | Intercity coach ticket search by city name + departure date |
+| `cloudl ctrip ferry` | Browser (cookie) | Passenger ferry sailing search by city name + departure date |
+| `cloudl ctrip cruise` | Browser (cookie) | Cruise package search by departure port name |
+| `cloudl ctrip tour` | Browser (cookie) | Group / self-guided tour package search by destination keyword |
+| `cloudl ctrip package` | Browser (cookie) | Flight-plus-hotel (自由行) package search by destination keyword |
+| `cloudl ctrip attraction` | Browser (cookie) | Top attractions for a city id (rating, review count, detail link) |
 
 ## Usage Examples
 
 ```bash
 # Destination suggest
-opencli ctrip search 苏州 --limit 10
+cloudl ctrip search 苏州 --limit 10
 
 # Hotel-context suggest (cities / business areas / hotels)
-opencli ctrip hotel-suggest 陆家嘴 --limit 5
+cloudl ctrip hotel-suggest 陆家嘴 --limit 5
 
 # Hotel listing (city ID from `search` / `hotel-suggest`)
-opencli ctrip hotel-search 2 --checkin 2026-05-20 --checkout 2026-05-21 --limit 10
+cloudl ctrip hotel-search 2 --checkin 2026-05-20 --checkout 2026-05-21 --limit 10
 
 # Single-hotel detail (hotel id from `hotel-suggest`)
-opencli ctrip hotel 375539
-opencli ctrip hotel 375539 -f json
+cloudl ctrip hotel 375539
+cloudl ctrip hotel 375539 -f json
 
 # One-way flight search
-opencli ctrip flight BJS SHA --date 2026-05-20 --limit 20
+cloudl ctrip flight BJS SHA --date 2026-05-20 --limit 20
 
 # Round-trip flight search (depart + return dates)
-opencli ctrip flight-round SHA BJS --depart 2026-08-15 --return 2026-08-22 --limit 20
+cloudl ctrip flight-round SHA BJS --depart 2026-08-15 --return 2026-08-22 --limit 20
 
 # Train ticket search (station or city names)
-opencli ctrip train 北京 上海 --date 2026-05-20 --limit 20
-opencli ctrip train 杭州 上海虹桥 --date 2026-05-20 -f json
+cloudl ctrip train 北京 上海 --date 2026-05-20 --limit 20
+cloudl ctrip train 杭州 上海虹桥 --date 2026-05-20 -f json
 
 # Intercity coach ticket search (city names)
-opencli ctrip bus 北京 天津 --date 2026-05-20 --limit 20
+cloudl ctrip bus 北京 天津 --date 2026-05-20 --limit 20
 
 # Passenger ferry search (city names)
-opencli ctrip ferry 大连 烟台 --date 2026-05-20 --limit 20
+cloudl ctrip ferry 大连 烟台 --date 2026-05-20 --limit 20
 
 # Cruise package search (departure port name)
-opencli ctrip cruise 上海 --limit 20
+cloudl ctrip cruise 上海 --limit 20
 
 # Tour package search (destination keyword)
-opencli ctrip tour 北京 --limit 20
+cloudl ctrip tour 北京 --limit 20
 
 # Flight-plus-hotel package search (destination keyword)
-opencli ctrip package 三亚 --limit 20
+cloudl ctrip package 三亚 --limit 20
 
 # Top attractions for a city (numeric city id from `ctrip search`, e.g. 1 for 北京)
-opencli ctrip attraction 1 --limit 20
+cloudl ctrip attraction 1 --limit 20
 
 # JSON output
-opencli ctrip search 上海 -f json
+cloudl ctrip search 上海 -f json
 ```
 
 ## Suggest Columns (`search` / `hotel-suggest`)

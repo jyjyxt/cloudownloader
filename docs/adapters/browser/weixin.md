@@ -6,37 +6,37 @@
 
 | Command | Description |
 |---------|-------------|
-| `opencli weixin search` | 使用搜狗微信搜索公众号文章，返回标题、链接、摘要和发布时间 |
-| `opencli weixin download` | 下载微信公众号文章为 Markdown 格式 |
-| `opencli weixin drafts` | 列出公众号后台草稿箱中的图文草稿 |
-| `opencli weixin create-draft` | 在公众号后台创建新的图文草稿 |
+| `cloudl weixin search` | 使用搜狗微信搜索公众号文章，返回标题、链接、摘要和发布时间 |
+| `cloudl weixin download` | 下载微信公众号文章为 Markdown 格式 |
+| `cloudl weixin drafts` | 列出公众号后台草稿箱中的图文草稿 |
+| `cloudl weixin create-draft` | 在公众号后台创建新的图文草稿 |
 
 ## Usage Examples
 
 ```bash
 # Search Official Account articles through Sogou Weixin
-opencli weixin search "AI" --page 1 --limit 5
+cloudl weixin search "AI" --page 1 --limit 5
 
 # Export the corresponding WeChat article URL to Markdown
-opencli weixin download --url "https://mp.weixin.qq.com/s/xxx" --output ./weixin
+cloudl weixin download --url "https://mp.weixin.qq.com/s/xxx" --output ./weixin
 
 # Export article to Markdown
-opencli weixin download --url "https://mp.weixin.qq.com/s/xxx" --output ./weixin
+cloudl weixin download --url "https://mp.weixin.qq.com/s/xxx" --output ./weixin
 
 # Export with locally downloaded images
-opencli weixin download --url "https://mp.weixin.qq.com/s/xxx" --download-images
+cloudl weixin download --url "https://mp.weixin.qq.com/s/xxx" --download-images
 
 # Export without images
-opencli weixin download --url "https://mp.weixin.qq.com/s/xxx" --no-download-images
+cloudl weixin download --url "https://mp.weixin.qq.com/s/xxx" --no-download-images
 
 # List the latest drafts
-opencli weixin drafts --limit 5
+cloudl weixin drafts --limit 5
 
 # Create a draft article
-opencli weixin create-draft --title "周报" --author "OpenCLI" --summary "本周更新摘要" "这里是正文内容"
+cloudl weixin create-draft --title "周报" --author "OpenCLI" --summary "本周更新摘要" "这里是正文内容"
 
 # Create a draft with a cover image sourced from local disk
-opencli weixin create-draft --title "封面示例" --cover-image ./cover.png "正文会先插入图片，再设为封面"
+cloudl weixin create-draft --title "封面示例" --cover-image ./cover.png "正文会先插入图片，再设为封面"
 ```
 
 ## Output

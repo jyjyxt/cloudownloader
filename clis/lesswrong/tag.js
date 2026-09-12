@@ -25,7 +25,7 @@ cli({
         const limit = Number(kwargs.limit ?? 10);
         const tag = await resolveTagId(tagInput);
         if (!tag?._id) {
-            throw new EmptyResultError(`lesswrong tag ${tagInput}`, 'Use "opencli lesswrong tags" to list available tags');
+            throw new EmptyResultError(`lesswrong tag ${tagInput}`, 'Use "cloudl lesswrong tags" to list available tags');
         }
         const query = `query PostsByTag {
       posts(input: {terms: {view: "tagRelevance", tagId: "${tag._id}", limit: ${limit}}}) {

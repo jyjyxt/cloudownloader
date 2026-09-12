@@ -18,7 +18,7 @@ source: global
 ## Best path
 
 ```yaml
-adapter: opencli twitter search
+adapter: cloudl twitter search
 adapter_health: healthy
 preconditions:
   - logged_in
@@ -28,13 +28,13 @@ optional:
 estimated_turns: 1
 ```
 
-`opencli twitter search --query "<keyword>" [--type latest|top|people]`。adapter 内置 queryId bundle parse 三层降级（实现细节见 `notes.md`）。
+`cloudl twitter search --query "<keyword>" [--type latest|top|people]`。adapter 内置 queryId bundle parse 三层降级（实现细节见 `notes.md`）。
 
 ## Fallback path
 
 ```yaml
 on_adapter_fail:
-  - adapter_health_update: opencli twitter search -> suspect
+  - adapter_health_update: cloudl twitter search -> suspect
   - goto https://x.com/search?q=<URLencoded>&src=typed_query&f=live  # f=live = Latest tab
   - wait for [data-testid="cellInnerDiv"] OR text "No results for"
   - find tweet card list (each per pages/_tweet_card.md)
@@ -64,4 +64,4 @@ estimated_turns: 3-4
 
 - search page tab 顺序 / labels 变 (Top / Latest / People / Media / Lists)
 - `src=typed_query` query param 失效 → URL pattern 调整
-- adapter `opencli twitter search` queryId bundle parser silent fail (PR #1531 sediment: bundle partial fail 返 `{}` 盖 baked fallback)
+- adapter `cloudl twitter search` queryId bundle parser silent fail (PR #1531 sediment: bundle partial fail 返 `{}` 盖 baked fallback)

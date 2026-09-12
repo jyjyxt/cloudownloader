@@ -184,8 +184,8 @@ export function formatRootAdapterHelpText(groups: RootAdapterGroups): string {
   lines.push(...formatGroupSection('External CLIs', groups.external.map(cli => cli.label)));
   lines.push(...formatGroupSection('App adapters', groups.apps));
   lines.push(...formatGroupSection('Site adapters', groups.sites));
-  lines.push("Run 'ClouDownloader list' for full command details, or 'ClouDownloader <site> --help' to inspect one site.");
-  lines.push("Agent tip: use 'ClouDownloader <site> --help -f yaml' for all command args/options in one structured response.");
+  lines.push("Run 'cloudl list' for full command details, or 'cloudl <site> --help' to inspect one site.");
+  lines.push("Agent tip: use 'cloudl <site> --help -f yaml' for all command args/options in one structured response.");
   lines.push('');
   return lines.join('\n');
 }
@@ -253,7 +253,7 @@ function compactCommanderOptions(options: readonly CommanderOption[]): OptionSpe
  *
  * Example: `browser` declares `.usage('<session> <command> [options]')`,
  * so `commanderPath(browserClickCmd)` becomes
- * `['ClouDownloader', 'browser', '<session>', 'click']`.
+ * `['cloudl', 'browser', '<session>', 'click']`.
  */
 export function leadingPositionalFromUsage(command: Command): string | null {
   const usage = (command as Command & { _usage?: string })._usage;
@@ -458,13 +458,13 @@ export function formatCommandListTerm(cmd: CliCommand): string {
 
 function formatUsage(cmd: CliCommand): string {
   const positionalText = formatPositionals(positionals(cmd));
-  return `ClouDownloader ${cmd.site} ${cmd.name}${positionalText ? ` ${positionalText}` : ''} [options]`;
+  return `cloudl ${cmd.site} ${cmd.name}${positionalText ? ` ${positionalText}` : ''} [options]`;
 }
 
 function compactCommand(cmd: CliCommand): Record<string, unknown> {
   return {
     name: cmd.name,
-    command: `ClouDownloader ${cmd.site} ${cmd.name}`,
+    command: `cloudl ${cmd.site} ${cmd.name}`,
     usage: formatUsage(cmd),
     access: cmd.access,
     description: cmd.description,
@@ -509,9 +509,9 @@ export function rootHelpData(program: Command, groups: RootAdapterGroups): Recor
       sites: [...groups.sites].sort(sortLocale),
     },
     next: [
-      'ClouDownloader <site> --help -f yaml',
-      'ClouDownloader list -f yaml',
-      'ClouDownloader <site> <command> -f yaml',
+      'cloudl <site> --help -f yaml',
+      'cloudl list -f yaml',
+      'cloudl <site> <command> -f yaml',
     ],
   };
 }
@@ -526,8 +526,8 @@ export function siteHelpData(site: string, commands: readonly CliCommand[]): Rec
     common_options: COMMON_OPTIONS.map(compactCommonOption),
     ...(unique.some(cmd => cmd.browser) ? { browser_common_options: BROWSER_COMMON_OPTIONS.map(compactCommonOption) } : {}),
     next: [
-      `ClouDownloader ${site} <command> --help -f yaml`,
-      `ClouDownloader ${site} <command> -f yaml`,
+      `cloudl ${site} <command> --help -f yaml`,
+      `cloudl ${site} <command> -f yaml`,
     ],
   };
 }
@@ -579,7 +579,7 @@ export function formatSiteHelpText(site: string, commands: readonly CliCommand[]
   const unique = [...new Map(commands.map(cmd => [fullName(cmd), cmd])).values()]
     .sort((a, b) => a.name.localeCompare(b.name));
   const lines: string[] = [
-    `Usage: ClouDownloader ${site} <command> [args] [options]`,
+    `Usage: cloudl ${site} <command> [args] [options]`,
     '',
     wrapCommaList(unique.map(cmd => cmd.name), { indent: '' }),
     '',
@@ -589,7 +589,7 @@ export function formatSiteHelpText(site: string, commands: readonly CliCommand[]
     formatCommonOptionsHelpText(),
     ...(unique.some(cmd => cmd.browser) ? ['', formatBrowserCommonOptionsHelpText()] : []),
     '',
-    `Agent tip: use 'ClouDownloader ${site} --help -f yaml' to get all command args/options in one structured response.`,
+    `Agent tip: use 'cloudl ${site} --help -f yaml' to get all command args/options in one structured response.`,
     '',
   ];
   return lines.join('\n');

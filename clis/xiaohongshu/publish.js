@@ -11,7 +11,7 @@
  * Requires: logged into creator.xiaohongshu.com in Chrome.
  *
  * Usage:
- *   opencli xiaohongshu publish --title "标题" "正文内容" \
+ *   cloudl xiaohongshu publish --title "标题" "正文内容" \
  *     --images /path/a.jpg,/path/b.jpg \
  *     --topics 生活,旅行
  */
@@ -1218,7 +1218,7 @@ cli({
         const pageUrl = await page.evaluate('() => location.href');
         if (!pageUrl.includes('creator.xiaohongshu.com')) {
             throw new Error('Redirected away from creator center — session may have expired. ' +
-                'Re-capture browser login via: opencli xiaohongshu creator-profile');
+                'Re-capture browser login via: cloudl xiaohongshu creator-profile');
         }
         // ── Step 2: Select 图文 (image+text) note type if tabs are present ─────────
         const tabResult = await selectImageTextTab(page);

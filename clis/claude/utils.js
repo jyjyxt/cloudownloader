@@ -89,7 +89,7 @@ export function requireConversationId(value) {
     if (!id) {
         throw new ArgumentError(
             'claude detail requires a conversation id',
-            'Example: opencli claude detail 123e4567-e89b-12d3-a456-426614174000',
+            'Example: cloudl claude detail 123e4567-e89b-12d3-a456-426614174000',
         );
     }
     return id;

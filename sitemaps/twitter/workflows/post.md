@@ -10,7 +10,7 @@ source: global
 
 发一条公开 **text-only post，≤ 280 char，无 media / poll / schedule / thread-split**。
 
-- 带 media 走 adapter `opencli twitter post --image-url` 直接路径
+- 带 media 走 adapter `cloudl twitter post --image-url` 直接路径
 - thread-split (> 280 char) / poll / schedule 不在 v1 PoC scope（caller 应在调本 workflow 前处理 split 或选其他 workflow）
 
 ## State signature
@@ -21,7 +21,7 @@ source: global
 ## Best path
 
 ```yaml
-adapter: opencli twitter post
+adapter: cloudl twitter post
 adapter_health: healthy
 preconditions:
   - logged_in
@@ -29,7 +29,7 @@ preconditions:
 estimated_turns: 1
 ```
 
-直接 `opencli twitter post --text "<content>"`。adapter 内部 handle COOKIE 注入 / queryId rotation / verify。
+直接 `cloudl twitter post --text "<content>"`。adapter 内部 handle COOKIE 注入 / queryId rotation / verify。
 
 ## Fallback path
 
@@ -37,8 +37,8 @@ estimated_turns: 1
 
 ```yaml
 on_adapter_fail:
-  - adapter_health_update: opencli twitter post -> suspect
-  - opencli browser state (verify current page)
+  - adapter_health_update: cloudl twitter post -> suspect
+  - cloudl browser state (verify current page)
   - if not on /home: goto /home
   - action:open_compose in pages/home.md
   - type content into [data-testid="tweetTextarea_0"]
@@ -74,5 +74,5 @@ agent 中断后醒来按 `browser state` URL 判断：
 
 ## Stale markers
 
-- adapter `opencli twitter post` 30 天内 fix PR 增多 → adapter_health audit 标 suspect
+- adapter `cloudl twitter post` 30 天内 fix PR 增多 → adapter_health audit 标 suspect
 - submit button text "Post" 变化（i18n / rebrand 二轮）→ visual anchors 需更新

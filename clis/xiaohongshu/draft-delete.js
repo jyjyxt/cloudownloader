@@ -63,7 +63,7 @@ cli({
     browser: true,
     navigateBefore: false,
     args: [
-        { name: 'id', positional: true, required: true, help: 'Draft id returned by `opencli xiaohongshu drafts`' },
+        { name: 'id', positional: true, required: true, help: 'Draft id returned by `cloudl xiaohongshu drafts`' },
         { name: 'type', default: 'image', help: 'Draft type: image, video, article, audio' },
         { name: 'execute', type: 'bool', default: false, help: 'Actually delete the local draft. Default is dry-run verification only.' },
     ],

@@ -8,26 +8,26 @@ Read-only adapter for LinkedIn Learning courses, videos, and learning paths. Sha
 
 | Command | Description |
 |---------|-------------|
-| `opencli linkedin-learning search` | Search courses, videos, and paths by keyword via `learning-api/searchV2` |
-| `opencli linkedin-learning trending` | Browse personalized recommendation carousels via `learning-api/feedRecommendationGroups` |
-| `opencli linkedin-learning course` | Course detail by slug or full `/learning/<slug>` URL via `learning-api/courses?q=slug` |
+| `cloudl linkedin-learning search` | Search courses, videos, and paths by keyword via `learning-api/searchV2` |
+| `cloudl linkedin-learning trending` | Browse personalized recommendation carousels via `learning-api/feedRecommendationGroups` |
+| `cloudl linkedin-learning course` | Course detail by slug or full `/learning/<slug>` URL via `learning-api/courses?q=slug` |
 
 ## Usage Examples
 
 ```bash
 # Search
-opencli linkedin-learning search "AI agent"
-opencli linkedin-learning search "rust programming" --limit 20
+cloudl linkedin-learning search "AI agent"
+cloudl linkedin-learning search "rust programming" --limit 20
 
 # Personalized recommendations
-opencli linkedin-learning trending --limit 10
+cloudl linkedin-learning trending --limit 10
 
 # Course detail (slug or full URL)
-opencli linkedin-learning course agentic-ai-build-your-first-agentic-ai-system
-opencli linkedin-learning course https://www.linkedin.com/learning/agentic-ai-build-your-first-agentic-ai-system
+cloudl linkedin-learning course agentic-ai-build-your-first-agentic-ai-system
+cloudl linkedin-learning course https://www.linkedin.com/learning/agentic-ai-build-your-first-agentic-ai-system
 
 # JSON output
-opencli linkedin-learning search "data science" -f json
+cloudl linkedin-learning search "data science" -f json
 ```
 
 ## Columns

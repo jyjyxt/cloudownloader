@@ -27,7 +27,7 @@ function normalizeUntil(raw) {
     if (!match) {
         throw new ArgumentError(
             'twitter collection --until must be an RFC3339 timestamp',
-            'Example: opencli twitter collection @jack --until 2026-07-23T00:00:00Z',
+            'Example: cloudl twitter collection @jack --until 2026-07-23T00:00:00Z',
         );
     }
     const [, yearRaw, monthRaw, dayRaw, hourRaw, minuteRaw, secondRaw, , zone, , offsetHourRaw, offsetMinuteRaw] = match;
@@ -50,14 +50,14 @@ function normalizeUntil(raw) {
     ) {
         throw new ArgumentError(
             'twitter collection --until must be an RFC3339 timestamp',
-            'Example: opencli twitter collection @jack --until 2026-07-23T00:00:00Z',
+            'Example: cloudl twitter collection @jack --until 2026-07-23T00:00:00Z',
         );
     }
     const parsed = new Date(value);
     if (Number.isNaN(parsed.getTime())) {
         throw new ArgumentError(
             'twitter collection --until must be an RFC3339 timestamp',
-            'Example: opencli twitter collection @jack --until 2026-07-23T00:00:00Z',
+            'Example: cloudl twitter collection @jack --until 2026-07-23T00:00:00Z',
         );
     }
     return parsed;
@@ -68,7 +68,7 @@ function normalizeCollectionLimit(rawLimit) {
     if (!Number.isInteger(limit) || limit < 1 || limit > MAX_USER_TWEETS_LIMIT) {
         throw new ArgumentError(
             `twitter collection --limit must be an integer between 1 and ${MAX_USER_TWEETS_LIMIT}`,
-            'Example: opencli twitter collection @jack --until 2026-07-23T00:00:00Z --limit 250',
+            'Example: cloudl twitter collection @jack --until 2026-07-23T00:00:00Z --limit 250',
         );
     }
     return limit;
@@ -79,7 +79,7 @@ function normalizeCollectionPageDelaySeconds(rawDelay) {
     if (!Number.isInteger(delay) || delay < 0 || delay > 60) {
         throw new ArgumentError(
             'twitter collection --page-delay must be an integer between 0 and 60 seconds',
-            'Example: opencli twitter collection @jack --until 2026-07-23T00:00:00Z --page-delay 2',
+            'Example: cloudl twitter collection @jack --until 2026-07-23T00:00:00Z --page-delay 2',
         );
     }
     return delay;

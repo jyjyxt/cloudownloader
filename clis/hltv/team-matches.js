@@ -6,7 +6,7 @@ cli({
   name: 'team-matches',
   description: 'Read recent HLTV team map results from the stats team matches page',
   access: 'read',
-  example: 'opencli hltv team-matches 6667/falcons --limit 10 -f json',
+  example: 'cloudl hltv team-matches 6667/falcons --limit 10 -f json',
   domain: 'www.hltv.org',
   strategy: Strategy.UI,
   browser: true,

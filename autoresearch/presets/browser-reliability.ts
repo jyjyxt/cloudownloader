@@ -1,7 +1,7 @@
 /**
  * Preset: Browser Command Reliability
  *
- * Optimizes opencli browser commands against the Layer 1 deterministic test suite.
+ * Optimizes cloudl browser commands against the Layer 1 deterministic test suite.
  * Metric: number of passing browse-tasks (out of 59).
  */
 

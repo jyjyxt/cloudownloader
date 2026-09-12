@@ -38,7 +38,7 @@ function resolveStateDb(args) {
     if (!fs.existsSync(db)) {
         throw new CommandExecutionError(
             `Workspace state.vscdb not found: ${db}`,
-            'List valid workspace ids with `opencli trae-solo workspaces-list`.',
+            'List valid workspace ids with `cloudl trae-solo workspaces-list`.',
         );
     }
     return db;
@@ -98,7 +98,7 @@ cli({
         const db = resolveStateDb(args);
         const val = getValue(db, key);
         if (val === null) {
-            throw new CommandExecutionError(`Key not found: ${key}`, 'List available keys with `opencli trae-solo state-keys`.');
+            throw new CommandExecutionError(`Key not found: ${key}`, 'List available keys with `cloudl trae-solo state-keys`.');
         }
         const max = Number.isInteger(args['max-bytes']) && args['max-bytes'] > 0 ? args['max-bytes'] : 8000;
         const valStr = typeof val === 'string' ? val : JSON.stringify(val, null, 2);

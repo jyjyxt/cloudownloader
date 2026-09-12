@@ -1,8 +1,8 @@
 // eastmoney index-board — live quotes for key Chinese market indices.
 //
 // Data source: push2.eastmoney.com (Tier 1 public JSON, no auth).
-//   opencli eastmoney index-board
-//   opencli eastmoney index-board --group all
+//   cloudl eastmoney index-board
+//   cloudl eastmoney index-board --group all
 
 import { cli, Strategy } from '@jackwener/opencli/registry';
 import { CliError } from '@jackwener/opencli/errors';

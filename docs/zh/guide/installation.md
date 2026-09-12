@@ -13,7 +13,7 @@ cd cloudownloader
 npm install
 npm run build
 npm link
-ClouDownloader list
+cloudl list
 ```
 
 ## 更新
@@ -43,7 +43,7 @@ npx skills add jyjyxt/cloudownloader --skill smart-search
 ## 验证安装
 
 ```bash
-ClouDownloader --version
-ClouDownloader list
-ClouDownloader doctor
+cloudl --version
+cloudl list
+cloudl doctor
 ```

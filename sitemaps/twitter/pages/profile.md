@@ -23,11 +23,11 @@ source: global
 ```yaml
 ### action:follow_user
 pre: logged-in user != target user AND follow button testid shows "Follow"
-do: opencli twitter follow <handle> || click [data-testid*="-follow"]
+do: cloudl twitter follow <handle> || click [data-testid*="-follow"]
 post: button text -> "Following", testid -> [data-testid*="-unfollow"]
 fail: button text unchanged | login modal | "Follow blocked" toast
-recover: adapter_health_update: opencli twitter follow -> suspect; dom_click [data-testid*="-follow"]; rollback via unfollow button
-evidence: opencli twitter follow
+recover: adapter_health_update: cloudl twitter follow -> suspect; dom_click [data-testid*="-follow"]; rollback via unfollow button
+evidence: cloudl twitter follow
 ```
 
 ```yaml
@@ -37,7 +37,7 @@ do: click role="tab" matching Posts|Replies|Media|Likes || goto /<handle>/<sub-p
 post: URL switches to sub-path, timeline region re-renders
 fail: tab unresponsive | URL unchanged
 recover: use goto with explicit URL instead of click
-evidence: opencli browser click + state
+evidence: cloudl browser click + state
 ```
 
 ## Tweet card actions

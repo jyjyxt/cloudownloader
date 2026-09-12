@@ -6,14 +6,14 @@
 
 | Command | Description |
 |---------|-------------|
-| `opencli stackoverflow hot` | Hot questions |
-| `opencli stackoverflow search <query>` | Search questions |
-| `opencli stackoverflow bounties` | Questions with active bounties |
-| `opencli stackoverflow unanswered` | Unanswered questions |
-| `opencli stackoverflow read <id>` | Read a question with answers and comments |
-| `opencli stackoverflow user <name>` | Find users by display name (highest reputation first) |
-| `opencli stackoverflow tag <tag>` | List questions tagged with a given tag (most active first) |
-| `opencli stackoverflow related <id>` | List questions related to a given question id |
+| `cloudl stackoverflow hot` | Hot questions |
+| `cloudl stackoverflow search <query>` | Search questions |
+| `cloudl stackoverflow bounties` | Questions with active bounties |
+| `cloudl stackoverflow unanswered` | Unanswered questions |
+| `cloudl stackoverflow read <id>` | Read a question with answers and comments |
+| `cloudl stackoverflow user <name>` | Find users by display name (highest reputation first) |
+| `cloudl stackoverflow tag <tag>` | List questions tagged with a given tag (most active first) |
+| `cloudl stackoverflow related <id>` | List questions related to a given question id |
 
 ## Listing columns
 
@@ -60,34 +60,34 @@ immediately after that answer with `A-COMMENT` type and a `> ` indent.
 
 ```bash
 # Hot questions
-opencli stackoverflow hot --limit 10
+cloudl stackoverflow hot --limit 10
 
 # Search questions
-opencli stackoverflow search "async await" --limit 20
+cloudl stackoverflow search "async await" --limit 20
 
 # Active bounties
-opencli stackoverflow bounties --limit 10
+cloudl stackoverflow bounties --limit 10
 
 # Unanswered questions
-opencli stackoverflow unanswered --limit 10
+cloudl stackoverflow unanswered --limit 10
 
 # Tagged questions (id feeds stackoverflow read)
-opencli stackoverflow tag rust --limit 10
+cloudl stackoverflow tag rust --limit 10
 
 # Related questions for a given question id (rows feed stackoverflow read)
-opencli stackoverflow related 11227809 --limit 10
-opencli stackoverflow related 11227809 --sort votes --limit 5
+cloudl stackoverflow related 11227809 --limit 10
+cloudl stackoverflow related 11227809 --sort votes --limit 5
 
 # User profile search (returns userId/profile URL rows)
-opencli stackoverflow user "Jon Skeet" --limit 5
+cloudl stackoverflow user "Jon Skeet" --limit 5
 
 # Read a question with answers and comments
-opencli stackoverflow read 11227809
-opencli stackoverflow read 11227809 --answers-limit 3 --comments-limit 5
+cloudl stackoverflow read 11227809
+cloudl stackoverflow read 11227809 --answers-limit 3 --comments-limit 5
 
 # JSON output
-opencli stackoverflow hot -f json
-opencli stackoverflow read 11227809 -f json
+cloudl stackoverflow hot -f json
+cloudl stackoverflow read 11227809 -f json
 ```
 
 ## Caveats
@@ -102,7 +102,7 @@ opencli stackoverflow read 11227809 -f json
 - Bodies are returned as HTML; this adapter strips tags and decodes named
   / decimal / hex HTML entities for plain-text consumption.
 - `tag` returns question rows with `id`, so agents can call
-  `opencli stackoverflow read <id>` without parsing URLs. `user` returns
+  `cloudl stackoverflow read <id>` without parsing URLs. `user` returns
   Stack Overflow profile rows (`userId` + `url`), not question rows.
 
 ## Prerequisites

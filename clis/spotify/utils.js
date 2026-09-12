@@ -41,7 +41,7 @@ export function assertSpotifyCredentialsConfigured(credentials, envFile) {
         `3. Copy your Client ID and Client Secret\n` +
         `4. Open the file: ${envFile}\n` +
         `5. Fill in SPOTIFY_CLIENT_ID and SPOTIFY_CLIENT_SECRET, then save\n` +
-        `6. Run: opencli spotify auth`);
+        `6. Run: cloudl spotify auth`);
 }
 export function mapSpotifyTrackResults(data) {
     const items = data?.tracks?.items;

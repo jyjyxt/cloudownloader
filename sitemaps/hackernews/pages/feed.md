@@ -36,4 +36,4 @@ action:next_page in pages/front.md
 
 ## Page-specific pitfalls
 
-- 跨 feed 类型用同 DOM，但 API endpoint 不同 — adapter `opencli hackernews <feed>` 已封装路由，DOM scrape 只看 URL 不看页面差异
+- 跨 feed 类型用同 DOM，但 API endpoint 不同 — adapter `cloudl hackernews <feed>` 已封装路由，DOM scrape 只看 URL 不看页面差异

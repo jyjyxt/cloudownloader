@@ -20,7 +20,7 @@ Cookie-mode. After the user signs in to `https://manus.im/app` in the Browser Br
 ## Examples
 
 ```
-$ opencli manus status
+$ cloudl manus status
 Field: Email                Value: zhongyuelin990405@gmail.com
 Field: Display Name         Value: Lin Zhongyue
 Field: Membership Tier      Value: 60
@@ -28,11 +28,11 @@ Field: Total Credits        Value: 12311
 Field: Periodic Credits     Value: 12000
 Field: Refresh Credits      Value: 300
 
-$ opencli manus list --limit 3
+$ cloudl manus list --limit 3
 id: 8UcpCxMFLrNk63ZJmzALfV  Title: 制作技术方案路演风格PPT的详细要求  Status: stopped
 id: YOpdpcVj7vPFD4gsBfEwVu  Title: Defining Empire: …                Status: stopped
 
-$ opencli manus read 8UcpCxMFLrNk63ZJmzALfV
+$ cloudl manus read 8UcpCxMFLrNk63ZJmzALfV
 Field: UID            Value: 8UcpCxMFLrNk63ZJmzALfV
 Field: Title          Value: 制作技术方案路演风格PPT的详细要求
 Field: Status         Value: SESSION_STATUS_STOPPED

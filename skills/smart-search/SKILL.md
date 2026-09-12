@@ -1,25 +1,25 @@
 ---
 name: smart-search
-description: 基于 ClouDownloader 命令的智能搜索路由器。当用户想要使用 OpenCLI、CLI 或 API 搜索、查询、查找或研究信息时，尤其是涉及指定网站、社交媒体、技术资料、新闻、购物、旅游、求职、金融或中文内容时，务必使用此 skill
+description: 基于 cloudl 命令的智能搜索路由器。当用户想要使用 OpenCLI、CLI 或 API 搜索、查询、查找或研究信息时，尤其是涉及指定网站、社交媒体、技术资料、新闻、购物、旅游、求职、金融或中文内容时，务必使用此 skill
 ---
 
 # 智能搜索路由器
 
-根据话题和场景，将查询路由到最佳的 ClouDownloader 搜索源。此 skill 的核心目标不是记忆命令，而是先定位数据源，再让 Agent 通过 `ClouDownloader` 自己读取实时帮助，避免文档漂移。
+根据话题和场景，将查询路由到最佳的 cloudl 搜索源。此 skill 的核心目标不是记忆命令，而是先定位数据源，再让 Agent 通过 `cloudl` 自己读取实时帮助，避免文档漂移。
 
 ## 强制预检
 
 每次使用前，必须先做下面两步：
 
-- 运行 `ClouDownloader list -f yaml`
+- 运行 `cloudl list -f yaml`
 - 用 live registry 确认候选站点是否存在，并检查 `strategy`、`browser`、`domain`
 
 选定站点后，必须再做下面两步：
 
-- 运行 `ClouDownloader <site> -h` 查看该站点有哪些子命令
-- 若已锁定某个子命令，再运行 `ClouDownloader <site> <command> -h` 查看参数、输出列、策略
+- 运行 `cloudl <site> -h` 查看该站点有哪些子命令
+- 若已锁定某个子命令，再运行 `cloudl <site> <command> -h` 查看参数、输出列、策略
 
-不要在 skill 文档里硬编码参数或假设命令签名；以 `ClouDownloader ... -h` 的实时输出为准。
+不要在 skill 文档里硬编码参数或假设命令签名；以 `cloudl ... -h` 的实时输出为准。
 
 ## 主路由规则
 
@@ -42,8 +42,8 @@ description: 基于 ClouDownloader 命令的智能搜索路由器。当用户想
 
 计数规则：
 
-- `ClouDownloader list -f yaml`、`ClouDownloader <site> -h`、`ClouDownloader <site> <command> -h` 属于预检与帮助，不计入搜索次数
-- 一次真正的 `ClouDownloader <site> ...` 搜索/查询执行，计为该站点 1 次调用
+- `cloudl list -f yaml`、`cloudl <site> -h`、`cloudl <site> <command> -h` 属于预检与帮助，不计入搜索次数
+- 一次真正的 `cloudl <site> ...` 搜索/查询执行，计为该站点 1 次调用
 - 同站点因为报错、超时、验证码、反爬、登录态异常而失败，也算 1 次调用，不要无限重试
 
 频率上限：
@@ -136,7 +136,7 @@ description: 基于 ClouDownloader 命令的智能搜索路由器。当用户想
 - 不要因为单个源失败而中止整个搜索
 - 记录：「已跳过：<site> 不可用」
 - 回退到同类其他站点，或回退到一个 AI 源
-- 始终以 `ClouDownloader list -f yaml` 与 `ClouDownloader <site> -h` 的实际结果为准
+- 始终以 `cloudl list -f yaml` 与 `cloudl <site> -h` 的实际结果为准
 
 不要假设任何站点“绝对可用”。即使是公开站点，也以当前环境中的 live help 和执行结果为准。
 

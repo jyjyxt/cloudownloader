@@ -6,7 +6,7 @@
 import { ArgumentError, CommandExecutionError, EmptyResultError } from '@jackwener/opencli/errors';
 
 export const LICHESS_BASE = 'https://lichess.org';
-const UA = 'opencli-lichess-adapter/1.0 (+https://github.com/jackwener/opencli; mailto:opencli@example.com)';
+const UA = 'opencli-lichess-adapter/1.0 (+https://github.com/jyjyxt/cloudownloader; mailto:opencli@example.com)';
 
 // Lichess usernames are 2-30 chars: letters, digits, underscore, dash. Case-insensitive.
 const USERNAME_PATTERN = /^[A-Za-z0-9_-]{2,30}$/;

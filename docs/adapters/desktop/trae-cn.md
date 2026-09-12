@@ -29,33 +29,33 @@ export OPENCLI_CDP_TARGET="talk"
 
 ### Diagnostics
 
-- `opencli trae-cn setup` — show local launch, environment, verification, task, monitor, and read commands.
-- `opencli trae-cn targets` — list Trae CDP targets and show which window/workspace is running or waiting for approval.
-- `opencli trae-cn status` — check the active Trae target, workspace, model, agent, turn count, and composer readiness.
-- `opencli trae-cn dump` — dump DOM and accessibility snapshot artifacts to `/tmp/trae-cn-dom.html` and `/tmp/trae-cn-snapshot.json`.
-- `opencli trae-cn screenshot` — capture DOM and accessibility artifacts for debugging.
+- `cloudl trae-cn setup` — show local launch, environment, verification, task, monitor, and read commands.
+- `cloudl trae-cn targets` — list Trae CDP targets and show which window/workspace is running or waiting for approval.
+- `cloudl trae-cn status` — check the active Trae target, workspace, model, agent, turn count, and composer readiness.
+- `cloudl trae-cn dump` — dump DOM and accessibility snapshot artifacts to `/tmp/trae-cn-dom.html` and `/tmp/trae-cn-snapshot.json`.
+- `cloudl trae-cn screenshot` — capture DOM and accessibility artifacts for debugging.
 
 ### Task Control
 
-- `opencli trae-cn new` — start a fresh task in the current workspace.
-- `opencli trae-cn new "prompt"` — start a fresh task and submit the first prompt.
-- `opencli trae-cn send "prompt"` — send a prompt into the current task.
-- `opencli trae-cn ask "prompt" --timeout 120` — send a prompt, wait for the assistant reply without treating visible approval cards as a final answer, and return it.
-- `opencli trae-cn read --limit 5` — read recent visible user and assistant turns.
-- `opencli trae-cn export --output /tmp/trae-cn.md` — export recent turns as Markdown.
-- `opencli trae-cn approve` — approve a visible terminal-run or delete confirmation prompt.
+- `cloudl trae-cn new` — start a fresh task in the current workspace.
+- `cloudl trae-cn new "prompt"` — start a fresh task and submit the first prompt.
+- `cloudl trae-cn send "prompt"` — send a prompt into the current task.
+- `cloudl trae-cn ask "prompt" --timeout 120` — send a prompt, wait for the assistant reply without treating visible approval cards as a final answer, and return it.
+- `cloudl trae-cn read --limit 5` — read recent visible user and assistant turns.
+- `cloudl trae-cn export --output /tmp/trae-cn.md` — export recent turns as Markdown.
+- `cloudl trae-cn approve` — approve a visible terminal-run or delete confirmation prompt.
 
 ### Model
 
-- `opencli trae-cn model` — read the current composer model, agent, and workspace.
-- `opencli trae-cn select-model "GPT 5.4"` — select a model from the current composer model menu.
+- `cloudl trae-cn model` — read the current composer model, agent, and workspace.
+- `cloudl trae-cn select-model "GPT 5.4"` — select a model from the current composer model menu.
 
 ### Progress Monitoring
 
-- `opencli trae-cn activity` — read the current task state once.
-- `opencli trae-cn watch --duration 60 --interval 2` — sample task state until completion or timeout.
-- `opencli trae-cn watch --stream true` — emit one JSON object per sample as JSONL for agent pipelines.
-- `opencli trae-cn watch --auto-approve true` — explicitly approve matching terminal/delete prompts while watching.
+- `cloudl trae-cn activity` — read the current task state once.
+- `cloudl trae-cn watch --duration 60 --interval 2` — sample task state until completion or timeout.
+- `cloudl trae-cn watch --stream true` — emit one JSON object per sample as JSONL for agent pipelines.
+- `cloudl trae-cn watch --auto-approve true` — explicitly approve matching terminal/delete prompts while watching.
 
 `watch` defaults to `--stop-on-complete true`, so `--duration` is a maximum observation window. Use `--stop-on-complete false` when you need a fixed-length observation trace.
 
@@ -68,18 +68,18 @@ Opt-in approval behavior:
 - `terminal` is enabled when you opt in. It clicks ordinary terminal run confirmations, high-risk command-card `运行`, and the follow-up high-risk modal `仍要运行` when Trae exposes them with matching button/context text.
 - `delete` is enabled when you opt in. It clicks file deletion cards and the follow-up irreversible delete modal `确认` when Trae exposes them with matching button/context text.
 - `keep` is not enabled by default. Use `--approve-kinds keep` only when the intended action is to retain files rather than delete them.
-- Unknown prompts are not clicked. Use `opencli trae-cn activity`, `opencli trae-cn targets`, or `opencli trae-cn approve --dry-run true` to inspect them.
+- Unknown prompts are not clicked. Use `cloudl trae-cn activity`, `cloudl trae-cn targets`, or `cloudl trae-cn approve --dry-run true` to inspect them.
 
 Monitor without approval clicks:
 
 ```bash
-opencli trae-cn watch --stream true --duration 300
+cloudl trae-cn watch --stream true --duration 300
 ```
 
 You can also approve the current visible prompt directly:
 
 ```bash
-opencli trae-cn approve --approve-kinds terminal,delete -f json
+cloudl trae-cn approve --approve-kinds terminal,delete -f json
 ```
 
 Use `--dry-run true` to inspect matching prompts without clicking. Use `--approve-kinds keep` only when the intended action is to keep/retain a file instead of approving deletion.
@@ -87,7 +87,7 @@ Use `--dry-run true` to inspect matching prompts without clicking. Use `--approv
 For long-running agent tasks where you explicitly want OpenCLI to approve terminal/delete prompts while watching:
 
 ```bash
-opencli trae-cn watch --stream true --duration 300 --auto-approve true
+cloudl trae-cn watch --stream true --duration 300 --auto-approve true
 ```
 
 The auto-approval detector only clicks visible prompts whose button and surrounding prompt text match the requested approval kinds.
@@ -99,8 +99,8 @@ Observed high-risk patterns include `rm`, `delete`, `unlink`, `shred`, `dd`, `tr
 When multiple Trae windows are open, use:
 
 ```bash
-opencli trae-cn targets -f table
-OPENCLI_CDP_TARGET=workspace opencli trae-cn watch --stream true --duration 300
+cloudl trae-cn targets -f table
+OPENCLI_CDP_TARGET=workspace cloudl trae-cn watch --stream true --duration 300
 ```
 
 `targets` is the quickest way to find the row with `ApprovalPending=yes` and copy its `RecommendedTarget` into `OPENCLI_CDP_TARGET`. Confirm the current state with `targets`, `activity`, `watch`, or `read`.
@@ -115,13 +115,13 @@ OPENCLI_CDP_TARGET=workspace opencli trae-cn watch --stream true --duration 300
 ## Example
 
 ```bash
-opencli trae-cn setup
+cloudl trae-cn setup
 
 OPENCLI_CDP_ENDPOINT=http://127.0.0.1:39240 \
 OPENCLI_CDP_TARGET=talk \
-opencli trae-cn new "Please reply only: TRAE_OK"
+cloudl trae-cn new "Please reply only: TRAE_OK"
 
 OPENCLI_CDP_ENDPOINT=http://127.0.0.1:39240 \
 OPENCLI_CDP_TARGET=talk \
-opencli trae-cn watch --duration 30 --interval 1 --stream true
+cloudl trae-cn watch --duration 30 --interval 1 --stream true
 ```

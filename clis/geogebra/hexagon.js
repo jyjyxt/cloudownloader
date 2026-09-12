@@ -17,7 +17,7 @@ cli({
   strategy: Strategy.PUBLIC,
   browser: true,
   navigateBefore: false,
-  example: 'opencli geogebra hexagon --size 3',
+  example: 'cloudl geogebra hexagon --size 3',
   args: [
     { name: 'size', required: false, default: '2', help: 'Radius of the hexagon (default: 2)' },
   ],

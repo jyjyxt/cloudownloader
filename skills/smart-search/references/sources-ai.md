@@ -4,10 +4,10 @@
 
 ## 使用规则
 
-1. 先运行 `ClouDownloader list -f yaml`
+1. 先运行 `cloudl list -f yaml`
 2. 确认 `grok`、`doubao`、`gemini` 哪些在当前 registry 中可用
-3. 运行 `ClouDownloader <site> -h`
-4. 锁定具体子命令后，再运行 `ClouDownloader <site> <command> -h`
+3. 运行 `cloudl <site> -h`
+4. 锁定具体子命令后，再运行 `cloudl <site> <command> -h`
 
 ## 路由建议
 
@@ -54,7 +54,7 @@
 
 - 先用一个 AI 源拿到初步答案
 - 若答案缺少原始数据、垂直结果或权威来源，再补 1-2 个专用源
-- 不要把 AI 默认源当成命令签名的事实来源；命令细节始终以 `ClouDownloader ... -h` 为准
+- 不要把 AI 默认源当成命令签名的事实来源；命令细节始终以 `cloudl ... -h` 为准
 
 ## 通用写法模板
 

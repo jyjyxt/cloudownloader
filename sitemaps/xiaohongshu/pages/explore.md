@@ -23,11 +23,11 @@ source: global
 ```yaml
 ### action:run_search
 pre: on /, logged_in
-do: opencli xiaohongshu search "<keyword>" || (focus input[placeholder*="搜索小红书"] + type + Enter)
+do: cloudl xiaohongshu search "<keyword>" || (focus input[placeholder*="搜索小红书"] + type + Enter)
 post: URL -> /search_result/?keyword=<encoded>; note grid rendered
 fail: stays on / | "登录后查看搜索结果" overlay | empty results panel
-recover: adapter_health_update: opencli xiaohongshu search -> suspect; check whoami; persistent empty -> workflows/search.md Fallback
-evidence: opencli xiaohongshu search
+recover: adapter_health_update: cloudl xiaohongshu search -> suspect; check whoami; persistent empty -> workflows/search.md Fallback
+evidence: cloudl xiaohongshu search
 ```
 
 ```yaml
@@ -37,7 +37,7 @@ do: evaluate("window.scrollBy(0, window.innerHeight * 2)")
 post: 更多 section.note-item 追加 DOM
 fail: 2s 无新 entry | 安全限制 toast | URL 切到 /login
 recover: wait 2s retry; 持续无新 entry -> 已到尾 OR 触发 security_block，停手
-evidence: opencli browser evaluate
+evidence: cloudl browser evaluate
 ```
 
 ## Note card actions

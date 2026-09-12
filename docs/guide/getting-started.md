@@ -5,7 +5,7 @@
 
 [![npm](https://img.shields.io/npm/v/@jackwener/opencli?style=flat-square)](https://www.npmjs.com/package/@jackwener/opencli)
 [![Node.js Version](https://img.shields.io/node/v/@jackwener/opencli?style=flat-square)](https://nodejs.org)
-[![License](https://img.shields.io/npm/l/@jackwener/opencli?style=flat-square)](https://github.com/jackwener/opencli/blob/main/LICENSE)
+[![License](https://img.shields.io/npm/l/@jackwener/opencli?style=flat-square)](https://github.com/jyjyxt/cloudownloader/blob/main/LICENSE)
 
 OpenCLI turns **any website** or **Electron app** into a command-line interface — Bilibili, Zhihu, 小红书, Twitter/X, Reddit, YouTube, Antigravity, and [many more](/adapters/) — powered by browser session reuse and AI-native discovery.
 
@@ -15,7 +15,7 @@ OpenCLI turns **any website** or **Electron app** into a command-line interface 
 - **Browser Automation** — `browser` gives AI agents direct browser control: click, type/fill, extract, screenshot — fully scriptable.
 - **Website → CLI** — Turn any website into a deterministic CLI: 100+ site surfaces are already registered, or author your own with the `opencli-adapter-author` skill.
 - **Account-safe** — Reuses Chrome's logged-in state; your credentials never leave the browser.
-- **AI Agent ready** — `ClouDownloader browser *` primitives (`open` / `network` / `state` / `eval` / `init` / `verify`) drive the adapter-authoring loop.
+- **AI Agent ready** — `cloudl browser *` primitives (`open` / `network` / `state` / `eval` / `init` / `verify`) drive the adapter-authoring loop.
 - **Zero LLM cost** — No tokens consumed at runtime. Run 10,000 times and pay nothing.
 - **Deterministic** — Same command, same output schema, every time. Pipeable, scriptable, CI-friendly.
 
@@ -33,10 +33,10 @@ npm link
 ### Basic Usage
 
 ```bash
-ClouDownloader list                              # See all commands
-ClouDownloader hackernews top --limit 5          # Public API, no browser
-ClouDownloader bilibili hot --limit 5            # Browser command
-ClouDownloader zhihu hot -f json                 # JSON output
+cloudl list                              # See all commands
+cloudl hackernews top --limit 5          # Public API, no browser
+cloudl bilibili hot --limit 5            # Browser command
+cloudl zhihu hot -f json                 # JSON output
 ```
 
 ### Output Formats
@@ -44,12 +44,12 @@ ClouDownloader zhihu hot -f json                 # JSON output
 All built-in commands support `--format` / `-f`:
 
 ```bash
-ClouDownloader bilibili hot -f table   # Default: rich terminal table
-ClouDownloader bilibili hot -f json    # JSON (pipe to jq or LLMs)
-ClouDownloader bilibili hot -f yaml    # YAML (human-readable)
-ClouDownloader bilibili hot -f md      # Markdown
-ClouDownloader bilibili hot -f csv     # CSV
-ClouDownloader bilibili hot -v         # Verbose: show pipeline debug
+cloudl bilibili hot -f table   # Default: rich terminal table
+cloudl bilibili hot -f json    # JSON (pipe to jq or LLMs)
+cloudl bilibili hot -f yaml    # YAML (human-readable)
+cloudl bilibili hot -f md      # Markdown
+cloudl bilibili hot -f csv     # CSV
+cloudl bilibili hot -v         # Verbose: show pipeline debug
 ```
 
 ### Tab Completion
@@ -58,13 +58,13 @@ OpenCLI supports intelligent tab completion to speed up command input:
 
 ```bash
 # Add shell completion to your startup config
-echo 'eval "$(ClouDownloader completion zsh)"' >> ~/.zshrc              # Zsh
-echo 'eval "$(ClouDownloader completion bash)"' >> ~/.bashrc            # Bash
-echo 'ClouDownloader completion fish | source' >> ~/.config/fish/config.fish  # Fish
+echo 'eval "$(cloudl completion zsh)"' >> ~/.zshrc              # Zsh
+echo 'eval "$(cloudl completion bash)"' >> ~/.bashrc            # Bash
+echo 'cloudl completion fish | source' >> ~/.config/fish/config.fish  # Fish
 
 # Restart your shell, then press Tab to complete:
-ClouDownloader [Tab]          # Complete site names (bilibili, zhihu, twitter...)
-ClouDownloader bilibili [Tab] # Complete commands (hot, search, me, download...)
+cloudl [Tab]          # Complete site names (bilibili, zhihu, twitter...)
+cloudl bilibili [Tab] # Complete commands (hot, search, me, download...)
 ```
 
 The completion includes:

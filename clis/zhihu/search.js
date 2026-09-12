@@ -54,7 +54,7 @@ function parseLimit(value) {
 function requireQuery(value) {
     const query = String(value || '').trim();
     if (!query) {
-        throw new ArgumentError('zhihu search query must not be empty', 'Example: opencli zhihu search codex');
+        throw new ArgumentError('zhihu search query must not be empty', 'Example: cloudl zhihu search codex');
     }
     return query;
 }
@@ -62,7 +62,7 @@ function requireQuery(value) {
 function requireType(value) {
     const type = String(value || 'all');
     if (!TYPES.includes(type)) {
-        throw new ArgumentError(`zhihu search --type must be one of: ${TYPES.join(', ')}`, 'Example: opencli zhihu search codex --type answer');
+        throw new ArgumentError(`zhihu search --type must be one of: ${TYPES.join(', ')}`, 'Example: cloudl zhihu search codex --type answer');
     }
     return type;
 }

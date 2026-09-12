@@ -515,7 +515,7 @@ export async function resolveDiscordChannelTarget(page, kwargs = {}, options = {
 
     throw new ArgumentError(
         `Could not resolve Discord channel "${channelArg}".`,
-        'Use "opencli discord-app channels -f json" and retry with --url or numeric --guild/--channel ids.',
+        'Use "cloudl discord-app channels -f json" and retry with --url or numeric --guild/--channel ids.',
     );
 }
 

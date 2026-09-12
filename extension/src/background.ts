@@ -1,7 +1,7 @@
 /**
  * OpenCLI — Service Worker (background script).
  *
- * Connects to the opencli daemon via WebSocket, receives commands,
+ * Connects to the cloudl daemon via WebSocket, receives commands,
  * dispatches them to Chrome APIs (debugger/tabs/cookies), returns results.
  */
 
@@ -400,7 +400,7 @@ function getSessionName(session?: string): string {
   if (!raw) throw new CommandFailure(
     'session_required',
     'Browser session is required.',
-    'Pass a browser session name, e.g. opencli browser <session> <command>.',
+    'Pass a browser session name, e.g. cloudl browser <session> <command>.',
   );
   return raw;
 }
@@ -1494,7 +1494,7 @@ async function resolveTab(tabId: number | undefined, leaseKey: string, initialUr
           matchesSession
             ? `Bound tab for session "${session.session}" is not debuggable (${tab.url ?? 'unknown URL'}).`
             : `Target tab is not the tab bound to session "${session.session}".`,
-          'Run "opencli browser bind" again on a debuggable http(s) tab.',
+          'Run "cloudl browser bind" again on a debuggable http(s) tab.',
         );
       }
       if (session && !matchesSession && session.preferredTabId === null && isDebuggableUrl(tab.url)) {
@@ -1520,7 +1520,7 @@ async function resolveTab(tabId: number | undefined, leaseKey: string, initialUr
         throw new CommandFailure(
           'bound_tab_gone',
           `Bound tab for session "${existingSession.session}" no longer exists.`,
-          'Run "opencli browser bind" again, then retry the command.',
+          'Run "cloudl browser bind" again, then retry the command.',
         );
       }
       console.warn(`[opencli] Tab ${tabId} no longer exists, re-resolving`);
@@ -1537,7 +1537,7 @@ async function resolveTab(tabId: number | undefined, leaseKey: string, initialUr
         throw new CommandFailure(
           'bound_tab_not_debuggable',
           `Bound tab for session "${session.session}" is not debuggable (${preferredTab.url ?? 'unknown URL'}).`,
-          'Switch the tab to an http(s) page or run "opencli browser bind" on another tab.',
+          'Switch the tab to an http(s) page or run "cloudl browser bind" on another tab.',
         );
       }
     } catch (err) {
@@ -1547,7 +1547,7 @@ async function resolveTab(tabId: number | undefined, leaseKey: string, initialUr
         throw new CommandFailure(
           'bound_tab_gone',
           `Bound tab for session "${session.session}" no longer exists.`,
-          'Run "opencli browser bind" again, then retry the command.',
+          'Run "cloudl browser bind" again, then retry the command.',
         );
       }
       return createOwnedTabLease(leaseKey, initialUrl);

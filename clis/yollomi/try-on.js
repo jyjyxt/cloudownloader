@@ -14,7 +14,7 @@ cli({
     domain: YOLLOMI_DOMAIN,
     strategy: Strategy.COOKIE,
     args: [
-        { name: 'person', required: true, help: 'Person photo URL (upload via "opencli yollomi upload" first)' },
+        { name: 'person', required: true, help: 'Person photo URL (upload via "cloudl yollomi upload" first)' },
         { name: 'cloth', required: true, help: 'Clothing image URL' },
         { name: 'cloth-type', default: 'upper', choices: ['upper', 'lower', 'overall'], help: 'Clothing type' },
         { name: 'output', default: './yollomi-output', help: 'Output directory' },

@@ -10,7 +10,7 @@ cli({
     strategy: Strategy.UI,
     browser: true,
     args: [
-        { name: 'listId', positional: true, type: 'string', required: true, help: 'Numeric ID of the list you own (e.g. from `opencli twitter lists`)' },
+        { name: 'listId', positional: true, type: 'string', required: true, help: 'Numeric ID of the list you own (e.g. from `cloudl twitter lists`)' },
         { name: 'username', positional: true, type: 'string', required: true, help: 'Twitter/X handle to remove (with or without @)' },
     ],
     columns: ['listId', 'username', 'userId', 'status', 'message'],

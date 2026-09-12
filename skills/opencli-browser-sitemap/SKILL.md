@@ -1,12 +1,12 @@
 ---
 name: opencli-browser-sitemap
-description: Use when driving a website with ClouDownloader browser and sitemap context is available, requested, or needed to avoid blind navigation. Guides agents to consume site sitemap files lazily, choose adapter/browser fallback paths, resume from state signatures, and mark stale sitemap entries without trusting them over live browser state.
+description: Use when driving a website with cloudl browser and sitemap context is available, requested, or needed to avoid blind navigation. Guides agents to consume site sitemap files lazily, choose adapter/browser fallback paths, resume from state signatures, and mark stale sitemap entries without trusting them over live browser state.
 allowed-tools: Bash(opencli:*), Read, Edit, Write, Grep
 ---
 
 # opencli-browser-sitemap
 
-Use this skill when `ClouDownloader browser open` or `ClouDownloader browser analyze` reports `sitemap.available: true`, or when the user asks you to use a site's sitemap.
+Use this skill when `cloudl browser open` or `cloudl browser analyze` reports `sitemap.available: true`, or when the user asks you to use a site's sitemap.
 
 The sitemap is **prior knowledge**, not ground truth. It should reduce blind clicking, but it must never override the live browser state.
 
@@ -14,13 +14,13 @@ The sitemap is **prior knowledge**, not ground truth. It should reduce blind cli
 
 ## Consumption Loop
 
-1. Run or reuse `ClouDownloader browser <session> state` to know the current page.
+1. Run or reuse `cloudl browser <session> state` to know the current page.
 2. Read only the smallest relevant sitemap files:
    - `SITE.md` for site-level orientation.
    - One matching `pages/<page-id>.md` for current state.
    - One matching `workflows/<task-id>.md` for the user goal.
    - `pitfalls.md` only when blocked or warned by the workflow.
-3. Prefer the workflow's **Best path**. If it names an adapter such as `ClouDownloader twitter post`, use that before raw browser actions.
+3. Prefer the workflow's **Best path**. If it names an adapter such as `cloudl twitter post`, use that before raw browser actions.
 4. If the adapter is unavailable or fails, use the **Fallback path** browser workflow.
 5. After each navigation or state-changing action, refresh `state` and compare the workflow's `state_signature`.
 6. If reality disagrees, trust reality, continue probing, and write a local stale note or draft patch.

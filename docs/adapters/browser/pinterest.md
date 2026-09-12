@@ -6,26 +6,26 @@
 
 | Command | Description |
 |---------|-------------|
-| `opencli pinterest search-pins` | Search pins on Pinterest |
-| `opencli pinterest search-boards` | Search for boards on Pinterest |
-| `opencli pinterest search-users` | Search for users on Pinterest |
-| `opencli pinterest pin` | Get details of a Pinterest pin |
-| `opencli pinterest user` | Get a Pinterest user's public profile stats |
-| `opencli pinterest user-pins` | List pins created by a Pinterest user |
-| `opencli pinterest user-boards` | List a user's boards |
-| `opencli pinterest board-pins` | List pins inside a Pinterest board |
-| `opencli pinterest board-sections` | List the sections inside a Pinterest board |
-| `opencli pinterest download` | Download a pin's original image to disk |
-| `opencli pinterest save` | Save a pin to your profile or a board |
-| `opencli pinterest create-pin` | Upload a local image and publish it through the Pinterest web UI |
-| `opencli pinterest pin-create` | Create a pin from a remote image URL onto a board |
-| `opencli pinterest pin-update` | Update a pin's title, description, link, or board |
-| `opencli pinterest pin-delete` | Delete one of your own pins |
-| `opencli pinterest board-create` | Create a new board on your account |
-| `opencli pinterest board-update` | Update the name, description, or privacy of your board |
-| `opencli pinterest board-delete` | Delete one of your own boards |
-| `opencli pinterest board-section-create` | Create a section inside one of your boards |
-| `opencli pinterest board-section-delete` | Delete a section from one of your boards |
+| `cloudl pinterest search-pins` | Search pins on Pinterest |
+| `cloudl pinterest search-boards` | Search for boards on Pinterest |
+| `cloudl pinterest search-users` | Search for users on Pinterest |
+| `cloudl pinterest pin` | Get details of a Pinterest pin |
+| `cloudl pinterest user` | Get a Pinterest user's public profile stats |
+| `cloudl pinterest user-pins` | List pins created by a Pinterest user |
+| `cloudl pinterest user-boards` | List a user's boards |
+| `cloudl pinterest board-pins` | List pins inside a Pinterest board |
+| `cloudl pinterest board-sections` | List the sections inside a Pinterest board |
+| `cloudl pinterest download` | Download a pin's original image to disk |
+| `cloudl pinterest save` | Save a pin to your profile or a board |
+| `cloudl pinterest create-pin` | Upload a local image and publish it through the Pinterest web UI |
+| `cloudl pinterest pin-create` | Create a pin from a remote image URL onto a board |
+| `cloudl pinterest pin-update` | Update a pin's title, description, link, or board |
+| `cloudl pinterest pin-delete` | Delete one of your own pins |
+| `cloudl pinterest board-create` | Create a new board on your account |
+| `cloudl pinterest board-update` | Update the name, description, or privacy of your board |
+| `cloudl pinterest board-delete` | Delete one of your own boards |
+| `cloudl pinterest board-section-create` | Create a section inside one of your boards |
+| `cloudl pinterest board-section-delete` | Delete a section from one of your boards |
 
 ## Usage Examples
 
@@ -33,25 +33,25 @@
 
 ```bash
 # Search
-opencli pinterest search-pins "nordic interior" --limit 10
-opencli pinterest search-boards "coffee" --limit 10
-opencli pinterest search-users "coffee" --limit 10
+cloudl pinterest search-pins "nordic interior" --limit 10
+cloudl pinterest search-boards "coffee" --limit 10
+cloudl pinterest search-users "coffee" --limit 10
 
 # A user's profile, pins, and boards
-opencli pinterest user janedoe
-opencli pinterest user-pins janedoe --limit 10
-opencli pinterest user-boards janedoe --limit 50 --sort alphabetical
+cloudl pinterest user janedoe
+cloudl pinterest user-pins janedoe --limit 10
+cloudl pinterest user-boards janedoe --limit 50 --sort alphabetical
 
 # A board's pins and sections
-opencli pinterest board-pins janedoe/my-board --limit 10
-opencli pinterest board-sections janedoe/my-board
+cloudl pinterest board-pins janedoe/my-board --limit 10
+cloudl pinterest board-sections janedoe/my-board
 
 # A single pin, and downloading its original image
-opencli pinterest pin 1234567890123456
-opencli pinterest download 1234567890123456 --output ~/Downloads/pins
+cloudl pinterest pin 1234567890123456
+cloudl pinterest download 1234567890123456 --output ~/Downloads/pins
 
 # JSON output
-opencli pinterest search-pins "coffee" -f json
+cloudl pinterest search-pins "coffee" -f json
 ```
 
 Boards are addressed by `<username>/<slug>`, a board URL, or the numeric `boardId` from
@@ -61,15 +61,15 @@ Boards are addressed by `<username>/<slug>`, a board URL, or the numeric `boardI
 
 ```bash
 # Save (repin) an existing pin — omit --board to save to your profile
-opencli pinterest save 1234567890123456
-opencli pinterest save 1234567890123456 --board janedoe/my-board --section my-section
+cloudl pinterest save 1234567890123456
+cloudl pinterest save 1234567890123456 --board janedoe/my-board --section my-section
 
 # Create a pin from an image URL
-opencli pinterest pin-create "https://example.com/image.jpg" \
+cloudl pinterest pin-create "https://example.com/image.jpg" \
   --board janedoe/my-board --title "My pin" --link "https://example.com"
 
 # Upload a local image through the visible Pinterest composer
-opencli pinterest create-pin \
+cloudl pinterest create-pin \
   --image ./cover.jpg \
   --board "Ideas" \
   --title "Launch notes" \
@@ -78,13 +78,13 @@ opencli pinterest create-pin \
   --alt-text "Notebook page with launch notes"
 
 # Update a pin (text, or move it to another board/section)
-opencli pinterest pin-update 1234567890123456 --title "New title"
-opencli pinterest pin-update 1234567890123456 --board janedoe/other-board --section my-section
+cloudl pinterest pin-update 1234567890123456 --title "New title"
+cloudl pinterest pin-update 1234567890123456 --board janedoe/other-board --section my-section
 
 # Boards and sections
-opencli pinterest board-create "My board" --description "..." --privacy secret
-opencli pinterest board-update janedoe/my-board --name "Renamed" --privacy public
-opencli pinterest board-section-create janedoe/my-board --title "My section"
+cloudl pinterest board-create "My board" --description "..." --privacy secret
+cloudl pinterest board-update janedoe/my-board --name "Renamed" --privacy public
+cloudl pinterest board-section-create janedoe/my-board --title "My section"
 ```
 
 ### Destructive commands
@@ -93,13 +93,13 @@ Deletes require `--confirm`. Without it the command prints what it *would* delet
 non-zero without touching anything.
 
 ```bash
-opencli pinterest pin-delete 1234567890123456            # preview only
-opencli pinterest pin-delete 1234567890123456 --confirm   # actually delete
+cloudl pinterest pin-delete 1234567890123456            # preview only
+cloudl pinterest pin-delete 1234567890123456 --confirm   # actually delete
 
-opencli pinterest board-delete janedoe/my-board            # preview (shows the board's pin count)
-opencli pinterest board-delete janedoe/my-board --confirm   # deletes the board *and its pins*
+cloudl pinterest board-delete janedoe/my-board            # preview (shows the board's pin count)
+cloudl pinterest board-delete janedoe/my-board --confirm   # deletes the board *and its pins*
 
-opencli pinterest board-section-delete janedoe/my-board --section my-section --confirm
+cloudl pinterest board-section-delete janedoe/my-board --section my-section --confirm
 ```
 
 ## Notes

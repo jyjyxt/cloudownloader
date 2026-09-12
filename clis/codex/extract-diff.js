@@ -43,7 +43,7 @@ export const extractDiffCommand = cli({
             throw new CommandExecutionError('Codex extract-diff returned an invalid payload.');
         }
         if (diffs.length === 0) {
-            throw new EmptyResultError('codex extract-diff', 'No Codex diffs were visible. Run opencli codex send "/review" --pick "Review Agent" and retry.');
+            throw new EmptyResultError('codex extract-diff', 'No Codex diffs were visible. Run cloudl codex send "/review" --pick "Review Agent" and retry.');
         }
         return diffs;
     },

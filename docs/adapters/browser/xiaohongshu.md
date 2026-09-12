@@ -6,72 +6,72 @@
 
 | Command | Description |
 |---------|-------------|
-| `opencli xiaohongshu search` | Search notes by keyword (returns title, author, likes, URL) |
-| `opencli xiaohongshu ask` | Ask 点点 and return its answer with citation sources (`sources[]` in JSON) |
-| `opencli xiaohongshu note` | Read full note content (title, author, description, likes, collects, comments, tags) |
-| `opencli xiaohongshu comments` | Read comments from a note (`--with-replies` for nested 楼中楼 replies) |
-| `opencli xiaohongshu feed` | Home feed recommendations (reads the hydrated Pinia store; URLs carry `xsec_token` for drill-down) |
-| `opencli xiaohongshu notifications` | User notifications (mentions, likes, connections) |
-| `opencli xiaohongshu user` | Get public notes from a user profile |
-| `opencli xiaohongshu saved` | List saved/collected notes (`/user/profile/<id>?tab=fav&subTab=note`) |
-| `opencli xiaohongshu liked` | List liked notes (`/user/profile/<id>?tab=liked&subTab=note`) |
-| `opencli xiaohongshu download` | Download images and videos from a note |
-| `opencli xiaohongshu publish` | Publish image-text notes (creator center UI automation) |
-| `opencli xiaohongshu delete-note` | Verify or delete a published creator-center note by exact note ID |
-| `opencli xiaohongshu follow` | Follow a user from the profile UI and verify the button state flips |
-| `opencli xiaohongshu unfollow` | Unfollow a user from the profile UI, confirm the modal, and verify the button state flips |
-| `opencli xiaohongshu creator-notes` | Creator's note list with per-note metrics |
-| `opencli xiaohongshu creator-note-detail` | Detailed analytics for a single creator note |
-| `opencli xiaohongshu creator-notes-summary` | Combined note list + detail analytics summary |
-| `opencli xiaohongshu creator-profile` | Creator account info (followers, growth level) |
-| `opencli xiaohongshu creator-stats` | Creator data overview (views, likes, collects, trends) |
+| `cloudl xiaohongshu search` | Search notes by keyword (returns title, author, likes, URL) |
+| `cloudl xiaohongshu ask` | Ask 点点 and return its answer with citation sources (`sources[]` in JSON) |
+| `cloudl xiaohongshu note` | Read full note content (title, author, description, likes, collects, comments, tags) |
+| `cloudl xiaohongshu comments` | Read comments from a note (`--with-replies` for nested 楼中楼 replies) |
+| `cloudl xiaohongshu feed` | Home feed recommendations (reads the hydrated Pinia store; URLs carry `xsec_token` for drill-down) |
+| `cloudl xiaohongshu notifications` | User notifications (mentions, likes, connections) |
+| `cloudl xiaohongshu user` | Get public notes from a user profile |
+| `cloudl xiaohongshu saved` | List saved/collected notes (`/user/profile/<id>?tab=fav&subTab=note`) |
+| `cloudl xiaohongshu liked` | List liked notes (`/user/profile/<id>?tab=liked&subTab=note`) |
+| `cloudl xiaohongshu download` | Download images and videos from a note |
+| `cloudl xiaohongshu publish` | Publish image-text notes (creator center UI automation) |
+| `cloudl xiaohongshu delete-note` | Verify or delete a published creator-center note by exact note ID |
+| `cloudl xiaohongshu follow` | Follow a user from the profile UI and verify the button state flips |
+| `cloudl xiaohongshu unfollow` | Unfollow a user from the profile UI, confirm the modal, and verify the button state flips |
+| `cloudl xiaohongshu creator-notes` | Creator's note list with per-note metrics |
+| `cloudl xiaohongshu creator-note-detail` | Detailed analytics for a single creator note |
+| `cloudl xiaohongshu creator-notes-summary` | Combined note list + detail analytics summary |
+| `cloudl xiaohongshu creator-profile` | Creator account info (followers, growth level) |
+| `cloudl xiaohongshu creator-stats` | Creator data overview (views, likes, collects, trends) |
 
 ## Usage Examples
 
 ```bash
 # Search for notes
-opencli xiaohongshu search 美食 --limit 10
+cloudl xiaohongshu search 美食 --limit 10
 
 # Combine visible search-panel filters
-opencli xiaohongshu search 美食 --sort latest --note-type video --publish-time week
+cloudl xiaohongshu search 美食 --sort latest --note-type video --publish-time week
 
 # Ask 点点 and keep the citation audit trail
-opencli xiaohongshu ask "上海露营需要注意什么？" -f json
+cloudl xiaohongshu ask "上海露营需要注意什么？" -f json
 
 # Read a note's full content (pass URL from search results to preserve xsec_token)
-opencli xiaohongshu note "https://www.xiaohongshu.com/search_result/<id>?xsec_token=..."
+cloudl xiaohongshu note "https://www.xiaohongshu.com/search_result/<id>?xsec_token=..."
 
 # Read comments with nested replies (楼中楼)
-opencli xiaohongshu comments "https://www.xiaohongshu.com/search_result/<id>?xsec_token=..." --with-replies --limit 20
+cloudl xiaohongshu comments "https://www.xiaohongshu.com/search_result/<id>?xsec_token=..." --with-replies --limit 20
 
 # JSON output
-opencli xiaohongshu search 旅行 -f json
+cloudl xiaohongshu search 旅行 -f json
 
 # Other commands
-opencli xiaohongshu feed
-opencli xiaohongshu saved --limit 20
-opencli xiaohongshu liked --limit 20
-opencli xiaohongshu saved "https://www.xiaohongshu.com/user/profile/<id>?tab=fav&subTab=note"
-opencli xiaohongshu liked "https://www.xiaohongshu.com/user/profile/<id>?tab=liked&subTab=note"
-opencli xiaohongshu notifications
-opencli xiaohongshu download "https://www.xiaohongshu.com/search_result/<id>?xsec_token=..."
-opencli xiaohongshu download "https://xhslink.com/..."
+cloudl xiaohongshu feed
+cloudl xiaohongshu saved --limit 20
+cloudl xiaohongshu liked --limit 20
+cloudl xiaohongshu saved "https://www.xiaohongshu.com/user/profile/<id>?tab=fav&subTab=note"
+cloudl xiaohongshu liked "https://www.xiaohongshu.com/user/profile/<id>?tab=liked&subTab=note"
+cloudl xiaohongshu notifications
+cloudl xiaohongshu download "https://www.xiaohongshu.com/search_result/<id>?xsec_token=..."
+cloudl xiaohongshu download "https://xhslink.com/..."
 
 # Publish an ordinary image-text note
-opencli xiaohongshu publish "正文内容" --title "标题" --images ./a.jpg,./b.png
+cloudl xiaohongshu publish "正文内容" --title "标题" --images ./a.jpg,./b.png
 
 # Publish a text-image note; split multiple cards with ||| and use \n for card line breaks
-opencli xiaohongshu publish "正文内容" --title "标题" --card-text "第一张\\n第二行|||第二张" --card-style 边框
+cloudl xiaohongshu publish "正文内容" --title "标题" --card-text "第一张\\n第二行|||第二张" --card-style 边框
 
 # Follow / unfollow a profile
-opencli xiaohongshu follow 5d8f88dc0000000001005d3a
-opencli xiaohongshu unfollow https://www.xiaohongshu.com/user/profile/5d8f88dc0000000001005d3a
+cloudl xiaohongshu follow 5d8f88dc0000000001005d3a
+cloudl xiaohongshu unfollow https://www.xiaohongshu.com/user/profile/5d8f88dc0000000001005d3a
 
 # Verify a published creator note without deleting it (default dry-run)
-opencli xiaohongshu delete-note 6a08ba0b000000000702a893
+cloudl xiaohongshu delete-note 6a08ba0b000000000702a893
 
 # Actually delete after the target row and delete action are verified
-opencli xiaohongshu delete-note 6a08ba0b000000000702a893 --execute
+cloudl xiaohongshu delete-note 6a08ba0b000000000702a893 --execute
 ```
 
 `search` supports the same visible filter-panel choices as the website: `--sort comprehensive|latest|most-liked|most-commented|most-collected`, `--note-type all|video|image`, `--publish-time anytime|day|week|half-year`, `--scope all|seen|unseen|following`, and `--location all|same-city|nearby`. Account-scoped and location filters fail explicitly when the logged-in browser session lacks the required account or geolocation capability.

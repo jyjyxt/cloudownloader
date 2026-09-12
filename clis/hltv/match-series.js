@@ -6,7 +6,7 @@ cli({
   name: 'match-series',
   description: 'Expand an HLTV match or stats series into summary, map, and player rows',
   access: 'read',
-  example: 'opencli hltv match-series https://www.hltv.org/stats/matches/126993/spirit-vs-falcons -f json',
+  example: 'cloudl hltv match-series https://www.hltv.org/stats/matches/126993/spirit-vs-falcons -f json',
   domain: 'www.hltv.org',
   strategy: Strategy.UI,
   browser: true,

@@ -6,35 +6,35 @@
 
 | Command | Description |
 |---------|-------------|
-| `opencli archive search <query>` | Search Internet Archive items across books, movies, audio, software, and web |
-| `opencli archive item <identifier>` | Fetch metadata for a single Internet Archive item by identifier |
-| `opencli archive wayback <url>` | Look up the closest Wayback Machine snapshot for a URL |
-| `opencli archive snapshots <url>` | List Wayback Machine snapshots over time for a URL via the CDX API |
+| `cloudl archive search <query>` | Search Internet Archive items across books, movies, audio, software, and web |
+| `cloudl archive item <identifier>` | Fetch metadata for a single Internet Archive item by identifier |
+| `cloudl archive wayback <url>` | Look up the closest Wayback Machine snapshot for a URL |
+| `cloudl archive snapshots <url>` | List Wayback Machine snapshots over time for a URL via the CDX API |
 
 ## Usage Examples
 
 ```bash
 # Full-text search across all mediatypes (default sort by downloads)
-opencli archive search "machine learning" --limit 10
+cloudl archive search "machine learning" --limit 10
 
 # Restrict to a mediatype
-opencli archive search "newton principia" --mediatype texts --limit 5
-opencli archive search "moon landing" --mediatype movies --sort date --limit 5
+cloudl archive search "newton principia" --mediatype texts --limit 5
+cloudl archive search "moon landing" --mediatype movies --sort date --limit 5
 
 # Single item metadata
-opencli archive item open-syllabus
-opencli archive item FinalFantasy2_356
+cloudl archive item open-syllabus
+cloudl archive item FinalFantasy2_356
 
 # Closest Wayback snapshot, optionally near a date
-opencli archive wayback wikipedia.org
-opencli archive wayback wikipedia.org --timestamp 2015
+cloudl archive wayback wikipedia.org
+cloudl archive wayback wikipedia.org --timestamp 2015
 
 # Wayback CDX history for a URL
-opencli archive snapshots wikipedia.org --limit 20
-opencli archive snapshots wikipedia.org --from 2010 --to 2015 --limit 50
+cloudl archive snapshots wikipedia.org --limit 20
+cloudl archive snapshots wikipedia.org --from 2010 --to 2015 --limit 50
 
 # JSON output
-opencli archive search "machine learning" -f json
+cloudl archive search "machine learning" -f json
 ```
 
 ### `search` Options
@@ -46,7 +46,7 @@ opencli archive search "machine learning" -f json
 | `--sort` | `downloads` (default) / `date` / `addeddate` / `week` / `title` |
 | `--limit` | Max items (1-100, default: 20) |
 
-Returns rows with `rank, identifier, title, creator, date, mediatype, downloads, url`. The `identifier` round-trips into `opencli archive item <identifier>`.
+Returns rows with `rank, identifier, title, creator, date, mediatype, downloads, url`. The `identifier` round-trips into `cloudl archive item <identifier>`.
 
 ### `item` Options
 

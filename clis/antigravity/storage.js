@@ -67,7 +67,7 @@ function resolveStateDb(args) {
     if (!ws) return AG_GLOBAL_STATE_DB;
     const db = path.join(AG_WORKSPACE_STORAGE, ws, 'state.vscdb');
     if (!fs.existsSync(db)) {
-        throw new CommandExecutionError(`Workspace state.vscdb not found: ${db}`, 'List workspace ids with `opencli antigravity workspaces-list`.');
+        throw new CommandExecutionError(`Workspace state.vscdb not found: ${db}`, 'List workspace ids with `cloudl antigravity workspaces-list`.');
     }
     return db;
 }

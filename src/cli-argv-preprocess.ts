@@ -1,6 +1,6 @@
 /**
- * argv preprocessing: rewrite `ClouDownloader browser <session> <subcommand> ...`
- * into `ClouDownloader browser --session <session> <subcommand> ...` so commander
+ * argv preprocessing: rewrite `cloudl browser <session> <subcommand> ...`
+ * into `cloudl browser --session <session> <subcommand> ...` so commander
  * (which can't combine a parent positional with subcommand dispatch) can parse it.
  *
  * The user-facing form is positional; the internal form uses --session. Help text
@@ -54,7 +54,7 @@ const BROWSER_SUBCOMMAND_NAMES: ReadonlySet<string> = new Set([
 /**
  * Root program options that consume the following token as their value. Used by
  * the preprocessor to identify which token is the root command name (so e.g.
- * `ClouDownloader --profile work browser foo state` is recognised as the `browser`
+ * `cloudl --profile work browser foo state` is recognised as the `browser`
  * command with `<session>=foo`, not the value of --profile).
  *
  * Keep in sync with `program.option(...)` calls in cli.ts.
@@ -75,7 +75,7 @@ export function getBrowserSubcommandNames(): ReadonlySet<string> {
  *
  * Only acts when `browser` is the root command (i.e. the first non-flag token
  * after any leading root options), so it can't mis-interpret occurrences of
- * the literal word `browser` deeper in the argv (e.g. `ClouDownloader adapter init
+ * the literal word `browser` deeper in the argv (e.g. `cloudl adapter init
  * browser/x`, or a URL value containing `browser`).
  *
  * Leaves argv unchanged when:
@@ -109,7 +109,7 @@ export function rewriteBrowserArgv(argv: readonly string[]): string[] {
   // The retired `--session` flag must not be a working public entrance.
   if (next === '--session' || next === '--session=' || next.startsWith('--session=')) {
     throw new BrowserSessionArgvError(
-      'The `--session` flag is no longer a public option. Use the positional form: ClouDownloader browser <session> <command>',
+      'The `--session` flag is no longer a public option. Use the positional form: cloudl browser <session> <command>',
     );
   }
   if (next.startsWith('-')) return result;
@@ -230,7 +230,7 @@ function consumeKnownOption(argv: readonly string[], index: number, options: Rea
 }
 
 /**
- * `ClouDownloader boss detail -abc123def` fails because commander parses
+ * `cloudl boss detail -abc123def` fails because commander parses
  * `-abc123def` as an unknown option rather than the required
  * `<security-id>` positional. BOSS 直聘 securityId tokens are opaque
  * strings that can legitimately start with `-` (issue #1160), and the

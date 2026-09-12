@@ -8,18 +8,18 @@ Search the open dictionary to quickly fetch native definitions, part of speech c
 
 | Command | Description |
 |---------|-------------|
-| `opencli dictionary search` | Fetch the exact definition of a word |
-| `opencli dictionary synonyms` | Find related synonyms for a word |
-| `opencli dictionary examples` | Read real-world sentence usage examples |
+| `cloudl dictionary search` | Fetch the exact definition of a word |
+| `cloudl dictionary synonyms` | Find related synonyms for a word |
+| `cloudl dictionary examples` | Read real-world sentence usage examples |
 
 ## Usage Examples
 
 ```bash
 # Look up a complex term
-opencli dictionary search serendipity
+cloudl dictionary search serendipity
 
 # Discover phonetics
-opencli dictionary search ephemeral
+cloudl dictionary search ephemeral
 ```
 
 ## Prerequisites

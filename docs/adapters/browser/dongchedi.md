@@ -10,12 +10,12 @@ so it works out of the box.
 
 | Command | Description |
 |---------|-------------|
-| `opencli dongchedi search <keyword>` | Search car series by keyword → series + 指导价/经销商价 |
-| `opencli dongchedi series <series_id>` | Series overview: brand, prices, 懂车分, sales rank, trim count |
-| `opencli dongchedi models <series_id>` | Trims (款型) with guide / dealer / owner prices |
-| `opencli dongchedi specs <series_id>` | Config overview: dimensions, powertrain, drivetrain, airbags |
-| `opencli dongchedi score <series_id>` | 懂车分 rating — 8 axes vs same-class average |
-| `opencli dongchedi koubei <series_id>` | Owner reviews (口碑): rating, trim bought, likes, full text |
+| `cloudl dongchedi search <keyword>` | Search car series by keyword → series + 指导价/经销商价 |
+| `cloudl dongchedi series <series_id>` | Series overview: brand, prices, 懂车分, sales rank, trim count |
+| `cloudl dongchedi models <series_id>` | Trims (款型) with guide / dealer / owner prices |
+| `cloudl dongchedi specs <series_id>` | Config overview: dimensions, powertrain, drivetrain, airbags |
+| `cloudl dongchedi score <series_id>` | 懂车分 rating — 8 axes vs same-class average |
+| `cloudl dongchedi koubei <series_id>` | Owner reviews (口碑): rating, trim bought, likes, full text |
 
 `series`, `models`, `specs`, `score`, and `koubei` all take a **series_id** —
 get one from `search` (the `series_id` column) or paste a
@@ -25,27 +25,27 @@ get one from `search` (the `series_id` column) or paste a
 
 ```bash
 # Find a car series
-opencli dongchedi search "宝马X5" --limit 5
-opencli dongchedi search "汉兰达"
+cloudl dongchedi search "宝马X5" --limit 5
+cloudl dongchedi search "汉兰达"
 
 # One series at a glance (prices + 懂车分 + ranks)
-opencli dongchedi series 5273
+cloudl dongchedi series 5273
 
 # Trims and their prices
-opencli dongchedi models 5273
-opencli dongchedi models 5273 --status offline   # discontinued trims
+cloudl dongchedi models 5273
+cloudl dongchedi models 5273 --status offline   # discontinued trims
 
 # Key configuration overview
-opencli dongchedi specs 5273
+cloudl dongchedi specs 5273
 
 # Rating breakdown vs same-class average
-opencli dongchedi score 5273
+cloudl dongchedi score 5273
 
 # Owner reviews (full body in the content column)
-opencli dongchedi koubei 5273 --limit 10
+cloudl dongchedi koubei 5273 --limit 10
 
 # JSON output
-opencli dongchedi search "汉兰达" -f json
+cloudl dongchedi search "汉兰达" -f json
 ```
 
 ## Output Columns

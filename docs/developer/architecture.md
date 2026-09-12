@@ -83,7 +83,7 @@ OpenCLI merges commands from multiple places into one registry:
 | Plugins | `~/.opencli/plugins/` | community-contributed commands |
 | External CLIs | `src/external-clis.yaml` + local registrations | `gh`, `docker`, `vercel` |
 
-The user sees one unified command tree through `opencli list`.
+The user sees one unified command tree through `cloudl list`.
 
 ## Connectivity Modes
 
@@ -92,7 +92,7 @@ The user sees one unified command tree through `opencli list`.
 Primary path for browser-backed commands:
 
 ```text
-opencli process
+cloudl process
   ↔ local daemon
   ↔ Browser Bridge extension
   ↔ logged-in Chrome / Chromium

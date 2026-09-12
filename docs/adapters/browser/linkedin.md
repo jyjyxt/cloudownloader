@@ -6,91 +6,91 @@
 
 | Command | Description |
 |---------|-------------|
-| `opencli linkedin connect` | Send a fail-closed connection request after verifying the exact profile |
-| `opencli linkedin inbox` | List LinkedIn messaging inbox conversations and unread status |
-| `opencli linkedin job-detail` | Read one LinkedIn job page with description, apply URL, workplace type, applicants, and company metadata |
-| `opencli linkedin jobs-preferences` | Read visible LinkedIn Jobs preferences and alert settings without changing them |
-| `opencli linkedin people-search` | Search standard LinkedIn for people by keyword (SSR DOM scrape). Each query counts toward LinkedIn's monthly Commercial Use Limit |
-| `opencli linkedin profile-analytics` | Read visible profile dashboard counters such as profile views, post impressions, and search appearances |
-| `opencli linkedin profile-experience` | Read visible LinkedIn profile experience entries with titles, dates, locations, skills, media, and URLs |
-| `opencli linkedin profile-read` | Read visible profile sections including headline, About, experience, education, services, and featured text |
-| `opencli linkedin posts` | Export visible posts from a LinkedIn profile activity page with engagement metrics |
-| `opencli linkedin post-analytics` | Summarize raw visible LinkedIn post counters without custom scoring or classification |
-| `opencli linkedin profile-projects` | Read visible LinkedIn profile projects with descriptions, dates, skills, media, and URLs |
-| `opencli linkedin safe-send` | Verify exact recipient/thread context before optionally sending a message |
-| `opencli linkedin salesnav-inbox` | List Sales Navigator message conversations with API pagination |
-| `opencli linkedin salesnav-message` | Validate or send a Sales Navigator InMail to an exact lead |
-| `opencli linkedin salesnav-search` | Search Sales Navigator people leads by keyword |
-| `opencli linkedin salesnav-thread` | Return Sales Navigator message history for a thread or lead |
-| `opencli linkedin search` | Search LinkedIn jobs (Voyager API), with optional `--details` enrichment |
-| `opencli linkedin sent-invitations` | List pending sent LinkedIn invitations |
-| `opencli linkedin services-read` | Read a LinkedIn Services page, including overview, services, availability, pricing, and media metadata |
-| `opencli linkedin thread-snapshot` | Load a LinkedIn messaging thread and return available context |
-| `opencli linkedin timeline` | Read posts from your LinkedIn home feed |
+| `cloudl linkedin connect` | Send a fail-closed connection request after verifying the exact profile |
+| `cloudl linkedin inbox` | List LinkedIn messaging inbox conversations and unread status |
+| `cloudl linkedin job-detail` | Read one LinkedIn job page with description, apply URL, workplace type, applicants, and company metadata |
+| `cloudl linkedin jobs-preferences` | Read visible LinkedIn Jobs preferences and alert settings without changing them |
+| `cloudl linkedin people-search` | Search standard LinkedIn for people by keyword (SSR DOM scrape). Each query counts toward LinkedIn's monthly Commercial Use Limit |
+| `cloudl linkedin profile-analytics` | Read visible profile dashboard counters such as profile views, post impressions, and search appearances |
+| `cloudl linkedin profile-experience` | Read visible LinkedIn profile experience entries with titles, dates, locations, skills, media, and URLs |
+| `cloudl linkedin profile-read` | Read visible profile sections including headline, About, experience, education, services, and featured text |
+| `cloudl linkedin posts` | Export visible posts from a LinkedIn profile activity page with engagement metrics |
+| `cloudl linkedin post-analytics` | Summarize raw visible LinkedIn post counters without custom scoring or classification |
+| `cloudl linkedin profile-projects` | Read visible LinkedIn profile projects with descriptions, dates, skills, media, and URLs |
+| `cloudl linkedin safe-send` | Verify exact recipient/thread context before optionally sending a message |
+| `cloudl linkedin salesnav-inbox` | List Sales Navigator message conversations with API pagination |
+| `cloudl linkedin salesnav-message` | Validate or send a Sales Navigator InMail to an exact lead |
+| `cloudl linkedin salesnav-search` | Search Sales Navigator people leads by keyword |
+| `cloudl linkedin salesnav-thread` | Return Sales Navigator message history for a thread or lead |
+| `cloudl linkedin search` | Search LinkedIn jobs (Voyager API), with optional `--details` enrichment |
+| `cloudl linkedin sent-invitations` | List pending sent LinkedIn invitations |
+| `cloudl linkedin services-read` | Read a LinkedIn Services page, including overview, services, availability, pricing, and media metadata |
+| `cloudl linkedin thread-snapshot` | Load a LinkedIn messaging thread and return available context |
+| `cloudl linkedin timeline` | Read posts from your LinkedIn home feed |
 
 ## Usage Examples
 
 ```bash
 # Quick start
-opencli linkedin search --limit 5
+cloudl linkedin search --limit 5
 
 # Search with filters
-opencli linkedin search "site reliability engineer" --location "San Francisco Bay Area" --remote remote
+cloudl linkedin search "site reliability engineer" --location "San Francisco Bay Area" --remote remote
 
 # Enrich with full description and apply URL (slower; 1 page navigation per row)
-opencli linkedin search "data scientist" --limit 3 --details
+cloudl linkedin search "data scientist" --limit 3 --details
 
 # Read Jobs preferences and a single job page
-opencli linkedin jobs-preferences -f json
-opencli linkedin job-detail https://www.linkedin.com/jobs/view/4412279099 -f json
+cloudl linkedin jobs-preferences -f json
+cloudl linkedin job-detail https://www.linkedin.com/jobs/view/4412279099 -f json
 
 # Read your home timeline
-opencli linkedin timeline --limit 5
+cloudl linkedin timeline --limit 5
 
 # Read profile and services data
-opencli linkedin profile-read -f json
-opencli linkedin profile-analytics -f json
-opencli linkedin services-read -f json
+cloudl linkedin profile-read -f json
+cloudl linkedin profile-analytics -f json
+cloudl linkedin services-read -f json
 
 # Export visible profile activity posts
-opencli linkedin posts --limit 5 -f json
+cloudl linkedin posts --limit 5 -f json
 
 # Summarize raw visible post counters
-opencli linkedin post-analytics --limit 5 -f json
+cloudl linkedin post-analytics --limit 5 -f json
 
 # Read visible profile projects
-opencli linkedin profile-projects -f json
+cloudl linkedin profile-projects -f json
 
 # Read visible profile experience entries
-opencli linkedin profile-experience -f json
+cloudl linkedin profile-experience -f json
 
 # List recent inbox conversations, including unread status
-opencli linkedin inbox --limit 20 -f json
+cloudl linkedin inbox --limit 20 -f json
 
 # Search for people by keyword (consumes 1 CUL search query)
-opencli linkedin people-search "site reliability engineer berlin" --limit 5
+cloudl linkedin people-search "site reliability engineer berlin" --limit 5
 
 # Verify a profile before sending a connection request; add --send to actually send
-opencli linkedin connect https://www.linkedin.com/in/example/ --expected-name "Jane Doe" --note "quick note" --send
+cloudl linkedin connect https://www.linkedin.com/in/example/ --expected-name "Jane Doe" --note "quick note" --send
 
 # Snapshot a thread, then safe-send only if exact recipient/thread context still matches
-opencli linkedin thread-snapshot --thread-url https://www.linkedin.com/messaging/thread/abc/ -f json
-opencli linkedin safe-send --thread-url https://www.linkedin.com/messaging/thread/abc/ --expected-name "Jane Doe" --message "thanks" --send
+cloudl linkedin thread-snapshot --thread-url https://www.linkedin.com/messaging/thread/abc/ -f json
+cloudl linkedin safe-send --thread-url https://www.linkedin.com/messaging/thread/abc/ --expected-name "Jane Doe" --message "thanks" --send
 
 # Search Sales Navigator leads and inspect Sales Navigator messages
-opencli linkedin salesnav-search "quality manager food manufacturing" --limit 10 -f json
-opencli linkedin salesnav-inbox --limit 20 -f json
-opencli linkedin salesnav-thread "https://www.linkedin.com/sales/inbox/2-thread" -f json
+cloudl linkedin salesnav-search "quality manager food manufacturing" --limit 10 -f json
+cloudl linkedin salesnav-inbox --limit 20 -f json
+cloudl linkedin salesnav-thread "https://www.linkedin.com/sales/inbox/2-thread" -f json
 
 # Dry-run a Sales Navigator InMail; add --send only after validating the row
-opencli linkedin salesnav-message "urn:li:fs_salesProfile:(PROFILE,NAME_SEARCH,TOKEN)" --subject "Quick question" --body "Hello"
+cloudl linkedin salesnav-message "urn:li:fs_salesProfile:(PROFILE,NAME_SEARCH,TOKEN)" --subject "Quick question" --body "Hello"
 
 # Reconcile pending sent invitations
-opencli linkedin sent-invitations -f json
+cloudl linkedin sent-invitations -f json
 
 # JSON output
-opencli linkedin search -f json
-opencli linkedin timeline -f json
+cloudl linkedin search -f json
+cloudl linkedin timeline -f json
 ```
 
 ## Output

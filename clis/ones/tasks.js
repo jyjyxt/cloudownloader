@@ -59,7 +59,7 @@ cli({
             process.env.ONES_TEAM_UUID?.trim() ||
             process.env.ONES_TEAM_ID?.trim();
         if (!team) {
-            throw new CliError('CONFIG', 'team UUID required', 'Pass team as first argument or set ONES_TEAM_UUID (see `opencli ones token-info -f json` → teams[].uuid).');
+            throw new CliError('CONFIG', 'team UUID required', 'Pass team as first argument or set ONES_TEAM_UUID (see `cloudl ones token-info -f json` → teams[].uuid).');
         }
         const project = kwargs.project?.trim();
         const assign = kwargs.assign?.trim();

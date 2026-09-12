@@ -9,7 +9,7 @@
 ## 一步诊断（推荐）
 
 ```bash
-ClouDownloader browser analyze <url>
+cloudl browser analyze <url>
 ```
 
 返回一份 JSON：
@@ -20,7 +20,7 @@ ClouDownloader browser analyze <url>
   "anti_bot": { "detected": false, "vendor": null, "evidence": [], "implication": "No known anti-bot signatures. Node-side fetch may work; try COOKIE first, fall back to browser-context fetch if blocked." },
   "initial_state": { "__INITIAL_STATE__": false, "__NUXT__": false, "__NEXT_DATA__": false, "__APOLLO_STATE__": false },
   "nearest_adapter": { "site": "xueqiu", "example_commands": ["xueqiu search", "xueqiu hot"], "reason": "2 existing adapters target this site — reuse strategy/cookie config" },
-  "recommended_next_step": "Pick the most specific JSON endpoint from `ClouDownloader browser network` and try a bare Node fetch with cookies; escalate to browser-context fetch only if blocked."
+  "recommended_next_step": "Pick the most specific JSON endpoint from `cloudl browser network` and try a bare Node fetch with cookies; escalate to browser-context fetch only if blocked."
 }
 ```
 
@@ -29,9 +29,9 @@ ClouDownloader browser analyze <url>
 ## 手动三步诊断（analyze 给不出明确结论时）
 
 ```bash
-ClouDownloader browser open <url>
-ClouDownloader browser wait time 2
-ClouDownloader browser network
+cloudl browser open <url>
+cloudl browser wait time 2
+cloudl browser network
 ```
 
 看 `network` 输出判：
@@ -46,7 +46,7 @@ ClouDownloader browser network
 
 分不清时参考下面五节的其他信号。
 
-**数据是 SPA / 异步加载时，`wait time 2` 可能不够**。改用 `ClouDownloader browser wait xhr '/api/path-fragment'` 直接等具体接口到场，比盲 `wait time 5` 更稳。
+**数据是 SPA / 异步加载时，`wait time 2` 可能不够**。改用 `cloudl browser wait xhr '/api/path-fragment'` 直接等具体接口到场，比盲 `wait time 5` 更稳。
 
 ---
 
@@ -62,7 +62,7 @@ ClouDownloader browser network
 **下一步**：`api-discovery.md` §1（network 精读）
 
 **注意 — Pattern A 命中不等于 strategy 选 `PAGE_FETCH`**：
-- 先看 `ClouDownloader browser analyze` 输出的 `api_candidates[]`：`verdict=likely_data` 的条目才是真候选；`verdict=noise`（analytics / beacon / personalization）不能算 API 信号
+- 先看 `cloudl browser analyze` 输出的 `api_candidates[]`：`verdict=likely_data` 的条目才是真候选；`verdict=noise`（analytics / beacon / personalization）不能算 API 信号
 - booking #1680 反例：17 个 JSON XHR 看起来像 Pattern A，但全是 analytics side-channel，最终走 `DOM_STATE` / `UI_SELECTOR`
 - replay 候选 endpoint 后，按 `strategy-selection.md` 的契约模型选 strategy；`PUBLIC_API` / `COOKIE_API` 都不通才考虑 `PAGE_FETCH`
 

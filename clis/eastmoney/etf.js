@@ -1,7 +1,7 @@
 // eastmoney etf — ETF ranking by change / turnover.
 //
-//   opencli eastmoney etf
-//   opencli eastmoney etf --sort change --limit 30
+//   cloudl eastmoney etf
+//   cloudl eastmoney etf --sort change --limit 30
 
 import { cli, Strategy } from '@jackwener/opencli/registry';
 import { CliError } from '@jackwener/opencli/errors';

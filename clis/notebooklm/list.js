@@ -45,6 +45,6 @@ cli({
             return [currentFallback];
         if (rpcError)
             throw rpcError;
-        throw new EmptyResultError('opencli notebooklm list', 'No NotebookLM notebooks were found after the authenticated RPC and home-page fallback both returned empty.');
+        throw new EmptyResultError('cloudl notebooklm list', 'No NotebookLM notebooks were found after the authenticated RPC and home-page fallback both returned empty.');
     },
 });

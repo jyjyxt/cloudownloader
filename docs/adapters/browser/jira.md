@@ -8,11 +8,11 @@ Read Jira issues, comments, attachments, and links through Atlassian REST APIs. 
 
 | Command | Description |
 |---------|-------------|
-| `opencli jira issue <KEY>` | Normalized issue context for agents |
-| `opencli jira search <JQL>` | Search issues with JQL |
-| `opencli jira comments <KEY>` | Issue comments as Markdown |
-| `opencli jira attachments <KEY>` | Issue attachment metadata |
-| `opencli jira links <KEY>` | Linked Jira issues |
+| `cloudl jira issue <KEY>` | Normalized issue context for agents |
+| `cloudl jira search <JQL>` | Search issues with JQL |
+| `cloudl jira comments <KEY>` | Issue comments as Markdown |
+| `cloudl jira attachments <KEY>` | Issue attachment metadata |
+| `cloudl jira links <KEY>` | Linked Jira issues |
 
 ## Configuration
 
@@ -27,7 +27,7 @@ To request a specific set of Jira fields, pass a comma-separated list to the
 `issue` command. The list replaces the default field list:
 
 ```bash
-opencli jira issue PROJ-123 --fields 'summary,status,customfield_12345'
+cloudl jira issue PROJ-123 --fields 'summary,status,customfield_12345'
 ```
 
 The result adds `selectedFields`, an ordered list of `{ id, name, value }`
@@ -41,7 +41,7 @@ result uses the same `selectedFields` structure, ordered by stable field id;
 `null` and structured JSON values are preserved:
 
 ```bash
-opencli jira issue PROJ-123 --fields auto
+cloudl jira issue PROJ-123 --fields auto
 ```
 
 For Data Center, use a personal access token when available:
@@ -58,15 +58,15 @@ Cloud instances default to Jira REST API v3. Data Center instances use Jira REST
 
 ```bash
 # Full issue context, including description, comments, attachments, and links
-opencli jira issue PROJ-123 -f json
+cloudl jira issue PROJ-123 -f json
 
 # Search with JQL
-opencli jira search "project = PROJ order by updated desc" --limit 20 -f json
+cloudl jira search "project = PROJ order by updated desc" --limit 20 -f json
 
 # Focused reads
-opencli jira comments PROJ-123 -f json
-opencli jira attachments PROJ-123 -f json
-opencli jira links PROJ-123 -f json
+cloudl jira comments PROJ-123 -f json
+cloudl jira attachments PROJ-123 -f json
+cloudl jira links PROJ-123 -f json
 ```
 
 ## Output Notes

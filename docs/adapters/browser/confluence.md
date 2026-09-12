@@ -8,10 +8,10 @@ Read, search, create, and update Confluence pages through Atlassian REST APIs. T
 
 | Command | Description |
 |---------|-------------|
-| `opencli confluence page <PAGE_ID>` | Page detail with storage and Markdown body |
-| `opencli confluence search <CQL>` | Search content with CQL |
-| `opencli confluence create` | Create a page from Markdown or storage XHTML |
-| `opencli confluence update <PAGE_ID>` | Update a page body from Markdown or storage XHTML |
+| `cloudl confluence page <PAGE_ID>` | Page detail with storage and Markdown body |
+| `cloudl confluence search <CQL>` | Search content with CQL |
+| `cloudl confluence create` | Create a page from Markdown or storage XHTML |
+| `cloudl confluence update <PAGE_ID>` | Update a page body from Markdown or storage XHTML |
 
 ## Configuration
 
@@ -36,16 +36,16 @@ Cloud page reads and writes use Confluence REST API v2. CQL search is still expo
 
 ```bash
 # Read a page
-opencli confluence page 123456 -f json
+cloudl confluence page 123456 -f json
 
 # Search pages in a space
-opencli confluence search "type = page and title ~ \"RCA\"" --space ENG --limit 20 -f json
+cloudl confluence search "type = page and title ~ \"RCA\"" --space ENG --limit 20 -f json
 
 # Create a page from Markdown
-opencli confluence create --space 987654 --title "PROJ-123 RCA" --file rca.md --execute
+cloudl confluence create --space 987654 --title "PROJ-123 RCA" --file rca.md --execute
 
 # Update an existing page
-opencli confluence update 123456 --file rca.md --version-message "Sync from Jira PROJ-123" --execute
+cloudl confluence update 123456 --file rca.md --version-message "Sync from Jira PROJ-123" --execute
 ```
 
 ## Write Safety
@@ -59,13 +59,13 @@ For Cloud, `--space` expects a space id. For Data Center, `--space` expects a sp
 Markdown is the default input format:
 
 ```bash
-opencli confluence create --space 987654 --title "Runbook" --file runbook.md --execute
+cloudl confluence create --space 987654 --title "Runbook" --file runbook.md --execute
 ```
 
 To provide Confluence storage XHTML directly:
 
 ```bash
-opencli confluence update 123456 --file page.storage.html --representation storage --execute
+cloudl confluence update 123456 --file page.storage.html --representation storage --execute
 ```
 
 ## Notes

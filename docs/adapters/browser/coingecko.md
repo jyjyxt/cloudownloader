@@ -8,52 +8,52 @@ Access **CoinGecko** crypto market data from the terminal via the public API (no
 
 | Command | Description |
 |---------|-------------|
-| `opencli coingecko top` | Top coins by market cap |
-| `opencli coingecko coin <id>` | Single coin's market detail (price / supply / ATH / homepage) |
-| `opencli coingecko trending` | Top trending coins on CoinGecko in the last 24h |
-| `opencli coingecko exchanges` | Top exchanges ranked by trust score / 24h BTC volume |
-| `opencli coingecko categories` | Crypto sector categories (DeFi / Layer1 / Memes / …) with market cap |
-| `opencli coingecko derivatives` | Top crypto derivative (perpetual / futures) markets by 24h volume |
-| `opencli coingecko global` | Aggregate market totals: total cap, volume, BTC/ETH dominance |
+| `cloudl coingecko top` | Top coins by market cap |
+| `cloudl coingecko coin <id>` | Single coin's market detail (price / supply / ATH / homepage) |
+| `cloudl coingecko trending` | Top trending coins on CoinGecko in the last 24h |
+| `cloudl coingecko exchanges` | Top exchanges ranked by trust score / 24h BTC volume |
+| `cloudl coingecko categories` | Crypto sector categories (DeFi / Layer1 / Memes / …) with market cap |
+| `cloudl coingecko derivatives` | Top crypto derivative (perpetual / futures) markets by 24h volume |
+| `cloudl coingecko global` | Aggregate market totals: total cap, volume, BTC/ETH dominance |
 
 ## Usage Examples
 
 ```bash
 # Top 10 coins in USD (default)
-opencli coingecko top
+cloudl coingecko top
 
 # Top 5 coins priced in CNY
-opencli coingecko top --currency cny --limit 5
+cloudl coingecko top --currency cny --limit 5
 
 # Top 50 coins in EUR
-opencli coingecko top --currency eur --limit 50
+cloudl coingecko top --currency eur --limit 50
 
 # Single coin detail (slug from `top` or coingecko URL)
-opencli coingecko coin bitcoin
-opencli coingecko coin ethereum --currency cny
+cloudl coingecko coin bitcoin
+cloudl coingecko coin ethereum --currency cny
 
 # Trending in the last 24h (search-volume based)
-opencli coingecko trending
+cloudl coingecko trending
 
 # Top exchanges (trust score, 24h BTC volume)
-opencli coingecko exchanges --limit 20
+cloudl coingecko exchanges --limit 20
 
 # Crypto sector categories (default sort: market_cap_desc)
-opencli coingecko categories --limit 10
-opencli coingecko categories --sort market_cap_change_24h_desc --limit 10
+cloudl coingecko categories --limit 10
+cloudl coingecko categories --sort market_cap_change_24h_desc --limit 10
 
 # Top derivative tickers (perpetuals + futures, sorted by 24h USD volume)
-opencli coingecko derivatives --limit 20
+cloudl coingecko derivatives --limit 20
 
 # Filter derivatives by symbol substring (BTC pairs only)
-opencli coingecko derivatives --symbol BTC --limit 10
+cloudl coingecko derivatives --symbol BTC --limit 10
 
 # Aggregate market totals (BTC dominance, total cap, etc.)
-opencli coingecko global
-opencli coingecko global --currency cny
+cloudl coingecko global
+cloudl coingecko global --currency cny
 
 # JSON output
-opencli coingecko top -f json
+cloudl coingecko top -f json
 ```
 
 ## Options

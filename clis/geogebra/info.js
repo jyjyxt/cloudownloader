@@ -11,7 +11,7 @@ cli({
   strategy: Strategy.PUBLIC,
   browser: true,
   navigateBefore: false,
-  example: 'opencli geogebra info --name A',
+  example: 'cloudl geogebra info --name A',
   args: [
     { name: 'name', required: true, help: 'Object label (e.g. A, c1, poly1)' },
   ],

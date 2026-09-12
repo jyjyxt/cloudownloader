@@ -145,7 +145,7 @@ describe('daemon transport contracts (real daemon)', () => {
 
   beforeAll(async () => {
     if (await isPortBusy()) {
-      skipReason = `Port ${PORT} is already in use; stop the local opencli daemon before running this suite`;
+      skipReason = `Port ${PORT} is already in use; stop the local cloudl daemon before running this suite`;
       if (process.env.CI === 'true') throw new Error(skipReason);
       return;
     }

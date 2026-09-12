@@ -9,7 +9,7 @@ export function unsupportedDaemonPortEnvMessage(value?: string): string {
   const suffix = value ? ` (received ${value})` : '';
   return `OPENCLI_DAEMON_PORT is no longer supported${suffix}. ` +
     `The OpenCLI Chrome extension can only connect to localhost:${DEFAULT_DAEMON_PORT}. ` +
-    'Unset OPENCLI_DAEMON_PORT and rerun ClouDownloader.';
+    'Unset OPENCLI_DAEMON_PORT and rerun cloudl.';
 }
 
 /**

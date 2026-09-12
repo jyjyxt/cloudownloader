@@ -7,7 +7,7 @@ import { cli, Strategy } from '@jackwener/opencli/registry';
 import { ArgumentError, CommandExecutionError, EmptyResultError } from '@jackwener/opencli/errors';
 
 const MDN_BASE = 'https://developer.mozilla.org';
-const UA = 'opencli-mdn-adapter (+https://github.com/jackwener/opencli)';
+const UA = 'opencli-mdn-adapter (+https://github.com/jyjyxt/cloudownloader)';
 const ALLOWED_LOCALES = new Set(['en-US', 'de', 'es', 'fr', 'ja', 'ko', 'pt-BR', 'ru', 'zh-CN', 'zh-TW']);
 
 function requireString(value, label) {

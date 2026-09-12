@@ -19,7 +19,7 @@ cli({
         const data = await itunesFetch(`/lookup?id=${args.id}&entity=podcastEpisode&limit=${limit + 1}`);
         const episodes = (data.results ?? []).filter((r) => r.kind === 'podcast-episode');
         if (!episodes.length)
-            throw new CliError('NOT_FOUND', 'No episodes found', 'Check the podcast ID from: opencli apple-podcasts search <keyword>');
+            throw new CliError('NOT_FOUND', 'No episodes found', 'Check the podcast ID from: cloudl apple-podcasts search <keyword>');
         return episodes.slice(0, limit).map((ep) => ({
             title: ep.trackName,
             duration: formatDuration(ep.trackTimeMillis),

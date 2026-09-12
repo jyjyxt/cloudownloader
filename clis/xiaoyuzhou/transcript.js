@@ -21,7 +21,7 @@ cli({
     columns: ['title', 'podcast', 'status', 'segments', 'json_file', 'text_file'],
     func: async (kwargs) => {
         if (kwargs.json === false && kwargs.text === false) {
-            throw new ArgumentError('At least one of --json or --text must be enabled', 'Example: opencli xiaoyuzhou transcript 69dd0c98e2c8be31551f6a33 --text true');
+            throw new ArgumentError('At least one of --json or --text must be enabled', 'Example: cloudl xiaoyuzhou transcript 69dd0c98e2c8be31551f6a33 --text true');
         }
         let credentials = loadXiaoyuzhouCredentials();
         const episodeResponse = await requestXiaoyuzhouJson('/v1/episode/get', {

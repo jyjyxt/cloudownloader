@@ -11,13 +11,13 @@ function requirePage(page) {
 }
 function validateInstagramNoteArgs(kwargs) {
     if (kwargs.content === undefined) {
-        throw new ArgumentError('Argument "content" is required.', 'Provide a note text, for example: opencli instagram note "hello"');
+        throw new ArgumentError('Argument "content" is required.', 'Provide a note text, for example: cloudl instagram note "hello"');
     }
 }
 function normalizeInstagramNoteContent(kwargs) {
     const content = String(kwargs.content ?? '').trim();
     if (!content) {
-        throw new ArgumentError('Instagram note content cannot be empty.', 'Provide a non-empty note text, for example: opencli instagram note "hello"');
+        throw new ArgumentError('Instagram note content cannot be empty.', 'Provide a non-empty note text, for example: cloudl instagram note "hello"');
     }
     if (Array.from(content).length > 60) {
         throw new ArgumentError('Instagram note content must be 60 characters or fewer.', 'Shorten the note text and try again.');

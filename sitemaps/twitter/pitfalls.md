@@ -12,14 +12,14 @@ source: global
 
 - trigger: 未登录访问 `/home / /notifications / /i/bookmarks / /<handle>/followers` 等
 - symptom: redirect 到 `/i/flow/login`，URL 含 `flow/login`
-- workaround: 跑 workflow / adapter 前 `opencli browser state` 看 URL；命中 `/i/flow/login` 抛 AuthRequired，不要尝试 click 登录（cookie 应预先注入 via `Strategy.COOKIE`）
+- workaround: 跑 workflow / adapter 前 `cloudl browser state` 看 URL；命中 `/i/flow/login` 抛 AuthRequired，不要尝试 click 登录（cookie 应预先注入 via `Strategy.COOKIE`）
 - verified_at: 2026-06-02
 
 ### pitfall:wrong_dom_when_ua_mobile
 
 - trigger: 我的 browser session 用了 mobile UA（含 `Mobile|iPhone|Android`）
 - symptom: 落地 `mobile.twitter.com`，sitemap 描述的 selector / a11y 全错
-- workaround: opencli browser 默认桌面 UA，自定义时不要带 mobile 关键字；命中 mobile DOM 时切回默认 UA 再 retry
+- workaround: cloudl browser 默认桌面 UA，自定义时不要带 mobile 关键字；命中 mobile DOM 时切回默认 UA 再 retry
 - verified_at: 2026-06-02
 
 ### pitfall:adapter_returns_empty_after_api_drift

@@ -23,7 +23,7 @@ export function parseListCreateArgs(kwargs) {
     const description = String(kwargs.description || '').trim();
     const modeRaw = String(kwargs.mode || 'public').trim().toLowerCase();
     if (!name) {
-        throw new ArgumentError('List name is required', 'Example: opencli twitter list-create "My List"');
+        throw new ArgumentError('List name is required', 'Example: cloudl twitter list-create "My List"');
     }
     if (name.length > NAME_MAX) {
         throw new ArgumentError(`List name too long: ${name.length} chars (max ${NAME_MAX})`);

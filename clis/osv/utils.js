@@ -5,14 +5,14 @@
 import { ArgumentError, CommandExecutionError, EmptyResultError } from '@jackwener/opencli/errors';
 
 export const OSV_BASE = 'https://api.osv.dev';
-const UA = 'opencli-osv-adapter (+https://github.com/jackwener/opencli)';
+const UA = 'opencli-osv-adapter (+https://github.com/jyjyxt/cloudownloader)';
 
 // OSV vulnerability IDs are short tokens like "GHSA-29mw-wpgm-hmr9", "CVE-2020-28500", "PYSEC-2021-1".
 const VULN_ID = /^[A-Za-z0-9][A-Za-z0-9._-]{0,79}$/;
 
 // OSV ecosystems we accept on input. The full canonical list is at
 // https://ossf.github.io/osv-schema/#defined-ecosystems — we accept the public
-// ones that map cleanly to package registries opencli already supports.
+// ones that map cleanly to package registries cloudl already supports.
 export const OSV_ECOSYSTEMS = new Set([
     'npm',
     'PyPI',

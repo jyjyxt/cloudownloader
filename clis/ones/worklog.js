@@ -149,7 +149,7 @@ cli({
     func: async (page, kwargs) => {
         const taskId = String(kwargs.task ?? '').trim();
         if (!taskId) {
-            throw new CliError('CONFIG', 'task uuid required', 'Pass the work item uuid from opencli ones my-tasks or the URL.');
+            throw new CliError('CONFIG', 'task uuid required', 'Pass the work item uuid from cloudl ones my-tasks or the URL.');
         }
         const team = kwargs.team?.trim() ||
             process.env.ONES_TEAM_UUID?.trim() ||
@@ -159,7 +159,7 @@ cli({
         }
         const hoursHuman = Number(String(kwargs.hours ?? '').replace(/,/g, ''));
         if (!Number.isFinite(hoursHuman) || hoursHuman <= 0 || hoursHuman > 1000) {
-            throw new CliError('CONFIG', 'hours must be a positive number (hours)', 'Example: opencli ones worklog <taskUUID> 2 --team <teamUUID>');
+            throw new CliError('CONFIG', 'hours must be a positive number (hours)', 'Example: cloudl ones worklog <taskUUID> 2 --team <teamUUID>');
         }
         const dateArg = kwargs.date?.trim();
         const dateStr = dateArg || todayLocalYmd();

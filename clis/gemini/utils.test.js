@@ -36,7 +36,7 @@ describe('sanitizeGeminiResponseText', () => {
     });
     it('does not strip prompt text that appears later in a legitimate answer', () => {
         const prompt = 'opencli';
-        const value = 'You asked about opencli, and opencli is the right keyword here.';
+        const value = 'You asked about opencli, and cloudl is the right keyword here.';
         expect(sanitizeGeminiResponseText(value, prompt)).toBe(value);
     });
     it('removes known Gemini footer noise', () => {

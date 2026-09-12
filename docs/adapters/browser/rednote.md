@@ -8,34 +8,34 @@ Rednote is the international mirror of Xiaohongshu. Logged-in users outside main
 
 | Command | Description |
 |---------|-------------|
-| `opencli rednote search` | Search notes by keyword (returns title, author, likes, URL, author URL) |
-| `opencli rednote note` | Read full note content (title, author, description, likes, collects, comments, tags) |
-| `opencli rednote comments` | Read comments from a note (`--with-replies` for nested 楼中楼 replies) |
-| `opencli rednote user` | Get public notes from a user profile |
-| `opencli rednote feed` | Home feed (reads the hydrated Pinia store) |
-| `opencli rednote notifications` | Notifications (`--type mentions|likes|connections`) |
-| `opencli rednote download` | Download images and videos from a note |
+| `cloudl rednote search` | Search notes by keyword (returns title, author, likes, URL, author URL) |
+| `cloudl rednote note` | Read full note content (title, author, description, likes, collects, comments, tags) |
+| `cloudl rednote comments` | Read comments from a note (`--with-replies` for nested 楼中楼 replies) |
+| `cloudl rednote user` | Get public notes from a user profile |
+| `cloudl rednote feed` | Home feed (reads the hydrated Pinia store) |
+| `cloudl rednote notifications` | Notifications (`--type mentions|likes|connections`) |
+| `cloudl rednote download` | Download images and videos from a note |
 
 ## Usage Examples
 
 ```bash
 # Search for notes
-opencli rednote search travel --limit 10
+cloudl rednote search travel --limit 10
 
 # Read a note's full content (pass URL from search results to preserve xsec_token)
-opencli rednote note "https://www.rednote.com/search_result/<id>?xsec_token=..."
+cloudl rednote note "https://www.rednote.com/search_result/<id>?xsec_token=..."
 
 # Read comments with nested replies (楼中楼)
-opencli rednote comments "https://www.rednote.com/search_result/<id>?xsec_token=..." --with-replies --limit 20
+cloudl rednote comments "https://www.rednote.com/search_result/<id>?xsec_token=..." --with-replies --limit 20
 
 # JSON output
-opencli rednote search travel -f json
+cloudl rednote search travel -f json
 
 # User profile notes
-opencli rednote user 5b21f6564eacab3b38f05c39 --limit 10
+cloudl rednote user 5b21f6564eacab3b38f05c39 --limit 10
 
 # Download
-opencli rednote download "https://www.rednote.com/search_result/<id>?xsec_token=..."
+cloudl rednote download "https://www.rednote.com/search_result/<id>?xsec_token=..."
 ```
 
 > Note: `note`, `comments`, and `download` require a full signed rednote.com note URL with `xsec_token`. Bare note IDs and xhslink.com short links are not accepted because they cannot prove the rednote host/cookie identity before navigation.

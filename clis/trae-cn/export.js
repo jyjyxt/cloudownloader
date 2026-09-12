@@ -7,7 +7,7 @@ export const exportCommand = cli({
   name: 'export',
   access: 'read',
   description: 'Export the current Trae CN conversation to Markdown',
-  example: 'OPENCLI_CDP_ENDPOINT=http://127.0.0.1:39240 OPENCLI_CDP_TARGET=talk opencli trae-cn export --limit 20 --output /tmp/trae-cn-export.md',
+  example: 'OPENCLI_CDP_ENDPOINT=http://127.0.0.1:39240 OPENCLI_CDP_TARGET=talk cloudl trae-cn export --limit 20 --output /tmp/trae-cn-export.md',
   domain: 'localhost',
   strategy: Strategy.UI,
   browser: true,

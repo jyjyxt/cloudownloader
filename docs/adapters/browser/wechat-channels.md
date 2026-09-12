@@ -6,33 +6,33 @@
 
 | Command | Description |
 |---------|-------------|
-| `opencli wechat-channels publish` | 发布视频到视频号 |
+| `cloudl wechat-channels publish` | 发布视频到视频号 |
 
 ## Usage Examples
 
 ```bash
 # 立即发布
-opencli wechat-channels publish ./video.mp4 \
+cloudl wechat-channels publish ./video.mp4 \
   --title "今天的vlog" \
   --caption "记录日常 #生活 #vlog"
 
 # 定时发布（ISO8601 或 "YYYY-MM-DD HH:mm"）
-opencli wechat-channels publish ./video.mp4 \
+cloudl wechat-channels publish ./video.mp4 \
   --title "周末出游" \
   --schedule "2026-05-20 10:00"
 
 # 保存为草稿
-opencli wechat-channels publish ./video.mp4 --title "草稿测试" --draft
+cloudl wechat-channels publish ./video.mp4 --title "草稿测试" --draft
 
 # 手动审核模式：填好所有字段后由你亲自点「发表」
 # 注意必须配合 --site-session persistent，否则表单页约 30 秒后会被重置
-opencli wechat-channels publish ./video.mp4 \
+cloudl wechat-channels publish ./video.mp4 \
   --title "重要内容" \
   --caption "发布前我要再看一眼" \
   --manual --site-session persistent
 
 # 调整整体超时（含登录等待 + 上传转码，默认 600 秒）
-opencli wechat-channels publish ./big-video.mp4 --title "大文件" --timeout 1200
+cloudl wechat-channels publish ./big-video.mp4 --title "大文件" --timeout 1200
 ```
 
 ## Arguments

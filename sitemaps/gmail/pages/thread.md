@@ -20,20 +20,20 @@ source: global
 ```yaml
 ### action:read_messages
 pre: signed in; target thread id known
-do: opencli gmail thread <threadId>
+do: cloudl gmail thread <threadId>
 post: every expanded message returns id, sender, subject, body, and attachment array
 fail: fd shape changed | rendered fallback finds no data-message-id/body pair
-recover: adapter_health_update: opencli gmail thread -> suspect; expand collapsed messages, then inspect within each message container
+recover: adapter_health_update: cloudl gmail thread -> suspect; expand collapsed messages, then inspect within each message container
 evidence: live cached thread exercised rendered fallback on 2026-08-25
 ```
 
 ```yaml
 ### action:list_attachments
 pre: target thread id known
-do: opencli gmail attachments <threadId>
+do: cloudl gmail attachments <threadId>
 post: one row per attachment; EmptyResult when none
 fail: attachment cards visible but no rows | wrong message scope
-recover: adapter_health_update: opencli gmail attachments -> suspect; inspect .aQH within each data-message-id container
+recover: adapter_health_update: cloudl gmail attachments -> suspect; inspect .aQH within each data-message-id container
 evidence: live PDF attachment metadata on 2026-08-25
 ```
 

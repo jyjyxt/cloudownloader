@@ -50,7 +50,7 @@ function validateAskModelValue(value) {
     if (!value) {
         throw new ArgumentError(
             '--model requires a canonical model id (e.g. "2.5-flash"). ' +
-            'Use "opencli gemini models" to list available values.'
+            'Use "cloudl gemini models" to list available values.'
         );
     }
     // Reject short aliases like "pro", "flash", "flash-lite" that lack a version number.
@@ -59,7 +59,7 @@ function validateAskModelValue(value) {
             '--model "' + value + '" is not accepted. ' +
             'Short aliases like "pro", "flash", or "flash-lite" are not supported. ' +
             'Use a canonical model id (e.g. "2.5-flash"). ' +
-            'Use "opencli gemini models" to list available values.'
+            'Use "cloudl gemini models" to list available values.'
         );
     }
     // Must match canonical format: X.Y-variant
@@ -67,7 +67,7 @@ function validateAskModelValue(value) {
         throw new ArgumentError(
             '--model "' + value + '" is not a valid canonical model id. ' +
             'Expected format: version-variant (e.g. "2.5-flash", "3.1-pro"). ' +
-            'Use "opencli gemini models" to list available values.'
+            'Use "cloudl gemini models" to list available values.'
         );
     }
 }
@@ -89,7 +89,7 @@ export const askCommand = cli({
     defaultFormat: 'plain',
     args: [
         { name: 'prompt', required: true, positional: true, help: 'Prompt to send' },
-        { name: 'model', type: 'string', required: false, help: 'Gemini model to use (e.g. "2.5-flash"). Use "opencli gemini models" to list available values.' },
+        { name: 'model', type: 'string', required: false, help: 'Gemini model to use (e.g. "2.5-flash"). Use "cloudl gemini models" to list available values.' },
         { name: 'timeout', type: 'int', required: false, help: 'Max seconds to wait (default: 60)', default: 60 },
         { name: 'new', required: false, help: 'Start a new chat first (true/false, default: false)', default: 'false' },
         { name: 'thinking', required: false, help: 'Thinking level: standard or extended (omitted = leave unchanged)', default: null },
@@ -123,7 +123,7 @@ export const askCommand = cli({
             if (thinkingValue !== 'standard' && thinkingValue !== 'extended') {
                 throw new ArgumentError(
                     `--thinking must be 'standard' or 'extended', got '${thinkingRaw}'`,
-                    'Run `opencli gemini models` to see available thinking levels.',
+                    'Run `cloudl gemini models` to see available thinking levels.',
                 );
             }
         }
@@ -178,7 +178,7 @@ export const askCommand = cli({
                 throw new ArgumentError(
                     'Unknown model "' + modelValue + '". ' +
                     'Available models: ' + availableIds.join(', ') + '. ' +
-                    'Use "opencli gemini models" to see available values.'
+                    'Use "cloudl gemini models" to see available values.'
                 );
             }
             await selectGeminiModel(page, modelValue);
@@ -227,7 +227,7 @@ export const askCommand = cli({
                     const availableForModel = targetModelThinking.sort().join(', ');
                     throw new ArgumentError(
                         `--thinking '${thinkingValue}' is not available for the ${hasModel ? 'selected' : 'current'} model ('${targetModelId}')`,
-                        `Model '${targetModelId}' supports: ${availableForModel}. Run \`opencli gemini models\` for all models.`,
+                        `Model '${targetModelId}' supports: ${availableForModel}. Run \`cloudl gemini models\` for all models.`,
                     );
                 }
             } else if (allThinking.size > 0 && !allThinking.has(thinkingValue)) {
@@ -235,7 +235,7 @@ export const askCommand = cli({
                 const availableList = [...allThinking].sort().join(', ');
                 throw new ArgumentError(
                     `--thinking '${thinkingValue}' is not currently available`,
-                    `Available thinking values: ${availableList}. Run \`opencli gemini models\` for details.`,
+                    `Available thinking values: ${availableList}. Run \`cloudl gemini models\` for details.`,
                 );
             }
 
@@ -249,7 +249,7 @@ export const askCommand = cli({
                 } else if (allThinking.size > 0) {
                     hintParts.push(`Available thinking values: ${[...allThinking].sort().join(', ')}.`);
                 }
-                hintParts.push('Run `opencli gemini models` for details.');
+                hintParts.push('Run `cloudl gemini models` for details.');
                 throw new ArgumentError(
                     `Could not select thinking level '${thinkingValue}' in the Gemini web UI`,
                     hintParts.join(' '),

@@ -6,7 +6,7 @@ export const activityCommand = cli({
   name: 'activity',
   access: 'read',
   description: 'Read the current Trae CN task/activity state, including in-progress steps when visible',
-  example: 'OPENCLI_CDP_ENDPOINT=http://127.0.0.1:39240 OPENCLI_CDP_TARGET=talk opencli trae-cn activity --max-chars 1200 -f json',
+  example: 'OPENCLI_CDP_ENDPOINT=http://127.0.0.1:39240 OPENCLI_CDP_TARGET=talk cloudl trae-cn activity --max-chars 1200 -f json',
   domain: 'localhost',
   strategy: Strategy.UI,
   browser: true,

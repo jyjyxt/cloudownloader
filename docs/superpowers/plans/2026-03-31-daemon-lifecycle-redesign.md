@@ -319,7 +319,7 @@ describe('/status endpoint', () => {
 });
 ```
 
-Note: The `/status` and `/shutdown` endpoints run inside the daemon process, which makes them hard to unit test in isolation. They are integration-tested via the `opencli daemon status/stop` commands in Task 6.
+Note: The `/status` and `/shutdown` endpoints run inside the daemon process, which makes them hard to unit test in isolation. They are integration-tested via the `cloudl daemon status/stop` commands in Task 6.
 
 - [ ] **Step 2: Enhance the existing `/status` endpoint**
 
@@ -417,9 +417,9 @@ Create `src/commands/daemon.ts`:
 ```typescript
 /**
  * CLI commands for daemon lifecycle management:
- *   opencli daemon status  — show daemon state
- *   opencli daemon stop    — graceful shutdown
- *   opencli daemon restart — stop + respawn
+ *   cloudl daemon status  — show daemon state
+ *   cloudl daemon stop    — graceful shutdown
+ *   cloudl daemon restart — stop + respawn
  */
 
 import chalk from 'chalk';
@@ -558,7 +558,7 @@ Add the daemon subcommand group before the `// ── External CLIs` section (ar
 
 ```typescript
   // ── Built-in: daemon ──────────────────────────────────────────────────────
-  const daemonCmd = program.command('daemon').description('Manage the opencli daemon');
+  const daemonCmd = program.command('daemon').description('Manage the cloudl daemon');
   daemonCmd
     .command('status')
     .description('Show daemon status')
@@ -585,7 +585,7 @@ Expected: No errors
 
 ```bash
 git add src/commands/daemon.ts src/cli.ts
-git commit -m "feat(daemon): add opencli daemon status/stop/restart commands"
+git commit -m "feat(daemon): add cloudl daemon status/stop/restart commands"
 ```
 
 ---
@@ -791,7 +791,7 @@ private async _ensureDaemon(timeoutSeconds?: number): Promise<void> {
   }
 
   throw new Error(
-    'Failed to start opencli daemon. Try running manually:\n' +
+    'Failed to start cloudl daemon. Try running manually:\n' +
     `  node ${daemonPath}\n` +
     `Make sure port ${DEFAULT_DAEMON_PORT} is available.`,
   );

@@ -6,23 +6,23 @@
 
 | Command | Description |
 |---------|-------------|
-| `opencli chaoxing assignments` | 学习通作业列表 |
-| `opencli chaoxing exams` | 学习通考试列表 |
+| `cloudl chaoxing assignments` | 学习通作业列表 |
+| `cloudl chaoxing exams` | 学习通考试列表 |
 
 ## Usage Examples
 
 ```bash
 # List all assignments
-opencli chaoxing assignments --limit 20
+cloudl chaoxing assignments --limit 20
 
 # Filter exams by course name
-opencli chaoxing exams --course "高等数学"
+cloudl chaoxing exams --course "高等数学"
 
 # Filter exams by status
-opencli chaoxing exams --status ongoing
+cloudl chaoxing exams --status ongoing
 
 # JSON output
-opencli chaoxing assignments -f json
+cloudl chaoxing assignments -f json
 ```
 
 ### Options

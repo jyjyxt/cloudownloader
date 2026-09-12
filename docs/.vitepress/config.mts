@@ -275,12 +275,11 @@ export default defineConfig({
     },
 
     socialLinks: [
-      { icon: 'github', link: 'https://github.com/jackwener/opencli' },
-      { icon: 'npm', link: 'https://www.npmjs.com/package/@jackwener/opencli' },
+      { icon: 'github', link: 'https://github.com/jyjyxt/cloudownloader' },
     ],
 
     editLink: {
-      pattern: 'https://github.com/jackwener/opencli/edit/main/docs/:path',
+      pattern: 'https://github.com/jyjyxt/cloudownloader/edit/main/docs/:path',
       text: 'Edit this page on GitHub',
     },
 

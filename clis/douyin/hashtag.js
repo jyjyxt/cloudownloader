@@ -27,7 +27,7 @@ function validateHashtagArgs(kwargs) {
     if (action === 'search') {
         const keyword = String(kwargs.keyword ?? '').trim();
         if (!keyword) {
-            throw new ArgumentError('douyin hashtag search 需要 --keyword <关键词>', '示例: opencli douyin hashtag search --keyword 美食');
+            throw new ArgumentError('douyin hashtag search 需要 --keyword <关键词>', '示例: cloudl douyin hashtag search --keyword 美食');
         }
         return;
     }

@@ -28,7 +28,7 @@ do: click section a[href*="/explore/"] (scoped to this card) || evaluate href th
 post: URL -> /explore/<note_id>?xsec_token=...; pages/note.md loaded
 fail: stays on listing | modal not nav | 403 / security_block
 recover: 直接 evaluate href 拿完整带 `xsec_token` URL 后 goto；href 不含 xsec_token -> pitfall:note_url_requires_xsec_token，跳过该 card
-evidence: opencli browser click + state
+evidence: cloudl browser click + state
 ```
 
 ```yaml
@@ -38,7 +38,7 @@ do: evaluate("(c => ({title:c.querySelector('.title')?.innerText, like:c.querySe
 post: 返 {title, like, href}；href 自带 xsec_token
 fail: 空对象 / title undef
 recover: card 漂版，回 explore.md Page pitfalls 看 selector 变体；fallback workflow 走 adapter `feed` / `search` 直接拿结构化数据
-evidence: opencli browser evaluate
+evidence: cloudl browser evaluate
 ```
 
 ## Pitfalls inherited

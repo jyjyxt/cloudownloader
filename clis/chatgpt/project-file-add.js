@@ -37,7 +37,7 @@ export const projectFileAddCommand = cli({
         if (!filePaths.length) {
             throw new ArgumentError(
                 'chatgpt project-file-add requires at least one file path',
-                'Example: opencli chatgpt project-file-add report.pdf --id 12345678',
+                'Example: cloudl chatgpt project-file-add report.pdf --id 12345678',
             );
         }
 

@@ -370,7 +370,7 @@ export function isLoginState(state) {
 export function buildCaptchaHint(action) {
     return [
         `Open a clean 1688 ${action} page in the shared Chrome profile and finish any slider challenge first.`,
-        'If you run opencli via CDP, set OPENCLI_CDP_TARGET=1688.com or a more specific 1688 host before retrying.',
+        'If you run cloudl via CDP, set OPENCLI_CDP_TARGET=1688.com or a more specific 1688 host before retrying.',
     ].join(' ');
 }
 export async function readPageState(page) {

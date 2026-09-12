@@ -6,19 +6,19 @@
 
 | Command | Description |
 |---------|-------------|
-| `opencli github-trending repos` | List repositories from GitHub Trending |
+| `cloudl github-trending repos` | List repositories from GitHub Trending |
 
 ## Usage Examples
 
 ```bash
 # Daily trending repositories
-opencli github-trending repos --limit 10
+cloudl github-trending repos --limit 10
 
 # Weekly Rust trending repositories
-opencli github-trending repos --language rust --since weekly --limit 10
+cloudl github-trending repos --language rust --since weekly --limit 10
 
 # Language slugs are URL-encoded before calling github.com/trending
-opencli github-trending repos --language "c++" --since monthly -f json
+cloudl github-trending repos --language "c++" --since monthly -f json
 ```
 
 ## Arguments

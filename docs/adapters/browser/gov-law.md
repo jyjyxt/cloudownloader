@@ -6,14 +6,14 @@
 
 | Command | Description |
 |---------|-------------|
-| `opencli gov-law search <query>` | Search the National Laws and Regulations Database |
-| `opencli gov-law recent` | List the most recent laws and regulations |
+| `cloudl gov-law search <query>` | Search the National Laws and Regulations Database |
+| `cloudl gov-law recent` | List the most recent laws and regulations |
 
 ## Usage Examples
 
 ```bash
-opencli gov-law search "人工智能"
-opencli gov-law recent --limit 10
+cloudl gov-law search "人工智能"
+cloudl gov-law recent --limit 10
 ```
 
 ## Notes

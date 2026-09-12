@@ -46,7 +46,7 @@ cli({
   name: 'search',
   description: 'Search MySite',
   access: 'read', // 'read' | 'write'
-  example: 'opencli mysite search <query> -f yaml',
+  example: 'cloudl mysite search <query> -f yaml',
   domain: 'www.mysite.com',
   strategy: Strategy.COOKIE,
   args: [
@@ -74,8 +74,8 @@ cli({
 ### Validate Your Adapter
 
 ```bash
-opencli <site> <command> --limit 3 -f json   # Test your command
-opencli <site> <command> -v    # Verbose mode for debugging
+cloudl <site> <command> --limit 3 -f json   # Test your command
+cloudl <site> <command> -v    # Verbose mode for debugging
 ```
 
 ## Code Style

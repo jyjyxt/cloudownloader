@@ -107,7 +107,7 @@ describe('daemon command dispatch', () => {
     expect(route).toMatchObject({ ok: false, errorCode: 'profile_required' });
     if (!route.ok) {
       expect(route.error).toContain('zvypsyje');
-      expect(route.errorHint).toContain('ClouDownloader profile use');
+      expect(route.errorHint).toContain('cloudl profile use');
     }
   });
 

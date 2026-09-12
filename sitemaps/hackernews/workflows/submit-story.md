@@ -26,7 +26,7 @@ source: global
 
 实际就是唯一 path（browser）：
 
-1. `opencli browser open https://news.ycombinator.com/submit`
+1. `cloudl browser open https://news.ycombinator.com/submit`
 2. type title → `input[name="title"]`
 3. type url → `input[name="url"]` || type text → `textarea[name="text"]` （**互斥**，不能同时填）
 4. click `input[type="submit"]`

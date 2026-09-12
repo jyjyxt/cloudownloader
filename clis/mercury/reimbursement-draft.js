@@ -18,7 +18,7 @@ cli({
     name: 'reimbursement-draft',
     description: 'Create a Mercury reimbursement draft from a local receipt, correct OCR fields, and stop at Review',
     access: 'write',
-    example: 'opencli --profile <profile> mercury reimbursement-draft --receipt /tmp/receipt.png --amount 140.00 --currency CNY --date 2026-06-26 --merchant "Example Merchant" --category "Marketing & Advertising" --notes "Example business purpose." -f json',
+    example: 'cloudl --profile <profile> mercury reimbursement-draft --receipt /tmp/receipt.png --amount 140.00 --currency CNY --date 2026-06-26 --merchant "Example Merchant" --category "Marketing & Advertising" --notes "Example business purpose." -f json',
     domain: 'app.mercury.com',
     strategy: Strategy.UI,
     browser: true,

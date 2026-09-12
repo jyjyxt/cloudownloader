@@ -11,7 +11,7 @@ source: global
 按 keyword 搜小红书笔记列表，每条带 title / author / like_count / signed note URL（可 drill-down 到 note detail）。
 
 - 高级 filter（sort by hot / newest / image-only / video-only / date range）**不在** v1 PoC scope，task agent 现阶段只能拿 default mixed feed
-- 拿到 list 后 drill-down 单 note 走 `opencli xiaohongshu note <url>`，不属于本 workflow
+- 拿到 list 后 drill-down 单 note 走 `cloudl xiaohongshu note <url>`，不属于本 workflow
 
 ## State signature
 
@@ -21,7 +21,7 @@ source: global
 ## Best path
 
 ```yaml
-adapter: opencli xiaohongshu search
+adapter: cloudl xiaohongshu search
 adapter_health: degraded  # API broken，已切 DOM scrape (issue #10)，仍标 healthy 不准
 preconditions:
   - logged_in
@@ -29,7 +29,7 @@ preconditions:
 estimated_turns: 1
 ```
 
-直接 `opencli xiaohongshu search "<keyword>" --limit 20`。adapter 内部 navigate `/search_result/?keyword=<encoded>` + DOM scrape `section.note-item`。
+直接 `cloudl xiaohongshu search "<keyword>" --limit 20`。adapter 内部 navigate `/search_result/?keyword=<encoded>` + DOM scrape `section.note-item`。
 
 ## Fallback path
 
@@ -37,11 +37,11 @@ estimated_turns: 1
 
 ```yaml
 on_adapter_fail:
-  - adapter_health_update: opencli xiaohongshu search -> suspect
+  - adapter_health_update: cloudl xiaohongshu search -> suspect
   - if AuthRequiredError:
-    - recovery: opencli xiaohongshu login  # pending: codex task #276 实现该子命令
+    - recovery: cloudl xiaohongshu login  # pending: codex task #276 实现该子命令
     - 登录后 retry adapter 一次
-  - opencli browser state (verify current URL/login wall)
+  - cloudl browser state (verify current URL/login wall)
   - goto https://www.xiaohongshu.com/search_result/?keyword=<URL-encoded keyword>
   - wait for section.note-item OR text "登录后查看搜索结果"
     - login wall 命中 -> 同 AuthRequired 路径
@@ -60,11 +60,11 @@ estimated_turns: 5
 
 ## Re-entry checkpoints
 
-agent 中断后醒来按 `opencli browser state` URL 判断：
+agent 中断后醒来按 `cloudl browser state` URL 判断：
 
 - on `/`，未搜过 → 重新跑 Best path
 - on `/search_result/?keyword=<X>` 且 note-item 已渲染 → 从 Fallback step "read_card_meta" 起
-- on `/login` 或命中 login wall overlay → 走 Recovery path：`opencli xiaohongshu login`（# pending: codex task #276），login 后回 Best path 重跑
+- on `/login` 或命中 login wall overlay → 走 Recovery path：`cloudl xiaohongshu login`（# pending: codex task #276），login 后回 Best path 重跑
 
 ## State validation
 
@@ -74,5 +74,5 @@ agent 中断后醒来按 `opencli browser state` URL 判断：
 
 ## Stale markers
 
-- adapter `opencli xiaohongshu search` 30 天内 fix PR 增多（DOM class 漂） → adapter_health audit 标 suspect
+- adapter `cloudl xiaohongshu search` 30 天内 fix PR 增多（DOM class 漂） → adapter_health audit 标 suspect
 - `section.note-item` class 名换 / `登录后查看搜索结果` 文案换 → 视觉 anchor 需更新（PR #1507 已加 fallback selector，再换需第二层 fallback）

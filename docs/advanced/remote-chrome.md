@@ -44,7 +44,7 @@ export OPENCLI_CDP_ENDPOINT="http://127.0.0.1:9222"
 curl http://127.0.0.1:9222/json/version
 
 # Run a diagnostic
-opencli doctor
+cloudl doctor
 ```
 
 ## CI/CD Integration

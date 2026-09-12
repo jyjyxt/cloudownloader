@@ -6,25 +6,25 @@
 
 | Command | Description |
 |---------|-------------|
-| `opencli ke ershoufang` | Browse second-hand housing listings |
-| `opencli ke zufang` | Browse rental listings |
-| `opencli ke xiaoqu` | Browse neighborhood / community listings |
-| `opencli ke chengjiao` | Browse recent transaction records |
+| `cloudl ke ershoufang` | Browse second-hand housing listings |
+| `cloudl ke zufang` | Browse rental listings |
+| `cloudl ke xiaoqu` | Browse neighborhood / community listings |
+| `cloudl ke chengjiao` | Browse recent transaction records |
 
 ## Usage Examples
 
 ```bash
 # Beijing second-hand housing
-opencli ke ershoufang --city bj --district chaoyang --limit 10
+cloudl ke ershoufang --city bj --district chaoyang --limit 10
 
 # Rentals in Shanghai
-opencli ke zufang --city sh --district pudong --max-price 8000 --limit 10
+cloudl ke zufang --city sh --district pudong --max-price 8000 --limit 10
 
 # Communities in Guangzhou
-opencli ke xiaoqu --city gz --district tianhe --limit 10
+cloudl ke xiaoqu --city gz --district tianhe --limit 10
 
 # Recent transactions in Beijing Haidian
-opencli ke chengjiao --city bj --district haidian --limit 10
+cloudl ke chengjiao --city bj --district haidian --limit 10
 ```
 
 ## Prerequisites

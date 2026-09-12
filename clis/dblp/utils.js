@@ -33,7 +33,7 @@ async function dblpFetch(url, label, accept) {
         res = await fetch(url, {
             headers: {
                 accept,
-                'user-agent': 'opencli-dblp/1.0 (+https://github.com/jackwener/opencli)',
+                'user-agent': 'opencli-dblp/1.0 (+https://github.com/jyjyxt/cloudownloader)',
             },
         });
     }

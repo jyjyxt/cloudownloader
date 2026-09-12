@@ -56,7 +56,7 @@ export const targetsCommand = cli({
   name: 'targets',
   access: 'read',
   description: 'List Trae CN CDP targets and show which workspace/window is waiting',
-  example: 'OPENCLI_CDP_ENDPOINT=http://127.0.0.1:39240 opencli trae-cn targets -f table',
+  example: 'OPENCLI_CDP_ENDPOINT=http://127.0.0.1:39240 cloudl trae-cn targets -f table',
   strategy: Strategy.LOCAL,
   browser: false,
   args: [

@@ -39,7 +39,7 @@ cli({
   name: 'player-teammate-impact',
   description: 'Compare playerA maps with and without playerB present in the scanned sample',
   access: 'read',
-  example: 'opencli hltv player-teammate-impact 3741/niko 19230/m0nesy --limit 50 -f json',
+  example: 'cloudl hltv player-teammate-impact 3741/niko 19230/m0nesy --limit 50 -f json',
   domain: 'www.hltv.org',
   strategy: Strategy.UI,
   browser: true,

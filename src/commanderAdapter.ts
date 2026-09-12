@@ -164,7 +164,7 @@ function emitAutoFixHint(envelope: string, cmdName: string, traceMode: unknown):
   const runnable = cmdName.replace('/', ' ');
   return envelope
     + `# AutoFix: re-run with --trace=retain-on-failure for trace artifact\n`
-    + `# ClouDownloader ${runnable} --trace retain-on-failure\n`;
+    + `# cloudl ${runnable} --trace retain-on-failure\n`;
 }
 
 function renderError(err: unknown, cmdName: string, verbose: boolean, traceMode?: unknown): void {

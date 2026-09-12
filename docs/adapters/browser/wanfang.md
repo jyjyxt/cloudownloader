@@ -6,13 +6,13 @@
 
 | Command | Description |
 |---------|-------------|
-| `opencli wanfang search <query>` | Search Wanfang papers by keyword |
+| `cloudl wanfang search <query>` | Search Wanfang papers by keyword |
 
 ## Usage Examples
 
 ```bash
-opencli wanfang search "多模态"
-opencli wanfang search "知识图谱" --limit 5
+cloudl wanfang search "多模态"
+cloudl wanfang search "知识图谱" --limit 5
 ```
 
 ## Notes

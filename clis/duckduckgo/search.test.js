@@ -61,7 +61,7 @@ describe('duckduckgo search', () => {
         'OpenCLI',
         '/l/?uddg=https%3A%2F%2Fgithub.com%2Fjackwener%2FOpenCLI',
         'CLI browser tooling',
-        'github.com/jackwener/OpenCLI',
+        'github.com/jyjyxt/cloudownloader',
         '',
         'web',
       ],
@@ -70,9 +70,9 @@ describe('duckduckgo search', () => {
     await expect(command.func(page, { keyword: 'opencli', limit: 1 })).resolves.toEqual([{
       rank: 1,
       title: 'OpenCLI',
-      url: 'https://github.com/jackwener/OpenCLI',
+      url: 'https://github.com/jyjyxt/cloudownloader',
       snippet: 'CLI browser tooling',
-      displayUrl: 'github.com/jackwener/OpenCLI',
+      displayUrl: 'github.com/jyjyxt/cloudownloader',
       icon: '',
       resultType: 'web',
     }]);

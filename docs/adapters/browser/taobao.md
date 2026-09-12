@@ -6,23 +6,23 @@
 
 | Command | Description |
 |---------|-------------|
-| `opencli taobao search <query>` | Search Taobao products |
-| `opencli taobao detail <id>` | Fetch product details |
-| `opencli taobao reviews <id>` | Fetch product reviews |
-| `opencli taobao cart` | View cart items |
-| `opencli taobao add-cart <id>` | Add a product to cart |
+| `cloudl taobao search <query>` | Search Taobao products |
+| `cloudl taobao detail <id>` | Fetch product details |
+| `cloudl taobao reviews <id>` | Fetch product reviews |
+| `cloudl taobao cart` | View cart items |
+| `cloudl taobao add-cart <id>` | Add a product to cart |
 
 ## Usage Examples
 
 ```bash
 # Search products
-opencli taobao search "机械键盘" --limit 5
+cloudl taobao search "机械键盘" --limit 5
 
 # Fetch product details
-opencli taobao detail 827563850178
+cloudl taobao detail 827563850178
 
 # Dry-run add to cart
-opencli taobao add-cart 827563850178 --spec "红色 XL" --dry-run
+cloudl taobao add-cart 827563850178 --spec "红色 XL" --dry-run
 ```
 
 ## Prerequisites

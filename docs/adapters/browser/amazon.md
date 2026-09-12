@@ -6,34 +6,34 @@
 
 | Command | Description |
 |---------|-------------|
-| `opencli amazon bestsellers [<best-sellers-url>]` | Read Amazon Best Sellers pages for ranked candidate discovery |
-| `opencli amazon search "<query>"` | Read Amazon search results for coarse filtering |
-| `opencli amazon product <asin-or-url>` | Read a product page with title, price, rating, breadcrumbs, and bullets |
-| `opencli amazon offer <asin-or-url>` | Read seller / fulfillment / buy-box facts from the product page |
-| `opencli amazon discussion <asin-or-url>` | Read review summary and sample customer reviews |
-| `opencli amazon movers-shakers [<url>]` | Amazon Movers & Shakers pages for short-term growth signals |
-| `opencli amazon new-releases [<url>]` | Amazon New Releases pages for early momentum discovery |
+| `cloudl amazon bestsellers [<best-sellers-url>]` | Read Amazon Best Sellers pages for ranked candidate discovery |
+| `cloudl amazon search "<query>"` | Read Amazon search results for coarse filtering |
+| `cloudl amazon product <asin-or-url>` | Read a product page with title, price, rating, breadcrumbs, and bullets |
+| `cloudl amazon offer <asin-or-url>` | Read seller / fulfillment / buy-box facts from the product page |
+| `cloudl amazon discussion <asin-or-url>` | Read review summary and sample customer reviews |
+| `cloudl amazon movers-shakers [<url>]` | Amazon Movers & Shakers pages for short-term growth signals |
+| `cloudl amazon new-releases [<url>]` | Amazon New Releases pages for early momentum discovery |
 
 ## Usage Examples
 
 ```bash
 # Root Best Sellers page
-opencli amazon bestsellers https://www.amazon.com/Best-Sellers/zgbs --limit 10 -f json
+cloudl amazon bestsellers https://www.amazon.com/Best-Sellers/zgbs --limit 10 -f json
 
 # Category-specific Best Sellers page
-opencli amazon bestsellers "<category-best-sellers-url>" --limit 50 -f json
+cloudl amazon bestsellers "<category-best-sellers-url>" --limit 50 -f json
 
 # Search products
-opencli amazon search "desk shelf organizer" --limit 20 -f json
+cloudl amazon search "desk shelf organizer" --limit 20 -f json
 
 # Validate one product
-opencli amazon product B0FJS72893 -f json
+cloudl amazon product B0FJS72893 -f json
 
 # Validate seller / offer facts
-opencli amazon offer B0FJS72893 -f json
+cloudl amazon offer B0FJS72893 -f json
 
 # Read review summary + samples
-opencli amazon discussion B0FJS72893 --limit 5 -f json
+cloudl amazon discussion B0FJS72893 --limit 5 -f json
 ```
 
 ## Prerequisites

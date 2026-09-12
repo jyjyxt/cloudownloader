@@ -6,40 +6,40 @@
 
 | Command | Description |
 |---------|-------------|
-| `opencli youtube search` | Search videos |
-| `opencli youtube video` | Get video metadata |
-| `opencli youtube transcript` | Get video transcript/subtitles |
-| `opencli youtube comments` | Get video comments |
-| `opencli youtube channel` | Get channel info and videos |
-| `opencli youtube playlist` | Get playlist video list |
-| `opencli youtube feed` | Homepage recommended videos |
-| `opencli youtube history` | Watch history |
-| `opencli youtube watch-later` | Watch Later queue |
-| `opencli youtube subscriptions` | List subscribed channels |
-| `opencli youtube like` | Like a video |
-| `opencli youtube unlike` | Remove like from a video |
-| `opencli youtube subscribe` | Subscribe to a channel |
-| `opencli youtube unsubscribe` | Unsubscribe from a channel |
+| `cloudl youtube search` | Search videos |
+| `cloudl youtube video` | Get video metadata |
+| `cloudl youtube transcript` | Get video transcript/subtitles |
+| `cloudl youtube comments` | Get video comments |
+| `cloudl youtube channel` | Get channel info and videos |
+| `cloudl youtube playlist` | Get playlist video list |
+| `cloudl youtube feed` | Homepage recommended videos |
+| `cloudl youtube history` | Watch history |
+| `cloudl youtube watch-later` | Watch Later queue |
+| `cloudl youtube subscriptions` | List subscribed channels |
+| `cloudl youtube like` | Like a video |
+| `cloudl youtube unlike` | Remove like from a video |
+| `cloudl youtube subscribe` | Subscribe to a channel |
+| `cloudl youtube unsubscribe` | Unsubscribe from a channel |
 
 ## Usage Examples
 
 ```bash
 # Read commands
-opencli youtube feed --limit 10
-opencli youtube history --limit 20
-opencli youtube watch-later --limit 50
-opencli youtube subscriptions --limit 30
+cloudl youtube feed --limit 10
+cloudl youtube history --limit 20
+cloudl youtube watch-later --limit 50
+cloudl youtube subscriptions --limit 30
 
 # Search and video info
-opencli youtube search "rust programming" --limit 5
-opencli youtube video "https://www.youtube.com/watch?v=xxx"
-opencli youtube transcript "https://www.youtube.com/watch?v=xxx"
+cloudl youtube search "rust programming" --limit 5
+cloudl youtube video "https://www.youtube.com/watch?v=xxx"
+cloudl youtube transcript "https://www.youtube.com/watch?v=xxx"
 
 # Write commands (requires login)
-opencli youtube like "https://www.youtube.com/watch?v=xxx"
-opencli youtube unlike "videoId"
-opencli youtube subscribe "@ChannelHandle"
-opencli youtube unsubscribe "UCxxxxxxxxxxxxxx"
+cloudl youtube like "https://www.youtube.com/watch?v=xxx"
+cloudl youtube unlike "videoId"
+cloudl youtube subscribe "@ChannelHandle"
+cloudl youtube unsubscribe "UCxxxxxxxxxxxxxx"
 ```
 
 ## Prerequisites

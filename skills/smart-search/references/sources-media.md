@@ -7,42 +7,42 @@
 ### bilibili
 
 - 适用：中文视频、教程、评测、UP 主内容
-- 使用前先运行：`ClouDownloader bilibili -h`
+- 使用前先运行：`cloudl bilibili -h`
 
 ### youtube
 
 - 适用：英文视频、教程、评测、访谈
-- 使用前先运行：`ClouDownloader youtube -h`
+- 使用前先运行：`cloudl youtube -h`
 
 ### tiktok
 
 - 适用：短视频、热点、娱乐内容
-- 使用前先运行：`ClouDownloader tiktok -h`
+- 使用前先运行：`cloudl tiktok -h`
 
 ### imdb
 
 - 适用：电影、剧集、演员、评分
-- 使用前先运行：`ClouDownloader imdb -h`
+- 使用前先运行：`cloudl imdb -h`
 
 ### douban
 
 - 适用：中文电影、书籍、音乐口碑与评分
-- 使用前先运行：`ClouDownloader douban -h`
+- 使用前先运行：`cloudl douban -h`
 
 ### spotify
 
 - 适用：歌曲、歌手、专辑
-- 使用前先运行：`ClouDownloader spotify -h`
+- 使用前先运行：`cloudl spotify -h`
 
 ### apple-podcasts
 
 - 适用：播客节目、播客搜索
-- 使用前先运行：`ClouDownloader apple-podcasts -h`
+- 使用前先运行：`cloudl apple-podcasts -h`
 
 ### medium
 
 - 适用：长文、技术博客、设计与产品文章
-- 使用前先运行：`ClouDownloader medium -h`
+- 使用前先运行：`cloudl medium -h`
 
 ## 路由提示
 

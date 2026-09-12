@@ -140,12 +140,12 @@ cli({
     func: async (page, kwargs) => {
         const limit = kwargs.limit === undefined || kwargs.limit === null ? 50 : Number(kwargs.limit);
         if (!Number.isInteger(limit) || limit <= 0) {
-            throw new ArgumentError('twitter following --limit must be a positive integer', 'Example: opencli twitter following @elonmusk --limit 200');
+            throw new ArgumentError('twitter following --limit must be a positive integer', 'Example: cloudl twitter following @elonmusk --limit 200');
         }
         const rawUser = String(kwargs.user ?? '').trim();
         let targetUser = normalizeScreenName(rawUser);
         if (rawUser && !targetUser) {
-            throw new ArgumentError('twitter following user must be a valid Twitter/X handle', 'Example: opencli twitter following @elonmusk --limit 200');
+            throw new ArgumentError('twitter following user must be a valid Twitter/X handle', 'Example: cloudl twitter following @elonmusk --limit 200');
         }
 
         const cookies = await page.getCookies({ url: 'https://x.com' });
@@ -175,7 +175,7 @@ cli({
                 throw new AuthRequiredError('x.com', 'Could not detect logged-in user. Are you logged in?');
         }
         if (!targetUser) {
-            throw new ArgumentError('twitter following user cannot be empty', 'Example: opencli twitter following @elonmusk --limit 200');
+            throw new ArgumentError('twitter following user cannot be empty', 'Example: cloudl twitter following @elonmusk --limit 200');
         }
 
         const followingQueryId = await resolveTwitterQueryId(page, 'Following', FOLLOWING_QUERY_ID);

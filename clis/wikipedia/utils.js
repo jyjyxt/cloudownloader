@@ -13,7 +13,7 @@ export const DESC_MAX_LEN = 80;
 export async function wikiFetch(lang, path) {
     const url = `https://${lang}.wikipedia.org${path}`;
     const resp = await fetch(url, {
-        headers: { 'User-Agent': 'opencli/1.0 (https://github.com/jackwener/opencli)' },
+        headers: { 'User-Agent': 'opencli/1.0 (https://github.com/jyjyxt/cloudownloader)' },
     });
     if (!resp.ok) {
         throw new CliError('FETCH_ERROR', `Wikipedia API HTTP ${resp.status}`, `Check your title or search term`);

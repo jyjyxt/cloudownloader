@@ -5,7 +5,7 @@
 import { ArgumentError, CommandExecutionError, EmptyResultError } from '@jackwener/opencli/errors';
 
 export const TVMAZE_BASE = 'https://api.tvmaze.com';
-const UA = 'opencli-tvmaze-adapter (+https://github.com/jackwener/opencli)';
+const UA = 'opencli-tvmaze-adapter (+https://github.com/jyjyxt/cloudownloader)';
 
 export function requireString(value, label) {
     const s = String(value ?? '').trim();

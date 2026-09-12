@@ -42,7 +42,7 @@ cli({
     func: async (page, kwargs) => {
         const id = String(kwargs.id ?? '');
         if (!/^\d+$/.test(id)) {
-            throw new ArgumentError(`Invalid illustration ID: ${id}`, 'Example: opencli pixiv detail 123456');
+            throw new ArgumentError(`Invalid illustration ID: ${id}`, 'Example: cloudl pixiv detail 123456');
         }
         const body = await pixivFetch(page, `/ajax/illust/${id}`, {
             notFoundMsg: `Illustration not found: ${id}`,

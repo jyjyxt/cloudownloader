@@ -64,7 +64,7 @@ describe('yahoo search', () => {
     await expect(command.func(page, { keyword: 'opencli', limit: 1, page: 2 })).resolves.toEqual([{
       rank: 8,
       title: 'OpenCLI',
-      url: 'https://github.com/jackwener/OpenCLI',
+      url: 'https://github.com/jyjyxt/cloudownloader',
       snippet: 'CLI browser tooling',
     }]);
   });

@@ -8,21 +8,21 @@ Search the Flathub Linux flatpak app registry and fetch full appstream metadata 
 
 | Command | Description |
 |---------|-------------|
-| `opencli flathub search <query>` | Search Flathub apps by keyword |
-| `opencli flathub app <appId>` | Full Flathub appstream metadata for an app id |
+| `cloudl flathub search <query>` | Search Flathub apps by keyword |
+| `cloudl flathub app <appId>` | Full Flathub appstream metadata for an app id |
 
 ## Usage Examples
 
 ```bash
 # Keyword search
-opencli flathub search firefox
-opencli flathub search "image editor" --limit 10
-opencli flathub search blender
+cloudl flathub search firefox
+cloudl flathub search "image editor" --limit 10
+cloudl flathub search blender
 
 # App detail (appId round-trips from search)
-opencli flathub app org.mozilla.firefox
-opencli flathub app org.gnome.Calculator
-opencli flathub app org.blender.Blender
+cloudl flathub app org.mozilla.firefox
+cloudl flathub app org.gnome.Calculator
+cloudl flathub app org.blender.Blender
 ```
 
 ## Output Columns

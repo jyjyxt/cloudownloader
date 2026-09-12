@@ -51,7 +51,7 @@ cli({
         const url = `https://lobste.rs/domains/${encodeURIComponent(domain)}.json`;
         let resp;
         try {
-            resp = await fetch(url, { headers: { 'user-agent': 'opencli-lobsters-adapter (+https://github.com/jackwener/opencli)' } });
+            resp = await fetch(url, { headers: { 'user-agent': 'opencli-lobsters-adapter (+https://github.com/jyjyxt/cloudownloader)' } });
         }
         catch (err) {
             throw new CommandExecutionError(

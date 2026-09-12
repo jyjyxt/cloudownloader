@@ -1,8 +1,8 @@
 # Strategy Selection
 
-SKILL.md 顶层已给出 strategy gate 的 enum、表格和必填字段。本文件展开**为什么**这套 ladder 是按"契约"而不是"接口高度"组织的，以及具体怎么用 `ClouDownloader browser analyze` 的 `api_candidates` 证据填 strategy note。
+SKILL.md 顶层已给出 strategy gate 的 enum、表格和必填字段。本文件展开**为什么**这套 ladder 是按"契约"而不是"接口高度"组织的，以及具体怎么用 `cloudl browser analyze` 的 `api_candidates` 证据填 strategy note。
 
-进入条件：你已经按 `site-recon.md` 跑过 `ClouDownloader browser analyze`、按 `api-discovery.md` 抓过候选 endpoint。本文件是写 note 之前的最后一站。
+进入条件：你已经按 `site-recon.md` 跑过 `cloudl browser analyze`、按 `api-discovery.md` 抓过候选 endpoint。本文件是写 note 之前的最后一站。
 
 ---
 
@@ -50,7 +50,7 @@ SKILL.md 顶层已给出 strategy gate 的 enum、表格和必填字段。本文
 
 ## 3. 怎么把 `api_candidates` 转化为 strategy note 证据
 
-`ClouDownloader browser analyze <url>` 的输出里 `api_candidates[]` 字段，每条带：
+`cloudl browser analyze <url>` 的输出里 `api_candidates[]` 字段，每条带：
 
 ```json
 {

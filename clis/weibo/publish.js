@@ -12,8 +12,8 @@
  *   8. Poll for success/failure feedback
  *
  * Usage:
- *   opencli weibo publish "Hello from OpenCLI! #opencli"  # publishes immediately
- *   opencli weibo publish "Check this out" --images /path/a.jpg,/path/b.jpg
+ *   cloudl weibo publish "Hello from OpenCLI! #opencli"  # publishes immediately
+ *   cloudl weibo publish "Check this out" --images /path/a.jpg,/path/b.jpg
  */
 import * as fs from 'node:fs';
 import * as path from 'node:path';

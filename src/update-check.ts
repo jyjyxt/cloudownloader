@@ -23,7 +23,6 @@ const CACHE_DIR = path.join(os.homedir(), '.opencli');
 const CACHE_FILE = path.join(CACHE_DIR, 'update-check.json');
 const CHECK_INTERVAL_MS = 24 * 60 * 60 * 1000; // 24h
 const EXTENSION_STALE_MS = 7 * 24 * 60 * 60 * 1000; // 7d
-const NPM_REGISTRY_URL = 'https://registry.npmjs.org/@jackwener/opencli/latest';
 const GITHUB_RELEASES_URL = 'https://api.github.com/repos/jyjyxt/cloudownloader/releases?per_page=20';
 
 interface UpdateCache {
@@ -100,11 +99,7 @@ interface NoticeLines {
 function buildUpdateNotices({ cliVersion, cache, now }: NoticeInputs): NoticeLines {
   if (!cache) return {};
   const lines: NoticeLines = {};
-  if (cache.latestVersion && isNewer(cache.latestVersion, cliVersion)) {
-    lines.cli =
-      `\n  Upstream OpenCLI update available: v${cliVersion} → v${cache.latestVersion}\n` +
-      `  ClouDownloader updates: https://github.com/jyjyxt/cloudownloader\n`;
-  }
+  // Older caches contain the upstream npm version. It is not a cloudl release.
   const { currentExtensionVersion, latestExtensionVersion, extensionLastSeenAt } = cache;
   if (
     currentExtensionVersion &&
@@ -178,7 +173,7 @@ async function fetchLatestExtensionVersion(): Promise<string | undefined> {
 }
 
 /**
- * Kick off a background fetch to npm registry. Writes to cache for next run.
+ * Check this repository's extension releases. Writes to cache for next run.
  * Fully non-blocking — never awaited.
  */
 export function checkForUpdateBackground(): void {
@@ -187,21 +182,8 @@ export function checkForUpdateBackground(): void {
 
   void (async () => {
     try {
-      const controller = new AbortController();
-      const timer = setTimeout(() => controller.abort(), 3000);
-      const res = await fetch(NPM_REGISTRY_URL, {
-        signal: controller.signal,
-        headers: { 'User-Agent': `opencli/${PKG_VERSION}` },
-      });
-      clearTimeout(timer);
-      if (!res.ok) return;
-      const data = await res.json() as { version?: string };
-      if (typeof data.version === 'string') {
-        const extVersion = await fetchLatestExtensionVersion();
-        const updates: Partial<UpdateCache> = { lastCheck: Date.now(), latestVersion: data.version };
-        if (extVersion) updates.latestExtensionVersion = extVersion;
-        writeCacheMerge(updates);
-      }
+      const extVersion = await fetchLatestExtensionVersion();
+      if (extVersion) writeCacheMerge({ lastCheck: Date.now(), latestExtensionVersion: extVersion });
     } catch {
       // Network error: silently skip, try again next run
     }
@@ -223,7 +205,7 @@ export function recordExtensionVersion(version: string): void {
 
 /**
  * Get the cached latest extension version (if available).
- * Used by `ClouDownloader doctor` to report extension updates.
+ * Used by `cloudl doctor` to report extension updates.
  */
 export function getCachedLatestExtensionVersion(): string | undefined {
   return _cache?.latestExtensionVersion;

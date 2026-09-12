@@ -137,6 +137,6 @@ export async function readDraftEntries(page, draftType) {
 export function draftNotFound(id, draftType, command) {
     return new EmptyResultError(
         command,
-        `Draft ${id} was not found in ${draftType} drafts. Run opencli xiaohongshu drafts --type ${draftType} to list current ids.`,
+        `Draft ${id} was not found in ${draftType} drafts. Run cloudl xiaohongshu drafts --type ${draftType} to list current ids.`,
     );
 }

@@ -1,12 +1,12 @@
 /**
  * Plugin scaffold: generates a ready-to-develop plugin directory.
  *
- * Usage: ClouDownloader plugin create <name> [--dir <path>]
+ * Usage: cloudl plugin create <name> [--dir <path>]
  *
  * Creates:
  *   <name>/
  *     opencli-plugin.json   — manifest with name, version, description
- *     package.json          — ESM package with ClouDownloader peer dependency
+ *     package.json          — ESM package with cloudl peer dependency
  *     hello.ts              — sample pipeline command
  *     greet.ts              — sample TS command using func()
  *     README.md             — basic documentation
@@ -57,7 +57,7 @@ export function createPluginScaffold(name: string, opts: ScaffoldOptions = {}): 
   const manifest = {
     name,
     version: '0.1.0',
-    description: opts.description ?? `An ClouDownloader plugin: ${name}`,
+    description: opts.description ?? `An cloudl plugin: ${name}`,
     opencli: `>=${PKG_VERSION}`,
   };
   writeFile(targetDir, 'opencli-plugin.json', JSON.stringify(manifest, null, 2) + '\n');
@@ -68,7 +68,7 @@ export function createPluginScaffold(name: string, opts: ScaffoldOptions = {}): 
     name: `opencli-plugin-${name}`,
     version: '0.1.0',
     type: 'module',
-    description: opts.description ?? `An ClouDownloader plugin: ${name}`,
+    description: opts.description ?? `An cloudl plugin: ${name}`,
     peerDependencies: {
       '@jackwener/opencli': `>=${PKG_VERSION}`,
     },
@@ -127,16 +127,16 @@ cli({
   // README.md
   const readme = `# opencli-plugin-${name}
 
-${opts.description ?? `An ClouDownloader plugin: ${name}`}
+${opts.description ?? `An cloudl plugin: ${name}`}
 
 ## Install
 
 \`\`\`bash
 # From local development directory
-ClouDownloader plugin install file://${targetDir}
+cloudl plugin install file://${targetDir}
 
 # From GitHub (after publishing)
-ClouDownloader plugin install github:<user>/opencli-plugin-${name}
+cloudl plugin install github:<user>/opencli-plugin-${name}
 \`\`\`
 
 ## Commands
@@ -150,14 +150,14 @@ ClouDownloader plugin install github:<user>/opencli-plugin-${name}
 
 \`\`\`bash
 # Install locally for development (symlinked, changes reflect immediately)
-ClouDownloader plugin install file://${targetDir}
+cloudl plugin install file://${targetDir}
 
 # Verify commands are registered
-ClouDownloader list | grep ${name}
+cloudl list | grep ${name}
 
 # Run a command
-ClouDownloader ${name} hello
-ClouDownloader ${name} greet --name World
+cloudl ${name} hello
+cloudl ${name} greet --name World
 \`\`\`
 `;
   writeFile(targetDir, 'README.md', readme);

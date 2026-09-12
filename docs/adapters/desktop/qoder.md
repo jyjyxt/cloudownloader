@@ -23,34 +23,34 @@ export OPENCLI_CDP_ENDPOINT="http://127.0.0.1:9237"
 
 ### Diagnostics
 
-- `opencli qoder status`: Check the active Qoder renderer URL and title.
+- `cloudl qoder status`: Check the active Qoder renderer URL and title.
 
 ### Quest Lifecycle
 
-- `opencli qoder new`: Start a new Quest.
-- `opencli qoder history --limit 20`: List visible Quests from the sidebar.
-- `opencli qoder read --limit 30`: Read visible turns in the current Quest.
-- `opencli qoder send "message"`: Send a message to the current Quest.
-- `opencli qoder ask "prompt" --timeout 120`: Send a prompt and wait for a visible reply.
+- `cloudl qoder new`: Start a new Quest.
+- `cloudl qoder history --limit 20`: List visible Quests from the sidebar.
+- `cloudl qoder read --limit 30`: Read visible turns in the current Quest.
+- `cloudl qoder send "message"`: Send a message to the current Quest.
+- `cloudl qoder ask "prompt" --timeout 120`: Send a prompt and wait for a visible reply.
 
 ### Sidebar And Views
 
-- `opencli qoder sidebar-toggle`: Collapse or expand the Quest sidebar.
-- `opencli qoder open-panel`: Toggle the bottom panel.
-- `opencli qoder search "query"`: Open the Qoder search palette and list results.
-- `opencli qoder settings`: Open Settings.
-- `opencli qoder knowledge`: Open Knowledge.
-- `opencli qoder marketplace`: Open Marketplace.
-- `opencli qoder credits`: Open Credits Usage and read the visible popover.
-- `opencli qoder view-all`: Click View all in the Quest list.
-- `opencli qoder add-workspace`: Open the Add Workspace folder picker.
-- `opencli qoder account [--username name]`: Open the account menu and list items.
-- `opencli qoder more-actions`: Open More Actions and list menu items.
+- `cloudl qoder sidebar-toggle`: Collapse or expand the Quest sidebar.
+- `cloudl qoder open-panel`: Toggle the bottom panel.
+- `cloudl qoder search "query"`: Open the Qoder search palette and list results.
+- `cloudl qoder settings`: Open Settings.
+- `cloudl qoder knowledge`: Open Knowledge.
+- `cloudl qoder marketplace`: Open Marketplace.
+- `cloudl qoder credits`: Open Credits Usage and read the visible popover.
+- `cloudl qoder view-all`: Click View all in the Quest list.
+- `cloudl qoder add-workspace`: Open the Add Workspace folder picker.
+- `cloudl qoder account [--username name]`: Open the account menu and list items.
+- `cloudl qoder more-actions`: Open More Actions and list menu items.
 
 ### Composer
 
-- `opencli qoder prompt-enhance`: Click Prompt Enhance for the current draft.
-- `opencli qoder open-editor`: Open the current draft in Qoder's editor view.
+- `cloudl qoder prompt-enhance`: Click Prompt Enhance for the current draft.
+- `cloudl qoder open-editor`: Open the current draft in Qoder's editor view.
 
 ## Notes
 

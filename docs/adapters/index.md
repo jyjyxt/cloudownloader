@@ -1,6 +1,6 @@
 # All Adapters
 
-Run `opencli list` for the live registry.
+Run `cloudl list` for the live registry.
 
 ## Browser Adapters
 

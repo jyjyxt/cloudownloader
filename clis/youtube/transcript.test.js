@@ -128,7 +128,7 @@ describe('youtube transcript caption fetch', () => {
     });
 
     it('ignores captured timedtext entries from a prior video and uses only the current videoId', async () => {
-        // Regression: opencli daemon reuses one Chrome tab across sequential
+        // Regression: cloudl daemon reuses one Chrome tab across sequential
         // youtube transcript calls. YouTube's SPA navigation between watch URLs
         // leaves prior videos' timedtext entries in performance.getEntriesByType
         // and (rarely) in the CDP capture buffer. Without filtering by videoId,

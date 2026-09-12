@@ -1,7 +1,7 @@
 // eastmoney sectors — industry / concept / region sector board ranking.
 //
-//   opencli eastmoney sectors
-//   opencli eastmoney sectors --type concept --sort money-flow --limit 30
+//   cloudl eastmoney sectors
+//   cloudl eastmoney sectors --type concept --sort money-flow --limit 30
 
 import { cli, Strategy } from '@jackwener/opencli/registry';
 import { CliError } from '@jackwener/opencli/errors';

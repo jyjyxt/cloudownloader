@@ -6,27 +6,27 @@
 
 | Command | Description |
 |---------|-------------|
-| `opencli booking search` | Search hotels by destination + check-in/check-out dates |
+| `cloudl booking search` | Search hotels by destination + check-in/check-out dates |
 
 ## Usage Examples
 
 ```bash
 # Basic — 2 adults, 1 room, default Booking page size (25 results)
-opencli booking search Tokyo --checkin 2026-06-15 --checkout 2026-06-17
+cloudl booking search Tokyo --checkin 2026-06-15 --checkout 2026-06-17
 
 # Force result locale and currency
-opencli booking search Paris --checkin 2026-07-01 --checkout 2026-07-03 \
+cloudl booking search Paris --checkin 2026-07-01 --checkout 2026-07-03 \
   --lang en-us --currency USD
 
 # Family stay — 2 adults + 2 children, 1 room
-opencli booking search Singapore --checkin 2026-06-15 --checkout 2026-06-20 \
+cloudl booking search Singapore --checkin 2026-06-15 --checkout 2026-06-20 \
   --adults 2 --children 2
 
 # Paginate (Booking pages 25 per request)
-opencli booking search Tokyo --checkin 2026-06-15 --checkout 2026-06-17 --offset 25
+cloudl booking search Tokyo --checkin 2026-06-15 --checkout 2026-06-17 --offset 25
 
 # JSON output for downstream tooling
-opencli booking search Tokyo --checkin 2026-06-15 --checkout 2026-06-17 -f json
+cloudl booking search Tokyo --checkin 2026-06-15 --checkout 2026-06-17 -f json
 ```
 
 ## Output

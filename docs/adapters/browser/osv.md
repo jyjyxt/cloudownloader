@@ -8,27 +8,27 @@ Look up open-source vulnerabilities by id (GHSA / CVE / PYSEC / etc.), or query 
 
 | Command | Description |
 |---------|-------------|
-| `opencli osv vulnerability <id>` | Single OSV.dev vulnerability detail (severity, affected packages, CVE/GHSA aliases) |
-| `opencli osv query <package> --ecosystem <eco>` | Vulnerabilities affecting a package (optionally pinned to a version) |
+| `cloudl osv vulnerability <id>` | Single OSV.dev vulnerability detail (severity, affected packages, CVE/GHSA aliases) |
+| `cloudl osv query <package> --ecosystem <eco>` | Vulnerabilities affecting a package (optionally pinned to a version) |
 
 ## Usage Examples
 
 ```bash
 # Specific advisory by GHSA id
-opencli osv vulnerability GHSA-29mw-wpgm-hmr9
+cloudl osv vulnerability GHSA-29mw-wpgm-hmr9
 
 # Same advisory by CVE alias
-opencli osv vulnerability CVE-2020-28500
+cloudl osv vulnerability CVE-2020-28500
 
 # All known npm-lodash vulns (newest first)
-opencli osv query lodash --ecosystem npm
+cloudl osv query lodash --ecosystem npm
 
 # Vulns affecting a pinned version
-opencli osv query lodash --ecosystem npm --version 4.17.20
+cloudl osv query lodash --ecosystem npm --version 4.17.20
 
 # Cross-ecosystem queries
-opencli osv query django --ecosystem PyPI --limit 10
-opencli osv query log4j-core --ecosystem Maven
+cloudl osv query django --ecosystem PyPI --limit 10
+cloudl osv query log4j-core --ecosystem Maven
 ```
 
 ## Output Columns

@@ -19,19 +19,19 @@ export OPENCLI_CDP_ENDPOINT="http://127.0.0.1:9226"
 ## Commands
 
 ### Diagnostics
-- `opencli cursor status`: Check CDP connection status.
-- `opencli cursor dump`: Dump the full DOM and Accessibility snapshot to `/tmp/cursor-dom.html` and `/tmp/cursor-snapshot.json`.
-- `opencli cursor screenshot`: Capture DOM + snapshot artifacts of the current window.
+- `cloudl cursor status`: Check CDP connection status.
+- `cloudl cursor dump`: Dump the full DOM and Accessibility snapshot to `/tmp/cursor-dom.html` and `/tmp/cursor-snapshot.json`.
+- `cloudl cursor screenshot`: Capture DOM + snapshot artifacts of the current window.
 
 ### Chat Manipulation
-- `opencli cursor new`: Press `Cmd+N` to start a new file/tab.
-- `opencli cursor send "message"`: Inject text into the active Composer/Chat input and submit.
-- `opencli cursor ask "message"`: Send + wait + read in one shot.
-- `opencli cursor read`: Extract the full conversation history from the active chat panel.
+- `cloudl cursor new`: Press `Cmd+N` to start a new file/tab.
+- `cloudl cursor send "message"`: Inject text into the active Composer/Chat input and submit.
+- `cloudl cursor ask "message"`: Send + wait + read in one shot.
+- `cloudl cursor read`: Extract the full conversation history from the active chat panel.
 
 ### AI Features
-- `opencli cursor composer "prompt"`: Open the Composer panel (`Cmd+I`) and send a prompt for inline AI editing.
-- `opencli cursor model`: Get the currently active AI model (e.g., `claude-4.5-sonnet`).
-- `opencli cursor extract-code`: Extract all code blocks from the current conversation.
-- `opencli cursor history`: List recent chat/composer sessions from the sidebar.
-- `opencli cursor export`: Export the current conversation as Markdown.
+- `cloudl cursor composer "prompt"`: Open the Composer panel (`Cmd+I`) and send a prompt for inline AI editing.
+- `cloudl cursor model`: Get the currently active AI model (e.g., `claude-4.5-sonnet`).
+- `cloudl cursor extract-code`: Extract all code blocks from the current conversation.
+- `cloudl cursor history`: List recent chat/composer sessions from the sidebar.
+- `cloudl cursor export`: Export the current conversation as Markdown.

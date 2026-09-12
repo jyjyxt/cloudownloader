@@ -11,55 +11,55 @@
 
 | Command | Description |
 |---------|-------------|
-| `opencli quark ls [path]` | List files in your Quark Drive |
-| `opencli quark mkdir <name>` | Create a folder |
-| `opencli quark mv <fids>` | Move files to a folder |
-| `opencli quark rename <fid>` | Rename a file or folder |
-| `opencli quark rm <fids>` | Delete files |
-| `opencli quark save <url>` | Save shared files to your Drive |
-| `opencli quark share-tree <url>` | Get directory tree from a share link as nested JSON |
+| `cloudl quark ls [path]` | List files in your Quark Drive |
+| `cloudl quark mkdir <name>` | Create a folder |
+| `cloudl quark mv <fids>` | Move files to a folder |
+| `cloudl quark rename <fid>` | Rename a file or folder |
+| `cloudl quark rm <fids>` | Delete files |
+| `cloudl quark save <url>` | Save shared files to your Drive |
+| `cloudl quark share-tree <url>` | Get directory tree from a share link as nested JSON |
 
 ## Usage Examples
 
 ```bash
 # List root directory
-opencli quark ls
+cloudl quark ls
 
 # List a specific folder with depth 3
-opencli quark ls "Documents/Projects" --depth 3
+cloudl quark ls "Documents/Projects" --depth 3
 
 # Create a folder in root
-opencli quark mkdir "New Folder"
+cloudl quark mkdir "New Folder"
 
 # Create a folder inside a specific parent (by path)
-opencli quark mkdir "Sub Folder" --parent "Documents"
+cloudl quark mkdir "Sub Folder" --parent "Documents"
 
 # Create a folder inside a specific parent (by fid)
-opencli quark mkdir "Sub Folder" --parent-fid <fid>
+cloudl quark mkdir "Sub Folder" --parent-fid <fid>
 
 # Move files to a folder
-opencli quark mv "fid1,fid2" --to "Documents"
+cloudl quark mv "fid1,fid2" --to "Documents"
 
 # Rename a file
-opencli quark rename <fid> --name "new-name.txt"
+cloudl quark rename <fid> --name "new-name.txt"
 
 # Delete files
-opencli quark rm "fid1,fid2"
+cloudl quark rm "fid1,fid2"
 
 # Save all files from a share link
-opencli quark save https://pan.quark.cn/s/abc123 --to "来自：分享"
+cloudl quark save https://pan.quark.cn/s/abc123 --to "来自：分享"
 
 # Save specific files by fid (get fids from share-tree)
-opencli quark save https://pan.quark.cn/s/abc123 --to "My Folder" --fids "fid1,fid2" --stoken <stoken>
+cloudl quark save https://pan.quark.cn/s/abc123 --to "My Folder" --fids "fid1,fid2" --stoken <stoken>
 
 # Save to a specific folder by fid
-opencli quark save https://pan.quark.cn/s/abc123 --to-fid <fid>
+cloudl quark save https://pan.quark.cn/s/abc123 --to-fid <fid>
 
 # Move files to a folder by fid
-opencli quark mv "fid1,fid2" --to-fid <fid>
+cloudl quark mv "fid1,fid2" --to-fid <fid>
 
 # Get full tree from a share link
-opencli quark share-tree https://pan.quark.cn/s/abc123
+cloudl quark share-tree https://pan.quark.cn/s/abc123
 ```
 
 ## Notes

@@ -727,7 +727,7 @@ export abstract class BasePage implements IPage {
       throw new TargetError({
         code: 'not_checkable',
         message: `Target "${ref}" is not a checkbox, radio, switch, or aria-checked control.`,
-        hint: 'Use `ClouDownloader browser state` or `browser find` to pick an input[type=checkbox], input[type=radio], or role=checkbox/switch target.',
+        hint: 'Use `cloudl browser state` or `browser find` to pick an input[type=checkbox], input[type=radio], or role=checkbox/switch target.',
       });
     }
     if (before.disabled) {
@@ -828,7 +828,7 @@ export abstract class BasePage implements IPage {
         throw new TargetError({
           code: 'not_file_input',
           message: `Target "${ref}" is not an input[type=file].`,
-          hint: 'Use `ClouDownloader browser find --css "input[type=file]"` or inspect `compound` output from browser state/find.',
+          hint: 'Use `cloudl browser find --css "input[type=file]"` or inspect `compound` output from browser state/find.',
         });
       }
       if (files.length > 1 && !info?.multiple) {
@@ -984,7 +984,7 @@ export abstract class BasePage implements IPage {
       throw new TargetError({
         code: 'not_editable',
         message: `Target "${ref}" is not a fillable input, textarea, or contenteditable element.`,
-        hint: 'Use `ClouDownloader browser state` to pick an editable target, or use `browser type` for keyboard-like interactions.',
+        hint: 'Use `cloudl browser state` to pick an editable target, or use `browser type` for keyboard-like interactions.',
       });
     }
 

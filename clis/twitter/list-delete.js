@@ -77,7 +77,7 @@ cli({
     strategy: Strategy.UI,
     browser: true,
     args: [
-        { name: 'listId', positional: true, type: 'string', required: true, help: 'Numeric ID of the list you own (e.g. from `opencli twitter lists`)' },
+        { name: 'listId', positional: true, type: 'string', required: true, help: 'Numeric ID of the list you own (e.g. from `cloudl twitter lists`)' },
         { name: 'confirm', type: 'boolean', default: false, help: 'Required. Set --confirm true to delete the list.' },
         { name: 'timeout', type: 'int', default: 300, help: 'Max seconds for the overall delete command (default: 300)' },
     ],
@@ -85,10 +85,10 @@ cli({
     func: async (page, kwargs) => {
         const listId = String(kwargs.listId || '').trim();
         if (!listId || !/^\d+$/.test(listId)) {
-            throw new ArgumentError(`Invalid listId: ${JSON.stringify(kwargs.listId)}. Expected numeric ID.`, 'Example: opencli twitter list-delete 123456789 --confirm true');
+            throw new ArgumentError(`Invalid listId: ${JSON.stringify(kwargs.listId)}. Expected numeric ID.`, 'Example: cloudl twitter list-delete 123456789 --confirm true');
         }
         if (!normalizeConfirm(kwargs.confirm)) {
-            throw new ArgumentError('Refusing to delete list without --confirm true', 'Example: opencli twitter list-delete 123456789 --confirm true');
+            throw new ArgumentError('Refusing to delete list without --confirm true', 'Example: cloudl twitter list-delete 123456789 --confirm true');
         }
 
         await page.goto('https://x.com');

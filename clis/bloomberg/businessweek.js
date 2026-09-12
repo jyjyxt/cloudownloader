@@ -6,7 +6,7 @@ const SECTION_URL = 'https://www.bloomberg.com/businessweek';
 export function parseBusinessweekLimit(value) {
     const limit = value == null || value === '' ? 1 : Number(value);
     if (!Number.isInteger(limit) || limit < 1 || limit > 20) {
-        throw new ArgumentError('bloomberg businessweek --limit must be an integer between 1 and 20', 'Example: opencli bloomberg businessweek --limit 5');
+        throw new ArgumentError('bloomberg businessweek --limit must be an integer between 1 and 20', 'Example: cloudl bloomberg businessweek --limit 5');
     }
     return limit;
 }

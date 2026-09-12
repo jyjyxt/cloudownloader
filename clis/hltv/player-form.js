@@ -97,7 +97,7 @@ cli({
   name: 'player-form',
   description: 'Aggregate recent HLTV player maps into form summaries grouped by summary, map, and opponent',
   access: 'read',
-  example: 'opencli hltv player-form --player 19230/m0nesy --limit 30 -f json',
+  example: 'cloudl hltv player-form --player 19230/m0nesy --limit 30 -f json',
   domain: 'www.hltv.org',
   strategy: Strategy.UI,
   browser: true,

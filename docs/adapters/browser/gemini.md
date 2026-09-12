@@ -6,58 +6,58 @@
 
 | Command | Description |
 |---------|-------------|
-| `opencli gemini new` | Start a new Gemini web chat |
-| `opencli gemini ask <prompt> [--model <value>] [--thinking <level>]` | Send a prompt and return only the assistant reply |
-| `opencli gemini image <prompt>` | Generate images in Gemini and optionally save them locally |
-| `opencli gemini models` | List available Gemini models |
-| `opencli gemini deep-research <prompt>` | Start a Gemini Deep Research run and confirm it |
-| `opencli gemini deep-research-result <query>` | Export Deep Research report URL from a Gemini conversation |
-| `opencli gemini status` | Check Gemini web page availability and login state |
-| `opencli gemini history [--limit N]` | List visible Gemini conversation history from the sidebar |
-| `opencli gemini detail <id>` | Open a Gemini conversation by id, URL, or sidebar title and read its turns |
-| `opencli gemini read` | Read the turns visible in the current Gemini web conversation |
+| `cloudl gemini new` | Start a new Gemini web chat |
+| `cloudl gemini ask <prompt> [--model <value>] [--thinking <level>]` | Send a prompt and return only the assistant reply |
+| `cloudl gemini image <prompt>` | Generate images in Gemini and optionally save them locally |
+| `cloudl gemini models` | List available Gemini models |
+| `cloudl gemini deep-research <prompt>` | Start a Gemini Deep Research run and confirm it |
+| `cloudl gemini deep-research-result <query>` | Export Deep Research report URL from a Gemini conversation |
+| `cloudl gemini status` | Check Gemini web page availability and login state |
+| `cloudl gemini history [--limit N]` | List visible Gemini conversation history from the sidebar |
+| `cloudl gemini detail <id>` | Open a Gemini conversation by id, URL, or sidebar title and read its turns |
+| `cloudl gemini read` | Read the turns visible in the current Gemini web conversation |
 
 ## Usage Examples
 
 ```bash
 # Start a fresh chat
-opencli gemini new
+cloudl gemini new
 
 # Ask Gemini and return minimal plain-text output
-opencli gemini ask "Reply with exactly: HELLO"
+cloudl gemini ask "Reply with exactly: HELLO"
 
 # Ask with a specific model selected
-opencli gemini ask "Explain quantum computing in one sentence" --model 2.5-flash
+cloudl gemini ask "Explain quantum computing in one sentence" --model 2.5-flash
 
 # Ask in a new chat and wait longer
-opencli gemini ask "Summarize this design in 3 bullets" --new true --timeout 90
+cloudl gemini ask "Summarize this design in 3 bullets" --new true --timeout 90
 
 # Ask with extended thinking
-opencli gemini ask "Explain quantum computing" --thinking extended
+cloudl gemini ask "Explain quantum computing" --thinking extended
 
 # Ask with standard thinking in a fresh chat
-opencli gemini ask "Hello" --new true --thinking standard
+cloudl gemini ask "Hello" --new true --thinking standard
 
 # Ask with a specific model and thinking level combined
-opencli gemini ask "Explain quantum computing in one sentence" --model 2.5-pro --thinking extended
+cloudl gemini ask "Explain quantum computing in one sentence" --model 2.5-pro --thinking extended
 
 # Ask in a new chat with a specific model and thinking level
-opencli gemini ask "Summarize this design in 3 bullets" --new true --model 2.5-flash --thinking standard
+cloudl gemini ask "Summarize this design in 3 bullets" --new true --model 2.5-flash --thinking standard
 
 # Generate an icon image with short flags
-opencli gemini image "Generate a tiny cyan moon icon" --rt 1:1 --st icon
+cloudl gemini image "Generate a tiny cyan moon icon" --rt 1:1 --st icon
 
 # Only generate in Gemini and print the page link without downloading files
-opencli gemini image "A watercolor sunset over a lake" --sd true
+cloudl gemini image "A watercolor sunset over a lake" --sd true
 
 # Save generated images to a custom directory
-opencli gemini image "A flat illustration of a robot" --op ~/tmp/gemini-images
+cloudl gemini image "A flat illustration of a robot" --op ~/tmp/gemini-images
 
 # List available models
-opencli gemini models
+cloudl gemini models
 
 # List models as JSON for scripting
-opencli gemini models -f json
+cloudl gemini models -f json
 ```
 
 ## Options
@@ -67,7 +67,7 @@ opencli gemini models -f json
 | Option | Description |
 |--------|-------------|
 | `prompt` | Prompt to send (required positional argument) |
-| `--model` | Gemini model to use (e.g. `2.5-flash`, `2.5-pro`). Use `opencli gemini models` to list available values. |
+| `--model` | Gemini model to use (e.g. `2.5-flash`, `2.5-pro`). Use `cloudl gemini models` to list available values. |
 | `--timeout` | Max seconds to wait for a reply (default: `60`) |
 | `--new` | Start a new chat before sending (default: `false`) |
 | `--thinking` | Thinking level: `standard` or `extended` (omitted = leave unchanged) |
@@ -97,7 +97,7 @@ opencli gemini models -f json
 ## Behavior
 
 - When `--new true` is combined with `--model` and/or `--thinking`, the new chat is created first, then the model and thinking level are selected, then the snapshot is read, and finally the prompt is submitted.
-- `ask --model <value>` selects the requested model before reading the page state and sending the prompt. The selected model remains visible in the Gemini web UI after the command completes. Short aliases like `pro` or `flash` are rejected—use canonical model IDs from `opencli gemini models`.
+- `ask --model <value>` selects the requested model before reading the page state and sending the prompt. The selected model remains visible in the Gemini web UI after the command completes. Short aliases like `pro` or `flash` are rejected—use canonical model IDs from `cloudl gemini models`.
 - When `--model` is omitted, `ask` does not change the current model.
 - All other Gemini commands (`image`, `deep-research`, etc.) are unaffected and do not accept `--model`.
 - `ask` uses plain minimal output and returns only the assistant response text prefixed with `💬`.

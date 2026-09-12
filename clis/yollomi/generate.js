@@ -30,7 +30,7 @@ cli({
         { name: 'prompt', positional: true, required: true, help: 'Text prompt describing the image' },
         { name: 'model', default: 'z-image-turbo', help: 'Model ID (z-image-turbo, flux-schnell, nano-banana, flux-2-pro, ...)' },
         { name: 'ratio', default: '1:1', choices: ['1:1', '16:9', '9:16', '4:3', '3:4'], help: 'Aspect ratio' },
-        { name: 'image', help: 'Input image URL for image-to-image (upload via "opencli yollomi upload" first)' },
+        { name: 'image', help: 'Input image URL for image-to-image (upload via "cloudl yollomi upload" first)' },
         { name: 'output', default: './yollomi-output', help: 'Output directory' },
         { name: 'no-download', type: 'boolean', default: false, help: 'Only show URLs, skip download' },
     ],
@@ -41,7 +41,7 @@ cli({
         const ratio = kwargs.ratio;
         const apiPath = MODEL_ROUTES[modelId];
         if (!apiPath)
-            throw new CliError('INVALID_MODEL', `Unknown model: ${modelId}`, 'Run "opencli yollomi models --type image" to see available models');
+            throw new CliError('INVALID_MODEL', `Unknown model: ${modelId}`, 'Run "cloudl yollomi models --type image" to see available models');
         let body;
         if (modelId === 'z-image-turbo') {
             const { width, height } = getDimensions(ratio);

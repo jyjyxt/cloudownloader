@@ -1,5 +1,5 @@
 /**
- * ClouDownloader micro-daemon — HTTP + WebSocket bridge between CLI and Chrome Extension.
+ * cloudl micro-daemon — HTTP + WebSocket bridge between CLI and Chrome Extension.
  *
  * Architecture:
  *   CLI → HTTP POST /command → daemon → WebSocket → Extension
@@ -15,7 +15,7 @@
  *   5. WebSocket verifyClient — reject upgrade before connection is established
  *
  * Lifecycle:
- *   - Auto-spawned by ClouDownloader on first browser command
+ *   - Auto-spawned by cloudl on first browser command
  *   - Persistent — stays alive until explicit shutdown, SIGTERM, or uninstall
  *   - Listens on localhost:19825
  */
@@ -159,7 +159,7 @@ function resolveExtensionConnection(contextId?: string, preferredContextId?: str
     staleDefaultWarned.add(route.fallbackFrom);
     log.warn(
       `[daemon] Default profile "${route.fallbackFrom}" is not connected; ` +
-      `using the only connected profile "${route.contextId}". Update the default with: ClouDownloader profile use <name>`,
+      `using the only connected profile "${route.contextId}". Update the default with: cloudl profile use <name>`,
     );
   }
   const connection = extensionProfiles.get(route.contextId);

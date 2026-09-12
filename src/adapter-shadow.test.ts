@@ -48,6 +48,6 @@ describe('adapter shadow detection', () => {
     ]);
 
     expect(issue).toContain('instagram/saved');
-    expect(issue).toContain('ClouDownloader adapter reset <site>');
+    expect(issue).toContain('cloudl adapter reset <site>');
   });
 });

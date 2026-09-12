@@ -21,11 +21,11 @@ source: global
 
 ### action:expand_comment_tree
 pre: on /item，folded comment 存在 (`a.togg` class)
-do: opencli hackernews story <id> (API 拿全树) || click `a.togg`
+do: cloudl hackernews story <id> (API 拿全树) || click `a.togg`
 post: 子 comment 行展开（DOM 多 `<tr class="comtr">`）
 fail: togg link 不响应（极少）
-recover: 直接走 Firebase `item/<id>.json` 递归 kids; adapter_health_update: opencli hackernews story -> suspect
-evidence: opencli hackernews story <id>
+recover: 直接走 Firebase `item/<id>.json` 递归 kids; adapter_health_update: cloudl hackernews story -> suspect
+evidence: cloudl hackernews story <id>
 
 ### action:open_reply_form
 pre: on /item，logged_in，目标 comment 有 reply link
@@ -33,7 +33,7 @@ do: click `a[href^="reply?id="]`
 post: URL → /reply?id=<id>，textarea[name="text"] visible
 fail: redirect /login (未登录) | throw_too_fast (HN 风控 cool-down)
 recover: 未登录抛 AuthRequired; throw_too_fast 标 pitfall:hn_rate_limit 等 10-30s 重试
-evidence: opencli browser click + state
+evidence: cloudl browser click + state
 
 ### action:upvote
 pre: on /item，logged_in，未投过票（`a[id="up_<id>"]` 可见且未灰）
@@ -41,7 +41,7 @@ do: click `a[id="up_<id>"]`
 post: arrow 灰显（已投），不可再 click
 fail: arrow 消失（HN 不允许 vote own post）| redirect /login
 recover: 不允许 vote own 抛 CommandExecutionError; 未登录抛 AuthRequired
-evidence: opencli browser click
+evidence: cloudl browser click
 
 ## Linked APIs
 

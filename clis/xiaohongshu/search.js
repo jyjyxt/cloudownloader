@@ -3,7 +3,7 @@
  * The previous Pinia store + XHR interception approach broke because
  * the API now returns empty items. This version navigates directly to
  * the search results page and extracts data from rendered DOM elements.
- * Ref: https://github.com/jackwener/opencli/issues/10
+ * Ref: https://github.com/jyjyxt/cloudownloader/issues/10
  */
 import { cli, Strategy } from '@jackwener/opencli/registry';
 import { ArgumentError, AuthRequiredError, CliError, CommandExecutionError, EmptyResultError, TimeoutError } from '@jackwener/opencli/errors';

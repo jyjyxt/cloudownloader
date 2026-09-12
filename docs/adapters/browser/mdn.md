@@ -8,24 +8,24 @@ Search the official Mozilla Developer Network web docs without auth or browser. 
 
 | Command | Description |
 |---------|-------------|
-| `opencli mdn search <query>` | Search MDN Web Docs by keyword |
+| `cloudl mdn search <query>` | Search MDN Web Docs by keyword |
 
 ## Usage Examples
 
 ```bash
 # Web platform feature search
-opencli mdn search fetch --limit 10
-opencli mdn search flexbox --limit 5
+cloudl mdn search fetch --limit 10
+cloudl mdn search flexbox --limit 5
 
 # JS reference lookups
-opencli mdn search "Array.prototype.map"
+cloudl mdn search "Array.prototype.map"
 
 # Localized search (default: en-US)
-opencli mdn search fetch --locale ja --limit 5
-opencli mdn search fetch --locale zh-CN --limit 5
+cloudl mdn search fetch --locale ja --limit 5
+cloudl mdn search fetch --locale zh-CN --limit 5
 
 # JSON output
-opencli mdn search fetch -f json
+cloudl mdn search fetch -f json
 ```
 
 ## Output Columns

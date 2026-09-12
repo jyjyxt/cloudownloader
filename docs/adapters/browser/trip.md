@@ -11,59 +11,59 @@ the same company. These commands search worldwide flights and hotels on
 
 | Command | Mode | Description |
 |---------|------|-------------|
-| `opencli trip search` | Public | Suggest destinations (cities + airports) for a keyword, resolving the ids other commands take |
-| `opencli trip flight` | Browser (cookie) | One-way flight search by IATA route + departure date |
-| `opencli trip flight-round` | Browser (cookie) | Round-trip flight search by IATA route + depart/return dates |
-| `opencli trip hotel-search` | Browser (cookie) | List hotels for a city id + check-in/out date range |
-| `opencli trip hotel` | Browser (cookie) | Single-hotel detail by id: rating breakdown, amenities, check-in/out policy |
-| `opencli trip attraction` | Browser (cookie) | Attractions and experiences (tickets + tours) search by destination keyword |
-| `opencli trip train` | Browser (cookie) | Train route timetable (departure/arrival times, duration, changes) |
-| `opencli trip car` | Browser (cookie) | Car-rental listing for a city (category, model, seats, daily price) |
-| `opencli trip transfer` | Browser (cookie) | Airport-transfer listing for a city + airport (type, seats, from-price) |
-| `opencli trip tour` | Browser (cookie) | Tour-package search by destination keyword (private or group tours) |
-| `opencli trip package` | Public | Flight+hotel package search by route + dates (package flight options at the bundle rate) |
-| `opencli trip deals` | Browser (cookie) | List Trip.com live promotions (Top Deals hub): campaign title, offer, discount, link |
+| `cloudl trip search` | Public | Suggest destinations (cities + airports) for a keyword, resolving the ids other commands take |
+| `cloudl trip flight` | Browser (cookie) | One-way flight search by IATA route + departure date |
+| `cloudl trip flight-round` | Browser (cookie) | Round-trip flight search by IATA route + depart/return dates |
+| `cloudl trip hotel-search` | Browser (cookie) | List hotels for a city id + check-in/out date range |
+| `cloudl trip hotel` | Browser (cookie) | Single-hotel detail by id: rating breakdown, amenities, check-in/out policy |
+| `cloudl trip attraction` | Browser (cookie) | Attractions and experiences (tickets + tours) search by destination keyword |
+| `cloudl trip train` | Browser (cookie) | Train route timetable (departure/arrival times, duration, changes) |
+| `cloudl trip car` | Browser (cookie) | Car-rental listing for a city (category, model, seats, daily price) |
+| `cloudl trip transfer` | Browser (cookie) | Airport-transfer listing for a city + airport (type, seats, from-price) |
+| `cloudl trip tour` | Browser (cookie) | Tour-package search by destination keyword (private or group tours) |
+| `cloudl trip package` | Public | Flight+hotel package search by route + dates (package flight options at the bundle rate) |
+| `cloudl trip deals` | Browser (cookie) | List Trip.com live promotions (Top Deals hub): campaign title, offer, discount, link |
 
 ## Usage Examples
 
 ```bash
 # Destination suggest (resolves city ids + airport codes for the commands below)
-opencli trip search Tokyo --limit 10
+cloudl trip search Tokyo --limit 10
 
 # One-way flight search (English, USD)
-opencli trip flight LON NYC --date 2026-08-15 --limit 20
-opencli trip flight LHR JFK --date 2026-08-15 -f json
+cloudl trip flight LON NYC --date 2026-08-15 --limit 20
+cloudl trip flight LHR JFK --date 2026-08-15 -f json
 
 # Round-trip flight search
-opencli trip flight-round LON NYC --depart 2026-08-15 --return 2026-08-22 --limit 20
+cloudl trip flight-round LON NYC --depart 2026-08-15 --return 2026-08-22 --limit 20
 
 # Hotel listing (numeric city id, e.g. 338 for London)
-opencli trip hotel-search 338 --checkin 2026-08-15 --checkout 2026-08-16 --limit 10
+cloudl trip hotel-search 338 --checkin 2026-08-15 --checkout 2026-08-16 --limit 10
 
 # Single-hotel detail (hotel id from the hotels list)
-opencli trip hotel 715233
+cloudl trip hotel 715233
 
 # Attractions and experiences search (destination keyword)
-opencli trip attraction Tokyo --limit 20
+cloudl trip attraction Tokyo --limit 20
 
 # Train route timetable (country slug + cities)
-opencli trip train London Manchester --country uk --limit 20
+cloudl trip train London Manchester --country uk --limit 20
 
 # Car-rental listing (numeric carhire city id, e.g. 313 for San Francisco)
-opencli trip car 313 --limit 10
+cloudl trip car 313 --limit 10
 
 # Airport-transfer listing (airport city + IATA code)
-opencli trip transfer Bangkok DMK --limit 10
+cloudl trip transfer Bangkok DMK --limit 10
 
 # Tour-package search (destination keyword; private tours by default)
-opencli trip tour Kyoto --limit 20
-opencli trip tour Bangkok --type group --limit 10
+cloudl trip tour Kyoto --limit 20
+cloudl trip tour Bangkok --type group --limit 10
 
 # Flight+hotel package search (city keywords + dates)
-opencli trip package Seoul Tokyo --depart 2026-08-05 --return 2026-08-08 --limit 10
+cloudl trip package Seoul Tokyo --depart 2026-08-05 --return 2026-08-08 --limit 10
 
 # Live promotions (Top Deals hub)
-opencli trip deals --limit 10
+cloudl trip deals --limit 10
 ```
 
 ## Search Columns (`search`)

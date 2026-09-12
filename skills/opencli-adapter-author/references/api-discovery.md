@@ -12,7 +12,7 @@
 
 ### 0.1 反爬厂商 → 决定 fetch 能不能从 Node 走
 
-`ClouDownloader browser analyze <url>` 的 `anti_bot` 字段给答案；手查看 cookies 也行：
+`cloudl browser analyze <url>` 的 `anti_bot` 字段给答案；手查看 cookies 也行：
 
 | cookie / body 信号 | 厂商 | 裸 Node fetch / curl 结果 | 策略 |
 |------------------|------|-----|-----|
@@ -30,7 +30,7 @@
 判断：
 
 ```bash
-ClouDownloader browser eval "fetch('https://<target-subdomain>/api/...', {credentials:'include'}).then(r=>r.status).catch(e=>'cors:'+e.message)"
+cloudl browser eval "fetch('https://<target-subdomain>/api/...', {credentials:'include'}).then(r=>r.status).catch(e=>'cors:'+e.message)"
 ```
 
 - 返回 status 数字 → CORS 通，继续
@@ -39,7 +39,7 @@ ClouDownloader browser eval "fetch('https://<target-subdomain>/api/...', {creden
 **挡住时**：不要把 `credentials:'include'` 当万能药——这只解决"带 cookie"，不解决"跨 origin"。降级路径：
 
 1. 换同 origin 的 endpoint（同一个 subdomain 下的 API 往往更宽松）
-2. 用 `ClouDownloader browser open https://<target-subdomain>/`，让页面在目标 subdomain 本身打开，再 fetch 相对路径
+2. 用 `cloudl browser open https://<target-subdomain>/`，让页面在目标 subdomain 本身打开，再 fetch 相对路径
 3. 真跨域且无替代 → 走 `§5 intercept`，从页面自身发的请求里抓响应
 
 ---
@@ -49,7 +49,7 @@ ClouDownloader browser eval "fetch('https://<target-subdomain>/api/...', {creden
 ### 拿候选
 
 ```bash
-ClouDownloader browser network
+cloudl browser network
 ```
 
 默认输出是 JSON，每个候选都带：
@@ -59,7 +59,7 @@ ClouDownloader browser network
 
 静态资源 / 埋点 / 追踪默认已过滤。默认会保留 JSON / XML / plain text / `text/javascript`，也会识别 `text/x-component` 与明确的 `/rsc-action/` React Server Component 流。如果你确定浏览器 DevTools 里有目标请求但这里缺失，用 `--all` 查一遍是否被其他 content-type 或 URL 噪音过滤挡掉。capture queue 是破坏性读取；Core 会先缓存本批原始条目再做展示过滤，所以紧接着的空 `--all` 仍可复用该 session 的 raw cache，而不是永久丢掉被隐藏的条目。
 
-如果是冷启动，先看 `ClouDownloader browser analyze <url>` 里的 `api_candidates`：
+如果是冷启动，先看 `cloudl browser analyze <url>` 里的 `api_candidates`：
 
 - `verdict: "likely_data"`：优先 replay 这条，拿 status / content-type / sample shape 填 strategy note
 - `verdict: "maybe_data"`：可以试，但必须人工核对字段是否是目标业务数据
@@ -81,7 +81,7 @@ ClouDownloader browser network
 已经知道目标 body 该含哪些字段就直接让 CLI 把列表筛到只剩候选，不用自己 scroll 翻 shape：
 
 ```bash
-ClouDownloader browser network --filter author,text,likes
+cloudl browser network --filter author,text,likes
 ```
 
 - 字段以英文逗号分隔；AND 语义，必须每个字段都作为 shape 路径的**任意一段**出现才保留（`$.data.items[0].author` 命中 `author`、`items`、`data` 都算）
@@ -97,7 +97,7 @@ ClouDownloader browser network --filter author,text,likes
 候选定了再拉完整 body（by key，不是 index — 数组顺序会随每次 capture 变）：
 
 ```bash
-ClouDownloader browser network --detail <key>
+cloudl browser network --detail <key>
 ```
 
 capture 会持久化到 `~/.opencli/cache/browser-network/<session>.json`（默认 TTL 24h），所以 `--detail` 即使跨多条其他命令也还在。
@@ -124,14 +124,14 @@ capture 会持久化到 `~/.opencli/cache/browser-network/<session>.json`（默�
 
 ```bash
 # 滚到底（虚拟列表）
-ClouDownloader browser eval "window.scrollTo(0, document.body.scrollHeight)"
-ClouDownloader browser wait time 2
-ClouDownloader browser network
+cloudl browser eval "window.scrollTo(0, document.body.scrollHeight)"
+cloudl browser wait time 2
+cloudl browser network
 
 # 点某个按钮
-ClouDownloader browser click <N>
-ClouDownloader browser wait time 2
-ClouDownloader browser network
+cloudl browser click <N>
+cloudl browser wait time 2
+cloudl browser network
 ```
 
 ---
@@ -141,7 +141,7 @@ ClouDownloader browser network
 首屏数据常挂在这几个全局变量上：
 
 ```bash
-ClouDownloader browser eval "Object.keys(window).filter(k=>k.startsWith('__'))"
+cloudl browser eval "Object.keys(window).filter(k=>k.startsWith('__'))"
 ```
 
 命中的常见名：
@@ -157,7 +157,7 @@ ClouDownloader browser eval "Object.keys(window).filter(k=>k.startsWith('__'))"
 取数据：
 
 ```bash
-ClouDownloader browser eval "JSON.stringify(window.__NEXT_DATA__).slice(0, 3000)"
+cloudl browser eval "JSON.stringify(window.__NEXT_DATA__).slice(0, 3000)"
 ```
 
 **关键**：inline state 只覆盖首屏的一部分（通常是 SEO 相关字段）。分页 / 评论 / 懒加载还是得回 §1 抓 API。
@@ -171,7 +171,7 @@ ClouDownloader browser eval "JSON.stringify(window.__NEXT_DATA__).slice(0, 3000)
 ### 扫 script src
 
 ```bash
-ClouDownloader browser eval "[...document.querySelectorAll('script[src]')].map(s=>s.src).filter(s=>!/\\.(css|png|jpg|svg|woff|mp4)$/.test(s)&&!/googletagmanager|crazyegg|sentry|doubleclick|amazon-adsystem|cloudflare/.test(s))"
+cloudl browser eval "[...document.querySelectorAll('script[src]')].map(s=>s.src).filter(s=>!/\\.(css|png|jpg|svg|woff|mp4)$/.test(s)&&!/googletagmanager|crazyegg|sentry|doubleclick|amazon-adsystem|cloudflare/.test(s))"
 ```
 
 看结果里的 hostname：
@@ -182,7 +182,7 @@ ClouDownloader browser eval "[...document.querySelectorAll('script[src]')].map(s
 ### 搜 bundle 里的 baseURL
 
 ```bash
-ClouDownloader browser eval "(async()=>{const s=[...document.querySelectorAll('script[src]')].map(e=>e.src).find(s=>/main|app|index|bundle|chunk/.test(s));if(!s)return'no bundle';const t=await fetch(s).then(r=>r.text());const patterns=['baseURL','baseUrl','BASE_URL','apiHost','apiBase','API_HOST','API_BASE'];const hits=[];for(const p of patterns){let i=-1;while((i=t.indexOf(p,i+1))>-1&&hits.length<5)hits.push(t.slice(Math.max(0,i-5),i+80));}return hits})()"
+cloudl browser eval "(async()=>{const s=[...document.querySelectorAll('script[src]')].map(e=>e.src).find(s=>/main|app|index|bundle|chunk/.test(s));if(!s)return'no bundle';const t=await fetch(s).then(r=>r.text());const patterns=['baseURL','baseUrl','BASE_URL','apiHost','apiBase','API_HOST','API_BASE'];const hits=[];for(const p of patterns){let i=-1;while((i=t.indexOf(p,i+1))>-1&&hits.length<5)hits.push(t.slice(Math.max(0,i-5),i+80));}return hits})()"
 ```
 
 命中 `baseURL:"https://api.foo.com"` 直接拿 host 拼 endpoint。
@@ -205,7 +205,7 @@ jsluice urls < /tmp/example-bundle.js
 像 eastmoney 这种经验 endpoint 可以直接喂：
 
 ```bash
-ClouDownloader browser eval "fetch('https://push2.eastmoney.com/api/qt/clist/get?fs=m:1+t:2&pn=1&pz=5&fltt=2&fid=f3&po=1&fields=f2,f3,f12,f14').then(r=>r.json())"
+cloudl browser eval "fetch('https://push2.eastmoney.com/api/qt/clist/get?fs=m:1+t:2&pn=1&pz=5&fltt=2&fid=f3&po=1&fields=f2,f3,f12,f14').then(r=>r.json())"
 ```
 
 200 只是 transport 成功。至少换一个输入再试，并核 content-type、目标 identity、非空 shape、分页和可见页面值；写入或复杂私有协议转 `deep-recon.md`，不能“数据看起来像”就认。
@@ -219,7 +219,7 @@ ClouDownloader browser eval "fetch('https://push2.eastmoney.com/api/qt/clist/get
 
 ```bash
 # 当前页加 .json 试
-ClouDownloader browser eval "fetch(location.pathname.replace(/\\/$/,'')+'.json').then(r=>r.ok?r.json():'no')"
+cloudl browser eval "fetch(location.pathname.replace(/\\/$/,'')+'.json').then(r=>r.ok?r.json():'no')"
 ```
 
 ---
@@ -231,7 +231,7 @@ ClouDownloader browser eval "fetch(location.pathname.replace(/\\/$/,'')+'.json')
 ### Cookie 里
 
 ```bash
-ClouDownloader browser eval "document.cookie.split('; ').map(x=>x.slice(0,x.indexOf('='))).filter(Boolean)"
+cloudl browser eval "document.cookie.split('; ').map(x=>x.slice(0,x.indexOf('='))).filter(Boolean)"
 ```
 
 常见 token cookie 名：`ct0`（Twitter CSRF）、`xq_a_token`（雪球）、`SESSDATA`（B 站）、`_csrf / csrfToken`（通用）。
@@ -243,7 +243,7 @@ ClouDownloader browser eval "document.cookie.split('; ').map(x=>x.slice(0,x.inde
 ### localStorage / sessionStorage 里
 
 ```bash
-ClouDownloader browser eval "Object.keys(localStorage).filter(k=>/token|auth|jwt|bearer|csrf/i.test(k))"
+cloudl browser eval "Object.keys(localStorage).filter(k=>/token|auth|jwt|bearer|csrf/i.test(k))"
 ```
 
 先只列 key 名，找 `token / auth / jwt / bearer / csrf`。只有选定 production auth source 后才在页面内使用对应值；不要把值打印进聊天、trace、shell history 或 site memory。
@@ -253,7 +253,7 @@ ClouDownloader browser eval "Object.keys(localStorage).filter(k=>/token|auth|jwt
 有些站的 Bearer 是全站一个常量（Twitter 的匿名 Bearer）。在 bundle 里搜：
 
 ```bash
-ClouDownloader browser eval "(async()=>{const s=[...document.querySelectorAll('script[src]')].map(e=>e.src).find(s=>/main|app|bundle/.test(s));const t=await fetch(s).then(r=>r.text());const m=[...t.matchAll(/Bearer\\s+[\\w-]{20,}/g)];return {count:m.length,positions:m.slice(0,3).map(x=>x.index)}})()"
+cloudl browser eval "(async()=>{const s=[...document.querySelectorAll('script[src]')].map(e=>e.src).find(s=>/main|app|bundle/.test(s));const t=await fetch(s).then(r=>r.text());const m=[...t.matchAll(/Bearer\\s+[\\w-]{20,}/g)];return {count:m.length,positions:m.slice(0,3).map(x=>x.index)}})()"
 ```
 
 只返回数量/位置，不返回 token 原值。即使 bundle 中是公共匿名 Bearer，也先确认它是否是预期公开合同；不要复制未知 credential-shaped string。
@@ -264,10 +264,10 @@ Vue + Pinia / Redux / React Context 有时能调用页面自己的只读 store m
 
 ```bash
 # Pinia
-ClouDownloader browser eval "typeof __pinia !== 'undefined' ? Object.keys(__pinia.state.value) : 'no pinia'"
+cloudl browser eval "typeof __pinia !== 'undefined' ? Object.keys(__pinia.state.value) : 'no pinia'"
 
 # 只调用已证明是 read-only 的 store action（每个站点具体 action 名要查）
-ClouDownloader browser eval "window.__pinia.state.value.someStore.someMethod({...})"
+cloudl browser eval "window.__pinia.state.value.someStore.someMethod({...})"
 ```
 
 这不是“绕签名”，也不是 direct API contract：它仍依赖页面 controller/runtime，production strategy 通常是 `INTERCEPT`。只有动作语义被可见 UI 和动态请求证明为 read-only 才能在侦察中调用。未知 effect 或 write action 禁止自动调用；写入只观察用户明确授权的一次自然操作，按 `deep-recon.md` 处理。

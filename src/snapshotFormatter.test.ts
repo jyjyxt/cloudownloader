@@ -69,10 +69,10 @@ const GITHUB_REPOS = `\
       - listitem [ref=e95]:
         - generic [ref=e96]:
           - link "Repository" [ref=e97] [cursor=pointer]:
-            - /url: /jackwener/opencli
+            - /url: /jyjyxt/cloudownloader
             - img "Repository" [ref=e98]
-          - link "jackwener/opencli" [ref=e100] [cursor=pointer]:
-            - /url: /jackwener/opencli`;
+          - link "jyjyxt/cloudownloader" [ref=e100] [cursor=pointer]:
+            - /url: /jyjyxt/cloudownloader`;
 
 /** Bilibili nav bar (Chinese text, multiple link categories) */
 const BILIBILI_NAV = `\
@@ -379,7 +379,7 @@ describe('formatSnapshot', () => {
       expect(result).toContain('heading "Top repositories"');
       expect(result).toContain('textbox "Find a repository…"');
       expect(result).toContain('link "jackwener/twitter-cli"');
-      expect(result).toContain('link "jackwener/opencli"');
+      expect(result).toContain('link "jyjyxt/cloudownloader"');
       expect(result).toContain('img "Repository"');
 
       // No refs or urls

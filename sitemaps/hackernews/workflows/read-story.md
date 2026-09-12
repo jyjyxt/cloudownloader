@@ -17,18 +17,18 @@ source: global
 
 ## Best path
 
-- adapter: opencli hackernews story <id>
+- adapter: cloudl hackernews story <id>
 - adapter_health: healthy
 - preconditions: story id 已知
 - estimated_turns: 1
 
 ## Fallback path
 
-如果 adapter 抛 typed error / 空 result（触发 `adapter_health_update: opencli hackernews story -> suspect`）：
+如果 adapter 抛 typed error / 空 result（触发 `adapter_health_update: cloudl hackernews story -> suspect`）：
 
-1. `opencli browser open https://news.ycombinator.com/item?id=<id>`
+1. `cloudl browser open https://news.ycombinator.com/item?id=<id>`
 2. action:expand_comment_tree in pages/item.md（如果有折叠）
-3. `opencli browser state` 拿 DOM
+3. `cloudl browser state` 拿 DOM
 4. parse story header (`tr.athing[id="<id>"]`) + comment tree (`tr.comtr` ids 数组)
 
 - estimated_turns: 3-4

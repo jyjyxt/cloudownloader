@@ -2,7 +2,7 @@
  * 京东商品详情 — browser cookie, DOM scraping + evaluate.
  *
  * 依赖: 需要在 Chrome 已登录京东
- * 用法: opencli jd item 100291143898
+ * 用法: cloudl jd item 100291143898
  */
 import { cli, Strategy } from '@jackwener/opencli/registry';
 import { AuthRequiredError, CommandExecutionError } from '@jackwener/opencli/errors';

@@ -24,42 +24,42 @@ export const BUILTIN_COMMANDS = [
 // ── Shell script generators ────────────────────────────────────────────────
 
 export function bashCompletionScript(): string {
-  return `# Bash completion for ClouDownloader
-# Add to ~/.bashrc:  eval "$(ClouDownloader completion bash)"
-_ClouDownloader_completions() {
+  return `# Bash completion for cloudl
+# Add to ~/.bashrc:  eval "$(cloudl completion bash)"
+_cloudl_completions() {
   local cur words cword
   _get_comp_words_by_ref -n : cur words cword
 
   local completions
-  completions=$(ClouDownloader --get-completions --cursor "$cword" "\${words[@]:1}" 2>/dev/null)
+  completions=$(cloudl --get-completions --cursor "$cword" "\${words[@]:1}" 2>/dev/null)
 
   COMPREPLY=( $(compgen -W "$completions" -- "$cur") )
   __ltrim_colon_completions "$cur"
 }
-complete -F _ClouDownloader_completions ClouDownloader
+complete -F _cloudl_completions cloudl
 `;
 }
 
 export function zshCompletionScript(): string {
-  return `# Zsh completion for ClouDownloader
-# Add to ~/.zshrc:  eval "$(ClouDownloader completion zsh)"
-_ClouDownloader() {
+  return `# Zsh completion for cloudl
+# Add to ~/.zshrc:  eval "$(cloudl completion zsh)"
+_cloudl() {
   local -a completions
   local cword=$((CURRENT - 1))
-  completions=(\${(f)"$(ClouDownloader --get-completions --cursor "$cword" "\${words[@]:1}" 2>/dev/null)"})
+  completions=(\${(f)"$(cloudl --get-completions --cursor "$cword" "\${words[@]:1}" 2>/dev/null)"})
   compadd -a completions
 }
-compdef _ClouDownloader ClouDownloader
+compdef _cloudl cloudl
 `;
 }
 
 export function fishCompletionScript(): string {
-  return `# Fish completion for ClouDownloader
-# Add to ~/.config/fish/config.fish:  ClouDownloader completion fish | source
-complete -c ClouDownloader -f -a '(
+  return `# Fish completion for cloudl
+# Add to ~/.config/fish/config.fish:  cloudl completion fish | source
+complete -c cloudl -f -a '(
   set -l tokens (commandline -cop)
   set -l cursor (count (commandline -cop))
-  ClouDownloader --get-completions --cursor $cursor $tokens[2..] 2>/dev/null
+  cloudl --get-completions --cursor $cursor $tokens[2..] 2>/dev/null
 )'
 `;
 }

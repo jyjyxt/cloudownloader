@@ -32,7 +32,7 @@ Android 设备
 
 **电脑端：**
 - 已安装 [ADB（Android Debug Bridge）](https://developer.android.com/tools/adb) 并加入 `$PATH`
-- 已安装 OpenCLI（`npm install -g opencli`）
+- 已[从源码安装 cloudl](../guide/installation.md)
 
 ---
 
@@ -81,7 +81,7 @@ curl http://localhost:9222/json
 
 ```bash
 export OPENCLI_CDP_ENDPOINT=http://localhost:9222
-opencli hackernews top --limit 5
+cloudl hackernews top --limit 5
 ```
 
 ---
@@ -91,7 +91,7 @@ opencli hackernews top --limit 5
 多个标签页同时打开时，`CDPBridge` 会通过打分算法自动选择最合适的目标（优先选 `type=page`、有实际 URL 的标签）。如需手动指定，可设置 `OPENCLI_CDP_TARGET` 为标签页标题或 URL 的子串：
 
 ```bash
-OPENCLI_CDP_TARGET="twitter" opencli twitter trending
+OPENCLI_CDP_TARGET="twitter" cloudl twitter trending
 ```
 
 也可直接使用 `/json` 返回的 WebSocket 地址精确连接某个标签页：
@@ -109,7 +109,7 @@ OPENCLI_CDP_ENDPOINT=ws://localhost:9222/devtools/page/3941 opencli ...
 查看某个 adapter 是否需要登录：
 
 ```bash
-opencli zhihu hot --help
+cloudl zhihu hot --help
 # Strategy: cookie | Browser: yes | Domain: www.zhihu.com
 ```
 
@@ -154,8 +154,8 @@ adb -s <设备1序列号> forward tcp:9222 localabstract:chrome_devtools_remote
 adb -s <设备2序列号> forward tcp:9223 localabstract:chrome_devtools_remote
 
 # 分别执行命令
-OPENCLI_CDP_ENDPOINT=http://localhost:9222 opencli twitter trending
-OPENCLI_CDP_ENDPOINT=http://localhost:9223 opencli twitter trending
+OPENCLI_CDP_ENDPOINT=http://localhost:9222 cloudl twitter trending
+OPENCLI_CDP_ENDPOINT=http://localhost:9223 cloudl twitter trending
 ```
 
 ---

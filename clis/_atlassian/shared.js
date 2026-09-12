@@ -8,7 +8,7 @@ import {
     EmptyResultError,
 } from '@jackwener/opencli/errors';
 
-const USER_AGENT = 'opencli-atlassian-adapter (+https://github.com/jackwener/opencli)';
+const USER_AGENT = 'opencli-atlassian-adapter (+https://github.com/jyjyxt/cloudownloader)';
 const DEPLOYMENTS = new Set(['cloud', 'datacenter', 'auto']);
 
 function firstEnv(names) {

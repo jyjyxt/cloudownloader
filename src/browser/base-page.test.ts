@@ -84,7 +84,7 @@ describe('BasePage.fetchJson', () => {
     await expect(page.fetchJson('https://api.example.com/items', {
       method: 'POST',
       headers: { 'X-Test': '1' },
-      body: { q: 'ClouDownloader' },
+      body: { q: 'cloudl' },
       timeoutMs: 1234,
     })).resolves.toEqual({ items: [1] });
 
@@ -93,7 +93,7 @@ describe('BasePage.fetchJson', () => {
         url: 'https://api.example.com/items',
         method: 'POST',
         headers: { 'X-Test': '1' },
-        body: { q: 'ClouDownloader' },
+        body: { q: 'cloudl' },
         hasBody: true,
         timeoutMs: 1234,
       },

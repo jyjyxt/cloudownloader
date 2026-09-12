@@ -80,7 +80,7 @@ function judge(criteria: JudgeCriteria, output: string): boolean {
 
 const PROJECT_ROOT = join(__dirname, '..');
 
-/** Run a command, using the local built entrypoint instead of global opencli for consistency */
+/** Run a command, using the local built entrypoint instead of global cloudl for consistency */
 function runCommand(cmd: string, timeout = 30000): string {
   // Use local build so tests always run against the current source
   const localCmd = cmd.replace(/^opencli /, `node dist/src/main.js `);
@@ -121,7 +121,7 @@ function runTask(task: SaveTask): TaskResult {
 
   try {
     // Phase 1: init — create scaffold
-    const initOutput = runCommand(`opencli browser init ${site}/${command}`);
+    const initOutput = runCommand(`cloudl browser init ${site}/${command}`);
     if (!existsSync(adapterPath)) {
       return {
         name: task.name, phase: 'init', passed: false,
@@ -143,7 +143,7 @@ function runTask(task: SaveTask): TaskResult {
 
     // Phase 3: verify — run the adapter via browser verify
     const verifyOutput = runCommand(
-      `opencli browser verify ${site}/${command}`,
+      `cloudl browser verify ${site}/${command}`,
       45000, // longer timeout for network calls
     );
 

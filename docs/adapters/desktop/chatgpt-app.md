@@ -11,14 +11,14 @@ The current built-in commands use native AppleScript automation — no extra lau
 2. Grant **Accessibility permissions** to your terminal app in **System Settings → Privacy & Security → Accessibility**.
 
 ### Commands
-- `opencli chatgpt-app status`: Check if the ChatGPT app is currently running.
-- `opencli chatgpt-app new`: Activate ChatGPT and press `Cmd+N` to start a new conversation.
-- `opencli chatgpt-app send "message"`: Copy your message to clipboard, activate ChatGPT, paste, and submit.
-- `opencli chatgpt-app send "message" --model thinking`: Switch model/mode first, then send the message.
-- `opencli chatgpt-app read`: Read the last visible message from the focused ChatGPT window via the Accessibility tree.
-- `opencli chatgpt-app ask "message"`: Send a prompt and wait for the visible reply in one shot.
-- `opencli chatgpt-app ask "message" --model instant`: Run a one-shot prompt using a specific model/mode.
-- `opencli chatgpt-app model thinking`: Switch the active ChatGPT model/mode without sending a message.
+- `cloudl chatgpt-app status`: Check if the ChatGPT app is currently running.
+- `cloudl chatgpt-app new`: Activate ChatGPT and press `Cmd+N` to start a new conversation.
+- `cloudl chatgpt-app send "message"`: Copy your message to clipboard, activate ChatGPT, paste, and submit.
+- `cloudl chatgpt-app send "message" --model thinking`: Switch model/mode first, then send the message.
+- `cloudl chatgpt-app read`: Read the last visible message from the focused ChatGPT window via the Accessibility tree.
+- `cloudl chatgpt-app ask "message"`: Send a prompt and wait for the visible reply in one shot.
+- `cloudl chatgpt-app ask "message" --model instant`: Run a one-shot prompt using a specific model/mode.
+- `cloudl chatgpt-app model thinking`: Switch the active ChatGPT model/mode without sending a message.
 
 Supported model choices: `auto`, `instant`, `thinking`, `5.2-instant`, `5.2-thinking`.
 

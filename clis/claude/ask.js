@@ -32,7 +32,7 @@ export const askCommand = cli({
         const timeoutSeconds = requirePositiveInt(
             Number(kwargs.timeout ?? 120),
             'claude ask --timeout',
-            'Example: opencli claude ask "hello" --timeout 120',
+            'Example: cloudl claude ask "hello" --timeout 120',
         );
         const timeoutMs = timeoutSeconds * 1000;
         const wantThink = parseBoolFlag(kwargs.think);

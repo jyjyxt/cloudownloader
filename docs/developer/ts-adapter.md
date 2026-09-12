@@ -13,7 +13,7 @@ cli({
   name: 'search',
   description: 'Search MySite',
   access: 'read', // 'read' | 'write'
-  example: 'opencli mysite search <query> -f yaml',
+  example: 'cloudl mysite search <query> -f yaml',
   domain: 'www.mysite.com',
   strategy: Strategy.COOKIE,      // PUBLIC | COOKIE | INTERCEPT | UI
   args: [
@@ -55,7 +55,7 @@ Every adapter must declare `access: 'read' | 'write'`.
 - Use `write` when the command changes remote product/account state, such as sending messages, publishing, liking, following, buying, deleting, creating remote assets, or starting paid/credit-consuming generation.
 - `download` and `export` commands are `read` when they only read remote data and write local files; local filesystem writes are a separate permission dimension.
 
-Adapters may also declare `example` to override the canonical invocation shown in agent-facing help. Prefer YAML examples, e.g. `opencli mysite search <query> -f yaml`.
+Adapters may also declare `example` to override the canonical invocation shown in agent-facing help. Prefer YAML examples, e.g. `cloudl mysite search <query> -f yaml`.
 
 ## Listing↔Detail ID Pairing (advisory)
 
@@ -124,7 +124,7 @@ Contains parsed CLI arguments as key-value pairs. Always destructure with defaul
 const { query, limit = 10, format = 'json' } = kwargs;
 ```
 
-For most search/read/detail commands, the main subject should be positional (`opencli mysite search "rust"`, `opencli mysite article 123`) instead of a named flag such as `--query` or `--id`. Keep named flags for optional modifiers.
+For most search/read/detail commands, the main subject should be positional (`cloudl mysite search "rust"`, `cloudl mysite article 123`) instead of a named flag such as `--query` or `--id`. Keep named flags for optional modifiers.
 
 ## Error Handling
 
@@ -140,17 +140,17 @@ Avoid raw `Error` for normal adapter control flow. This keeps top-level CLI outp
 
 ## AI-Assisted Development
 
-Use the `opencli-adapter-author` skill plus the `opencli browser *` primitives to scaffold and verify adapters end-to-end:
+Use the `opencli-adapter-author` skill plus the `cloudl browser *` primitives to scaffold and verify adapters end-to-end:
 
 ```bash
 # Recon on the target site
-opencli browser open https://example.com
-opencli browser network
-opencli browser state
+cloudl browser open https://example.com
+cloudl browser network
+cloudl browser state
 
 # Scaffold + verify
-opencli browser init mysite/trending
-opencli browser verify mysite/trending
+cloudl browser init mysite/trending
+cloudl browser verify mysite/trending
 ```
 
 See [AI Workflow](/developer/ai-workflow) for the full loop and the adapter-author skill for the step-by-step runbook.

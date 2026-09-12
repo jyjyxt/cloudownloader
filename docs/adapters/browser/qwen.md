@@ -8,51 +8,51 @@ Drive **Qianwen / Qwen** chat from the terminal. All commands run through your e
 
 | Command | Description | Access |
 |---------|-------------|--------|
-| `opencli qwen status` | Page availability, login state, current model and session | read |
-| `opencli qwen history` | List recent conversations (requires login) | read |
-| `opencli qwen read` | Read messages in the current conversation | read |
-| `opencli qwen detail <id>` | Open a conversation by ID and read its messages | read |
-| `opencli qwen ask <prompt>` | Send a prompt and wait for the assistant reply | write |
-| `opencli qwen send <prompt>` | Fire-and-forget: send a prompt without waiting | write |
-| `opencli qwen new` | Start a fresh conversation | write |
-| `opencli qwen image <prompt>` | Generate images (AI 生图) and save them locally | write |
+| `cloudl qwen status` | Page availability, login state, current model and session | read |
+| `cloudl qwen history` | List recent conversations (requires login) | read |
+| `cloudl qwen read` | Read messages in the current conversation | read |
+| `cloudl qwen detail <id>` | Open a conversation by ID and read its messages | read |
+| `cloudl qwen ask <prompt>` | Send a prompt and wait for the assistant reply | write |
+| `cloudl qwen send <prompt>` | Fire-and-forget: send a prompt without waiting | write |
+| `cloudl qwen new` | Start a fresh conversation | write |
+| `cloudl qwen image <prompt>` | Generate images (AI 生图) and save them locally | write |
 
 ## Usage Examples
 
 ```bash
 # Sanity check
-opencli qwen status
+cloudl qwen status
 
 # Recent conversations
-opencli qwen history --limit 10
+cloudl qwen history --limit 10
 
 # Read the active conversation as markdown
-opencli qwen read --markdown true
+cloudl qwen read --markdown true
 
 # Read a specific historical conversation by ID (or full URL)
-opencli qwen detail abcd1234ef567890abcd1234ef567890
-opencli qwen detail https://www.qianwen.com/chat/abcd1234ef567890abcd1234ef567890 --markdown true
+cloudl qwen detail abcd1234ef567890abcd1234ef567890
+cloudl qwen detail https://www.qianwen.com/chat/abcd1234ef567890abcd1234ef567890 --markdown true
 
 # Ask a question and wait for the reply
-opencli qwen ask "用一段话解释 transformer attention"
+cloudl qwen ask "用一段话解释 transformer attention"
 
 # Ask in a brand-new chat with DeepThink turned on
-opencli qwen ask "推导 KL 散度的链式法则" --new true --think true
+cloudl qwen ask "推导 KL 散度的链式法则" --new true --think true
 
 # Fire-and-forget (don't wait for the reply)
-opencli qwen send "继续上面的推导" --think true
+cloudl qwen send "继续上面的推导" --think true
 
 # Start a new conversation
-opencli qwen new
+cloudl qwen new
 
 # Generate an image and save it locally
-opencli qwen image "a watercolor fox sketching on paper"
+cloudl qwen image "a watercolor fox sketching on paper"
 
 # Custom output directory
-opencli qwen image "cyberpunk skyline" --op ~/Downloads/qwen-images
+cloudl qwen image "cyberpunk skyline" --op ~/Downloads/qwen-images
 
 # Skip download — just print the share link
-opencli qwen image "a tiny robot" --sd true
+cloudl qwen image "a tiny robot" --sd true
 ```
 
 ## Options
@@ -124,5 +124,5 @@ opencli qwen image "a tiny robot" --sd true
 - DeepThink (`--think`) and DeepResearch (`--research`) toggle the corresponding composer chips before submitting
 - Generated image files are timestamped to avoid overwriting prior runs
 - `status` returns `Model` / `SessionId` as `null` when they cannot be detected (e.g. guest mode, page still loading) rather than a string sentinel — branch on `null` in agent code
-- DOM or product changes on Qwen can break composer detection — `opencli qwen status` is the quickest sanity check
+- DOM or product changes on Qwen can break composer detection — `cloudl qwen status` is the quickest sanity check
 - `limit` is validated and rejected with `ArgumentError` if non-positive or above the documented max (e.g. `history` max 100); no silent clamp

@@ -5,7 +5,7 @@
 import { ArgumentError, CommandExecutionError, EmptyResultError } from '@jackwener/opencli/errors';
 
 export const LLAMA_BASE = 'https://api.llama.fi';
-const UA = 'opencli-defillama-adapter (+https://github.com/jackwener/opencli)';
+const UA = 'opencli-defillama-adapter (+https://github.com/jyjyxt/cloudownloader)';
 
 // DefiLlama slugs are lowercase with hyphens / digits / dots; allow up to 100 chars.
 const SLUG = /^[a-z0-9][a-z0-9._-]{0,99}$/;

@@ -221,12 +221,12 @@ describe('validateAskModelValue', () => {
         expect(() => validateAskModelValue('flash-2.5')).toThrow(ArgumentError);
     });
 
-    it('mentions opencli gemini models in error messages', () => {
+    it('mentions cloudl gemini models in error messages', () => {
         try { validateAskModelValue('pro'); } catch (e) {
-            expect(e.message).toContain('opencli gemini models');
+            expect(e.message).toContain('cloudl gemini models');
         }
         try { validateAskModelValue('2.5'); } catch (e) {
-            expect(e.message).toContain('opencli gemini models');
+            expect(e.message).toContain('cloudl gemini models');
         }
     });
 });
@@ -444,7 +444,7 @@ describe('gemini ask orchestration', () => {
         expect(page.evaluate).not.toHaveBeenCalled();
     });
 
-    it('rejects aliases with error message mentioning canonical ids and opencli gemini models', async () => {
+    it('rejects aliases with error message mentioning canonical ids and cloudl gemini models', async () => {
         const page = createPageMock();
 
         try {
@@ -453,7 +453,7 @@ describe('gemini ask orchestration', () => {
         } catch (e) {
             expect(e).toBeInstanceOf(ArgumentError);
             expect(e.message).toContain('not accepted');
-            expect(e.message).toContain('opencli gemini models');
+            expect(e.message).toContain('cloudl gemini models');
         }
     });
 
@@ -477,7 +477,7 @@ describe('gemini ask orchestration', () => {
         expect(mocks.sendGeminiMessage).not.toHaveBeenCalled();
     });
 
-    it('includes available models and suggests opencli gemini models in invalid-model error', async () => {
+    it('includes available models and suggests cloudl gemini models in invalid-model error', async () => {
         const page = createPageMock();
         mocks.ensureGeminiPage.mockResolvedValue(undefined);
         setupDiscoveryWithoutThinking(page);
@@ -491,7 +491,7 @@ describe('gemini ask orchestration', () => {
             expect(e.message).toContain('Available models');
             expect(e.message).toContain('2.5-flash');
             expect(e.message).toContain('2.5-pro');
-            expect(e.message).toContain('opencli gemini models');
+            expect(e.message).toContain('cloudl gemini models');
         }
     });
 

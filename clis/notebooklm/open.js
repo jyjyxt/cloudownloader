@@ -28,14 +28,14 @@ cli({
         await requireNotebooklmSession(page);
         const state = await getNotebooklmPageState(page);
         if (state.kind !== 'notebook') {
-            throw new CliError('NOTEBOOKLM_OPEN_FAILED', `NotebookLM notebook "${notebookId}" did not open in the adapter session`, 'Run `opencli notebooklm list -f json` first and pass a valid notebook id.');
+            throw new CliError('NOTEBOOKLM_OPEN_FAILED', `NotebookLM notebook "${notebookId}" did not open in the adapter session`, 'Run `cloudl notebooklm list -f json` first and pass a valid notebook id.');
         }
         if (state.notebookId !== notebookId) {
             console.warn(`[notebooklm open] expected notebook "${notebookId}" but page reports "${state.notebookId}"; continuing`);
         }
         const current = await readCurrentNotebooklm(page);
         if (!current) {
-            throw new EmptyResultError('opencli notebooklm open', 'NotebookLM notebook metadata was not found after navigation.');
+            throw new EmptyResultError('cloudl notebooklm open', 'NotebookLM notebook metadata was not found after navigation.');
         }
         return [current];
     },

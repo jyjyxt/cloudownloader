@@ -6,7 +6,7 @@ cli({
   name: 'player-summary',
   description: 'Read an HLTV player summary page',
   access: 'read',
-  example: 'opencli hltv player-summary --player 3741/niko -f json',
+  example: 'cloudl hltv player-summary --player 3741/niko -f json',
   domain: 'www.hltv.org',
   strategy: Strategy.UI,
   browser: true,

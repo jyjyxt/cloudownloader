@@ -17,7 +17,7 @@ export function parseTarget(input) {
         throw new CliError('INVALID_INPUT', 'Zhihu write commands require a normal HTTPS Zhihu URL without malformed authority', 'Example: https://www.zhihu.com/question/123456');
     }
     if (value.startsWith('answer:') && !ANSWER_RE.test(value)) {
-        throw new CliError('INVALID_INPUT', 'Invalid answer target, expected answer:<questionId>:<answerId>', 'Example: opencli zhihu like answer:123:456 --execute');
+        throw new CliError('INVALID_INPUT', 'Invalid answer target, expected answer:<questionId>:<answerId>', 'Example: cloudl zhihu like answer:123:456 --execute');
     }
     let match = value.match(USER_RE);
     if (match) {
@@ -73,7 +73,7 @@ export function parseTarget(input) {
         }
     }
     catch { }
-    throw new CliError('INVALID_INPUT', 'Zhihu write commands require a Zhihu URL or typed target like question:123 or answer:123:456', 'Example: opencli zhihu like answer:123:456 --execute');
+    throw new CliError('INVALID_INPUT', 'Zhihu write commands require a Zhihu URL or typed target like question:123 or answer:123:456', 'Example: cloudl zhihu like answer:123:456 --execute');
 }
 export function assertAllowedKinds(command, target) {
     const allowed = {

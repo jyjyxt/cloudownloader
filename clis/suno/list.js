@@ -1,7 +1,7 @@
 /**
- * `opencli suno list` — list recent clips in the user's library. Lets agents
+ * `cloudl suno list` — list recent clips in the user's library. Lets agents
  * discover clip ids without needing to remember them, and feed them to
- * `opencli suno download`.
+ * `cloudl suno download`.
  */
 import { cli, Strategy } from '@jackwener/opencli/registry';
 import { CommandExecutionError, EmptyResultError } from '@jackwener/opencli/errors';

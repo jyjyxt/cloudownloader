@@ -55,7 +55,7 @@ cli({
         let resp;
         try {
             resp = await fetch(url, {
-                headers: { Accept: 'application/json', 'User-Agent': 'opencli/1.0 (+https://github.com/jackwener/opencli)' },
+                headers: { Accept: 'application/json', 'User-Agent': 'opencli/1.0 (+https://github.com/jyjyxt/cloudownloader)' },
             });
         }
         catch (err) {

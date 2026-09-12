@@ -26,7 +26,7 @@ source: global
 
 唯一 path：
 
-1. `opencli browser open https://news.ycombinator.com/item?id=<id>` 或 /news 找到该 item
+1. `cloudl browser open https://news.ycombinator.com/item?id=<id>` 或 /news 找到该 item
 2. action:upvote in pages/item.md
 
 - estimated_turns: 2

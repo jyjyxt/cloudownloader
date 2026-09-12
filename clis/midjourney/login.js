@@ -8,7 +8,7 @@ cli({
   name: 'login',
   access: 'write',
   description: 'Open Midjourney in a foreground Chrome window and wait for login to complete',
-  example: 'opencli midjourney login --timeout 300',
+  example: 'cloudl midjourney login --timeout 300',
   domain: MIDJOURNEY_DOMAIN,
   strategy: Strategy.UI,
   browser: true,
@@ -36,7 +36,7 @@ cli({
     }
     throw new TimeoutError(
       'Midjourney login', timeout,
-      'Finish signing in in the foreground Chrome window, then retry `opencli midjourney whoami`.',
+      'Finish signing in in the foreground Chrome window, then retry `cloudl midjourney whoami`.',
     );
   },
 });

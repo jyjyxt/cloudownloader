@@ -6,20 +6,20 @@
 
 | Command | Description |
 |---------|-------------|
-| `opencli boss search` | |
-| `opencli boss detail` | |
+| `cloudl boss search` | |
+| `cloudl boss detail` | |
 
 ## Usage Examples
 
 ```bash
 # Quick start
-opencli boss search --limit 5
+cloudl boss search --limit 5
 
 # JSON output
-opencli boss search -f json
+cloudl boss search -f json
 
 # Verbose mode
-opencli boss search -v
+cloudl boss search -v
 ```
 
 ## Prerequisites

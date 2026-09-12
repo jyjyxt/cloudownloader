@@ -6,49 +6,49 @@
 
 | Command | Description |
 |---------|-------------|
-| `opencli instagram profile` | Get user profile info |
-| `opencli instagram search` | Search users |
-| `opencli instagram user` | Get recent posts from a user |
-| `opencli instagram explore` | Discover trending posts |
-| `opencli instagram followers` | List user's followers |
-| `opencli instagram following` | List user's following |
-| `opencli instagram saved` | Get your saved posts (or one collection) |
-| `opencli instagram collection-create` | Create a new saved-posts collection |
-| `opencli instagram collection-delete` | Delete a saved-posts collection by name or id |
+| `cloudl instagram profile` | Get user profile info |
+| `cloudl instagram search` | Search users |
+| `cloudl instagram user` | Get recent posts from a user |
+| `cloudl instagram explore` | Discover trending posts |
+| `cloudl instagram followers` | List user's followers |
+| `cloudl instagram following` | List user's following |
+| `cloudl instagram saved` | Get your saved posts (or one collection) |
+| `cloudl instagram collection-create` | Create a new saved-posts collection |
+| `cloudl instagram collection-delete` | Delete a saved-posts collection by name or id |
 
 ## Usage Examples
 
 ```bash
 # View a user's profile
-opencli instagram profile nasa
+cloudl instagram profile nasa
 
 # Search users
-opencli instagram search nasa --limit 5
+cloudl instagram search nasa --limit 5
 
 # View a user's recent posts
-opencli instagram user nasa --limit 10
+cloudl instagram user nasa --limit 10
 
 # Discover trending posts
-opencli instagram explore --limit 20
+cloudl instagram explore --limit 20
 
 # List followers/following
-opencli instagram followers nasa --limit 20
-opencli instagram following nasa --limit 20
+cloudl instagram followers nasa --limit 20
+cloudl instagram following nasa --limit 20
 
 # Get your saved posts (default "All posts" feed)
-opencli instagram saved --limit 10
+cloudl instagram saved --limit 10
 
 # Get posts from a specific collection (case-insensitive name match)
-opencli instagram saved --collection inspiration --limit 10
+cloudl instagram saved --collection inspiration --limit 10
 
 # Create a new saved-posts collection
-opencli instagram collection-create "design refs"
+cloudl instagram collection-create "design refs"
 
 # Delete a collection by name (or by numeric id, e.g. 17853899493659567)
-opencli instagram collection-delete "design refs"
+cloudl instagram collection-delete "design refs"
 
 # JSON output
-opencli instagram profile nasa -f json
+cloudl instagram profile nasa -f json
 ```
 
 ### Notes on collections

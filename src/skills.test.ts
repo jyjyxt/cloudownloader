@@ -41,7 +41,7 @@ function makePackageRoot(): string {
   return root;
 }
 
-describe('ClouDownloader skills content', () => {
+describe('cloudl skills content', () => {
   it('lists only opencli-prefixed skills', () => {
     const root = makePackageRoot();
 

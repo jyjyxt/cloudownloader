@@ -215,7 +215,7 @@ Create a new public post on this site with text content.
 - success: post visible on author's timeline within 5s
 
 ## Best path
-adapter: ClouDownloader twitter post
+adapter: cloudl twitter post
 adapter_health: healthy        # healthy | suspect | broken
 preconditions:
   - logged_in
@@ -407,7 +407,7 @@ State signature:                          # OPTIONAL — for multi-step internal
   dom_anchor: <a11y role+name OR semantic selector>
 
 Evidence:
-- observed_with: ClouDownloader browser <session> <command>
+- observed_with: cloudl browser <session> <command>
 - trace: <path to trace artifact, optional>
 ```
 
@@ -420,7 +420,7 @@ do: <agent action, adapter or semantic browser command>
 post: <URL / state / output that proves success>
 fail: <failure signal 1> | <signal 2> | <signal 3>
 recover: <fallback instruction>; adapter_health_update: <adapter> -> suspect
-evidence: ClouDownloader browser <cmd>
+evidence: cloudl browser <cmd>
 ```
 
 字段分隔符约定（避免 ambiguity）：
@@ -428,8 +428,8 @@ evidence: ClouDownloader browser <cmd>
 | 符号 | 用途 | 例 |
 |---|---|---|
 | `\|` | 多 failure signal 平级枚举（"任一发生即视为失败"）| `fail: button_not_found \| /flow/login redirect` |
-| `\|\|` | 多 do path / recovery path **fallback priority**（"前者失败试后者"）| `do: ClouDownloader twitter like <url> \|\| click [data-testid="like"]` |
-| `;` | 多 recovery 指令 **sequential**（"逐条执行"）| `recover: adapter_health_update: ClouDownloader twitter like -> suspect; dom_click within card scope` |
+| `\|\|` | 多 do path / recovery path **fallback priority**（"前者失败试后者"）| `do: cloudl twitter like <url> \|\| click [data-testid="like"]` |
+| `;` | 多 recovery 指令 **sequential**（"逐条执行"）| `recover: adapter_health_update: cloudl twitter like -> suspect; dom_click within card scope` |
 
 字段语义完全等价 Form A，**推荐 Form B**，密集站避免 verbose markdown 把 page 撑爆。
 
@@ -445,8 +445,8 @@ evidence: ClouDownloader browser <cmd>
 - 一般是 page state（"on /home"）+ auth state（"logged_in"）+ UI state（"compose dialog not yet open"）
 
 **Do**：实际操作。优先级：
-1. 已有 adapter 命令（`ClouDownloader twitter post`）
-2. semantic browser command（`ClouDownloader browser click "Post" button`）
+1. 已有 adapter 命令（`cloudl twitter post`）
+2. semantic browser command（`cloudl browser click "Post" button`）
 3. 显式 selector（最后选项，写 stable anchor 不是裸 CSS）
 
 **Postconditions**：成功观察信号。必须具体 — "page changed" 不算，"URL is /compose AND textarea is focused" 才算。
@@ -486,11 +486,11 @@ evidence: ClouDownloader browser <cmd>
 ```yaml
 ### action:like_tweet
 pre: card visible AND (tweet_url known OR card permalink anchor extractable)
-do: ClouDownloader twitter like <tweet-url> || click [data-testid="like"] (within card scope)
+do: cloudl twitter like <tweet-url> || click [data-testid="like"] (within card scope)
 post: testid 翻转 like -> unlike，icon 红色
 fail: testid 不变 | 弹 login modal
-recover: adapter_health_update: ClouDownloader twitter like -> suspect; dom_click within card scope
-evidence: ClouDownloader twitter like + ClouDownloader browser click
+recover: adapter_health_update: cloudl twitter like -> suspect; dom_click within card scope
+evidence: cloudl twitter like + cloudl browser click
 ```
 
 两层 routing 不冲突：
@@ -561,7 +561,7 @@ sitemap 内部多文件互相引用。引用格式：
 
 agent 发现新路径 / stale 修正 / 半成品流程时写 draft。**draft 必须放在 `sitemap/` 目录内**，命名为 `sitemap/draft-<topic>.md` 或 `sitemap/pages/<page>.draft.md`。
 
-**❌ 不要**放在父目录（如 `~/.opencli/sites/<site>/sitemap.draft.md`） — `ClouDownloader browser open` 的 sitemap availability 检测只看 `sitemap/` 目录是否存在。draft 放父目录 → 检测不到 → agent 不会被提醒"有 sitemap" → 你的发现没人用。
+**❌ 不要**放在父目录（如 `~/.opencli/sites/<site>/sitemap.draft.md`） — `cloudl browser open` 的 sitemap availability 检测只看 `sitemap/` 目录是否存在。draft 放父目录 → 检测不到 → agent 不会被提醒"有 sitemap" → 你的发现没人用。
 
 正确：
 ```
@@ -581,7 +581,7 @@ agent 发现新路径 / stale 修正 / 半成品流程时写 draft。**draft 必
 
 ### 5.2 `site-alias.json`（optional, Phase 2）
 
-`ClouDownloader browser open` 用 adapter registry 把 hostname → site 映射（如 `news.ycombinator.com → hackernews`）。如果 sitemap 先于 adapter 存在（即一个站还没人写 adapter 但有人写了 sitemap），registry 没数据，sitemap dir 检测不到。
+`cloudl browser open` 用 adapter registry 把 hostname → site 映射（如 `news.ycombinator.com → hackernews`）。如果 sitemap 先于 adapter 存在（即一个站还没人写 adapter 但有人写了 sitemap），registry 没数据，sitemap dir 检测不到。
 
 future fix：sitemap dir 内放 `site-alias.json` 声明它服务的 hostname：
 
@@ -633,7 +633,7 @@ sitemap 是 hint，browser state 是 truth。当冲突时：
 
 ### 7.3 Reality check
 
-- action `Postconditions` 里的 `url_pattern` / `dom_anchor` → 用 `ClouDownloader browser` 实跑一遍，验证 anchor 仍可 resolve
+- action `Postconditions` 里的 `url_pattern` / `dom_anchor` → 用 `cloudl browser` 实跑一遍，验证 anchor 仍可 resolve
 - workflow `State signature.url_pattern` → 同上
 
 失败 → 自动倒 `last_verified` 30 天前。
@@ -657,4 +657,4 @@ sitemap 是 hint，browser state 是 truth。当冲突时：
 
 1. **`state_signature` 用什么 DSL**：现在写 `url_pattern: <regex>` + `dom_anchor: <semantic>`，未来可能需要更结构化（如 JSON path / xpath / a11y tree path）。等 PoC 实践后定
 2. **多语言站 anchor**：现在建议 a11y role + name；不同 locale name 不同。是否一个 anchor 列表多 locale，还是一个 sitemap per locale？PoC 后决
-3. **Validation cron 实现位置**：作为 OpenCLI 内置命令 `ClouDownloader sitemap audit`？还是独立 GitHub Action？Phase 2 决
+3. **Validation cron 实现位置**：作为 OpenCLI 内置命令 `cloudl sitemap audit`？还是独立 GitHub Action？Phase 2 决

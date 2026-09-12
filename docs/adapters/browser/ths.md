@@ -8,19 +8,19 @@ Access 同花顺 (Tonghuashun / THS) hot-stock data from the terminal.
 
 | Command | Description |
 |---------|-------------|
-| `opencli ths hot-rank` | 同花顺热股榜 (THS hot-stock ranking) |
+| `cloudl ths hot-rank` | 同花顺热股榜 (THS hot-stock ranking) |
 
 ## Usage Examples
 
 ```bash
 # Top 20 hot stocks (default)
-opencli ths hot-rank
+cloudl ths hot-rank
 
 # Top 50 hot stocks
-opencli ths hot-rank --limit 50
+cloudl ths hot-rank --limit 50
 
 # JSON output
-opencli ths hot-rank -f json
+cloudl ths hot-rank -f json
 ```
 
 ## Options

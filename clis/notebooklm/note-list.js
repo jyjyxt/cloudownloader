@@ -18,11 +18,11 @@ cli({
         await requireNotebooklmSession(page);
         const state = await getNotebooklmPageState(page);
         if (state.kind !== 'notebook') {
-            throw new EmptyResultError('opencli notebooklm note-list', 'No NotebookLM notebook is open in the adapter session. Run `opencli notebooklm open <notebook>` first.');
+            throw new EmptyResultError('cloudl notebooklm note-list', 'No NotebookLM notebook is open in the adapter session. Run `cloudl notebooklm open <notebook>` first.');
         }
         const rows = await listNotebooklmNotesFromPage(page);
         if (rows.length > 0)
             return rows;
-        throw new EmptyResultError('opencli notebooklm note-list', 'No NotebookLM notes are visible in the Studio panel. Reload the notebook page or close the note editor and retry.');
+        throw new EmptyResultError('cloudl notebooklm note-list', 'No NotebookLM notes are visible in the Studio panel. Reload the notebook page or close the note editor and retry.');
     },
 });

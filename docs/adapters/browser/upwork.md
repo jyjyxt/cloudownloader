@@ -6,34 +6,34 @@
 
 | Command | Description |
 |---------|-------------|
-| `opencli upwork search <query>` | Upwork keyword job search (logged-in browser session, US site) |
-| `opencli upwork feed [tab]` | Personalized jobs feed — `best-matches` (default) or `most-recent` |
-| `opencli upwork detail <id>` | Read the full Upwork job posting by ciphertext id |
+| `cloudl upwork search <query>` | Upwork keyword job search (logged-in browser session, US site) |
+| `cloudl upwork feed [tab]` | Personalized jobs feed — `best-matches` (default) or `most-recent` |
+| `cloudl upwork detail <id>` | Read the full Upwork job posting by ciphertext id |
 
 ## Usage Examples
 
 ```bash
 # Search jobs by keyword (default 10 rows, sort by recency)
-opencli upwork search "python"
+cloudl upwork search "python"
 
 # Filter and paginate
-opencli upwork search "react developer" --location "United States" --sort relevance --page 2 --per_page 25
+cloudl upwork search "react developer" --location "United States" --sort relevance --page 2 --per_page 25
 
 # Personalized recommended feed (requires login)
-opencli upwork feed --limit 20
+cloudl upwork feed --limit 20
 
 # Switch to the chronological feed
-opencli upwork feed most-recent --limit 10
+cloudl upwork feed most-recent --limit 10
 
 # Full job posting (id is the ciphertext form from `search` / `feed`)
-opencli upwork detail "~022055006392174412621"
+cloudl upwork detail "~022055006392174412621"
 
 # Detail also accepts the full /jobs/ URL
-opencli upwork detail "https://www.upwork.com/jobs/~022055006392174412621"
+cloudl upwork detail "https://www.upwork.com/jobs/~022055006392174412621"
 
 # JSON output
-opencli upwork search "python" -f json
-opencli upwork detail "~022055006392174412621" -f json
+cloudl upwork search "python" -f json
+cloudl upwork detail "~022055006392174412621" -f json
 ```
 
 ## Output

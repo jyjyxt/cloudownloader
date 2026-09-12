@@ -20,7 +20,7 @@ OpenCLI 通过轻量级 **Browser Bridge** Chrome 扩展 + 微守护进程连接
 ## 验证
 
 ```bash
-ClouDownloader doctor            # 检查扩展 + 守护进程连接
+cloudl doctor            # 检查扩展 + 守护进程连接
 ```
 
 ## 多 Tab 定位
@@ -28,41 +28,41 @@ ClouDownloader doctor            # 检查扩展 + 守护进程连接
 浏览器命令必须紧跟一个 `<session>` 位置参数。同一个多步骤流程使用同一个 session；并行任务使用不同 session 隔离。
 
 ```bash
-ClouDownloader browser baidu open https://www.baidu.com/
-ClouDownloader browser baidu tab list
-ClouDownloader browser baidu tab new https://www.baidu.com/
-ClouDownloader browser baidu eval --tab <targetId> 'document.title'
-ClouDownloader browser baidu tab select <targetId>
-ClouDownloader browser baidu get title
-ClouDownloader browser baidu tab close <targetId>
+cloudl browser baidu open https://www.baidu.com/
+cloudl browser baidu tab list
+cloudl browser baidu tab new https://www.baidu.com/
+cloudl browser baidu eval --tab <targetId> 'document.title'
+cloudl browser baidu tab select <targetId>
+cloudl browser baidu get title
+cloudl browser baidu tab close <targetId>
 ```
 
 规则如下：
 
-- `ClouDownloader browser <session> open <url>` 和 `ClouDownloader browser <session> tab new [url]` 都会返回 `targetId`。
-- `ClouDownloader browser <session> tab list` 会打印当前已存在 tab 的 `targetId`。
+- `cloudl browser <session> open <url>` 和 `cloudl browser <session> tab new [url]` 都会返回 `targetId`。
+- `cloudl browser <session> tab list` 会打印当前已存在 tab 的 `targetId`。
 - `--tab <targetId>` 会把单条 browser 命令路由到对应 tab。
 - `tab new` 只会新建 tab，不会改变默认浏览器目标。
-- `tab select <targetId>` 会把该 tab 设为后续未显式指定 target 的 `ClouDownloader browser ...` 命令默认目标。
+- `tab select <targetId>` 会把该 tab 设为后续未显式指定 target 的 `cloudl browser ...` 命令默认目标。
 - `tab close <targetId>` 会关闭该 tab；如果它正好是当前默认目标，会一并清掉这条默认绑定。
 
 ## Session 生命周期
 
-如果你希望多条 `ClouDownloader browser` 命令持续操作同一个页面，请使用稳定的 session 名称：
+如果你希望多条 `cloudl browser` 命令持续操作同一个页面，请使用稳定的 session 名称：
 
 ```bash
-ClouDownloader browser my-session open https://example.com
-ClouDownloader browser my-session state
-ClouDownloader browser my-session extract "main"
+cloudl browser my-session open https://example.com
+cloudl browser my-session state
+cloudl browser my-session extract "main"
 ```
 
 OpenCLI 拥有的 browser session 使用交互式 tab lease，默认空闲超时为 10 分钟。完成后可以显式释放：
 
 ```bash
-ClouDownloader browser my-session close
+cloudl browser my-session close
 ```
 
-如果要把 OpenCLI 绑定到你已经手动打开的 Chrome tab，请使用 `ClouDownloader browser <session> bind`。绑定 session 没有 owned session 的 idle close 计时器，会一直保持到 `unbind`、tab 关闭、窗口关闭或 daemon 重启。对于 OpenCLI 自己创建的 owned session，使用 `--window foreground` 可以在可见自动化窗口里观察 OpenCLI 操作；使用 `--window background` 可以让这个自动化窗口留在后台。
+如果要把 OpenCLI 绑定到你已经手动打开的 Chrome tab，请使用 `cloudl browser <session> bind`。绑定 session 没有 owned session 的 idle close 计时器，会一直保持到 `unbind`、tab 关闭、窗口关闭或 daemon 重启。对于 OpenCLI 自己创建的 owned session，使用 `--window foreground` 可以在可见自动化窗口里观察 OpenCLI 操作；使用 `--window background` 可以让这个自动化窗口留在后台。
 
 `OpenCLI Browser` 和 `OpenCLI Adapter` tab group 是扩展管理的自动化容器；请不要把自己的长期 tab 放进去，也不要重命名。
 
@@ -71,7 +71,7 @@ ClouDownloader browser my-session close
 Daemon 在首次运行浏览器命令时自动启动，之后保持常驻运行。
 
 ```bash
-ClouDownloader daemon stop      # 优雅关停
+cloudl daemon stop      # 优雅关停
 ```
 
-Daemon 为常驻模式，会一直运行直到你显式停止（`ClouDownloader daemon stop`）或卸载包。
+Daemon 为常驻模式，会一直运行直到你显式停止（`cloudl daemon stop`）或卸载包。

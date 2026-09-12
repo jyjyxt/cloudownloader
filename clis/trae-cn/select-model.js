@@ -6,7 +6,7 @@ export const selectModelCommand = cli({
   name: 'select-model',
   access: 'write',
   description: 'Select a model in the current Trae CN chat input',
-  example: 'OPENCLI_CDP_ENDPOINT=http://127.0.0.1:39240 OPENCLI_CDP_TARGET=talk opencli trae-cn select-model "GPT 5.4" -f json',
+  example: 'OPENCLI_CDP_ENDPOINT=http://127.0.0.1:39240 OPENCLI_CDP_TARGET=talk cloudl trae-cn select-model "GPT 5.4" -f json',
   domain: 'localhost',
   strategy: Strategy.UI,
   browser: true,

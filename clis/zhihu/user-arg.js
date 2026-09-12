@@ -12,7 +12,7 @@ const PEOPLE_PATH_RE = /^\/people\/([A-Za-z0-9_-]+)\/?$/;
 export function parseZhihuUser(input) {
   const value = String(input ?? '').trim();
   if (!value) {
-    throw new CliError('INVALID_INPUT', 'A Zhihu user is required', 'Example: opencli zhihu user wen-jie-16-47');
+    throw new CliError('INVALID_INPUT', 'A Zhihu user is required', 'Example: cloudl zhihu user wen-jie-16-47');
   }
   const prefixMatch = value.match(USER_PREFIX_RE);
   if (prefixMatch) return prefixMatch[1];

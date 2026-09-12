@@ -17,7 +17,7 @@ cli({
   name: 'team-map-pool',
   description: 'Read the visible HLTV team map-pool page with win rate, pick rate, and ban rate',
   access: 'read',
-  example: 'opencli hltv team-map-pool 11283/falcons -f json',
+  example: 'cloudl hltv team-map-pool 11283/falcons -f json',
   domain: 'www.hltv.org',
   strategy: Strategy.UI,
   browser: true,

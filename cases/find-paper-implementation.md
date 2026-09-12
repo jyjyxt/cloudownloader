@@ -21,17 +21,17 @@ Worked example: "Direct Preference Optimization" (DPO).
 #    Note: arxiv free-text search ranks by recency, so the original DPO
 #    paper does not always come back first. When the canonical id is
 #    already known, hit `arxiv paper <id>` directly.
-opencli arxiv search "Direct Preference Optimization" --limit 5 -f json
-opencli arxiv paper 2305.18290 -f json
+cloudl arxiv search "Direct Preference Optimization" --limit 5 -f json
+cloudl arxiv paper 2305.18290 -f json
 
 # 2. dblp bibliography record + co-authors + venue history
-opencli dblp search "Direct Preference Optimization" --limit 5 -f json
+cloudl dblp search "Direct Preference Optimization" --limit 5 -f json
 
 # 3. Community uptake on Hugging Face: trending Daily Papers that mention DPO
-opencli hf top --period monthly --limit 50 -f json | jq '.[] | select(.title | test("DPO|preference"; "i"))'
+cloudl hf top --period monthly --limit 50 -f json | jq '.[] | select(.title | test("DPO|preference"; "i"))'
 
 # 4. Conference review record (if posted to OpenReview)
-opencli openreview search "Direct Preference Optimization" --limit 5 -f json
+cloudl openreview search "Direct Preference Optimization" --limit 5 -f json
 ```
 
 Three of the four are public-strategy adapters, no browser session needed. The OpenReview call also lands without auth for public venues.
@@ -50,8 +50,8 @@ I dump all four JSON outputs into a single LLM call with the prompt: *"Build a o
 ## Why this is worth a CLI chain
 
 - Each adapter alone is just "search a website". The value is the chain. Four `opencli` calls feed into one LLM call. No browser, no copy-paste.
-- Output is identifier-rich (arxiv id, dblp key, venue id, HF paper id). I can re-feed any of those into the next call, e.g. once I find a follow-up arxiv id from HF Daily Papers I run `opencli arxiv paper <new-id>` immediately.
+- Output is identifier-rich (arxiv id, dblp key, venue id, HF paper id). I can re-feed any of those into the next call, e.g. once I find a follow-up arxiv id from HF Daily Papers I run `cloudl arxiv paper <new-id>` immediately.
 - Survives use inside an agent loop. Same chain runs unattended for a batch of 20 papers from a reading list.
 - Zero token cost for the discovery half. Only the final summary step pays for inference.
 
-Without `opencli dblp search` (added in #1299) and `opencli openreview search` (added in #1294), this whole pipeline used to require either web scraping in agent code or paying for a research-paper API. Both adapters being public-strategy means they slot in cleanly.
+Without `cloudl dblp search` (added in #1299) and `cloudl openreview search` (added in #1294), this whole pipeline used to require either web scraping in agent code or paying for a research-paper API. Both adapters being public-strategy means they slot in cleanly.

@@ -244,7 +244,7 @@ async function discoverPluginDir(dir: string, site: string): Promise<void> {
       // This typically means esbuild transpilation failed during plugin install.
       log.warn(
         `Plugin ${site}/${file}: no compiled .js found. ` +
-        `Run "ClouDownloader plugin update ${site}" to re-transpile, or install esbuild.`
+        `Run "cloudl plugin update ${site}" to re-transpile, or install esbuild.`
       );
     }
   }));

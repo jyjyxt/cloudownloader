@@ -3,7 +3,7 @@
 import { ArgumentError, CommandExecutionError, EmptyResultError } from '@jackwener/opencli/errors';
 
 export const STEAM_STORE = 'https://store.steampowered.com';
-const UA = 'opencli-steam-adapter (+https://github.com/jackwener/opencli)';
+const UA = 'opencli-steam-adapter (+https://github.com/jyjyxt/cloudownloader)';
 
 export function requireString(value, label) {
     const s = String(value ?? '').trim();

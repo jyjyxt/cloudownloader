@@ -19,7 +19,7 @@ OpenCLI 当前测试主要分成四类：
 - `src/commanderAdapter.test.ts`
 - `src/registry.test.ts`
 - `src/execution.test.ts`
-- `src/validate.ts` / `opencli validate`
+- `src/validate.ts` / `cloudl validate`
 
 ## 本地默认策略
 
@@ -33,10 +33,10 @@ OpenCLI 当前测试主要分成四类：
 2. 改动 adapter 发现、注册、验证逻辑：
    - 跑 `src/registry.test.ts`
    - 跑 `src/execution.test.ts`
-   - 跑 `opencli validate`
+   - 跑 `cloudl validate`
 3. 改动 browser / daemon / runtime：
    - 跑对应 `src/*test.ts`
-   - 必要时补一条 `tests/e2e/*` 或手动 `opencli browser ...` 验证
+   - 必要时补一条 `tests/e2e/*` 或手动 `cloudl browser ...` 验证
 4. 改动共享底层、跨多个模块、或 merge 前需要更高信心：
    - 再扩大到 `npm test`
 

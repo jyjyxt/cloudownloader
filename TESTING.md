@@ -169,7 +169,7 @@ it('producthunt me fails gracefully without login', async () => {
 }, 60_000);
 ```
 
-### 新增管理命令（如 `opencli export`）
+### 新增管理命令（如 `cloudl export`）
 
 在 `tests/e2e/management.test.ts` 添加测试；如果新命令会影响输出格式，也同步补 `tests/e2e/output-formats.test.ts`。
 

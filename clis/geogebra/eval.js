@@ -11,7 +11,7 @@ cli({
   strategy: Strategy.PUBLIC,
   browser: true,
   navigateBefore: false,
-  example: 'opencli geogebra eval "A=(0,0);B=(4,0);c=Circle(A,B);d=Circle(B,A);C=Intersect(c,d,1);Polygon(A,B,C)"',
+  example: 'cloudl geogebra eval "A=(0,0);B=(4,0);c=Circle(A,B);d=Circle(B,A);C=Intersect(c,d,1);Polygon(A,B,C)"',
   args: [
     { name: 'command', positional: true, required: true, help: 'GeoGebra command string (use ; to chain multiple commands)' },
   ],

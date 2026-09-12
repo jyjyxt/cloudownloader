@@ -6,7 +6,7 @@ export const sendCommand = cli({
   name: 'send',
   access: 'write',
   description: 'Send a prompt into the current Trae CN chat input',
-  example: 'OPENCLI_CDP_ENDPOINT=http://127.0.0.1:39240 OPENCLI_CDP_TARGET=talk opencli trae-cn send "请执行你的任务" -f json',
+  example: 'OPENCLI_CDP_ENDPOINT=http://127.0.0.1:39240 OPENCLI_CDP_TARGET=talk cloudl trae-cn send "请执行你的任务" -f json',
   domain: 'localhost',
   strategy: Strategy.UI,
   browser: true,

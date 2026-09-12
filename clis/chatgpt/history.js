@@ -26,7 +26,7 @@ export const historyCommand = cli({
         const limit = requirePositiveInt(
             Number(kwargs.limit ?? 20),
             'chatgpt history --limit',
-            'Example: opencli chatgpt history --limit 20',
+            'Example: cloudl chatgpt history --limit 20',
         );
         await ensureOnChatGPT(page);
         await ensureChatGPTLogin(page, 'ChatGPT history requires a logged-in ChatGPT session.');

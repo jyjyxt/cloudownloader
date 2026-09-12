@@ -78,7 +78,7 @@ cli({
   func: async (page, kwargs) => {
     const id = String(kwargs.id ?? '');
     if (!/^\d+$/.test(id)) {
-      throw new ArgumentError(`Invalid novel ID: ${id}`, 'Example: opencli pixiv novel 10588915');
+      throw new ArgumentError(`Invalid novel ID: ${id}`, 'Example: cloudl pixiv novel 10588915');
     }
     const body = await pixivFetch(page, `/ajax/novel/${id}`, {
       notFoundMsg: `Novel not found: ${id}`,

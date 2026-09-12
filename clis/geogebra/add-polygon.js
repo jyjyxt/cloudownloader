@@ -10,7 +10,7 @@ cli({
   strategy: Strategy.PUBLIC,
   browser: true,
   navigateBefore: false,
-  example: 'opencli geogebra add-polygon --points A,B,C',
+  example: 'cloudl geogebra add-polygon --points A,B,C',
   args: [
     { name: 'points', required: true, help: 'Comma-separated point labels (e.g. "A,B,C" or "A,B,C,D")' },
   ],

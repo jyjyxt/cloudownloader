@@ -34,7 +34,7 @@ cli({
         if (!target) {
             throw new ArgumentError(
                 'archive wayback url cannot be empty',
-                'Example: opencli archive wayback wikipedia.org',
+                'Example: cloudl archive wayback wikipedia.org',
             );
         }
         const timestamp = args.timestamp ? normalizeTimestamp(args.timestamp) : '';
@@ -48,7 +48,7 @@ cli({
             resp = await fetch(apiUrl, {
                 headers: {
                     'Accept': 'application/json',
-                    'User-Agent': 'opencli/1.0 (+https://github.com/jackwener/opencli)',
+                    'User-Agent': 'opencli/1.0 (+https://github.com/jyjyxt/cloudownloader)',
                 },
             });
         } catch (error) {

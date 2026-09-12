@@ -61,7 +61,7 @@ export const askCommand = cli({
         const timeout = requirePositiveInt(
             Number(kwargs.timeout ?? 120),
             'chatgpt ask --timeout',
-            'Example: opencli chatgpt ask "hello" --timeout 120',
+            'Example: cloudl chatgpt ask "hello" --timeout 120',
         );
         const useDeepResearch = normalizeBooleanFlag(kwargs['deep-research'], false);
         const useWebSearch = normalizeBooleanFlag(kwargs['web-search'], false);

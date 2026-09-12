@@ -108,7 +108,7 @@ Core techniques:
 
 ## Pitfalls & Gotchas
 
-1. **Port conflicts (EADDRINUSE)**: Only one app per port. Use unique ports matching the builtin registry: Codex=9238, Doubao=9225, Cursor=9226, ChatWise=9228, Discord=9232, Antigravity=9234, ChatGPT=9236. Avoid `9222`, the default Chrome DevTools port the opencli browser bridge already binds.
+1. **Port conflicts (EADDRINUSE)**: Only one app per port. Use unique ports matching the builtin registry: Codex=9238, Doubao=9225, Cursor=9226, ChatWise=9228, Discord=9232, Antigravity=9234, ChatGPT=9236. Avoid `9222`, the default Chrome DevTools port the cloudl browser bridge already binds.
 2. **IPage abstraction**: OpenCLI wraps the browser page as `IPage` (`src/types.ts`). Use `page.pressKey()` and `page.evaluate()`, NOT direct DOM APIs
 3. **Timing**: Always add `await page.wait(0.5)` to `1.0` after DOM mutations. Returning too early disconnects prematurely
 4. **AppleScript requires Accessibility**: Terminal app must be granted permission in System Settings → Privacy & Security → Accessibility

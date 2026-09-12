@@ -17,7 +17,7 @@ Resolve a search thread id into complete message bodies and optional attachment 
 
 ## Best path
 
-adapter: `opencli gmail thread <thread>`; use `opencli gmail attachments <thread>` for attachment rows
+adapter: `cloudl gmail thread <thread>`; use `cloudl gmail attachments <thread>` for attachment rows
 adapter_health: healthy
 preconditions: signed in; target id valid
 estimated_turns: 1
@@ -25,7 +25,7 @@ estimated_turns: 1
 ## Fallback path
 
 on_adapter_fail:
-1. `adapter_health_update: opencli gmail thread -> suspect`
+1. `adapter_health_update: cloudl gmail thread -> suspect`
 2. Search again so the target `[data-legacy-thread-id]` row is mounted.
 3. Open that row; expand collapsed messages.
 4. Extract `.a3s` and `.aQH` only inside each `[data-message-id]` container.

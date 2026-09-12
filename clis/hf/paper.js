@@ -21,7 +21,7 @@ cli({
     func: async (args) => {
         const raw = String(args.id ?? '').trim();
         if (!raw) {
-            throw new ArgumentError('hf paper id cannot be empty', 'Example: opencli hf paper 1706.03762');
+            throw new ArgumentError('hf paper id cannot be empty', 'Example: cloudl hf paper 1706.03762');
         }
         if (!ARXIV_ID_PATTERN.test(raw)) {
             throw new ArgumentError(

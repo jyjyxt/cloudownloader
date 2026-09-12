@@ -243,7 +243,7 @@ Recommended fix:
 - Reframe the section as:
   - “Representative built-in commands”
   - “Sample sites”
-- Keep `opencli list` and `docs/adapters/index.md` as the full registry surface.
+- Keep `cloudl list` and `docs/adapters/index.md` as the full registry surface.
 
 ### 8. `docs/comparison.md` contains stale scale claims
 

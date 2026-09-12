@@ -8,7 +8,7 @@ import { ArgumentError, CommandExecutionError, EmptyResultError } from '@jackwen
 
 export const NUGET_SEARCH_BASE = 'https://azuresearch-usnc.nuget.org';
 export const NUGET_REGISTRATION_BASE = 'https://api.nuget.org/v3/registration5-semver1';
-const UA = 'opencli-nuget-adapter/1.0 (+https://github.com/jackwener/opencli; mailto:opencli@example.com)';
+const UA = 'opencli-nuget-adapter/1.0 (+https://github.com/jyjyxt/cloudownloader; mailto:opencli@example.com)';
 
 // NuGet ID grammar (NuGet docs §package-id): up to 100 chars, alnum + `.` + `_` + `-`,
 // must start with letter/digit. Case-insensitive; we lowercase for the registration URL

@@ -40,9 +40,9 @@ the live extractor walks.
 
 1. **Capture** the page's HTML from a live verify run:
    ```bash
-   ClouDownloader browser open https://www.example.com/<page>
+   cloudl browser open https://www.example.com/<page>
    # In another shell, dump page.content():
-   ClouDownloader browser eval 'document.documentElement.outerHTML' \
+   cloudl browser eval 'document.documentElement.outerHTML' \
      > /tmp/raw-<command>.html
    ```
 

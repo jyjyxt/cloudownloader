@@ -24,11 +24,11 @@ source: global
 ```yaml
 ### action:upload_images
 pre: on /publish/publish?target=image, logged_in, image files local paths ready
-do: opencli xiaohongshu publish --title "..." "..." --images /path/a.jpg,/path/b.jpg ... (走 CDP DOM.setFileInputFiles)
+do: cloudl xiaohongshu publish --title "..." "..." --images /path/a.jpg,/path/b.jpg ... (走 CDP DOM.setFileInputFiles)
 post: image preview 区出现缩略图，3s 内 upload settle
 fail: file input 找不到 | upload 卡住 | "上传失败" toast
 recover: 检查图片格式 (jpg/png/webp <10MB)；最多 9 张 (MAX_IMAGES)；adapter 内置 base64 fallback；都 fail -> adapter_health suspect
-evidence: opencli xiaohongshu publish
+evidence: cloudl xiaohongshu publish
 ```
 
 ```yaml
@@ -38,37 +38,37 @@ do: type "<title>" into title input (visible filter) + type "<body>" into body c
 post: 标题 + 正文 v-model 同步，submit button 候选 enable
 fail: 输入到 hidden decoy input (v-model 不 commit) | character limit 超 (title >20 / body >1000)
 recover: 标题截到 20 字符内；body 截到 1000 内；fallback selector 加 `offsetWidth > 50` filter
-evidence: opencli xiaohongshu publish
+evidence: cloudl xiaohongshu publish
 ```
 
 ```yaml
 ### action:add_topics
 pre: title + body filled, topic 输入位置 visible
-do: opencli xiaohongshu publish --topics 生活,旅行 (adapter 内部处理 #话题 trigger + 选项 click)
+do: cloudl xiaohongshu publish --topics 生活,旅行 (adapter 内部处理 #话题 trigger + 选项 click)
 post: 正文末尾出现 #话题 inline 链接
 fail: 话题 popup 不弹 | 选项 click 不响应
 recover: 跳过 topics 重试 publish（非必需）；persistent fail adapter_health suspect
-evidence: opencli xiaohongshu publish
+evidence: cloudl xiaohongshu publish
 ```
 
 ```yaml
 ### action:submit_publish
 pre: title / images / body 都 ready
-do: opencli xiaohongshu publish ... (adapter 内部走 shadow DOM instance method invocation: `_onPublish` / `onPublish` / `_onSubmit` / `_handlePublish`)
+do: cloudl xiaohongshu publish ... (adapter 内部走 shadow DOM instance method invocation: `_onPublish` / `onPublish` / `_onSubmit` / `_handlePublish`)
 post: redirect 到 /creator/notes 或 toast "发布成功"
 fail: shadow DOM method invocation 全 miss | "发布失败" toast | 安全验证 modal 弹
 recover: 安全验证 modal -> 停手报 user；其他 fail -> adapter_health suspect 然后看 fallback (但 shadow DOM publish 没有 task-agent-能跑的 fallback，必须 adapter)
-evidence: opencli xiaohongshu publish; opencli xiaohongshu creator-notes (verify new note)
+evidence: cloudl xiaohongshu publish; cloudl xiaohongshu creator-notes (verify new note)
 ```
 
 ```yaml
 ### action:save_draft
 pre: 至少 title 或 images 之一存在
-do: opencli xiaohongshu publish --draft ... (adapter 内部走 `_onSave` / `_onSaveDraft` / `_onDraft`)
-post: redirect /creator/notes/drafts 或 toast "已保存草稿"；可通过 opencli xiaohongshu drafts 列出
+do: cloudl xiaohongshu publish --draft ... (adapter 内部走 `_onSave` / `_onSaveDraft` / `_onDraft`)
+post: redirect /creator/notes/drafts 或 toast "已保存草稿"；可通过 cloudl xiaohongshu drafts 列出
 fail: 同 submit_publish
 recover: 同 submit_publish
-evidence: opencli xiaohongshu publish --draft; opencli xiaohongshu drafts
+evidence: cloudl xiaohongshu publish --draft; cloudl xiaohongshu drafts
 ```
 
 ## Page pitfalls

@@ -6,20 +6,20 @@
 
 | Command | Description |
 |---------|-------------|
-| `opencli github whoami` | Show the currently logged-in GitHub account |
-| `opencli github login` | Open GitHub login and wait until the browser session is authenticated |
+| `cloudl github whoami` | Show the currently logged-in GitHub account |
+| `cloudl github login` | Open GitHub login and wait until the browser session is authenticated |
 
 ## Usage Examples
 
 ```bash
 # Check current GitHub identity
-opencli github whoami
+cloudl github whoami
 
 # Open the login page if the current browser session is not authenticated
-opencli github login
+cloudl github login
 
 # JSON output for agents/scripts
-opencli github whoami -f json
+cloudl github whoami -f json
 ```
 
 ## Prerequisites

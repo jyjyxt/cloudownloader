@@ -11,43 +11,43 @@ series pages from the rendered DOM.
 
 | Command | Description |
 |---------|-------------|
-| `opencli hltv search <query>` | Search players, teams, events, and articles |
-| `opencli hltv player-summary` | Read a player's summary page and complete stats link |
-| `opencli hltv player-matches` | Read a player's stats Matches tab |
-| `opencli hltv player-form` | Aggregate recent player maps by summary, map, and opponent |
-| `opencli hltv player-map-pool` | Aggregate a player's recent maps into map-pool buckets |
-| `opencli hltv player-vs-team <team>` | Filter a player's maps against one team |
-| `opencli hltv player-teammate-impact <playerA> <playerB>` | Compare shared and non-shared map samples for two teammates |
-| `opencli hltv player-duel <playerA> <playerB>` | Compare two players on shared maps, including direct kills when available |
-| `opencli hltv match-map <match>` | Read all player rows from one mapstats page |
-| `opencli hltv match-series <match>` | Expand a BO1/BO3/BO5 into summary, map, and player rows |
-| `opencli hltv team-matches <team>` | Read recent team map results |
-| `opencli hltv team-map-pool <team>` | Read a team's visible map-pool stats |
-| `opencli hltv event-matches <event>` | Read stats match rows for one event |
+| `cloudl hltv search <query>` | Search players, teams, events, and articles |
+| `cloudl hltv player-summary` | Read a player's summary page and complete stats link |
+| `cloudl hltv player-matches` | Read a player's stats Matches tab |
+| `cloudl hltv player-form` | Aggregate recent player maps by summary, map, and opponent |
+| `cloudl hltv player-map-pool` | Aggregate a player's recent maps into map-pool buckets |
+| `cloudl hltv player-vs-team <team>` | Filter a player's maps against one team |
+| `cloudl hltv player-teammate-impact <playerA> <playerB>` | Compare shared and non-shared map samples for two teammates |
+| `cloudl hltv player-duel <playerA> <playerB>` | Compare two players on shared maps, including direct kills when available |
+| `cloudl hltv match-map <match>` | Read all player rows from one mapstats page |
+| `cloudl hltv match-series <match>` | Expand a BO1/BO3/BO5 into summary, map, and player rows |
+| `cloudl hltv team-matches <team>` | Read recent team map results |
+| `cloudl hltv team-map-pool <team>` | Read a team's visible map-pool stats |
+| `cloudl hltv event-matches <event>` | Read stats match rows for one event |
 
 ## Usage Examples
 
 ```bash
 # Search and discover HLTV entity links
-opencli hltv search niko --limit 5
+cloudl hltv search niko --limit 5
 
 # Read player pages and recent form
-opencli hltv player-summary --player 3741/niko
-opencli hltv player-matches --player 3741/niko --limit 10 -f json
-opencli hltv player-form --player 19230/m0nesy --limit 30
+cloudl hltv player-summary --player 3741/niko
+cloudl hltv player-matches --player 3741/niko --limit 10 -f json
+cloudl hltv player-form --player 19230/m0nesy --limit 30
 
 # Compare two players
-opencli hltv player-duel 3741/niko 21167/donk
-opencli hltv player-duel 19230/m0nesy 3741/niko --mode history --limit 10
+cloudl hltv player-duel 3741/niko 21167/donk
+cloudl hltv player-duel 19230/m0nesy 3741/niko --mode history --limit 10
 
 # Expand a series or inspect one mapstats URL
-opencli hltv match-series https://www.hltv.org/stats/matches/126993/spirit-vs-falcons
-opencli hltv match-map "https://www.hltv.org/stats/matches/mapstatsid/231594/falcons-vs-natus-vincere" -f json
+cloudl hltv match-series https://www.hltv.org/stats/matches/126993/spirit-vs-falcons
+cloudl hltv match-map "https://www.hltv.org/stats/matches/mapstatsid/231594/falcons-vs-natus-vincere" -f json
 
 # Team and event views
-opencli hltv team-matches 6667/falcons --limit 10
-opencli hltv team-map-pool 11283/falcons
-opencli hltv event-matches 8301 --limit 10
+cloudl hltv team-matches 6667/falcons --limit 10
+cloudl hltv team-map-pool 11283/falcons
+cloudl hltv event-matches 8301 --limit 10
 ```
 
 ## Common Subjects

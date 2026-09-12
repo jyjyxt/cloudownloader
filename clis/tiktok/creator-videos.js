@@ -17,10 +17,10 @@ function requirePositiveInt(value, label, defaultValue, maxValue) {
     const raw = value ?? defaultValue;
     const parsed = Number(raw);
     if (!Number.isInteger(parsed) || parsed <= 0) {
-        throw new ArgumentError(`${label} must be a positive integer`, `Example: opencli tiktok creator-videos --${label} ${defaultValue}`);
+        throw new ArgumentError(`${label} must be a positive integer`, `Example: cloudl tiktok creator-videos --${label} ${defaultValue}`);
     }
     if (parsed > maxValue) {
-        throw new ArgumentError(`${label} must be <= ${maxValue}`, `Example: opencli tiktok creator-videos --${label} ${maxValue}`);
+        throw new ArgumentError(`${label} must be <= ${maxValue}`, `Example: cloudl tiktok creator-videos --${label} ${maxValue}`);
     }
     return parsed;
 }
@@ -29,11 +29,11 @@ function requireCursor(value) {
     const raw = value ?? '0';
     const text = String(raw).trim();
     if (!/^\d+$/.test(text)) {
-        throw new ArgumentError('cursor must be a non-negative integer string', 'Example: opencli tiktok creator-videos --cursor 0');
+        throw new ArgumentError('cursor must be a non-negative integer string', 'Example: cloudl tiktok creator-videos --cursor 0');
     }
     const cursor = Number(text);
     if (!Number.isSafeInteger(cursor)) {
-        throw new ArgumentError('cursor must be a safe integer', 'Example: opencli tiktok creator-videos --cursor 0');
+        throw new ArgumentError('cursor must be a safe integer', 'Example: cloudl tiktok creator-videos --cursor 0');
     }
     return cursor;
 }

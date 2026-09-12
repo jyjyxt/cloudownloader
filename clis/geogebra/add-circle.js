@@ -11,7 +11,7 @@ cli({
   strategy: Strategy.PUBLIC,
   browser: true,
   navigateBefore: false,
-  example: 'opencli geogebra add-circle --center A --radius 3',
+  example: 'cloudl geogebra add-circle --center A --radius 3',
   args: [
     { name: 'center', required: true, help: 'Center point label (e.g. A)' },
     { name: 'radius', required: false, help: 'Radius value (number) or a point label on the circle' },

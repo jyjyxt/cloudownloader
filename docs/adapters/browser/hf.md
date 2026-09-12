@@ -6,49 +6,49 @@
 
 | Command | Description |
 |---------|-------------|
-| `opencli hf top` | Top upvoted Hugging Face papers |
-| `opencli hf paper <arxivId>` | Single paper detail (title / authors / summary / AI keywords / upvotes) |
-| `opencli hf models` | Top Hugging Face models (downloads / likes / trending / freshness) |
-| `opencli hf datasets` | Top Hugging Face datasets |
-| `opencli hf spaces` | Top Hugging Face Spaces (gradio / streamlit / docker / static demos) |
+| `cloudl hf top` | Top upvoted Hugging Face papers |
+| `cloudl hf paper <arxivId>` | Single paper detail (title / authors / summary / AI keywords / upvotes) |
+| `cloudl hf models` | Top Hugging Face models (downloads / likes / trending / freshness) |
+| `cloudl hf datasets` | Top Hugging Face datasets |
+| `cloudl hf spaces` | Top Hugging Face Spaces (gradio / streamlit / docker / static demos) |
 
 ## Usage Examples
 
 ```bash
 # Today's top papers
-opencli hf top --limit 10
+cloudl hf top --limit 10
 
 # Single paper detail by arXiv id (mirrors HF's paper page)
-opencli hf paper 1706.03762         # Attention Is All You Need
-opencli hf paper 2005.14165         # GPT-3 paper
+cloudl hf paper 1706.03762         # Attention Is All You Need
+cloudl hf paper 2005.14165         # GPT-3 paper
 
 # All papers (no limit)
-opencli hf top --all
+cloudl hf top --all
 
 # Specific date
-opencli hf top --date 2025-03-01
+cloudl hf top --date 2025-03-01
 
 # Weekly/monthly top papers
-opencli hf top --period weekly
-opencli hf top --period monthly
+cloudl hf top --period weekly
+cloudl hf top --period monthly
 
 # Top models by downloads (default)
-opencli hf models --limit 20
+cloudl hf models --limit 20
 
 # Top text-generation models with name filter
-opencli hf models --pipeline text-generation --search llama --sort likes --limit 10
+cloudl hf models --pipeline text-generation --search llama --sort likes --limit 10
 
 # Top datasets by likes
-opencli hf datasets --sort likes --limit 10
+cloudl hf datasets --sort likes --limit 10
 
 # Top Spaces by likes
-opencli hf spaces --limit 20
+cloudl hf spaces --limit 20
 
 # Filter Spaces by SDK
-opencli hf spaces --sdk gradio --search llm --limit 10
+cloudl hf spaces --sdk gradio --search llm --limit 10
 
 # JSON output
-opencli hf top -f json
+cloudl hf top -f json
 ```
 
 ### `top` Options
@@ -60,7 +60,7 @@ opencli hf top -f json
 | `--date` | Date in `YYYY-MM-DD` format (defaults to most recent) |
 | `--period` | Time period: `daily`, `weekly`, or `monthly` (default: daily) |
 
-Returns paper listing rows with `rank, id, title, upvotes, authors`. The `id` value round-trips into `opencli hf paper <id>`.
+Returns paper listing rows with `rank, id, title, upvotes, authors`. The `id` value round-trips into `cloudl hf paper <id>`.
 
 ### `paper` Options
 

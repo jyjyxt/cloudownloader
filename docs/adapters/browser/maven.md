@@ -8,25 +8,25 @@ Search Maven Central artifacts and pull per-artifact version histories without a
 
 | Command | Description |
 |---------|-------------|
-| `opencli maven search <query>` | Search Maven Central by keyword (artifact name, groupId, tag) |
-| `opencli maven artifact <coordinate>` | Version history for `groupId:artifactId[:version]` |
+| `cloudl maven search <query>` | Search Maven Central by keyword (artifact name, groupId, tag) |
+| `cloudl maven artifact <coordinate>` | Version history for `groupId:artifactId[:version]` |
 
 ## Usage Examples
 
 ```bash
 # Free-text search
-opencli maven search jackson --limit 10
-opencli maven search "ai.koog" --limit 5
+cloudl maven search jackson --limit 10
+cloudl maven search "ai.koog" --limit 5
 
 # Version history for a specific artifact (use `coordinate` from search rows)
-opencli maven artifact com.fasterxml.jackson.core:jackson-databind --limit 10
-opencli maven artifact com.google.guava:guava --limit 5
+cloudl maven artifact com.fasterxml.jackson.core:jackson-databind --limit 10
+cloudl maven artifact com.google.guava:guava --limit 5
 
 # Pin to a specific version
-opencli maven artifact com.google.guava:guava:33.0.0-jre
+cloudl maven artifact com.google.guava:guava:33.0.0-jre
 
 # JSON output
-opencli maven search jackson -f json
+cloudl maven search jackson -f json
 ```
 
 ## Output Columns

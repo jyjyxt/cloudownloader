@@ -9,10 +9,10 @@ function normalizeLimit(value) {
     const raw = value ?? DEFAULT_LIMIT;
     const limit = Number(raw);
     if (!Number.isInteger(limit) || limit <= 0) {
-        throw new ArgumentError('limit must be a positive integer', `Example: opencli uisdc news --limit ${DEFAULT_LIMIT}`);
+        throw new ArgumentError('limit must be a positive integer', `Example: cloudl uisdc news --limit ${DEFAULT_LIMIT}`);
     }
     if (limit > MAX_LIMIT) {
-        throw new ArgumentError(`limit must be <= ${MAX_LIMIT}`, `Example: opencli uisdc news --limit ${MAX_LIMIT}`);
+        throw new ArgumentError(`limit must be <= ${MAX_LIMIT}`, `Example: cloudl uisdc news --limit ${MAX_LIMIT}`);
     }
     return limit;
 }

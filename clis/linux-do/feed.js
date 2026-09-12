@@ -243,7 +243,7 @@ async function resolveTag(page, value) {
     const liveTag = findMatchingTag(await fetchLiveTags(page), value);
     if (liveTag)
         return liveTag;
-    throw new ArgumentError(`Unknown tag: ${value}`, 'Use "opencli linux-do tags" to list available tags');
+    throw new ArgumentError(`Unknown tag: ${value}`, 'Use "cloudl linux-do tags" to list available tags');
 }
 /**
  * 解析分类，并补齐父分类信息。
@@ -252,7 +252,7 @@ async function resolveCategory(page, value) {
     const liveCategory = findMatchingCategory(await fetchLiveCategories(page), value);
     if (liveCategory)
         return liveCategory;
-    throw new ArgumentError(`Unknown category: ${value}`, 'Use "opencli linux-do categories" to list available categories');
+    throw new ArgumentError(`Unknown category: ${value}`, 'Use "cloudl linux-do categories" to list available categories');
 }
 /**
  * 将命令参数转换为最终请求地址

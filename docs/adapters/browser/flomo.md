@@ -6,7 +6,7 @@
 
 | Command | Description |
 |---------|-------------|
-| `opencli flomo memos` | List your Flomo memos |
+| `cloudl flomo memos` | List your Flomo memos |
 
 ## What works today
 
@@ -29,19 +29,19 @@
 
 ```bash
 # List recent memos
-opencli flomo memos
+cloudl flomo memos
 
 # Fetch all memos
-opencli flomo memos --limit 200
+cloudl flomo memos --limit 200
 
 # Filter by time (Unix timestamp)
-opencli flomo memos --since 1735689600
+cloudl flomo memos --since 1735689600
 
 # Continue from a memo cursor
-opencli flomo memos --slug memo_abc123 --limit 50
+cloudl flomo memos --slug memo_abc123 --limit 50
 
 # JSON output
-opencli flomo memos --limit 200 -f json
+cloudl flomo memos --limit 200 -f json
 ```
 
 ## Prerequisites

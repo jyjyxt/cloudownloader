@@ -46,7 +46,7 @@ cli({
   name: 'player-vs-team',
   description: 'Filter a player matches page to maps played against a specific HLTV team',
   access: 'read',
-  example: 'opencli hltv player-vs-team 7020/spirit --player 3741/niko --limit 20 -f json',
+  example: 'cloudl hltv player-vs-team 7020/spirit --player 3741/niko --limit 20 -f json',
   domain: 'www.hltv.org',
   strategy: Strategy.UI,
   browser: true,

@@ -24,7 +24,7 @@ export const readCommand = cli({
         if (!Array.isArray(turns) || turns.length === 0) {
             throw new EmptyResultError(
                 'gemini read',
-                'No turns were visible. Open a Gemini conversation first or use `opencli gemini detail <id>` to navigate.',
+                'No turns were visible. Open a Gemini conversation first or use `cloudl gemini detail <id>` to navigate.',
             );
         }
         return turns.map((t, idx) => ({

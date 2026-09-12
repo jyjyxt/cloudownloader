@@ -25,7 +25,7 @@ cli({
         if (!identifier) {
             throw new ArgumentError(
                 'archive item identifier cannot be empty',
-                'Example: opencli archive item open-syllabus',
+                'Example: cloudl archive item open-syllabus',
             );
         }
         if (!IDENTIFIER_RE.test(identifier)) {
@@ -41,7 +41,7 @@ cli({
             resp = await fetch(url, {
                 headers: {
                     'Accept': 'application/json',
-                    'User-Agent': 'opencli/1.0 (+https://github.com/jackwener/opencli)',
+                    'User-Agent': 'opencli/1.0 (+https://github.com/jyjyxt/cloudownloader)',
                 },
             });
         } catch (error) {

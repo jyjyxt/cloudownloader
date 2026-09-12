@@ -80,7 +80,7 @@ describe('createPluginScaffold', () => {
     createPluginScaffold('test-readme', { dir });
     const readme = fs.readFileSync(path.join(dir, 'README.md'), 'utf-8');
 
-    expect(readme).toContain(`ClouDownloader plugin install file://${dir}`);
+    expect(readme).toContain(`cloudl plugin install file://${dir}`);
   });
 
   it('rejects invalid names', () => {

@@ -5,7 +5,7 @@
 import { ArgumentError, CommandExecutionError, EmptyResultError } from '@jackwener/opencli/errors';
 
 export const OEIS_BASE = 'https://oeis.org';
-const UA = 'opencli-oeis-adapter/1.0 (+https://github.com/jackwener/opencli; mailto:opencli@example.com)';
+const UA = 'opencli-oeis-adapter/1.0 (+https://github.com/jyjyxt/cloudownloader; mailto:opencli@example.com)';
 
 // OEIS ids are A followed by 6 zero-padded digits (older entries use 6 by convention,
 // modern entries can be longer; OEIS itself accepts any digits after A).

@@ -17,7 +17,7 @@ cli({
         await requireNotebooklmSession(page);
         const state = await getNotebooklmPageState(page);
         if (state.kind !== 'notebook') {
-            throw new EmptyResultError('opencli notebooklm summary', 'No NotebookLM notebook is open in the adapter session. Run `opencli notebooklm open <notebook>` first.');
+            throw new EmptyResultError('cloudl notebooklm summary', 'No NotebookLM notebook is open in the adapter session. Run `cloudl notebooklm open <notebook>` first.');
         }
         const domSummary = await readNotebooklmSummaryFromPage(page);
         if (domSummary)
@@ -25,6 +25,6 @@ cli({
         const rpcSummary = await getNotebooklmSummaryViaRpc(page).catch(() => null);
         if (rpcSummary)
             return [rpcSummary];
-        throw new EmptyResultError('opencli notebooklm summary', 'NotebookLM summary was not found on the current page.');
+        throw new EmptyResultError('cloudl notebooklm summary', 'NotebookLM summary was not found on the current page.');
     },
 });

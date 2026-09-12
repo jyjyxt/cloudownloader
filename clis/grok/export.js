@@ -29,7 +29,7 @@ export const grokExportCommand = cli({
   name: 'export',
   description: 'Export all visible Grok conversation history metadata',
   access: 'read',
-  example: 'opencli grok export -f yaml',
+  example: 'cloudl grok export -f yaml',
   domain: GROK_DOMAIN,
   strategy: Strategy.COOKIE,
   browser: true,

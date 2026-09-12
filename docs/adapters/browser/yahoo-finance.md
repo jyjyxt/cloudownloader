@@ -6,19 +6,19 @@
 
 | Command | Description |
 |---------|-------------|
-| `opencli yahoo-finance quote` | |
+| `cloudl yahoo-finance quote` | |
 
 ## Usage Examples
 
 ```bash
 # Quick start
-opencli yahoo-finance quote AAPL
+cloudl yahoo-finance quote AAPL
 
 # JSON output
-opencli yahoo-finance quote TSLA -f json
+cloudl yahoo-finance quote TSLA -f json
 
 # Verbose mode
-opencli yahoo-finance quote NVDA -v
+cloudl yahoo-finance quote NVDA -v
 ```
 
 ## Prerequisites

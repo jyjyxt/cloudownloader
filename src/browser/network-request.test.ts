@@ -49,12 +49,12 @@ describe('network request sanitization', () => {
         const request = sanitizeCapturedRequest({
             headers: { 'content-type': 'application/x-www-form-urlencoded' },
             bodyKind: 'string',
-            bodyPreview: 'q=opencli&tag=one&tag=two&access_token=secret&xsrf=bare-form-xsrf',
+            bodyPreview: 'q=cloudl&tag=one&tag=two&access_token=secret&xsrf=bare-form-xsrf',
         });
 
         expect(request?.body_kind).toBe('form');
         expect(request?.body).toEqual({
-            q: 'ClouDownloader',
+            q: 'cloudl',
             tag: ['one', 'two'],
             access_token: '<redacted>',
             xsrf: '<redacted>',

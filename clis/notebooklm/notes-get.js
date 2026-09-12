@@ -31,7 +31,7 @@ cli({
         await requireNotebooklmSession(page);
         const state = await getNotebooklmPageState(page);
         if (state.kind !== 'notebook') {
-            throw new EmptyResultError('opencli notebooklm notes-get', 'No NotebookLM notebook is open in the adapter session. Run `opencli notebooklm open <notebook>` first.');
+            throw new EmptyResultError('cloudl notebooklm notes-get', 'No NotebookLM notebook is open in the adapter session. Run `cloudl notebooklm open <notebook>` first.');
         }
         const query = typeof kwargs.note === 'string' ? kwargs.note : String(kwargs.note ?? '');
         const visible = await readNotebooklmVisibleNoteFromPage(page);
@@ -40,8 +40,8 @@ cli({
         const rows = await listNotebooklmNotesFromPage(page);
         const listed = findNotebooklmNoteRow(rows, query);
         if (listed) {
-            throw new EmptyResultError('opencli notebooklm notes-get', `Note "${query}" is listed in Studio, but opencli currently reads note content only from the visible note editor. Open that note in NotebookLM, then retry.`);
+            throw new EmptyResultError('cloudl notebooklm notes-get', `Note "${query}" is listed in Studio, but cloudl currently reads note content only from the visible note editor. Open that note in NotebookLM, then retry.`);
         }
-        throw new EmptyResultError('opencli notebooklm notes-get', `Note "${query}" was not found in the current notebook.`);
+        throw new EmptyResultError('cloudl notebooklm notes-get', `Note "${query}" was not found in the current notebook.`);
     },
 });

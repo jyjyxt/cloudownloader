@@ -16,7 +16,7 @@ cli({
         const root = (await onesFetchInPage(page, 'auth/token_info'));
         const user = root.user && typeof root.user === 'object' ? root.user : null;
         if (!user?.uuid) {
-            throw new CliError('FETCH_ERROR', 'Unexpected auth/token_info response', 'Try `opencli ones me -f json` or check ONES_* env vars.');
+            throw new CliError('FETCH_ERROR', 'Unexpected auth/token_info response', 'Try `cloudl ones me -f json` or check ONES_* env vars.');
         }
         const teamRows = Array.isArray(root.teams) ? root.teams : [];
         const teamsHint = teamRows

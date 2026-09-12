@@ -259,7 +259,7 @@ export function parseChatGPTConversationId(value) {
         }
         throw new ArgumentError(
             'chatgpt detail requires a conversation id or chatgpt.com /c/<id> URL',
-            'Example: opencli chatgpt detail https://chatgpt.com/c/123e4567-e89b-12d3-a456-426614174000',
+            'Example: cloudl chatgpt detail https://chatgpt.com/c/123e4567-e89b-12d3-a456-426614174000',
         );
     }
     const pathMatch = raw.match(/^\/(?:g\/g-p-[^/]+\/)?c\/([A-Za-z0-9_-]{8,})(?:[?#].*)?$/);
@@ -267,7 +267,7 @@ export function parseChatGPTConversationId(value) {
     if (/^[A-Za-z0-9_-]{8,}$/.test(raw)) return raw;
     throw new ArgumentError(
         'chatgpt detail requires a conversation id or chatgpt.com /c/<id> URL',
-        'Example: opencli chatgpt detail 123e4567-e89b-12d3-a456-426614174000',
+        'Example: cloudl chatgpt detail 123e4567-e89b-12d3-a456-426614174000',
     );
 }
 
@@ -970,7 +970,7 @@ export function parseChatGPTProjectId(value) {
         if (id) return id;
         throw new ArgumentError(
             'chatgpt project commands require a chatgpt.com project id or /g/g-p-<id> URL',
-            'Example: opencli chatgpt project-file-add report.pdf --id 12345678',
+            'Example: cloudl chatgpt project-file-add report.pdf --id 12345678',
         );
     }
     // Accept project slug pattern: g-p-{hex_id}-{slug} or just hex id
@@ -979,7 +979,7 @@ export function parseChatGPTProjectId(value) {
     if (/^[a-f0-9]{8,}$/i.test(raw)) return raw.toLowerCase();
     throw new ArgumentError(
         'chatgpt project commands require a project id or /g/g-p-<id> URL',
-        'Example: opencli chatgpt project-file-add report.pdf --id 12345678',
+        'Example: cloudl chatgpt project-file-add report.pdf --id 12345678',
     );
 }
 

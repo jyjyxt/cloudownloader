@@ -1,7 +1,7 @@
 /**
  * E2E regression tests for the HTML → Markdown article pipeline.
  *
- * Drives real pages through `opencli web read` and asserts the hardened
+ * Drives real pages through `cloudl web read` and asserts the hardened
  * converter's invariants hold on the produced file:
  *   - no base64 `data:image/…` leaks
  *   - no <script> / <style> leakage

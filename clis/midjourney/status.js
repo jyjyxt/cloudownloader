@@ -6,7 +6,7 @@ cli({
   name: 'status',
   access: 'read',
   description: 'Show the current state and metadata of one Midjourney job',
-  example: 'opencli midjourney status d5664250-5f1f-4cd0-9637-2ce0153dd30a -f yaml',
+  example: 'cloudl midjourney status d5664250-5f1f-4cd0-9637-2ce0153dd30a -f yaml',
   domain: 'www.midjourney.com',
   strategy: Strategy.COOKIE,
   browser: true,

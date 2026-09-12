@@ -1,6 +1,6 @@
 # Exit Codes
 
-`ClouDownloader` follows Unix `sysexits.h` conventions so it integrates naturally with shell pipelines and CI scripts.
+`cloudl` follows Unix `sysexits.h` conventions so it integrates naturally with shell pipelines and CI scripts.
 
 | Code | Meaning | When |
 |------|---------|------|
@@ -17,8 +17,8 @@
 ## Example: branch on exit code
 
 ```bash
-ClouDownloader spotify status || echo "exit $?"   # 69 if browser not running
+cloudl spotify status || echo "exit $?"   # 69 if browser not running
 
-ClouDownloader gh issue list 2>/dev/null
-[ $? -eq 77 ] && ClouDownloader gh auth login      # auto-auth if not logged in
+cloudl gh issue list 2>/dev/null
+[ $? -eq 77 ] && cloudl gh auth login      # auto-auth if not logged in
 ```

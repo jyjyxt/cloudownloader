@@ -265,8 +265,8 @@ describe('trae-cn commands', () => {
     const setupText = setupRows.map(row => `${row.Command}\n${row.Purpose}`).join('\n');
     expect(setupText).toContain('open -a "Trae CN" --args --remote-debugging-port=39240');
     expect(setupText).toContain('export OPENCLI_CDP_TARGET="talk"');
-    expect(setupText).toContain('opencli trae-cn approve --approve-kinds terminal,delete -f json');
-    expect(setupText).toContain('opencli trae-cn watch --stream true --duration 120 --auto-approve true');
+    expect(setupText).toContain('cloudl trae-cn approve --approve-kinds terminal,delete -f json');
+    expect(setupText).toContain('cloudl trae-cn watch --stream true --duration 120 --auto-approve true');
   });
 
   it('documents endpoint/target examples for browser commands', () => {

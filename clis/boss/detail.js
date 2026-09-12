@@ -176,7 +176,7 @@ cli({
         requirePage(page);
         const jobId = readRequiredString(kwargs['security-id'], 'security-id');
         if (!/^[A-Za-z0-9_-]+$/.test(jobId)) {
-            throw new ArgumentError('boss security-id contains unsupported characters', 'Pass the security_id returned by `opencli boss search`');
+            throw new ArgumentError('boss security-id contains unsupported characters', 'Pass the security_id returned by `cloudl boss search`');
         }
         verbose('Fetching job detail from the rendered BOSS page...');
         return [await captureJobDetail(page, jobId)];

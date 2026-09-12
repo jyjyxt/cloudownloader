@@ -138,7 +138,7 @@ cli({
     name: 'creator-stats',
     description: '读取当前账号最近稿件的核心创作指标（需登录创作中心）',
     access: 'read',
-    example: 'opencli bilibili creator-stats <bvid-or-video-url> -f json',
+    example: 'cloudl bilibili creator-stats <bvid-or-video-url> -f json',
     domain: 'member.bilibili.com',
     strategy: Strategy.COOKIE,
     browser: true,

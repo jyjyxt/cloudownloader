@@ -1,5 +1,5 @@
 /**
- * ClouDownloader doctor — diagnose browser connectivity.
+ * cloudl doctor — diagnose browser connectivity.
  *
  * Simplified for the daemon-based architecture.
  */
@@ -123,7 +123,7 @@ export async function runBrowserDoctor(opts: DoctorOptions = {}): Promise<Doctor
       'This usually means the daemon crashed or exited right after serving the live probe.',
     );
   } else if (!daemonRunning) {
-    issues.push('Daemon is not running. It should start automatically when you run an ClouDownloader browser command.');
+    issues.push('Daemon is not running. It should start automatically when you run an cloudl browser command.');
   }
   if (daemonStale && opts.cliVersion) {
     issues.push(staleDaemonIssue(health.status, opts.cliVersion));
@@ -137,7 +137,7 @@ export async function runBrowserDoctor(opts: DoctorOptions = {}): Promise<Doctor
     if (health.state === 'profile-required') {
       issues.push(
         'Multiple Chrome profiles are connected to the daemon, but no default profile was selected.\n' +
-        '  Run ClouDownloader profile list, then ClouDownloader profile use <name>, or pass --profile <name>.',
+        '  Run cloudl profile list, then cloudl profile use <name>, or pass --profile <name>.',
       );
     } else if (health.state === 'profile-disconnected') {
       issues.push(
@@ -147,9 +147,9 @@ export async function runBrowserDoctor(opts: DoctorOptions = {}): Promise<Doctor
     } else {
       issues.push(
         'Daemon is running but the Chrome/Chromium extension is not connected.\n' +
-        'If the extension is already installed, try: ClouDownloader daemon restart\n' +
+        'If the extension is already installed, try: cloudl daemon restart\n' +
         'If the extension is not installed:\n' +
-        '  1. Download from https://github.com/jackwener/opencli/releases\n' +
+        '  1. Download from https://github.com/jyjyxt/cloudownloader/releases\n' +
         '  2. Open chrome://extensions/ → Enable Developer Mode\n' +
         '  3. Click "Load unpacked" → select the extension folder',
       );
@@ -159,7 +159,7 @@ export async function runBrowserDoctor(opts: DoctorOptions = {}): Promise<Doctor
     issues.push(
       'Extension is connected but did not report a version.\n' +
       '  This usually means an outdated Browser Bridge extension.\n' +
-      '  Reload or reinstall the extension from: https://github.com/jackwener/opencli/releases',
+      '  Reload or reinstall the extension from: https://github.com/jyjyxt/cloudownloader/releases',
     );
   }
   if (!connectivity.ok) {
@@ -180,7 +180,7 @@ export async function runBrowserDoctor(opts: DoctorOptions = {}): Promise<Doctor
     issues.push(
       `Default browser profile is stale: ${label} is not connected (the extension instance it names no longer exists).\n` +
       `  ${fallbackNote}\n` +
-      '  Refresh it with: ClouDownloader profile list, then ClouDownloader profile use <name>.',
+      '  Refresh it with: cloudl profile list, then cloudl profile use <name>.',
     );
   }
   const extensionCompatRange = health.status?.extensionCompatRange;
@@ -188,8 +188,8 @@ export async function runBrowserDoctor(opts: DoctorOptions = {}): Promise<Doctor
     if (!satisfiesRange(opts.cliVersion, extensionCompatRange)) {
       issues.push(
         `CLI version incompatible with extension: extension v${extensionVersion} requires CLI ${extensionCompatRange}, but CLI is v${opts.cliVersion}\n` +
-        '  Update the CLI: npm install -g @jackwener/opencli\n' +
-        '  Or download a compatible extension from: https://github.com/jackwener/opencli/releases',
+        '  Update cloudl from source: https://github.com/jyjyxt/cloudownloader#quick-start\n' +
+        '  Or download a compatible extension from: https://github.com/jyjyxt/cloudownloader/releases',
       );
     }
   } else if (extensionVersion && opts.cliVersion) {
@@ -199,7 +199,7 @@ export async function runBrowserDoctor(opts: DoctorOptions = {}): Promise<Doctor
     if (extMajor !== cliMajor) {
       issues.push(
         `Extension major version mismatch: extension v${extensionVersion} ≠ CLI v${opts.cliVersion}\n` +
-        '  Download the latest extension from: https://github.com/jackwener/opencli/releases',
+        '  Download the latest extension from: https://github.com/jyjyxt/cloudownloader/releases',
       );
     }
   }
@@ -209,7 +209,7 @@ export async function runBrowserDoctor(opts: DoctorOptions = {}): Promise<Doctor
   if (extensionVersion && latestExtensionVersion && isNewerVersion(latestExtensionVersion, extensionVersion)) {
     issues.push(
       `Extension update available: v${extensionVersion} → v${latestExtensionVersion}\n` +
-      '  Download from: https://github.com/jackwener/opencli/releases',
+      '  Download from: https://github.com/jyjyxt/cloudownloader/releases',
     );
   }
   if (adapterShadows.length > 0) {
@@ -234,7 +234,7 @@ export async function runBrowserDoctor(opts: DoctorOptions = {}): Promise<Doctor
 }
 
 export function renderBrowserDoctorReport(report: DoctorReport): string {
-  const lines = [`ClouDownloader v${report.cliVersion ?? 'unknown'} doctor` + ` (${getRuntimeLabel()})`, ''];
+  const lines = [`cloudl v${report.cliVersion ?? 'unknown'} doctor` + ` (${getRuntimeLabel()})`, ''];
 
   // Daemon status
   const daemonIcon = report.daemonFlaky

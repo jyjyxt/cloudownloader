@@ -179,12 +179,12 @@ function main() {
 
     // Close browser between tasks for clean state
     if (i < tasks.length - 1) {
-      try { runCommand('opencli browser close'); } catch { /* ignore */ }
+      try { runCommand('cloudl browser close'); } catch { /* ignore */ }
     }
   }
 
   // Final close
-  try { runCommand('opencli browser close'); } catch { /* ignore */ }
+  try { runCommand('cloudl browser close'); } catch { /* ignore */ }
 
   // Summary
   const totalPassed = results.filter(r => r.passed).length;

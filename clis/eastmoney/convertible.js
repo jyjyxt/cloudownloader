@@ -1,7 +1,7 @@
 // eastmoney convertible — on-market convertible bond listing.
 //
-//   opencli eastmoney convertible
-//   opencli eastmoney convertible --sort premium --limit 30
+//   cloudl eastmoney convertible
+//   cloudl eastmoney convertible --sort premium --limit 30
 
 import { cli, Strategy } from '@jackwener/opencli/registry';
 import { ArgumentError, CommandExecutionError, EmptyResultError } from '@jackwener/opencli/errors';

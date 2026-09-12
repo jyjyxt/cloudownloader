@@ -22,7 +22,7 @@ cli({
     func: async (args) => {
         const authorText = String(args.author || '').trim();
         if (!authorText) {
-            throw new ArgumentError('arxiv author cannot be empty', 'Example: opencli arxiv author "Yoshua Bengio"');
+            throw new ArgumentError('arxiv author cannot be empty', 'Example: cloudl arxiv author "Yoshua Bengio"');
         }
         const limit = normalizeArxivLimit(args.limit, 20, 50);
         // Quote the value so multi-word author names match as a phrase.

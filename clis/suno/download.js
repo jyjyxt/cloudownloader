@@ -1,7 +1,7 @@
 /**
- * `opencli suno download <clip-id>` — download an already-generated clip in
+ * `cloudl suno download <clip-id>` — download an already-generated clip in
  * one or more formats. Useful for grabbing assets from songs created via the
- * Suno web UI or earlier opencli runs without re-generating.
+ * Suno web UI or earlier cloudl runs without re-generating.
  *
  * WAV downloads still trigger Suno's per-download billing (the same charge
  * the web UI's "Download → WAV" flow makes).

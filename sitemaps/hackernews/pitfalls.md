@@ -9,13 +9,13 @@ source: global
 ### pitfall:firebase_id_array_fan_out_required
 - trigger: agent 期望 `/topstories.json` 直接返回 story 详情
 - symptom: 拿到的是 id array `[3819,3820,...]` 不是 object array
-- workaround: 链 `/item/<id>.json` 一一拿；用 adapter `opencli hackernews top` 已封装这个 fan-out
+- workaround: 链 `/item/<id>.json` 一一拿；用 adapter `cloudl hackernews top` 已封装这个 fan-out
 - verified_at: 2026-06-02
 
 ### pitfall:no_search_on_main_domain
 - trigger: agent 在 news.ycombinator.com 找 search UI / 直接 fetch 主域 /search
 - symptom: 主域顶部无 search 框，404 on /search
-- workaround: 用 Algolia HN search endpoint（apis.md `algolia_search`）或 adapter `opencli hackernews search`
+- workaround: 用 Algolia HN search endpoint（apis.md `algolia_search`）或 adapter `cloudl hackernews search`
 - verified_at: 2026-06-02
 
 ### pitfall:html_lacks_semantic_classes

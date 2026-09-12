@@ -18,7 +18,7 @@ cli({
   name: 'event-matches',
   description: 'Read visible HLTV stats match rows for a specific event',
   access: 'read',
-  example: 'opencli hltv event-matches 8301 --limit 10 -f json',
+  example: 'cloudl hltv event-matches 8301 --limit 10 -f json',
   domain: 'www.hltv.org',
   strategy: Strategy.UI,
   browser: true,

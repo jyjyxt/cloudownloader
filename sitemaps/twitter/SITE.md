@@ -28,7 +28,7 @@ Twitter / X (`twitter.com` → 301 `x.com` since 2024)。微博形态的 social 
 - reply to a tweet → workflows/reply.md
 - search for tweets / users → workflows/search.md
 - bookmark a tweet → workflows/bookmark.md
-- read user timeline → 直接用 adapter `opencli twitter tweets <handle>`，无需 workflow
+- read user timeline → 直接用 adapter `cloudl twitter tweets <handle>`，无需 workflow
 
 ## Site-wide pitfalls
 

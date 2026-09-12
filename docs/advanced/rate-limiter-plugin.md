@@ -5,7 +5,7 @@ An optional plugin that adds a random sleep between browser-based commands to re
 ## Install
 
 ```bash
-opencli plugin install github:jackwener/opencli-plugin-rate-limiter
+cloudl plugin install github:jackwener/opencli-plugin-rate-limiter
 ```
 
 Or copy the example below into `~/.opencli/plugins/rate-limiter/` to use it locally without installing from GitHub.
@@ -24,10 +24,10 @@ After every command targeting a browser platform (xiaohongshu, weibo, bilibili, 
 
 ```bash
 # Shorter delays for light scraping
-OPENCLI_RATE_MIN=3 OPENCLI_RATE_MAX=10 opencli xiaohongshu search "AI眼镜"
+OPENCLI_RATE_MIN=3 OPENCLI_RATE_MAX=10 cloudl xiaohongshu search "AI眼镜"
 
 # Skip delays when iterating locally
-OPENCLI_NO_RATE=1 opencli bilibili comments BV1WtAGzYEBm
+OPENCLI_NO_RATE=1 cloudl bilibili comments BV1WtAGzYEBm
 ```
 
 ## Local installation (without GitHub)
@@ -73,10 +73,10 @@ OPENCLI_NO_RATE=1 opencli bilibili comments BV1WtAGzYEBm
 4. Verify it loaded:
 
    ```bash
-   OPENCLI_NO_RATE=1 opencli xiaohongshu search "test" 2>&1 | grep rate-limiter
+   OPENCLI_NO_RATE=1 cloudl xiaohongshu search "test" 2>&1 | grep rate-limiter
    # → (no output — plugin loaded but rate limit skipped)
 
-   opencli xiaohongshu search "test" 2>&1 | grep rate-limiter
+   cloudl xiaohongshu search "test" 2>&1 | grep rate-limiter
    # → [rate-limiter] xiaohongshu: sleeping 12s
    ```
 

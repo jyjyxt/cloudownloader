@@ -16,7 +16,7 @@ export const approveCommand = cli({
   name: 'approve',
   access: 'write',
   description: 'Approve visible Trae CN permission prompts such as terminal-run, high-risk command, or delete confirmations',
-  example: 'OPENCLI_CDP_ENDPOINT=http://127.0.0.1:39240 OPENCLI_CDP_TARGET=talk opencli trae-cn approve --approve-kinds terminal,delete -f json',
+  example: 'OPENCLI_CDP_ENDPOINT=http://127.0.0.1:39240 OPENCLI_CDP_TARGET=talk cloudl trae-cn approve --approve-kinds terminal,delete -f json',
   domain: 'localhost',
   strategy: Strategy.UI,
   browser: true,

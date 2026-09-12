@@ -20,11 +20,11 @@ source: global
 ```yaml
 ### action:read_user_notes
 pre: on /user/profile/<id>, logged_in
-do: opencli xiaohongshu user <id>
+do: cloudl xiaohongshu user <id>
 post: 输出用户 metadata + 笔记列表（href 自带 xsec_token，可 drill-down 到 note.md）
 fail: AuthRequired | Empty (用户无笔记 / 私密 / 已注销) | CommandExecution (Pinia store 漂)
-recover: AuthRequired -> opencli xiaohongshu login（# pending: codex task #276）；CommandExecution -> adapter_health suspect；Empty 视为合法
-evidence: opencli xiaohongshu user
+recover: AuthRequired -> cloudl xiaohongshu login（# pending: codex task #276）；CommandExecution -> adapter_health suspect；Empty 视为合法
+evidence: cloudl xiaohongshu user
 ```
 
 ```yaml
@@ -34,7 +34,7 @@ do: evaluate("window.scrollBy(0, window.innerHeight * 2)")
 post: 更多 section.note-item 追加，Pinia store 同步刷新
 fail: 2s 无新 entry | 触发 security_block
 recover: 已到尾 OR security_block；前者正常停手，后者 pitfall:security_block_on_repeated_access
-evidence: opencli browser evaluate
+evidence: cloudl browser evaluate
 ```
 
 ## Note card actions

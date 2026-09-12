@@ -6,18 +6,18 @@
 
 | Command | Description |
 |---------|-------------|
-| `opencli pixiv ranking` | Daily/weekly/monthly illustration rankings |
-| `opencli pixiv search <query>` | Search illustrations by keyword or tag |
-| `opencli pixiv user <uid>` | View artist profile info |
-| `opencli pixiv me` | Show the currently logged-in Pixiv account |
-| `opencli pixiv illusts <user-id>` | List illustrations by artist |
-| `opencli pixiv detail <id>` | View illustration details |
-| `opencli pixiv download <illust-id>` | Download original-quality images |
-| `opencli pixiv novel <id>` | View novel metadata |
-| `opencli pixiv novel-download <novel-id>` | Download novel text as txt or markdown |
-| `opencli pixiv novels <user-id>` | List novels by user |
-| `opencli pixiv bookmarks` | List current-account illustration or novel bookmarks |
-| `opencli pixiv bookmark-download` | Batch download current-account bookmarks |
+| `cloudl pixiv ranking` | Daily/weekly/monthly illustration rankings |
+| `cloudl pixiv search <query>` | Search illustrations by keyword or tag |
+| `cloudl pixiv user <uid>` | View artist profile info |
+| `cloudl pixiv me` | Show the currently logged-in Pixiv account |
+| `cloudl pixiv illusts <user-id>` | List illustrations by artist |
+| `cloudl pixiv detail <id>` | View illustration details |
+| `cloudl pixiv download <illust-id>` | Download original-quality images |
+| `cloudl pixiv novel <id>` | View novel metadata |
+| `cloudl pixiv novel-download <novel-id>` | Download novel text as txt or markdown |
+| `cloudl pixiv novels <user-id>` | List novels by user |
+| `cloudl pixiv bookmarks` | List current-account illustration or novel bookmarks |
+| `cloudl pixiv bookmark-download` | Batch download current-account bookmarks |
 
 ## Output Columns
 
@@ -43,68 +43,68 @@
 
 ```bash
 # Daily rankings (default)
-opencli pixiv ranking --limit 10
+cloudl pixiv ranking --limit 10
 
 # Weekly / monthly rankings
-opencli pixiv ranking --mode weekly
-opencli pixiv ranking --mode monthly
+cloudl pixiv ranking --mode weekly
+cloudl pixiv ranking --mode monthly
 
 # R18 rankings
-opencli pixiv ranking --mode daily_r18
-opencli pixiv ranking --mode weekly_r18
+cloudl pixiv ranking --mode daily_r18
+cloudl pixiv ranking --mode weekly_r18
 
 # Other modes: rookie, original, male, female
-opencli pixiv ranking --mode rookie
+cloudl pixiv ranking --mode rookie
 ```
 
 ### Search
 
 ```bash
 # Search by keyword or tag
-opencli pixiv search "初音ミク" --limit 20
+cloudl pixiv search "初音ミク" --limit 20
 
 # Filter by content rating
-opencli pixiv search "風景" --mode safe       # Safe-for-work only
-opencli pixiv search "風景" --mode r18        # R18 only
-opencli pixiv search "風景" --mode all        # All (default)
+cloudl pixiv search "風景" --mode safe       # Safe-for-work only
+cloudl pixiv search "風景" --mode r18        # R18 only
+cloudl pixiv search "風景" --mode all        # All (default)
 
 # Sort by popularity
-opencli pixiv search "VOCALOID" --order popular_d
+cloudl pixiv search "VOCALOID" --order popular_d
 
 # All sort options: date_d (newest), date (oldest), popular_d, popular_male_d, popular_female_d
 
 # Pagination
-opencli pixiv search "オリジナル" --page 2 --limit 30
+cloudl pixiv search "オリジナル" --page 2 --limit 30
 ```
 
 ### User & Illustrations
 
 ```bash
 # View artist profile
-opencli pixiv user 11
+cloudl pixiv user 11
 
 # Show the currently logged-in account
-opencli pixiv me
+cloudl pixiv me
 
 # List artist's illustrations (newest first)
-opencli pixiv illusts 11 --limit 10
+cloudl pixiv illusts 11 --limit 10
 
 # View illustration details (tags, stats, type)
-opencli pixiv detail 12345678
+cloudl pixiv detail 12345678
 ```
 
 ### Novels
 
 ```bash
 # View novel metadata
-opencli pixiv novel 10588915
+cloudl pixiv novel 10588915
 
 # Download novel text
-opencli pixiv novel-download 10588915 --file-format txt --execute
-opencli pixiv novel-download 10588915 --file-format md --output ./my-novels --execute
+cloudl pixiv novel-download 10588915 --file-format txt --execute
+cloudl pixiv novel-download 10588915 --file-format md --output ./my-novels --execute
 
 # List a user's novels (newest first)
-opencli pixiv novels 37119297 --limit 10
+cloudl pixiv novels 37119297 --limit 10
 
 ```
 
@@ -116,36 +116,36 @@ Local download commands require `--execute`, reject existing targets and symboli
 
 ```bash
 # List current account's public illustration bookmarks
-opencli pixiv bookmarks --type illust --limit 20
+cloudl pixiv bookmarks --type illust --limit 20
 
 # List current account's private novel bookmarks
-opencli pixiv bookmarks --type novel --visibility hide --limit 20
+cloudl pixiv bookmarks --type novel --visibility hide --limit 20
 
 # Batch download current account illustration bookmarks
-opencli pixiv bookmark-download --type illust --limit 100 --output ./pixiv-archive --execute
+cloudl pixiv bookmark-download --type illust --limit 100 --output ./pixiv-archive --execute
 
 # Batch download current account novel bookmarks as Markdown
-opencli pixiv bookmark-download --type novel --limit 100 --file-format md --output ./pixiv-archive --execute
+cloudl pixiv bookmark-download --type novel --limit 100 --file-format md --output ./pixiv-archive --execute
 ```
 
 ### Download
 
 ```bash
 # Download all images from an illustration
-opencli pixiv download 12345678
+cloudl pixiv download 12345678
 
 # Download to a custom directory
-opencli pixiv download 12345678 --output ./my-images
+cloudl pixiv download 12345678 --output ./my-images
 ```
 
 ### Output Formats
 
 ```bash
 # JSON output
-opencli pixiv ranking -f json
+cloudl pixiv ranking -f json
 
 # Verbose mode
-opencli pixiv search "test" -v
+cloudl pixiv search "test" -v
 ```
 
 ## Prerequisites

@@ -24,11 +24,11 @@ Hacker News (HN). Classic SSR HTML + public Firebase API. Read-only reads do not
 
 ## Common goals
 
-- read front page → 直接用 adapter `opencli hackernews top`，无需 workflow
-- read newest / best / show / ask / jobs → adapter `opencli hackernews <feed>`，无需 workflow
-- read single story + comments → adapter `opencli hackernews story <id>`，无需 workflow
-- search → adapter `opencli hackernews search`，无需 workflow
-- read user profile → adapter `opencli hackernews user <handle>`，无需 workflow
+- read front page → 直接用 adapter `cloudl hackernews top`，无需 workflow
+- read newest / best / show / ask / jobs → adapter `cloudl hackernews <feed>`，无需 workflow
+- read single story + comments → adapter `cloudl hackernews story <id>`，无需 workflow
+- search → adapter `cloudl hackernews search`，无需 workflow
+- read user profile → adapter `cloudl hackernews user <handle>`，无需 workflow
 - submit a story (login required, agent-driven) → workflows/submit-story.md (browser only — no write adapter)
 - comment / reply → workflows/comment.md (browser only)
 - upvote → workflows/upvote.md (browser only)

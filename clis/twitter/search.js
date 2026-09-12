@@ -282,7 +282,7 @@ cli({
             throw new ArgumentError('twitter search query is empty', 'Provide a non-empty <query>, or use at least one of --from / --has / --exclude.');
         }
         if (!Number.isInteger(Number(kwargs.limit)) || Number(kwargs.limit) <= 0) {
-            throw new ArgumentError('twitter search --limit must be a positive integer', 'Example: opencli twitter search opencli --limit 15');
+            throw new ArgumentError('twitter search --limit must be a positive integer', 'Example: cloudl twitter search cloudl --limit 15');
         }
         const cookies = await page.getCookies({ url: 'https://x.com' });
         const ct0 = cookies.find((c) => c.name === 'ct0')?.value || null;

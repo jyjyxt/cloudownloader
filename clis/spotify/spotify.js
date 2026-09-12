@@ -67,9 +67,9 @@ async function refreshAccessToken(refreshToken) {
 async function getToken() {
     const tokens = loadTokens();
     if (!tokens)
-        throw new CliError('AUTH_REQUIRED', 'Not authenticated. Run: opencli spotify auth');
+        throw new CliError('AUTH_REQUIRED', 'Not authenticated. Run: cloudl spotify auth');
     if (!tokens.access_token || !tokens.refresh_token || !(tokens.expires_at > 0)) {
-        throw new CliError('AUTH_CORRUPTED', 'Token file is corrupted. Run: opencli spotify auth');
+        throw new CliError('AUTH_CORRUPTED', 'Token file is corrupted. Run: cloudl spotify auth');
     }
     if (Date.now() > tokens.expires_at - 60_000)
         return refreshAccessToken(tokens.refresh_token);

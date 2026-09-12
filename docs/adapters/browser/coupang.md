@@ -6,27 +6,27 @@
 
 | Command | Description |
 |---------|-------------|
-| `opencli coupang search` | Search Coupang products with logged-in browser session |
-| `opencli coupang product` | Read full product detail (price, rating, seller, delivery) for a product ID |
-| `opencli coupang add-to-cart` | Add a product to the logged-in account's shopping cart |
+| `cloudl coupang search` | Search Coupang products with logged-in browser session |
+| `cloudl coupang product` | Read full product detail (price, rating, seller, delivery) for a product ID |
+| `cloudl coupang add-to-cart` | Add a product to the logged-in account's shopping cart |
 
 ## Usage Examples
 
 ```bash
 # List rocket-shipping mice (rank, product_id, title, price, rating, ...)
-opencli coupang search "마우스" --filter rocket --limit 10
+cloudl coupang search "마우스" --filter rocket --limit 10
 
 # Round-trip: pick a product_id from search and pull full detail
-opencli coupang product 7654321
+cloudl coupang product 7654321
 
 # Pass a full product URL instead of an ID
-opencli coupang product --url https://www.coupang.com/vp/products/7654321
+cloudl coupang product --url https://www.coupang.com/vp/products/7654321
 
 # JSON output (any subcommand)
-opencli coupang product 7654321 -f json
+cloudl coupang product 7654321 -f json
 
 # Add to cart (write — must be logged in)
-opencli coupang add-to-cart 7654321
+cloudl coupang add-to-cart 7654321
 ```
 
 ## Output

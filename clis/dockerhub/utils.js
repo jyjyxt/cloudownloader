@@ -7,7 +7,7 @@
 import { ArgumentError, CommandExecutionError, EmptyResultError } from '@jackwener/opencli/errors';
 
 export const HUB_BASE = 'https://hub.docker.com/v2';
-const UA = 'opencli-dockerhub-adapter (+https://github.com/jackwener/opencli)';
+const UA = 'opencli-dockerhub-adapter (+https://github.com/jyjyxt/cloudownloader)';
 
 // Docker Hub repository slugs are 2-255 chars, lowercase alphanumerics + `_.-`,
 // optionally prefixed with a Docker Hub user/org of the same charset.

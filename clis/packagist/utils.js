@@ -6,7 +6,7 @@
 import { ArgumentError, CommandExecutionError, EmptyResultError } from '@jackwener/opencli/errors';
 
 export const PACKAGIST_BASE = 'https://packagist.org';
-const UA = 'opencli-packagist-adapter (+https://github.com/jackwener/opencli)';
+const UA = 'opencli-packagist-adapter (+https://github.com/jyjyxt/cloudownloader)';
 
 // Each segment of a Composer package name (`vendor` and `package`).
 const SEGMENT = /^[a-z0-9]([_.-]?[a-z0-9]+)*$/;

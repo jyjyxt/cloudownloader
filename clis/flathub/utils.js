@@ -8,7 +8,7 @@ import { ArgumentError, CommandExecutionError, EmptyResultError } from '@jackwen
 
 export const FLATHUB_API_BASE = 'https://flathub.org/api/v2';
 export const FLATHUB_APP_BASE = 'https://flathub.org/apps';
-const UA = 'opencli-flathub-adapter/1.0 (+https://github.com/jackwener/opencli; mailto:opencli@example.com)';
+const UA = 'opencli-flathub-adapter/1.0 (+https://github.com/jyjyxt/cloudownloader; mailto:opencli@example.com)';
 
 // AppStream IDs are reverse-DNS (e.g. "org.gnome.Calculator"); the spec allows
 // letters, digits, `.`, `_`, `-`. Min two segments separated by `.`.

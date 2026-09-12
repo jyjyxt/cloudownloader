@@ -6,32 +6,32 @@
 
 | Command | Description |
 |---------|-------------|
-| `opencli semanticscholar paper <id-or-doi>` | Paper detail (citation graph + AI tldr) by paperId, DOI, or arXiv id |
-| `opencli semanticscholar citations <id-or-doi>` | Papers that cite a given paper (paginated) |
-| `opencli semanticscholar recommendations <id-or-doi>` | AI-curated related papers from Semantic Scholar's semantic graph |
-| `opencli semanticscholar search <query>` | Search Semantic Scholar papers by free text |
+| `cloudl semanticscholar paper <id-or-doi>` | Paper detail (citation graph + AI tldr) by paperId, DOI, or arXiv id |
+| `cloudl semanticscholar citations <id-or-doi>` | Papers that cite a given paper (paginated) |
+| `cloudl semanticscholar recommendations <id-or-doi>` | AI-curated related papers from Semantic Scholar's semantic graph |
+| `cloudl semanticscholar search <query>` | Search Semantic Scholar papers by free text |
 
 ## Usage Examples
 
 ```bash
 # Paper detail by DOI (the BERT paper)
-opencli semanticscholar paper 10.18653/v1/N19-1423
+cloudl semanticscholar paper 10.18653/v1/N19-1423
 
 # Paper detail by arXiv id
-opencli semanticscholar paper 1706.03762
+cloudl semanticscholar paper 1706.03762
 
 # Citations of a paper, paginated
-opencli semanticscholar citations 10.18653/v1/N19-1423 --limit 20
-opencli semanticscholar citations 10.18653/v1/N19-1423 --limit 20 --offset 20
+cloudl semanticscholar citations 10.18653/v1/N19-1423 --limit 20
+cloudl semanticscholar citations 10.18653/v1/N19-1423 --limit 20 --offset 20
 
 # AI-curated related papers (unique to Semantic Scholar)
-opencli semanticscholar recommendations 10.18653/v1/N19-1423 --limit 10
+cloudl semanticscholar recommendations 10.18653/v1/N19-1423 --limit 10
 
 # Free-text search
-opencli semanticscholar search "attention is all you need" --limit 10
+cloudl semanticscholar search "attention is all you need" --limit 10
 
 # JSON output
-opencli semanticscholar paper 10.18653/v1/N19-1423 -f json
+cloudl semanticscholar paper 10.18653/v1/N19-1423 -f json
 ```
 
 ### `paper` Options

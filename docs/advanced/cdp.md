@@ -85,8 +85,8 @@ Depending on the network tunnel method you chose in Phase 2, set the `OPENCLI_CD
 
 ```bash
 export OPENCLI_CDP_ENDPOINT="http://localhost:9222"
-opencli doctor                    # Verify connection
-opencli bilibili hot --limit 5    # Test a command
+cloudl doctor                    # Verify connection
+cloudl bilibili hot --limit 5    # Test a command
 ```
 
 ### If you used Method B (Reverse Proxy like ngrok):
@@ -94,8 +94,8 @@ opencli bilibili hot --limit 5    # Test a command
 ```bash
 # Use the URL you copied from ngrok earlier
 export OPENCLI_CDP_ENDPOINT="https://abcdef.ngrok.app"
-opencli doctor                    # Verify connection
-opencli bilibili hot --limit 5    # Test a command
+cloudl doctor                    # Verify connection
+cloudl bilibili hot --limit 5    # Test a command
 ```
 
 > *Tip: If you provide a standard HTTP/HTTPS CDP endpoint, OpenCLI requests the `/json` target list and picks the most likely inspectable app/page target automatically. If multiple app targets exist, you can further narrow selection with `OPENCLI_CDP_TARGET` (for example `antigravity` or `codex`).*

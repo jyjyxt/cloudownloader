@@ -13,7 +13,7 @@ cd cloudownloader
 npm install
 npm run build
 npm link      # Link binary globally
-ClouDownloader list  # Now you can use it anywhere!
+cloudl list  # Now you can use it anywhere!
 ```
 
 ## Update
@@ -43,7 +43,7 @@ npx skills add jyjyxt/cloudownloader --skill smart-search
 ## Verify Installation
 
 ```bash
-ClouDownloader --version   # Check version
-ClouDownloader list        # List all commands
-ClouDownloader doctor      # Diagnose connectivity
+cloudl --version   # Check version
+cloudl list        # List all commands
+cloudl doctor      # Diagnose connectivity
 ```

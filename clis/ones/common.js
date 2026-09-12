@@ -73,7 +73,7 @@ function throwIfOnesPeekBusinessError(apiPath, parsed) {
     if (!hasErr)
         return;
     const detail = summarizeOnesError(200, parsed);
-    throw new CliError('FETCH_ERROR', `ONES ${apiPath}: ${detail}`, '若 query 不合法会返回 ServerError；可试 opencli ones tasks（空 must）或检查筛选器文档。响应全文可用 -v 或临时打日志。');
+    throw new CliError('FETCH_ERROR', `ONES ${apiPath}: ${detail}`, '若 query 不合法会返回 ServerError；可试 cloudl ones tasks（空 must）或检查筛选器文档。响应全文可用 -v 或临时打日志。');
 }
 export async function onesFetchInPageWithMeta(page, apiPath, options = {}) {
     if (!options.skipGoto) {
@@ -124,7 +124,7 @@ export async function resolveOnesUserUuid(page, opts) {
     const data = (await onesFetchInPage(page, 'users/me', { skipGoto: opts?.skipGoto }));
     const u = data.user && typeof data.user === 'object' ? data.user : data;
     if (!u || typeof u.uuid !== 'string') {
-        throw new CliError('FETCH_ERROR', 'Could not read current user uuid from users/me', 'Set ONES_USER_ID or ensure Chrome is logged in; try: opencli ones me -f json');
+        throw new CliError('FETCH_ERROR', 'Could not read current user uuid from users/me', 'Set ONES_USER_ID or ensure Chrome is logged in; try: cloudl ones me -f json');
     }
     return String(u.uuid);
 }
@@ -133,7 +133,7 @@ export async function onesFetchInPage(page, apiPath, options = {}) {
     if (!r.ok) {
         const detail = summarizeOnesError(r.status, r.parsed);
         const hint = r.status === 401
-            ? '在 Chrome 中打开 ONES 并登录；或先执行 opencli ones login 后按提示 export ONES_USER_ID / ONES_AUTH_TOKEN；并确认 ONES_BASE_URL 与浏览器地址一致。'
+            ? '在 Chrome 中打开 ONES 并登录；或先执行 cloudl ones login 后按提示 export ONES_USER_ID / ONES_AUTH_TOKEN；并确认 ONES_BASE_URL 与浏览器地址一致。'
             : '检查 ONES_BASE_URL、VPN/内网，以及实例是否仍为 Project API 路径。';
         throw new CliError('FETCH_ERROR', `ONES ${apiPath}: ${detail}`, hint);
     }

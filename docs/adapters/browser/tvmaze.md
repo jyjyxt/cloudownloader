@@ -8,19 +8,19 @@ Search TVmaze for TV shows by title, or fetch full show details by id. Hits the 
 
 | Command | Description |
 |---------|-------------|
-| `opencli tvmaze search <query>` | TVmaze TV show search by title (returns id, name, network, premiered/ended, rating) |
-| `opencli tvmaze show <id>` | Single TV show detail (network, schedule, rating, IMDB/TheTVDB cross-refs) |
+| `cloudl tvmaze search <query>` | TVmaze TV show search by title (returns id, name, network, premiered/ended, rating) |
+| `cloudl tvmaze show <id>` | Single TV show detail (network, schedule, rating, IMDB/TheTVDB cross-refs) |
 
 ## Usage Examples
 
 ```bash
 # Title search
-opencli tvmaze search "breaking bad"
-opencli tvmaze search succession --limit 5
+cloudl tvmaze search "breaking bad"
+cloudl tvmaze search succession --limit 5
 
 # Show detail (id from search)
-opencli tvmaze show 169
-opencli tvmaze show 169 -f json
+cloudl tvmaze show 169
+cloudl tvmaze show 169 -f json
 ```
 
 ## Output Columns

@@ -79,7 +79,7 @@ cli({
     func: async (page, args) => {
         const username = sanitizeUsername(String(args.username ?? ''));
         if (!username) {
-            throw new CliError('INVALID_ARGUMENT', 'Username is required', 'Use: opencli gitee user <username>');
+            throw new CliError('INVALID_ARGUMENT', 'Username is required', 'Use: cloudl gitee user <username>');
         }
         const profileUrl = `${GITEE_BASE_URL}/${encodeURIComponent(username)}`;
         await page.goto(profileUrl);
@@ -165,7 +165,7 @@ cli({
             giteeIndex: normalizeCount(domSnapshotRecord?.giteeIndex),
         };
         if (domSnapshot.notFound) {
-            throw new CliError('NOT_FOUND', `Gitee user "${username}" does not exist`, 'Check the username and retry: opencli gitee user <username>');
+            throw new CliError('NOT_FOUND', `Gitee user "${username}" does not exist`, 'Check the username and retry: cloudl gitee user <username>');
         }
         if (domSnapshot.blocked) {
             throw new CliError('FORBIDDEN', `Gitee user page "${username}" is not accessible`, 'The profile may be private/restricted, or the account may be unavailable');
@@ -179,7 +179,7 @@ cli({
             },
         });
         if (apiResponse.status === 404) {
-            throw new CliError('NOT_FOUND', `Gitee user "${username}" does not exist`, 'Check the username and retry: opencli gitee user <username>');
+            throw new CliError('NOT_FOUND', `Gitee user "${username}" does not exist`, 'Check the username and retry: cloudl gitee user <username>');
         }
         if (!apiResponse.ok) {
             throw new CliError('REQUEST_FAILED', `Failed to read Gitee user profile API: ${apiResponse.status}`, 'Try again later or verify network access to gitee.com');

@@ -105,10 +105,10 @@ export async function listAddUser(page, kwargs) {
         const listId = String(kwargs.listId || '').trim();
         const username = String(kwargs.username || '').replace(/^@/, '').trim();
         if (!listId || !/^\d+$/.test(listId)) {
-            throw new ArgumentError(`Invalid listId: ${JSON.stringify(kwargs.listId)}. Expected numeric ID.`, 'Example: opencli twitter list-add 123456789 alice');
+            throw new ArgumentError(`Invalid listId: ${JSON.stringify(kwargs.listId)}. Expected numeric ID.`, 'Example: cloudl twitter list-add 123456789 alice');
         }
         if (!username) {
-            throw new ArgumentError('twitter list-add username is required', 'Example: opencli twitter list-add 123456789 alice');
+            throw new ArgumentError('twitter list-add username is required', 'Example: cloudl twitter list-add 123456789 alice');
         }
         // Strategy.UI does not get a domain URL pre-nav from the framework.
         // This page context is load-bearing for pre-target GraphQL calls below.
@@ -149,7 +149,7 @@ export async function listAddUser(page, kwargs) {
             if (!r.ok) return { __error: 'HTTP ' + r.status };
             return await r.json();
         }`);
-        // Don't unwrap listsData: opencli spreads GraphQL response to top-level + adds session;
+        // Don't unwrap listsData: cloudl spreads GraphQL response to top-level + adds session;
         // parseListsManagement reads `.data.viewer.*` from this shape directly.
         const listsData = listsDataRaw;
         const parsedLists = listsData && !listsData.__error

@@ -8,24 +8,24 @@ Search and inspect PHP / Composer packages on Packagist without auth or browser.
 
 | Command | Description |
 |---------|-------------|
-| `opencli packagist search <query>` | Search Packagist (PHP / Composer) packages by keyword |
-| `opencli packagist package <name>` | Single-package metadata (version, downloads, license, repo, GitHub stars) |
+| `cloudl packagist search <query>` | Search Packagist (PHP / Composer) packages by keyword |
+| `cloudl packagist package <name>` | Single-package metadata (version, downloads, license, repo, GitHub stars) |
 
 ## Usage Examples
 
 ```bash
 # Search packages
-opencli packagist search symfony --limit 10
-opencli packagist search "laravel http" --limit 5
+cloudl packagist search symfony --limit 10
+cloudl packagist search "laravel http" --limit 5
 
 # Single-package metadata (use `package` from search rows; vendor/package required)
-opencli packagist package symfony/console
-opencli packagist package laravel/framework
-opencli packagist package monolog/monolog
+cloudl packagist package symfony/console
+cloudl packagist package laravel/framework
+cloudl packagist package monolog/monolog
 
 # JSON output
-opencli packagist search symfony -f json
-opencli packagist package symfony/console -f json
+cloudl packagist search symfony -f json
+cloudl packagist package symfony/console -f json
 ```
 
 ## Output Columns

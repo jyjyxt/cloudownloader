@@ -20,7 +20,7 @@ cli({
   name: 'download',
   access: 'write',
   description: 'Download original images, raw video, social MP4, or GIF with MIME and atomic-write checks',
-  example: 'opencli midjourney download <job> --kind auto --index all',
+  example: 'cloudl midjourney download <job> --kind auto --index all',
   domain: 'www.midjourney.com',
   strategy: Strategy.COOKIE,
   browser: true,

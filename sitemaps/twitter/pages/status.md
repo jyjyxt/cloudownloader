@@ -24,17 +24,17 @@ do: click [data-testid="tweetTextarea_0"] || click [data-testid="reply"] button
 post: textarea focused, submit button [data-testid="tweetButtonInline"] enables on input
 fail: textarea not focusing | login modal
 recover: keyboard shortcut `r`; mark composer stale if persistent
-evidence: opencli browser click
+evidence: cloudl browser click
 ```
 
 ```yaml
 ### action:submit_reply
 pre: reply composer has text, submit enabled
-do: opencli twitter reply --status-url <url> --text "..." || click [data-testid="tweetButtonInline"]
+do: cloudl twitter reply --status-url <url> --text "..." || click [data-testid="tweetButtonInline"]
 post: textarea cleared + toast "Your post was sent"; new reply appended below detail
 fail: button enabled but silent timeout (see pitfall:reply_silent_fails_on_rich_content) | login modal
-recover: adapter_health_update: opencli twitter reply -> suspect; apply pitfall workaround (single-paragraph plain text, escape bullets); long reply -> workflows/post.md + quote
-evidence: opencli twitter reply
+recover: adapter_health_update: cloudl twitter reply -> suspect; apply pitfall workaround (single-paragraph plain text, escape bullets); long reply -> workflows/post.md + quote
+evidence: cloudl twitter reply
 ```
 
 ## Tweet card actions

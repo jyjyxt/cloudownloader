@@ -6,7 +6,7 @@
 
 ```bash
 git clone git@github.com:<your-username>/opencli.git
-cd opencli
+cd cloudl
 npm install
 npm run build
 npx tsc --noEmit

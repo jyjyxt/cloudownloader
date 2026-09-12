@@ -20,14 +20,14 @@ Worked example: ICLR 2024 oral track, then drill into one paper's reviews using 
 # 1. Full list of papers at a venue (natural-language venue text;
 #    if the venue is not yet open OpenReview returns EMPTY_RESULT
 #    with a help line listing valid forms)
-opencli openreview venue "ICLR 2024 oral" --limit 200 -f json > /tmp/iclr-2024.json
+cloudl openreview venue "ICLR 2024 oral" --limit 200 -f json > /tmp/iclr-2024.json
 
 # 2. Pick a forum id from the listing, fetch the full review thread.
 #    Example: "Proving Test Set Contamination in Black-Box Language Models"
-opencli openreview reviews KS8mIvetg2 -f json > /tmp/reviews.json
+cloudl openreview reviews KS8mIvetg2 -f json > /tmp/reviews.json
 
 # 3. Single paper metadata if needed
-opencli openreview paper KS8mIvetg2 -f json
+cloudl openreview paper KS8mIvetg2 -f json
 ```
 
 `venue` returns each entry with a forum id you can hand straight back into `reviews` and `paper`. No id lookup gymnastics. `reviews` returns the full thread as a JSON array: a `PAPER` row with the abstract, then one `REVIEW` row per reviewer (with `rating`, `confidence`, summary, weaknesses, questions), followed by author rebuttals and the AC's decision rationale.
@@ -53,7 +53,7 @@ This collapses 200 papers to a 10-paper shortlist in seconds. The forum ids are 
 
 ### Phase B: depth-reading the shortlist
 
-For each shortlisted forum id, run `opencli openreview reviews <forum-id>` and feed the JSON to an LLM with the prompt:
+For each shortlisted forum id, run `cloudl openreview reviews <forum-id>` and feed the JSON to an LLM with the prompt:
 
 ```
 Summarize the review thread:
@@ -69,7 +69,7 @@ This is faster than reading three reviews + rebuttal + meta-review per paper. Fo
 
 - One `venue` call replaces scrolling a paginated UI for 200+ papers.
 - `reviews` returns the entire thread as JSON, so an LLM can reason over the whole review-rebuttal-decision arc at once. The web view forces you to scroll three reviews + N rebuttals + meta separately.
-- Forum ids returned from `venue` are stable and reusable across calls. Easy to keep a personal reading list as `forum-ids.txt` and run `for id in $(cat forum-ids.txt); do opencli openreview reviews $id; done`.
+- Forum ids returned from `venue` are stable and reusable across calls. Easy to keep a personal reading list as `forum-ids.txt` and run `for id in $(cat forum-ids.txt); do cloudl openreview reviews $id; done`.
 - The whole loop is public-strategy. No login required for venues with public reviewing.
 
-`opencli openreview` (added in #1294) is the lever. Before this adapter existed, the same workflow needed either OpenReview's Python client or HTML scraping inside agent code. Both have higher friction than `opencli openreview reviews <forum-id>` returning structured JSON in one shot.
+`cloudl openreview` (added in #1294) is the lever. Before this adapter existed, the same workflow needed either OpenReview's Python client or HTML scraping inside agent code. Both have higher friction than `cloudl openreview reviews <forum-id>` returning structured JSON in one shot.

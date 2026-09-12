@@ -341,7 +341,7 @@ export const grokExportAllCommand = cli({
   name: 'export-all',
   description: 'Export Grok conversation history and each conversation transcript',
   access: 'read',
-  example: 'opencli grok export-all --limit 5 -f json',
+  example: 'cloudl grok export-all --limit 5 -f json',
   domain: GROK_DOMAIN,
   strategy: Strategy.COOKIE,
   browser: true,

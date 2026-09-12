@@ -1,8 +1,8 @@
 // eastmoney rank — market mover list across common segments.
 //
 // Data source: push2.eastmoney.com/api/qt/clist/get (Tier 1 public JSON).
-//   opencli eastmoney rank
-//   opencli eastmoney rank --market cyb --sort turnover --limit 30
+//   cloudl eastmoney rank
+//   cloudl eastmoney rank --market cyb --sort turnover --limit 30
 
 import { cli, Strategy } from '@jackwener/opencli/registry';
 import { CliError } from '@jackwener/opencli/errors';

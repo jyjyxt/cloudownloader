@@ -6,7 +6,7 @@ cli({
   name: 'match-map',
   description: 'Read a single HLTV mapstats page and return all player rows for that map',
   access: 'read',
-  example: 'opencli hltv match-map "https://www.hltv.org/stats/matches/mapstatsid/231594/falcons-vs-natus-vincere" -f json',
+  example: 'cloudl hltv match-map "https://www.hltv.org/stats/matches/mapstatsid/231594/falcons-vs-natus-vincere" -f json',
   domain: 'www.hltv.org',
   strategy: Strategy.UI,
   browser: true,

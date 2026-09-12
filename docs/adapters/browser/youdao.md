@@ -6,7 +6,7 @@
 
 | Command | Description |
 |---------|-------------|
-| `opencli youdao note <url>` | Read a public shared Youdao Note |
+| `cloudl youdao note <url>` | Read a public shared Youdao Note |
 
 ## What works today
 
@@ -24,10 +24,10 @@
 
 ```bash
 # Read a shared note
-opencli youdao note "https://share.note.youdao.com/ynoteshare/index.html?id=YOUR_NOTE_ID&type=note"
+cloudl youdao note "https://share.note.youdao.com/ynoteshare/index.html?id=YOUR_NOTE_ID&type=note"
 
 # JSON output
-opencli youdao note "https://share.note.youdao.com/ynoteshare/index.html?id=YOUR_NOTE_ID&type=note" -f json
+cloudl youdao note "https://share.note.youdao.com/ynoteshare/index.html?id=YOUR_NOTE_ID&type=note" -f json
 ```
 
 ## Prerequisites

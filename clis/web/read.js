@@ -10,8 +10,8 @@
  * Pipes through the shared article-download pipeline (Turndown + image download).
  *
  * Usage:
- *   opencli web read --url "https://www.anthropic.com/research/..." --output ./articles
- *   opencli web read --url "https://..." --download-images false
+ *   cloudl web read --url "https://www.anthropic.com/research/..." --output ./articles
+ *   cloudl web read --url "https://..." --download-images false
  */
 import { cli, Strategy } from '@jackwener/opencli/registry';
 import { downloadArticle } from '@jackwener/opencli/download/article-download';

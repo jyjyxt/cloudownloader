@@ -80,7 +80,7 @@ cli({
   name: 'player-map-pool',
   description: 'Aggregate a player matches page into per-map performance buckets',
   access: 'read',
-  example: 'opencli hltv player-map-pool --player 3741/niko --limit 50 -f json',
+  example: 'cloudl hltv player-map-pool --player 3741/niko --limit 50 -f json',
   domain: 'www.hltv.org',
   strategy: Strategy.UI,
   browser: true,

@@ -24,37 +24,37 @@ export OPENCLI_CDP_ENDPOINT="http://127.0.0.1:9224"
 
 ## Commands
 
-### `opencli antigravity status`
+### `cloudl antigravity status`
 Check the Chromium CDP connection. Returns the current window title and active internal URL.
 
-### `opencli antigravity send <message>`
+### `cloudl antigravity send <message>`
 Send a text prompt to the AI. Automatically locates the Lexical editor input box, types the prompt securely, and hits Enter.
 
-### `opencli antigravity read`
+### `cloudl antigravity read`
 Scrape the entire current conversation history block as pure text.
 
-### `opencli antigravity new`
+### `cloudl antigravity new`
 Click the "New Conversation" button to instantly clear the UI state and start fresh.
 
-### `opencli antigravity dump`
+### `cloudl antigravity dump`
 Dump the current DOM and snapshot artifacts to `/tmp` for reverse-engineering and selector debugging.
 
-### `opencli antigravity extract-code`
-Extract any multi-line code blocks from the current conversation view. Ideal for automated script extraction (e.g. `opencli antigravity extract-code > script.sh`).
+### `cloudl antigravity extract-code`
+Extract any multi-line code blocks from the current conversation view. Ideal for automated script extraction (e.g. `cloudl antigravity extract-code > script.sh`).
 
-### `opencli antigravity model <name>`
-Quickly target and switch the active LLM engine. Example: `opencli antigravity model claude` or `opencli antigravity model gemini`.
+### `cloudl antigravity model <name>`
+Quickly target and switch the active LLM engine. Example: `cloudl antigravity model claude` or `cloudl antigravity model gemini`.
 
-### `opencli antigravity watch`
+### `cloudl antigravity watch`
 A long-running, streaming process that continuously polls the Antigravity UI for chat updates and outputs them in real-time to standard output.
 
-### `opencli antigravity serve`
+### `cloudl antigravity serve`
 Start an Anthropic-compatible `/v1/messages` proxy server backed by the local Antigravity desktop app.
 
 ```bash
-opencli antigravity serve --port 8082
-opencli antigravity serve --timeout 300
-OPENCLI_ANTIGRAVITY_TIMEOUT=300 opencli antigravity serve
+cloudl antigravity serve --port 8082
+cloudl antigravity serve --timeout 300
+OPENCLI_ANTIGRAVITY_TIMEOUT=300 cloudl antigravity serve
 ```
 
 - `--port <port>`: HTTP listen port, default `8082`

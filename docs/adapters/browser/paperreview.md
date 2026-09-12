@@ -6,27 +6,27 @@
 
 | Command | Description |
 |---------|-------------|
-| `opencli paperreview submit` | Submit a PDF to paperreview.ai for review |
-| `opencli paperreview review` | Fetch a review by token |
-| `opencli paperreview feedback` | Send feedback on a completed review |
+| `cloudl paperreview submit` | Submit a PDF to paperreview.ai for review |
+| `cloudl paperreview review` | Fetch a review by token |
+| `cloudl paperreview feedback` | Send feedback on a completed review |
 
 ## Usage Examples
 
 ```bash
 # Validate a local PDF without uploading it
-opencli paperreview submit ./paper.pdf --email you@example.com --venue RAL --dry-run true
+cloudl paperreview submit ./paper.pdf --email you@example.com --venue RAL --dry-run true
 
 # Request an upload slot but stop before the actual upload
-opencli paperreview submit ./paper.pdf --email you@example.com --venue RAL --prepare-only true
+cloudl paperreview submit ./paper.pdf --email you@example.com --venue RAL --prepare-only true
 
 # Submit a paper for review
-opencli paperreview submit ./paper.pdf --email you@example.com --venue RAL -f json
+cloudl paperreview submit ./paper.pdf --email you@example.com --venue RAL -f json
 
 # Check the review status or fetch the final review
-opencli paperreview review tok_123 -f json
+cloudl paperreview review tok_123 -f json
 
 # Submit feedback on the review quality
-opencli paperreview feedback tok_123 --helpfulness 4 --critical-error no --actionable-suggestions yes
+cloudl paperreview feedback tok_123 --helpfulness 4 --critical-error no --actionable-suggestions yes
 ```
 
 ## Prerequisites

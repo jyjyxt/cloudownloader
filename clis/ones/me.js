@@ -16,7 +16,7 @@ cli({
         const data = (await onesFetchInPage(page, 'users/me'));
         const u = data.user && typeof data.user === 'object' ? data.user : data;
         if (!u || typeof u.uuid !== 'string') {
-            throw new CliError('FETCH_ERROR', 'Unexpected users/me response', 'See raw JSON with: opencli ones me -f json');
+            throw new CliError('FETCH_ERROR', 'Unexpected users/me response', 'See raw JSON with: cloudl ones me -f json');
         }
         return [
             {

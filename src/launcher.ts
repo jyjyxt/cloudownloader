@@ -419,7 +419,7 @@ export async function resolveElectronEndpoint(site: string): Promise<string> {
   // --remote-allow-origins=* every ws client other than chrome://inspect
   // gets HTTP 403 "Rejected an incoming WebSocket connection from the
   // http://127.0.0.1:<port> origin". This affects every Electron app
-  // ClouDownloader launches because they all bundle a recent Chromium. Same
+  // cloudl launches because they all bundle a recent Chromium. Same
   // mitigation as Puppeteer / Playwright / chrome-devtools-mcp.
   const args = electronLaunchArgs(port, app.extraArgs ?? []);
   await launchElectronApp(appPath, app, args, label);

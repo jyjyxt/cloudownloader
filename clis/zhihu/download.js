@@ -29,7 +29,7 @@ cli({
         if (!target) {
             throw new ArgumentError(
                 'Target must be a Zhihu column article URL, answer ID, typed answer target, or answer URL',
-                'Example: opencli zhihu download --url "https://www.zhihu.com/question/123/answer/456"',
+                'Example: cloudl zhihu download --url "https://www.zhihu.com/question/123/answer/456"',
             );
         }
         const data = target.kind === 'answer'

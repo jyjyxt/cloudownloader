@@ -23,36 +23,36 @@ import { createRequire } from 'node:module';
 
 // ── Completion script content ──────────────────────────────────────────────
 
-const BASH_COMPLETION = `# Bash completion for ClouDownloader (auto-installed)
-_ClouDownloader_completions() {
+const BASH_COMPLETION = `# Bash completion for cloudl (auto-installed)
+_cloudl_completions() {
   local cur words cword
   _get_comp_words_by_ref -n : cur words cword
 
   local completions
-  completions=$(ClouDownloader --get-completions --cursor "$cword" "\${words[@]:1}" 2>/dev/null)
+  completions=$(cloudl --get-completions --cursor "$cword" "\${words[@]:1}" 2>/dev/null)
 
   COMPREPLY=( $(compgen -W "$completions" -- "$cur") )
   __ltrim_colon_completions "$cur"
 }
-complete -F _ClouDownloader_completions ClouDownloader
+complete -F _cloudl_completions cloudl
 `;
 
-const ZSH_COMPLETION = `#compdef ClouDownloader
-# Zsh completion for ClouDownloader (auto-installed)
-_ClouDownloader() {
+const ZSH_COMPLETION = `#compdef cloudl
+# Zsh completion for cloudl (auto-installed)
+_cloudl() {
   local -a completions
   local cword=$((CURRENT - 1))
-  completions=(\${(f)"$(ClouDownloader --get-completions --cursor "$cword" "\${words[@]:1}" 2>/dev/null)"})
+  completions=(\${(f)"$(cloudl --get-completions --cursor "$cword" "\${words[@]:1}" 2>/dev/null)"})
   compadd -a completions
 }
-_ClouDownloader
+_cloudl
 `;
 
-const FISH_COMPLETION = `# Fish completion for ClouDownloader (auto-installed)
-complete -c ClouDownloader -f -a '(
+const FISH_COMPLETION = `# Fish completion for cloudl (auto-installed)
+complete -c cloudl -f -a '(
   set -l tokens (commandline -cop)
   set -l cursor (count (commandline -cop))
-  ClouDownloader --get-completions --cursor $cursor $tokens[2..] 2>/dev/null
+  cloudl --get-completions --cursor $cursor $tokens[2..] 2>/dev/null
 )'
 `;
 
@@ -117,7 +117,7 @@ function main() {
     switch (shell) {
       case 'zsh': {
         const completionsDir = join(home, '.zsh', 'completions');
-        const completionFile = join(completionsDir, '_ClouDownloader');
+        const completionFile = join(completionsDir, '_cloudl');
         ensureDir(completionsDir);
         writeFileSync(completionFile, ZSH_COMPLETION, 'utf8');
 
@@ -133,7 +133,7 @@ function main() {
       }
       case 'bash': {
         const userCompDir = join(home, '.bash_completion.d');
-        const completionFile = join(userCompDir, 'ClouDownloader');
+        const completionFile = join(userCompDir, 'cloudl');
         ensureDir(userCompDir);
         writeFileSync(completionFile, BASH_COMPLETION, 'utf8');
 
@@ -147,7 +147,7 @@ function main() {
       }
       case 'fish': {
         const completionsDir = join(home, '.config', 'fish', 'completions');
-        const completionFile = join(completionsDir, 'ClouDownloader.fish');
+        const completionFile = join(completionsDir, 'cloudl.fish');
         ensureDir(completionsDir);
         writeFileSync(completionFile, FISH_COMPLETION, 'utf8');
 
@@ -176,17 +176,17 @@ function main() {
       'utf8'
     );
     console.log(`✓ Spotify credentials template created at ${spotifyEnvFile}`);
-    console.log(`  Edit the file and add your Client ID and Secret, then run: ClouDownloader spotify auth`);
+    console.log(`  Edit the file and add your Client ID and Secret, then run: cloudl spotify auth`);
   }
 
   // ── Browser Bridge setup hint ───────────────────────────────────────
   console.log('');
   console.log('  \x1b[1mNext step — Browser Bridge setup\x1b[0m');
   console.log('  Browser commands (bilibili, zhihu, twitter...) require the extension:');
-  console.log('  1. Download: https://github.com/jackwener/opencli/releases');
+  console.log('  1. Download: https://github.com/jyjyxt/cloudownloader/releases');
   console.log('  2. In Chrome or Chromium, open chrome://extensions → enable Developer Mode → Load unpacked');
   console.log('');
-  console.log('  Then run \x1b[36mopencli doctor\x1b[0m to verify.');
+  console.log('  Then run \x1b[36mcloudl doctor\x1b[0m to verify.');
   console.log('');
 
 }

@@ -8,11 +8,11 @@ describe('formatRegistryHelpText', () => {
     const cmd: CliCommand = {
       site: 'demo', name: 'search', access: 'read', description: 'Search',
       strategy: Strategy.PUBLIC, browser: false, args: [],
-      example: '  opencli demo search "opencli docs" -f json  ',
+      example: '  cloudl demo search "cloudl docs" -f json  ',
     };
-    expect(formatCommandExample(cmd)).toBe('ClouDownloader demo search "opencli docs" -f json');
-    expect(serializeCommand(cmd).example).toBe('ClouDownloader demo search "opencli docs" -f json');
-    expect(cmd.example).toBe('  opencli demo search "opencli docs" -f json  ');
+    expect(formatCommandExample(cmd)).toBe('cloudl demo search "cloudl docs" -f json');
+    expect(serializeCommand(cmd).example).toBe('cloudl demo search "cloudl docs" -f json');
+    expect(cmd.example).toBe('  cloudl demo search "cloudl docs" -f json  ');
   });
 
   it('summarizes long choices lists so help text stays readable', () => {
@@ -66,14 +66,14 @@ describe('formatRegistryHelpText', () => {
       args: [],
     };
 
-    expect(formatCommandExample(cmd)).toBe('ClouDownloader bilibili hot -f yaml');
+    expect(formatCommandExample(cmd)).toBe('cloudl bilibili hot -f yaml');
     expect(serializeCommand(cmd)).toMatchObject({
       command: 'bilibili/hot',
       access: 'read',
-      example: 'ClouDownloader bilibili hot -f yaml',
+      example: 'cloudl bilibili hot -f yaml',
     });
     expect(formatRegistryHelpText(cmd)).toContain('Access: read');
-    expect(formatRegistryHelpText(cmd)).toContain('Example: ClouDownloader bilibili hot -f yaml');
+    expect(formatRegistryHelpText(cmd)).toContain('Example: cloudl bilibili hot -f yaml');
     expect(formatRegistryHelpText(cmd)).not.toContain('Strategy:');
   });
 

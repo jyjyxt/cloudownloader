@@ -38,12 +38,12 @@ export const detailCommand = cli({
         const timeout = requirePositiveInt(
             Number(kwargs.timeout ?? 120),
             'chatgpt detail --timeout',
-            'Example: opencli chatgpt detail <id> --wait true --timeout 600',
+            'Example: cloudl chatgpt detail <id> --wait true --timeout 600',
         );
         const stableSeconds = requireNonNegativeInt(
             Number(kwargs.stable ?? 6),
             'chatgpt detail --stable',
-            'Example: opencli chatgpt detail <id> --wait true --stable 6',
+            'Example: cloudl chatgpt detail <id> --wait true --stable 6',
         );
         await page.goto(`${CHATGPT_URL}/c/${id}`, { settleMs: 2000 });
         try {

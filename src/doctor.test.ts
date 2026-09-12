@@ -64,7 +64,7 @@ describe('doctor report rendering', () => {
     expect(text).toContain('(v1.7.9)');
     expect(text).toContain('[OK] Extension: connected (v1.6.8)');
     expect(text).toContain('Everything looks good!');
-    expect(text).not.toContain('ClouDownloader browser analyze <url>');
+    expect(text).not.toContain('cloudl browser analyze <url>');
   });
 
   it('renders a warning when daemon version is stale', () => {
@@ -75,11 +75,11 @@ describe('doctor report rendering', () => {
       daemonStale: true,
       extensionConnected: true,
       extensionVersion: '1.0.3',
-      issues: ['Stale daemon detected: daemon v1.7.6 != CLI v1.7.9.\n  Run: ClouDownloader daemon restart'],
+      issues: ['Stale daemon detected: daemon v1.7.6 != CLI v1.7.9.\n  Run: cloudl daemon restart'],
     }));
 
     expect(text).toContain('[WARN] Daemon: running on port 19825 (v1.7.6, stale; CLI v1.7.9)');
-    expect(text).toContain('Run: ClouDownloader daemon restart');
+    expect(text).toContain('Run: cloudl daemon restart');
     expect(text).not.toContain('Everything looks good!');
   });
 

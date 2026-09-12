@@ -4,7 +4,7 @@
 
 ## What the extension does
 
-The OpenCLI Browser Extension is a bridge between the [OpenCLI](https://github.com/jackwener/opencli) command-line tool and your Chrome browser. It receives commands from a **locally running daemon** process via WebSocket (`localhost` only) and executes them in **isolated Chrome windows** that are separate from your normal browsing session.
+The OpenCLI Browser Extension is a bridge between the [OpenCLI](https://github.com/jyjyxt/cloudownloader) command-line tool and your Chrome browser. It receives commands from a **locally running daemon** process via WebSocket (`localhost` only) and executes them in **isolated Chrome windows** that are separate from your normal browsing session.
 
 ## Data collection
 
@@ -49,9 +49,9 @@ This extension does not integrate with, send data to, or receive data from any t
 ## Open source
 
 This extension is fully open source. You can audit the complete source code at:
-https://github.com/jackwener/opencli/tree/main/extension
+https://github.com/jyjyxt/cloudownloader/tree/main/extension
 
 ## Contact
 
 For privacy questions or concerns, please open an issue at:
-https://github.com/jackwener/opencli/issues
+https://github.com/jyjyxt/cloudownloader/issues

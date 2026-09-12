@@ -16,11 +16,11 @@ source: global
 ## State signature
 
 - entry: 任意 page，logged_in，note URL (含 `xsec_token`) ready，评论文本 ready
-- success: 评论区顶部 / 自己 username 下出现刚发的文本，且 `opencli xiaohongshu comments <url>` 输出含该条
+- success: 评论区顶部 / 自己 username 下出现刚发的文本，且 `cloudl xiaohongshu comments <url>` 输出含该条
 
 ## Best path
 
-xhs 现阶段 **没有 cookie-API 形 `opencli xiaohongshu comment` adapter**（comments adapter 只读不写）。直接走 browser DOM workflow：
+xhs 现阶段 **没有 cookie-API 形 `cloudl xiaohongshu comment` adapter**（comments adapter 只读不写）。直接走 browser DOM workflow：
 
 ```yaml
 preconditions:
@@ -35,10 +35,10 @@ flow:
   - goto <note_url>  # 必须含 xsec_token，否则 pitfall:note_url_requires_xsec_token
   - wait for action:read_comments precondition (评论区 rendered)
   - action:post_comment in pages/note.md
-  - verify: opencli xiaohongshu comments <url> --limit 5 看顶部是否是新评论
+  - verify: cloudl xiaohongshu comments <url> --limit 5 看顶部是否是新评论
 ```
 
-> **Adapter follow-up candidate**：cookie-API 形 `opencli xiaohongshu comment <url> "<text>"` 是合理的下一发，发完 v1 sitemap 后开 issue 给 adapter-author。
+> **Adapter follow-up candidate**：cookie-API 形 `cloudl xiaohongshu comment <url> "<text>"` 是合理的下一发，发完 v1 sitemap 后开 issue 给 adapter-author。
 
 ## Fallback path
 
@@ -47,14 +47,14 @@ Best path 已经是 DOM-only。Fallback 主要处理 AuthRequired / security_blo
 ```yaml
 on_action_fail:
   - if URL 含 /login OR overlay "请登录":
-    - recovery: opencli xiaohongshu login  # pending: codex task #276
+    - recovery: cloudl xiaohongshu login  # pending: codex task #276
     - 登录后从 Best path step 1 重跑
   - if 安全验证 modal visible (CAPTCHA / 滑块 / 短信):
     - 停手报 user，不要尝试自动过验证
   - if 评论 textarea 找不到 (selector 漂):
     - 标记 page action `action:post_comment` stale，停手报 user
   - if submit button click 后评论未出现 > 5s:
-    - 等 10s 后 cross-verify opencli xiaohongshu comments，可能是 server lag
+    - 等 10s 后 cross-verify cloudl xiaohongshu comments，可能是 server lag
     - 仍未出现 -> 评论被过滤（敏感词 / spam 检测），停手报 user 让其改文案
 estimated_turns: +2
 ```
@@ -68,7 +68,7 @@ estimated_turns: +2
 
 ## Re-entry checkpoints
 
-agent 中断后醒来按 `opencli browser state` URL + comments 比对判断：
+agent 中断后醒来按 `cloudl browser state` URL + comments 比对判断：
 
 - 非 `/explore/<note_id>?xsec_token=...` URL → 重新 goto
 - on note page, textarea visible 但未输入 → step 3 起
@@ -77,7 +77,7 @@ agent 中断后醒来按 `opencli browser state` URL + comments 比对判断：
 
 ## State validation
 
-- `opencli xiaohongshu comments <url> --limit 5` 输出顶部 row 的 `author` 是 self（whoami 对比） 且 `content` 匹配（normalize whitespace + emoji NFC）
+- `cloudl xiaohongshu comments <url> --limit 5` 输出顶部 row 的 `author` 是 self（whoami 对比） 且 `content` 匹配（normalize whitespace + emoji NFC）
 - 评论时间显示 `刚刚` / `1秒前` / `1分钟前`
 
 ## Stale markers

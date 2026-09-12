@@ -6,19 +6,19 @@
 
 | Command | Description |
 |---------|-------------|
-| `opencli bloomberg main` | Bloomberg homepage top stories from RSS |
-| `opencli bloomberg markets` | Bloomberg Markets top stories from RSS |
-| `opencli bloomberg economics` | Bloomberg Economics top stories from RSS |
-| `opencli bloomberg industries` | Bloomberg Industries top stories from RSS |
-| `opencli bloomberg tech` | Bloomberg Tech top stories from RSS |
-| `opencli bloomberg politics` | Bloomberg Politics top stories from RSS |
-| `opencli bloomberg businessweek` | Bloomberg Businessweek top stories from the section page |
-| `opencli bloomberg opinions` | Bloomberg Opinion top stories from RSS |
-| `opencli bloomberg green` | Bloomberg Green top stories from RSS |
-| `opencli bloomberg crypto` | Bloomberg Crypto top stories from RSS |
-| `opencli bloomberg pursuits` | Bloomberg Pursuits top stories from RSS |
-| `opencli bloomberg feeds` | List the RSS feed aliases used by the adapter |
-| `opencli bloomberg news <link>` | Read a standard Bloomberg story/article page and return title, summary, media links, and article text |
+| `cloudl bloomberg main` | Bloomberg homepage top stories from RSS |
+| `cloudl bloomberg markets` | Bloomberg Markets top stories from RSS |
+| `cloudl bloomberg economics` | Bloomberg Economics top stories from RSS |
+| `cloudl bloomberg industries` | Bloomberg Industries top stories from RSS |
+| `cloudl bloomberg tech` | Bloomberg Tech top stories from RSS |
+| `cloudl bloomberg politics` | Bloomberg Politics top stories from RSS |
+| `cloudl bloomberg businessweek` | Bloomberg Businessweek top stories from the section page |
+| `cloudl bloomberg opinions` | Bloomberg Opinion top stories from RSS |
+| `cloudl bloomberg green` | Bloomberg Green top stories from RSS |
+| `cloudl bloomberg crypto` | Bloomberg Crypto top stories from RSS |
+| `cloudl bloomberg pursuits` | Bloomberg Pursuits top stories from RSS |
+| `cloudl bloomberg feeds` | List the RSS feed aliases used by the adapter |
+| `cloudl bloomberg news <link>` | Read a standard Bloomberg story/article page and return title, summary, media links, and article text |
 
 ## What works today
 
@@ -47,22 +47,22 @@
 
 ```bash
 # List supported RSS feed aliases
-opencli bloomberg feeds
+cloudl bloomberg feeds
 
 # Fetch Bloomberg homepage headlines
-opencli bloomberg main --limit 5
+cloudl bloomberg main --limit 5
 
 # Fetch a section feed as JSON
-opencli bloomberg tech --limit 3 -f json
+cloudl bloomberg tech --limit 3 -f json
 
 # Fetch Businessweek section stories
-opencli bloomberg businessweek --limit 5 -f json
+cloudl bloomberg businessweek --limit 5 -f json
 
 # Read a standard article page
-opencli bloomberg news https://www.bloomberg.com/news/articles/2026-03-19/example -f json
+cloudl bloomberg news https://www.bloomberg.com/news/articles/2026-03-19/example -f json
 
 # Relative article paths also work
-opencli bloomberg news /news/articles/2026-03-19/example
+cloudl bloomberg news /news/articles/2026-03-19/example
 ```
 
 ## Prerequisites

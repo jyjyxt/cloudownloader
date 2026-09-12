@@ -88,20 +88,20 @@ export function requireXiaoePageUrl(value, commandName) {
     } catch {
         throw new ArgumentError(
             `invalid xiaoe URL: ${raw}`,
-            `Example: opencli xiaoe ${commandName} https://appxxxx.h5.xet.citv.cn/p/course/ecourse/v_xxxxx`,
+            `Example: cloudl xiaoe ${commandName} https://appxxxx.h5.xet.citv.cn/p/course/ecourse/v_xxxxx`,
         );
     }
     if (parsed.protocol !== 'https:') {
         throw new ArgumentError(
             `xiaoe URL must use https (got ${parsed.protocol.replace(':', '')})`,
-            `Example: opencli xiaoe ${commandName} https://appxxxx.h5.xet.citv.cn/p/course/ecourse/v_xxxxx`,
+            `Example: cloudl xiaoe ${commandName} https://appxxxx.h5.xet.citv.cn/p/course/ecourse/v_xxxxx`,
         );
     }
     const host = parsed.hostname.toLowerCase();
     if (host !== 'h5.xet.citv.cn' && !host.endsWith('.h5.xet.citv.cn')) {
         throw new ArgumentError(
             `url must be on h5.xet.citv.cn or a shop subdomain (got ${parsed.hostname})`,
-            `Example: opencli xiaoe ${commandName} https://appxxxx.h5.xet.citv.cn/p/course/ecourse/v_xxxxx`,
+            `Example: cloudl xiaoe ${commandName} https://appxxxx.h5.xet.citv.cn/p/course/ecourse/v_xxxxx`,
         );
     }
     return parsed.toString();

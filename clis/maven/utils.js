@@ -7,7 +7,7 @@ import { ArgumentError, CommandExecutionError, EmptyResultError } from '@jackwen
 
 export const MAVEN_BASE = 'https://search.maven.org/solrsearch/select';
 export const MAVEN_REPO_BASE = 'https://repo1.maven.org/maven2';
-const UA = 'opencli-maven-adapter (+https://github.com/jackwener/opencli)';
+const UA = 'opencli-maven-adapter (+https://github.com/jyjyxt/cloudownloader)';
 
 // Maven groupId / artifactId tokens — Java-package-ish (letters / digits /
 // `_-.`), 1-200 chars; reverse-DNS dots are allowed in groupId.

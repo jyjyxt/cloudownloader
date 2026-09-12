@@ -6,31 +6,31 @@
 
 | Command | Description |
 |---------|-------------|
-| `opencli lobsters hot` | Hottest stories |
-| `opencli lobsters newest` | Latest stories |
-| `opencli lobsters active` | Most active discussions |
-| `opencli lobsters tag <tag>` | Stories by tag |
-| `opencli lobsters domain <domain>` | Stories submitted from a specific source domain |
-| `opencli lobsters read <short_id>` | Read a story and its comment tree |
+| `cloudl lobsters hot` | Hottest stories |
+| `cloudl lobsters newest` | Latest stories |
+| `cloudl lobsters active` | Most active discussions |
+| `cloudl lobsters tag <tag>` | Stories by tag |
+| `cloudl lobsters domain <domain>` | Stories submitted from a specific source domain |
+| `cloudl lobsters read <short_id>` | Read a story and its comment tree |
 
 ## Usage Examples
 
 ```bash
 # Quick start
-opencli lobsters hot --limit 10
+cloudl lobsters hot --limit 10
 
 # Filter by tag
-opencli lobsters tag rust --limit 5
+cloudl lobsters tag rust --limit 5
 
 # Stories from a specific source domain
-opencli lobsters domain github.com --limit 10
-opencli lobsters domain arxiv.org --limit 5
+cloudl lobsters domain github.com --limit 10
+cloudl lobsters domain arxiv.org --limit 5
 
 # Read a specific story (use the short_id surfaced as `id` in any listing)
-opencli lobsters read 6cmh6h --limit 25 --depth 2
+cloudl lobsters read 6cmh6h --limit 25 --depth 2
 
 # JSON output
-opencli lobsters hot -f json
+cloudl lobsters hot -f json
 ```
 
 ## Output Columns

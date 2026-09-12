@@ -17,7 +17,7 @@ export interface SubPluginEntry {
   path: string;
   version?: string;
   description?: string;
-  /** Semver range for ClouDownloader compatibility (overrides top-level). */
+  /** Semver range for cloudl compatibility (overrides top-level). */
   opencli?: string;
   /** When true, this sub-plugin is skipped during install. */
   disabled?: boolean;
@@ -28,7 +28,7 @@ export interface PluginManifest {
   name?: string;
   /** Semantic version of the plugin (single-plugin mode). */
   version?: string;
-  /** Semver range for ClouDownloader compatibility, e.g. ">=1.0.0". */
+  /** Semver range for cloudl compatibility, e.g. ">=1.0.0". */
   opencli?: string;
   /** Human-readable description. */
   description?: string;
@@ -85,7 +85,7 @@ export function getEnabledPlugins(
 // ── Version compatibility ───────────────────────────────────────────────────
 
 /**
- * Check if the current ClouDownloader version satisfies a semver range string.
+ * Check if the current cloudl version satisfies a semver range string.
  *
  * Supports a simplified subset of semver ranges:
  *   ">=1.0.0"   – greater than or equal

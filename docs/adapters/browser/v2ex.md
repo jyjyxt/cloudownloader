@@ -6,41 +6,41 @@
 
 | Command | Description |
 |---------|-------------|
-| `opencli v2ex hot` | Hot topics |
-| `opencli v2ex latest` | Latest topics |
-| `opencli v2ex topic <id>` | Topic detail |
-| `opencli v2ex node <name>` | Topics by node |
-| `opencli v2ex user <username>` | Topics by user |
-| `opencli v2ex member <username>` | User profile |
-| `opencli v2ex replies <id>` | Topic replies |
-| `opencli v2ex nodes` | All nodes (sorted by topic count) |
-| `opencli v2ex daily` | Daily hot |
-| `opencli v2ex me` | My profile (auth required) |
-| `opencli v2ex notifications` | My notifications (auth required) |
+| `cloudl v2ex hot` | Hot topics |
+| `cloudl v2ex latest` | Latest topics |
+| `cloudl v2ex topic <id>` | Topic detail |
+| `cloudl v2ex node <name>` | Topics by node |
+| `cloudl v2ex user <username>` | Topics by user |
+| `cloudl v2ex member <username>` | User profile |
+| `cloudl v2ex replies <id>` | Topic replies |
+| `cloudl v2ex nodes` | All nodes (sorted by topic count) |
+| `cloudl v2ex daily` | Daily hot |
+| `cloudl v2ex me` | My profile (auth required) |
+| `cloudl v2ex notifications` | My notifications (auth required) |
 
 ## Usage Examples
 
 ```bash
 # Hot topics
-opencli v2ex hot --limit 5
+cloudl v2ex hot --limit 5
 
 # Browse topics in a node
-opencli v2ex node python
+cloudl v2ex node python
 
 # View topic replies
-opencli v2ex replies 1000
+cloudl v2ex replies 1000
 
 # User's topics
-opencli v2ex user Livid
+cloudl v2ex user Livid
 
 # User profile
-opencli v2ex member Livid
+cloudl v2ex member Livid
 
 # List all nodes
-opencli v2ex nodes --limit 10
+cloudl v2ex nodes --limit 10
 
 # JSON output
-opencli v2ex hot -f json
+cloudl v2ex hot -f json
 ```
 
 ## Prerequisites

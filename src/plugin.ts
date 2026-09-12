@@ -583,7 +583,7 @@ function installDependencies(dir: string): void {
 }
 
 function finalizePluginRuntime(pluginDir: string): void {
-  // Symlink host ClouDownloader so TS plugins resolve '@jackwener/opencli/registry'
+  // Symlink host cloudl so TS plugins resolve '@jackwener/opencli/registry'
   // against the running host, not a stale npm-published version.
   linkHostOpencli(pluginDir);
 
@@ -720,7 +720,7 @@ export function installPlugin(source: string): string | string[] {
     // Check top-level compatibility
     if (manifest?.opencli && !checkCompatibility(manifest.opencli)) {
       throw new Error(
-        `Plugin requires ClouDownloader ${manifest.opencli}, but current version is incompatible.`
+        `Plugin requires cloudl ${manifest.opencli}, but current version is incompatible.`
       );
     }
 
@@ -744,7 +744,7 @@ function installSinglePlugin(
   const targetDir = path.join(PLUGINS_DIR, pluginName);
 
   if (fs.existsSync(targetDir)) {
-    throw new PluginError(`Plugin "${pluginName}" is already installed at ${targetDir}`, 'Use "ClouDownloader plugin uninstall" first, or pick a different name.');
+    throw new PluginError(`Plugin "${pluginName}" is already installed at ${targetDir}`, 'Use "cloudl plugin uninstall" first, or pick a different name.');
   }
 
   ensureStandalonePluginReady(cloneDir);
@@ -781,8 +781,8 @@ function installLocalPlugin(localPath: string, name: string): string {
 
   if (manifest?.opencli && !checkCompatibility(manifest.opencli)) {
     throw new PluginError(
-      `Plugin requires ClouDownloader ${manifest.opencli}, but current version is incompatible.`,
-      'Upgrade ClouDownloader to a compatible version.',
+      `Plugin requires cloudl ${manifest.opencli}, but current version is incompatible.`,
+      'Upgrade cloudl to a compatible version.',
     );
   }
 
@@ -790,7 +790,7 @@ function installLocalPlugin(localPath: string, name: string): string {
   const targetDir = path.join(PLUGINS_DIR, pluginName);
 
   if (fs.existsSync(targetDir)) {
-    throw new PluginError(`Plugin "${pluginName}" is already installed at ${targetDir}`, 'Use "ClouDownloader plugin uninstall" first, or pick a different name.');
+    throw new PluginError(`Plugin "${pluginName}" is already installed at ${targetDir}`, 'Use "cloudl plugin uninstall" first, or pick a different name.');
   }
 
   const validation = validatePluginStructure(localPath);
@@ -886,7 +886,7 @@ function installMonorepo(
   for (const { name, entry } of pluginsToInstall) {
     // Check sub-plugin level compatibility (overrides top-level)
     if (entry.opencli && !checkCompatibility(entry.opencli)) {
-      log.warn(`Skipping "${name}": requires ClouDownloader ${entry.opencli}`);
+      log.warn(`Skipping "${name}": requires cloudl ${entry.opencli}`);
       continue;
     }
 
@@ -986,7 +986,7 @@ function collectUpdatedMonorepoPlugins(
       throw new Error(`Installed sub-plugin "${pluginName}" no longer exists in ${cloneUrl}`);
     }
     if (manifestEntry.opencli && !checkCompatibility(manifestEntry.opencli)) {
-      throw new Error(`Sub-plugin "${pluginName}" requires ClouDownloader ${manifestEntry.opencli}`);
+      throw new Error(`Sub-plugin "${pluginName}" requires cloudl ${manifestEntry.opencli}`);
     }
 
     const subDir = resolveRepoContainedPath(tmpCloneDir, manifestEntry.path);
@@ -1127,7 +1127,7 @@ export function updatePlugin(name: string): void {
 
       if (manifest.opencli && !checkCompatibility(manifest.opencli)) {
         throw new Error(
-          `Plugin requires ClouDownloader ${manifest.opencli}, but current version is incompatible.`
+          `Plugin requires cloudl ${manifest.opencli}, but current version is incompatible.`
         );
       }
 
@@ -1169,7 +1169,7 @@ export function updatePlugin(name: string): void {
 
     if (manifest?.opencli && !checkCompatibility(manifest.opencli)) {
       throw new Error(
-        `Plugin requires ClouDownloader ${manifest.opencli}, but current version is incompatible.`
+        `Plugin requires cloudl ${manifest.opencli}, but current version is incompatible.`
       );
     }
 
@@ -1398,7 +1398,7 @@ function parseSource(
 }
 
 /**
- * Symlink the host ClouDownloader package into a plugin's node_modules.
+ * Symlink the host cloudl package into a plugin's node_modules.
  * This ensures TS plugins resolve '@jackwener/opencli/registry' against
  * the running host installation rather than a stale npm-published version.
  */
@@ -1420,9 +1420,9 @@ function linkHostOpencli(pluginDir: string): void {
     // 'dir' symlink on other platforms.
     const linkType = isWindows ? 'junction' : 'dir';
     fs.symlinkSync(hostRoot, targetLink, linkType);
-    log.debug(`Linked host ClouDownloader into plugin: ${targetLink} → ${hostRoot}`);
+    log.debug(`Linked host cloudl into plugin: ${targetLink} → ${hostRoot}`);
   } catch (err) {
-    log.warn(`Failed to link host ClouDownloader into plugin: ${getErrorMessage(err)}`);
+    log.warn(`Failed to link host cloudl into plugin: ${getErrorMessage(err)}`);
   }
 }
 
@@ -1519,7 +1519,7 @@ function transpilePluginTs(pluginDir: string): void {
     if (!esbuildBin) {
       log.warn(
         'esbuild not found. TS plugin files will not be transpiled and may fail to load. ' +
-        'Install esbuild (`npm i -g esbuild`) or ensure it is available in the ClouDownloader host node_modules.'
+        'Install esbuild (`npm i -g esbuild`) or ensure it is available in the cloudl host node_modules.'
       );
       return;
     }

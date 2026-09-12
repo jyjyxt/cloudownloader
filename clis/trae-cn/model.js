@@ -6,7 +6,7 @@ export const modelCommand = cli({
   name: 'model',
   access: 'read',
   description: 'Read the model label currently shown in the Trae CN chat input',
-  example: 'OPENCLI_CDP_ENDPOINT=http://127.0.0.1:39240 OPENCLI_CDP_TARGET=talk opencli trae-cn model -f json',
+  example: 'OPENCLI_CDP_ENDPOINT=http://127.0.0.1:39240 OPENCLI_CDP_TARGET=talk cloudl trae-cn model -f json',
   domain: 'localhost',
   strategy: Strategy.UI,
   browser: true,

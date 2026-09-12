@@ -20,20 +20,20 @@ source: global
 ```yaml
 ### action:search_threads
 pre: signed in; Gmail search input mounted
-do: opencli gmail search "<gmail-query>" --limit <n>
+do: cloudl gmail search "<gmail-query>" --limit <n>
 post: rows contain threadId, subject, sender, flags, date; exact limit reached or upstream exhausted
 fail: AuthRequired | capture Timeout | positional-shape CommandExecutionError
-recover: adapter_health_update: opencli gmail search -> suspect; confirm input[name="q"] and run browser network while submitting the query
+recover: adapter_health_update: cloudl gmail search -> suspect; confirm input[name="q"] and run browser network while submitting the query
 evidence: live exact-sender query + 55-row pagination on 2026-08-25
 ```
 
 ```yaml
 ### action:open_thread
 pre: target result row known by threadId
-do: opencli gmail thread <threadId>
+do: cloudl gmail thread <threadId>
 post: one row per rendered/structured message with body
 fail: target row absent and direct route fails | no fd response and no rendered message
-recover: rerun gmail search for the target, then retry thread; adapter_health_update: opencli gmail thread -> suspect
+recover: rerun gmail search for the target, then retry thread; adapter_health_update: cloudl gmail thread -> suspect
 evidence: live result row opened by data-legacy-thread-id
 ```
 

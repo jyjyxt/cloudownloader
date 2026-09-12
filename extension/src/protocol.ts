@@ -1,5 +1,5 @@
 /**
- * opencli browser protocol — shared types between daemon, extension, and CLI.
+ * cloudl browser protocol — shared types between daemon, extension, and CLI.
  *
  * 5 actions: exec, navigate, tabs, cookies, screenshot.
  * Everything else is just JS code sent via 'exec'.

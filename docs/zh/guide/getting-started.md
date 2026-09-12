@@ -17,10 +17,10 @@ npm link
 ## 基本使用
 
 ```bash
-ClouDownloader list                              # 查看所有命令
-ClouDownloader hackernews top --limit 5          # 公开 API，无需浏览器
-ClouDownloader bilibili hot --limit 5            # 浏览器命令
-ClouDownloader zhihu hot -f json                 # JSON 输出
+cloudl list                              # 查看所有命令
+cloudl hackernews top --limit 5          # 公开 API，无需浏览器
+cloudl bilibili hot --limit 5            # 浏览器命令
+cloudl zhihu hot -f json                 # JSON 输出
 ```
 
 ## 输出格式
@@ -28,11 +28,11 @@ ClouDownloader zhihu hot -f json                 # JSON 输出
 所有命令支持 `--format` / `-f`：
 
 ```bash
-ClouDownloader bilibili hot -f table   # 默认：终端表格
-ClouDownloader bilibili hot -f json    # JSON
-ClouDownloader bilibili hot -f yaml    # YAML
-ClouDownloader bilibili hot -f md      # Markdown
-ClouDownloader bilibili hot -f csv     # CSV
+cloudl bilibili hot -f table   # 默认：终端表格
+cloudl bilibili hot -f json    # JSON
+cloudl bilibili hot -f yaml    # YAML
+cloudl bilibili hot -f md      # Markdown
+cloudl bilibili hot -f csv     # CSV
 ```
 
 ## 终端自动补全
@@ -41,13 +41,13 @@ OpenCLI 支持智能的 Tab 自动补全，加快命令输入：
 
 ```bash
 # 把自动补全加入 shell 启动配置
-echo 'eval "$(ClouDownloader completion zsh)"' >> ~/.zshrc              # Zsh
-echo 'eval "$(ClouDownloader completion bash)"' >> ~/.bashrc            # Bash
-echo 'ClouDownloader completion fish | source' >> ~/.config/fish/config.fish  # Fish
+echo 'eval "$(cloudl completion zsh)"' >> ~/.zshrc              # Zsh
+echo 'eval "$(cloudl completion bash)"' >> ~/.bashrc            # Bash
+echo 'cloudl completion fish | source' >> ~/.config/fish/config.fish  # Fish
 
 # 重启 shell 后，按 Tab 键补全：
-ClouDownloader [Tab]          # 补全站点名称（bilibili、zhihu、twitter...）
-ClouDownloader bilibili [Tab] # 补全命令（hot、search、me、download...）
+cloudl [Tab]          # 补全站点名称（bilibili、zhihu、twitter...）
+cloudl bilibili [Tab] # 补全命令（hot、search、me、download...）
 ```
 
 补全功能包含：

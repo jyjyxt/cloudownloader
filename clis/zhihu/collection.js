@@ -6,7 +6,7 @@ import { stripHtml } from './text.js';
 function validatePositiveInt(value, name) {
   const n = Number(value);
   if (!Number.isInteger(n) || n <= 0) {
-    throw new ArgumentError(`zhihu collection --${name} must be a positive integer`, 'Example: opencli zhihu collection 83283292 --limit 20');
+    throw new ArgumentError(`zhihu collection --${name} must be a positive integer`, 'Example: cloudl zhihu collection 83283292 --limit 20');
   }
   return n;
 }
@@ -14,7 +14,7 @@ function validatePositiveInt(value, name) {
 function validateNonNegativeInt(value, name) {
   const n = Number(value);
   if (!Number.isInteger(n) || n < 0) {
-    throw new ArgumentError(`zhihu collection --${name} must be a non-negative integer`, 'Example: opencli zhihu collection 83283292 --offset 0');
+    throw new ArgumentError(`zhihu collection --${name} must be a non-negative integer`, 'Example: cloudl zhihu collection 83283292 --offset 0');
   }
   return n;
 }
@@ -123,7 +123,7 @@ cli({
 
     // 验证收藏夹 ID 为数字
     if (!/^\d+$/.test(collectionId)) {
-      throw new ArgumentError('Collection ID must be numeric', 'Example: opencli zhihu collection 83283292');
+      throw new ArgumentError('Collection ID must be numeric', 'Example: cloudl zhihu collection 83283292');
     }
 
     const pageOffset = validateNonNegativeInt(offset, 'offset');

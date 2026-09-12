@@ -32,7 +32,7 @@ No Chrome extension, no daemon process — just a direct CDP WebSocket connectio
 
 **On your machine:**
 - [Android Debug Bridge (ADB)](https://developer.android.com/tools/adb) installed and on `$PATH`
-- OpenCLI installed (`npm install -g opencli`)
+- cloudl installed [from source](../guide/installation.md)
 
 ---
 
@@ -81,7 +81,7 @@ A successful response lists the open tabs:
 
 ```bash
 export OPENCLI_CDP_ENDPOINT=http://localhost:9222
-opencli hackernews top --limit 5
+cloudl hackernews top --limit 5
 ```
 
 ---
@@ -91,7 +91,7 @@ opencli hackernews top --limit 5
 When multiple tabs are open, `CDPBridge` picks the best one automatically using a scoring algorithm (prefer `type=page`, real URLs over `about:blank`, etc.). To override this, set `OPENCLI_CDP_TARGET` to a substring of the tab's title or URL:
 
 ```bash
-OPENCLI_CDP_TARGET="twitter" opencli twitter trending
+OPENCLI_CDP_TARGET="twitter" cloudl twitter trending
 ```
 
 You can also connect directly to a specific tab's WebSocket URL (from `/json`):
@@ -109,7 +109,7 @@ Adapters that use the `cookie` strategy (most social/content sites) need you to 
 To check whether an adapter requires login:
 
 ```bash
-opencli zhihu hot --help
+cloudl zhihu hot --help
 # Strategy: cookie | Browser: yes | Domain: www.zhihu.com
 ```
 
@@ -154,8 +154,8 @@ adb -s <device1-serial> forward tcp:9222 localabstract:chrome_devtools_remote
 adb -s <device2-serial> forward tcp:9223 localabstract:chrome_devtools_remote
 
 # Run commands targeting each device
-OPENCLI_CDP_ENDPOINT=http://localhost:9222 opencli twitter trending
-OPENCLI_CDP_ENDPOINT=http://localhost:9223 opencli twitter trending
+OPENCLI_CDP_ENDPOINT=http://localhost:9222 cloudl twitter trending
+OPENCLI_CDP_ENDPOINT=http://localhost:9223 cloudl twitter trending
 ```
 
 ---

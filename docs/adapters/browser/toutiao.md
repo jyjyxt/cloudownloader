@@ -4,27 +4,27 @@
 
 | Command | Mode | Domain | Description |
 |---------|------|--------|-------------|
-| `opencli toutiao articles` | 🔐 Browser | `mp.toutiao.com` | 头条号创作者后台文章列表及数据（需登录） |
-| `opencli toutiao hot` | 🌐 Public | `www.toutiao.com` | 今日头条首页热榜（公开，无需登录） |
-| `opencli toutiao recommend` | 🌐 Public | `www.toutiao.com` | 今日头条频道推荐流（公开，无需登录） |
+| `cloudl toutiao articles` | 🔐 Browser | `mp.toutiao.com` | 头条号创作者后台文章列表及数据（需登录） |
+| `cloudl toutiao hot` | 🌐 Public | `www.toutiao.com` | 今日头条首页热榜（公开，无需登录） |
+| `cloudl toutiao recommend` | 🌐 Public | `www.toutiao.com` | 今日头条频道推荐流（公开，无需登录） |
 
 ## Usage Examples
 
 ```bash
 # Public hot board (no login)
-opencli toutiao hot
-opencli toutiao hot --limit 10
-opencli toutiao hot -f json
+cloudl toutiao hot
+cloudl toutiao hot --limit 10
+cloudl toutiao hot -f json
 
 # Public channel recommendation feed (no login)
-opencli toutiao recommend
-opencli toutiao recommend --category news_tech --limit 10
-opencli toutiao recommend -f json
+cloudl toutiao recommend
+cloudl toutiao recommend --category news_tech --limit 10
+cloudl toutiao recommend -f json
 
 # Creator dashboard articles (logged-in)
-opencli toutiao articles
-opencli toutiao articles --page 2
-opencli toutiao articles --page 1 -f json
+cloudl toutiao articles
+cloudl toutiao articles --page 2
+cloudl toutiao articles --page 1 -f json
 ```
 
 ## Output

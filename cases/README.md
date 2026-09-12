@@ -1,6 +1,6 @@
 # Use Cases
 
-Real-world examples of how people use OpenCLI.
+Real-world examples of how people use cloudl.
 
 ## Contributing
 

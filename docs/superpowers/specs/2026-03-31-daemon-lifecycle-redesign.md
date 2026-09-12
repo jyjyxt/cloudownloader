@@ -27,7 +27,7 @@ Four changes:
 1. Extend idle timeout from 5 minutes to 4 hours (configurable)
 2. Require dual idle condition: both no CLI requests AND no Extension connection
 3. Reduce Extension WebSocket reconnect backoff cap from 60s to 5s
-4. Add `opencli daemon status/stop/restart` commands
+4. Add `cloudl daemon status/stop/restart` commands
 
 ## Design
 
@@ -109,7 +109,7 @@ cap means the Extension reconnects within 5 seconds of the daemon becoming avail
 
 Add three new CLI commands for daemon lifecycle management:
 
-**`opencli daemon status`**
+**`cloudl daemon status`**
 
 Queries the daemon's `/status` endpoint (new) and displays:
 
@@ -128,13 +128,13 @@ If daemon is not running:
 Daemon: not running
 ```
 
-**`opencli daemon stop`**
+**`cloudl daemon stop`**
 
 Sends a `POST /shutdown` request to the daemon, which triggers a graceful shutdown:
 reject pending requests with a shutdown message, close WebSocket connections, close
 HTTP server, then exit.
 
-**`opencli daemon restart`**
+**`cloudl daemon restart`**
 
 Equivalent to `stop` followed by spawning a new daemon. Useful when the daemon gets
 into a bad state.
@@ -197,7 +197,7 @@ and shows:
 - Integration test: daemon survives 10+ minutes without CLI requests while Extension
   is connected
 - Integration test: daemon exits after configured timeout when fully idle
-- Integration test: `opencli daemon status/stop/restart` work correctly
+- Integration test: `cloudl daemon status/stop/restart` work correctly
 
 ## Out of Scope
 

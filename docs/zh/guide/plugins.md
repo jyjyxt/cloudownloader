@@ -6,22 +6,22 @@ OpenCLI 支持社区贡献的 plugins。你可以从 GitHub 安装第三方 adap
 
 ```bash
 # 安装插件
-ClouDownloader plugin install github:ByteYue/opencli-plugin-github-trending
+cloudl plugin install github:ByteYue/opencli-plugin-github-trending
 
 # 列出已安装插件
-ClouDownloader plugin list
+cloudl plugin list
 
 # 更新单个插件
-ClouDownloader plugin update github-trending
+cloudl plugin update github-trending
 
 # 更新全部已安装插件
-ClouDownloader plugin update --all
+cloudl plugin update --all
 
 # 使用插件（本质上就是普通 command）
-ClouDownloader github-trending today
+cloudl github-trending today
 
 # 卸载插件
-ClouDownloader plugin uninstall github-trending
+cloudl plugin uninstall github-trending
 ```
 
 ## 插件目录结构
@@ -31,9 +31,9 @@ Plugins 存放在 `~/.opencli/plugins/<name>/`。每个子目录都会在启动�
 ## 安装来源
 
 ```bash
-ClouDownloader plugin install github:user/repo
-ClouDownloader plugin install github:user/repo/subplugin   # 安装 monorepo 中的指定子插件
-ClouDownloader plugin install https://github.com/user/repo
+cloudl plugin install github:user/repo
+cloudl plugin install github:user/repo/subplugin   # 安装 monorepo 中的指定子插件
+cloudl plugin install https://github.com/user/repo
 ```
 
 如果仓库名带 `opencli-plugin-` 前缀，本地目录会自动去掉这个前缀。例如 `opencli-plugin-hot-digest` 会变成 `hot-digest`。
@@ -55,7 +55,7 @@ ClouDownloader plugin install https://github.com/user/repo
 |------|------|
 | `name` | 插件名称（覆盖从仓库名推导的名称） |
 | `version` | 语义化版本 |
-| `opencli` | 所需的 ClouDownloader 版本范围（如 `>=1.0.0`、`^1.2.0`） |
+| `opencli` | 所需的 cloudl 版本范围（如 `>=1.0.0`、`^1.2.0`） |
 | `description` | 描述 |
 | `plugins` | Monorepo 子插件声明（见下文） |
 
@@ -91,10 +91,10 @@ ClouDownloader plugin install https://github.com/user/repo
 
 ```bash
 # 安装 monorepo 中的全部子插件
-ClouDownloader plugin install github:user/opencli-plugins
+cloudl plugin install github:user/opencli-plugins
 
 # 安装指定子插件
-ClouDownloader plugin install github:user/opencli-plugins/polymarket
+cloudl plugin install github:user/opencli-plugins/polymarket
 ```
 
 - Monorepo 只 clone 一次到 `~/.opencli/monorepos/<repo>/`
@@ -104,7 +104,7 @@ ClouDownloader plugin install github:user/opencli-plugins/polymarket
 
 ## 版本追踪
 
-OpenCLI 会把已安装 plugin 的版本记录到 `~/.opencli/plugins.lock.json`。每条记录会保存 plugin source、当前 git commit hash、安装时间，以及最近一次更新时间。只要有这份元数据，`ClouDownloader plugin list` 就会显示对应的短 commit hash。
+OpenCLI 会把已安装 plugin 的版本记录到 `~/.opencli/plugins.lock.json`。每条记录会保存 plugin source、当前 git commit hash、安装时间，以及最近一次更新时间。只要有这份元数据，`cloudl plugin list` 就会显示对应的短 commit hash。
 
 ## Pipeline plugin 示例
 
@@ -124,7 +124,7 @@ cli({
   name: 'hot',
   description: 'Example plugin command',
   access: 'read',
-  example: 'ClouDownloader my-plugin hot -f yaml',
+  example: 'cloudl my-plugin hot -f yaml',
   strategy: Strategy.PUBLIC,
   browser: false,
   columns: ['title', 'url'],
@@ -157,7 +157,7 @@ cli({
   name: 'hot',
   description: 'Example TS plugin command',
   access: 'read',
-  example: 'ClouDownloader my-plugin hot -f yaml',
+  example: 'cloudl my-plugin hot -f yaml',
   strategy: Strategy.PUBLIC,
   browser: false,
   columns: ['title', 'url'],
@@ -165,7 +165,7 @@ cli({
 });
 ```
 
-运行 `ClouDownloader plugin install` 时，TS plugins 会自动完成基础设置：
+运行 `cloudl plugin install` 时，TS plugins 会自动完成基础设置：
 
 1. 安装 plugin 自身依赖
 2. 补齐 TypeScript 运行环境
@@ -186,8 +186,8 @@ cli({
 如果看到 `Cannot find module '@jackwener/opencli/registry'`，通常是宿主 symlink 失效。重新安装 plugin 即可：
 
 ```bash
-ClouDownloader plugin uninstall my-plugin
-ClouDownloader plugin install github:user/opencli-plugin-my-plugin
+cloudl plugin uninstall my-plugin
+cloudl plugin install github:user/opencli-plugin-my-plugin
 ```
 
 安装或卸载 plugin 后，建议重新打开一个终端，确保启动时重新发现命令。

@@ -15,7 +15,7 @@ cli({
   aliases: ['account'],
   description: 'Show Midjourney quota, conservative batch estimates, and account-consumption trend',
   access: 'read',
-  example: 'opencli midjourney quota -f yaml',
+  example: 'cloudl midjourney quota -f yaml',
   domain: 'www.midjourney.com',
   strategy: Strategy.COOKIE,
   browser: true,

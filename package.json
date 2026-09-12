@@ -11,7 +11,7 @@
   "type": "module",
   "main": "dist/src/main.js",
   "bin": {
-    "ClouDownloader": "dist/src/main.js"
+    "cloudl": "dist/src/main.js"
   },
   "exports": {
     ".": "./dist/src/main.js",

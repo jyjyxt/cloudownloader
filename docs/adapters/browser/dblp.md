@@ -8,43 +8,43 @@
 
 | Command | Description |
 |---------|-------------|
-| `opencli dblp search <query>` | Free-text search across titles, authors, and venues |
-| `opencli dblp author <name>` | List one author's recent publications (newest first) by name or `--pid` |
-| `opencli dblp paper <key>` | Fetch a single record's full metadata by canonical dblp key |
-| `opencli dblp venue <query>` | Search dblp's venue (conference / journal) registry |
+| `cloudl dblp search <query>` | Free-text search across titles, authors, and venues |
+| `cloudl dblp author <name>` | List one author's recent publications (newest first) by name or `--pid` |
+| `cloudl dblp paper <key>` | Fetch a single record's full metadata by canonical dblp key |
+| `cloudl dblp venue <query>` | Search dblp's venue (conference / journal) registry |
 
 ## Usage Examples
 
 ```bash
 # Free-text search (matches title / author / venue)
-opencli dblp search "attention is all you need" --limit 5
+cloudl dblp search "attention is all you need" --limit 5
 
 # Author search
-opencli dblp search "Yoshua Bengio" --limit 20
+cloudl dblp search "Yoshua Bengio" --limit 20
 
 # Newest publications by a specific author (resolves the dblp PID for you)
-opencli dblp author "Yoshua Bengio" --limit 20
+cloudl dblp author "Yoshua Bengio" --limit 20
 
 # Same call, but skip name resolution by supplying the PID directly
-opencli dblp author --pid 56/953 --limit 20
+cloudl dblp author --pid 56/953 --limit 20
 
 # Venue search
-opencli dblp search "ICLR 2024" --limit 30
+cloudl dblp search "ICLR 2024" --limit 30
 
 # Single-record detail (round-trip from search.key)
-opencli dblp paper conf/nips/VaswaniSPUJGKP17
+cloudl dblp paper conf/nips/VaswaniSPUJGKP17
 
 # arXiv mirror records use the journals/corr/abs-* form
-opencli dblp paper journals/corr/abs-2509-05821
+cloudl dblp paper journals/corr/abs-2509-05821
 
 # Resolve a venue acronym to dblp's canonical venue page
-opencli dblp venue ICLR --limit 5
+cloudl dblp venue ICLR --limit 5
 
 # Browse venues that match a topic keyword
-opencli dblp venue "neural networks" --limit 10
+cloudl dblp venue "neural networks" --limit 10
 
 # JSON output
-opencli dblp search "graph neural network" -f json
+cloudl dblp search "graph neural network" -f json
 ```
 
 ## Output Columns

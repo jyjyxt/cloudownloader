@@ -52,7 +52,7 @@ cli({
         try {
             resp = await fetch(url, {
                 headers: {
-                    'User-Agent': 'opencli/1.0 (+https://github.com/jackwener/opencli)',
+                    'User-Agent': 'opencli/1.0 (+https://github.com/jyjyxt/cloudownloader)',
                     'Accept': 'application/json',
                 },
             });
@@ -74,7 +74,7 @@ cli({
         const pages = Array.isArray(data?.query?.pages) ? data.query.pages : [];
         const page = pages[0];
         if (!page || page.missing) {
-            throw new EmptyResultError('wikipedia page', `No article "${title}" on ${lang}.wikipedia.org. Try \`opencli wikipedia search\` first.`);
+            throw new EmptyResultError('wikipedia page', `No article "${title}" on ${lang}.wikipedia.org. Try \`cloudl wikipedia search\` first.`);
         }
         const fullExtract = String(page.extract ?? '');
         if (!fullExtract.trim()) {

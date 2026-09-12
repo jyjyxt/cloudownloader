@@ -12,19 +12,19 @@ source: global
 
 - trigger: 未登录访问 `/` `/explore` `/search_result/...` `/user/profile/<id>` `/notifications` 等几乎全部 route
 - symptom: 页面文案 `登录后查看搜索结果` / `请登录` / redirect 到 `/login`，或 search adapter 抛 `AuthRequiredError`
-- workaround: 跑 workflow / adapter 前先 `opencli xiaohongshu whoami` 验登录态（# pending: login command MVP, codex task #276）；未登录 → `opencli xiaohongshu login`；不要尝试自动填用户名密码（CAPTCHA / 短信 2FA / 滑块 全踩，"human authenticates, machine verifies"）
+- workaround: 跑 workflow / adapter 前先 `cloudl xiaohongshu whoami` 验登录态（# pending: login command MVP, codex task #276）；未登录 → `cloudl xiaohongshu login`；不要尝试自动填用户名密码（CAPTCHA / 短信 2FA / 滑块 全踩，"human authenticates, machine verifies"）
 - verified_at: 2026-06-04
 
 ### pitfall:note_url_requires_xsec_token
 
 - trigger: agent 手拼 `/explore/<note_id>` 裸路径，没带 `xsec_token` query
 - symptom: 页面 403 / `error_code=300017` / `error_code=300031` / `website-login/error` redirect
-- workaround: note URL 必须来自 feed / search / user adapter 输出，那些 adapter 已经把 signed URL 完整带出；不要自己从 note_id 重建 URL；如果只有 note_id，先跑 `opencli xiaohongshu search` / `feed` 拿到 signed URL 再 drill down
+- workaround: note URL 必须来自 feed / search / user adapter 输出，那些 adapter 已经把 signed URL 完整带出；不要自己从 note_id 重建 URL；如果只有 note_id，先跑 `cloudl xiaohongshu search` / `feed` 拿到 signed URL 再 drill down
 - verified_at: 2026-06-04
 
 ### pitfall:search_api_returns_empty
 
-- trigger: 走 workflow Best path `opencli xiaohongshu search`，adapter 返 0 行或 EmptyResultError
+- trigger: 走 workflow Best path `cloudl xiaohongshu search`，adapter 返 0 行或 EmptyResultError
 - symptom: 关键词在网页搜得到结果但 adapter 输出空，或抛 typed error
 - workaround: 把 workflow `adapter_health` 标 `suspect`，走 Fallback (browser DOM scrape on `/search_result/?keyword=...`)。根因是 `/api/sns/web/v1/search/notes` 返 `items:[]`（issue #10），adapter 已切 DOM scrape，但 DOM 也可能因 `section.note-item` class 漂动产生（PR #1507 兜底过一层）；task agent 不需要解 API 漂移，只需切 DOM Fallback
 - verified_at: 2026-06-04
@@ -33,14 +33,14 @@ source: global
 
 - trigger: agent 想发笔记，停留在 `www.xiaohongshu.com` 上找发布入口
 - symptom: 主站没有完整的发布入口（顶 nav 的"发布"按钮跳到 `creator.xiaohongshu.com/publish/publish?from=menu_left&target=image`），手 click 容易撞 popup / iframe / sso refresh 链
-- workaround: 发笔记直接 `opencli xiaohongshu publish ...`，adapter 内部走 creator host；如果 fallback 需手操，先 `goto creator.xiaohongshu.com/publish/publish?from=menu_left&target=image` 再操作
+- workaround: 发笔记直接 `cloudl xiaohongshu publish ...`，adapter 内部走 creator host；如果 fallback 需手操，先 `goto creator.xiaohongshu.com/publish/publish?from=menu_left&target=image` 再操作
 - verified_at: 2026-06-04
 
 ### pitfall:publish_button_shadow_dom
 
 - trigger: agent fallback 手 click creator center 的"发布"按钮 `<xhs-publish-btn>`
 - symptom: 看似 click 成功但表单不提交，dev tools 看 host element `.click()` 没触发内部 handler
-- workaround: 不要手 click；`opencli xiaohongshu publish` adapter 已用 instance method invocation (`_onPublish` / `onPublish` / `_onSubmit` / `_handlePublish`) 兜底（#1606）；如果 adapter broken 必须手动，用 `opencli browser evaluate` 调实例方法而不是 click
+- workaround: 不要手 click；`cloudl xiaohongshu publish` adapter 已用 instance method invocation (`_onPublish` / `onPublish` / `_onSubmit` / `_handlePublish`) 兜底（#1606）；如果 adapter broken 必须手动，用 `cloudl browser evaluate` 调实例方法而不是 click
 - verified_at: 2026-06-04
 
 ### pitfall:security_block_on_repeated_access
@@ -54,7 +54,7 @@ source: global
 
 - trigger: publish workflow fallback 用 visible text selector 找 title 输入框
 - symptom: 输入到一对 4px 宽的隐藏 scaffolding input，submit 时 v-model 不 commit，标题永远为空
-- workaround: 优先用 `opencli xiaohongshu publish` adapter（已 prioritize visible title input）；fallback 时按 placeholder text `请输入标题` 加 visible filter (`offsetWidth > 50`) 选可见 input；不要按 nth-child / first match
+- workaround: 优先用 `cloudl xiaohongshu publish` adapter（已 prioritize visible title input）；fallback 时按 placeholder text `请输入标题` 加 visible filter (`offsetWidth > 50`) 选可见 input；不要按 nth-child / first match
 - verified_at: 2026-06-04
 
 ### pitfall:home_feed_xhr_lacks_xsec_token

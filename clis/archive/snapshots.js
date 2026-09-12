@@ -39,7 +39,7 @@ cli({
         if (!target) {
             throw new ArgumentError(
                 'archive snapshots url cannot be empty',
-                'Example: opencli archive snapshots wikipedia.org',
+                'Example: cloudl archive snapshots wikipedia.org',
             );
         }
         const limit = Number(args.limit ?? 20);
@@ -69,7 +69,7 @@ cli({
             resp = await fetch(apiUrl, {
                 headers: {
                     'Accept': 'application/json',
-                    'User-Agent': 'opencli/1.0 (+https://github.com/jackwener/opencli)',
+                    'User-Agent': 'opencli/1.0 (+https://github.com/jyjyxt/cloudownloader)',
                 },
             });
         } catch (error) {

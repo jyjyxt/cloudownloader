@@ -6,7 +6,7 @@ cli({
     name: 'check-login',
     description: 'Open Mercury reimbursements and report whether the active browser profile is logged in',
     access: 'read',
-    example: 'opencli --profile <profile> mercury check-login -f json',
+    example: 'cloudl --profile <profile> mercury check-login -f json',
     domain: 'app.mercury.com',
     strategy: Strategy.UI,
     browser: true,

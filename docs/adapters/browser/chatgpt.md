@@ -6,60 +6,60 @@
 
 | Command | Description |
 |---------|-------------|
-| `opencli chatgpt ask <prompt>` | Send a prompt and wait for the visible response |
-| `opencli chatgpt send <prompt>` | Send a prompt without waiting |
-| `opencli chatgpt read` | Read the current conversation |
-| `opencli chatgpt history` | List visible conversation history links from the sidebar |
-| `opencli chatgpt detail <id-or-url>` | Open a conversation by `/c/<id>` and read it |
-| `opencli chatgpt deep-research-result <id-or-url>` | Read a completed Deep Research report from a conversation |
-| `opencli chatgpt new` | Start a new conversation |
-| `opencli chatgpt status` | Check page and login state |
-| `opencli chatgpt image <prompt>` | Generate images in ChatGPT web and optionally save them locally |
-| `opencli chatgpt model <level>` | Switch the ChatGPT web intelligence level |
+| `cloudl chatgpt ask <prompt>` | Send a prompt and wait for the visible response |
+| `cloudl chatgpt send <prompt>` | Send a prompt without waiting |
+| `cloudl chatgpt read` | Read the current conversation |
+| `cloudl chatgpt history` | List visible conversation history links from the sidebar |
+| `cloudl chatgpt detail <id-or-url>` | Open a conversation by `/c/<id>` and read it |
+| `cloudl chatgpt deep-research-result <id-or-url>` | Read a completed Deep Research report from a conversation |
+| `cloudl chatgpt new` | Start a new conversation |
+| `cloudl chatgpt status` | Check page and login state |
+| `cloudl chatgpt image <prompt>` | Generate images in ChatGPT web and optionally save them locally |
+| `cloudl chatgpt model <level>` | Switch the ChatGPT web intelligence level |
 
 ## Usage Examples
 
 ```bash
 # Ask and wait for the answer
-opencli chatgpt ask "Summarize the tradeoffs of browser session reuse"
+cloudl chatgpt ask "Summarize the tradeoffs of browser session reuse"
 
 # Continue the same ChatGPT tab but do not wait for the answer
-opencli chatgpt send "Now turn that into a checklist"
+cloudl chatgpt send "Now turn that into a checklist"
 
 # Read the current conversation
-opencli chatgpt read --markdown true
+cloudl chatgpt read --markdown true
 
 # List recent visible conversations and read one by id or URL
-opencli chatgpt history --limit 10
-opencli chatgpt detail "https://chatgpt.com/c/<conversation-id>"
+cloudl chatgpt history --limit 10
+cloudl chatgpt detail "https://chatgpt.com/c/<conversation-id>"
 
 # Extract a completed Deep Research report
-opencli chatgpt deep-research-result "https://chatgpt.com/c/<conversation-id>" --wait true --timeout 600
+cloudl chatgpt deep-research-result "https://chatgpt.com/c/<conversation-id>" --wait true --timeout 600
 
 # Start a fresh chat
-opencli chatgpt new
+cloudl chatgpt new
 
 # Generate an image and save it to the default directory
-opencli chatgpt image "a cyberpunk city at night"
+cloudl chatgpt image "a cyberpunk city at night"
 
 # Switch ChatGPT's intelligence level
-opencli chatgpt model fast
-opencli chatgpt model balanced
-opencli chatgpt model advanced
-opencli chatgpt model very-high
-opencli chatgpt model pro
+cloudl chatgpt model fast
+cloudl chatgpt model balanced
+cloudl chatgpt model advanced
+cloudl chatgpt model very-high
+cloudl chatgpt model pro
 
 # Upload a local image, ask ChatGPT to edit it, and save the result
-opencli chatgpt image "make the background blue" --image ./cat.png
+cloudl chatgpt image "make the background blue" --image ./cat.png
 
 # Upload multiple local images for a combined edit
-opencli chatgpt image "combine these into a poster" --image ./cat.png,./logo.png
+cloudl chatgpt image "combine these into a poster" --image ./cat.png,./logo.png
 
 # Save to a custom output directory
-opencli chatgpt image "a robot sketching on paper" --op ~/Downloads/chatgpt-images
+cloudl chatgpt image "a robot sketching on paper" --op ~/Downloads/chatgpt-images
 
 # Only generate in ChatGPT and print the conversation link
-opencli chatgpt image "a tiny watercolor fox" --sd true
+cloudl chatgpt image "a tiny watercolor fox" --sd true
 ```
 
 ## Options

@@ -22,21 +22,21 @@ source: global
 ```yaml
 ### action:read_note_content
 pre: on /explore/<note_id>?xsec_token=..., logged_in
-do: opencli xiaohongshu note <url> --max-content 0
+do: cloudl xiaohongshu note <url> --max-content 0
 post: 输出 {title, body, author, like_count, collect_count, comment_count, tags}
 fail: AuthRequiredError | EmptyResultError | CommandExecutionError | security_block
-recover: AuthRequired -> opencli xiaohongshu login（# pending: codex task #276）；Empty -> note 已删除/私密 跳过；CommandExecution -> adapter_health suspect 走 Fallback
-evidence: opencli xiaohongshu note
+recover: AuthRequired -> cloudl xiaohongshu login（# pending: codex task #276）；Empty -> note 已删除/私密 跳过；CommandExecution -> adapter_health suspect 走 Fallback
+evidence: cloudl xiaohongshu note
 ```
 
 ```yaml
 ### action:read_comments
 pre: on /explore/<note_id>?xsec_token=..., logged_in
-do: opencli xiaohongshu comments <url>
+do: cloudl xiaohongshu comments <url>
 post: 输出评论列表 + 子评论
 fail: AuthRequired | Empty (无评论或全删) | CommandExecution
 recover: 同 read_note_content；Empty 是合法状态（笔记没评论）
-evidence: opencli xiaohongshu comments
+evidence: cloudl xiaohongshu comments
 ```
 
 ```yaml
@@ -46,7 +46,7 @@ do: focus 评论 textarea + type "<text>" + click "发布" button
 post: 评论区顶部出现自己 username + 内容 within 3s
 fail: textarea 不 focus | submit button 不 enable | 安全验证 modal 弹
 recover: 触发安全验证 modal 时停手报 user（"human authenticates"），不要尝试解滑块；session 失效 -> AuthRequired
-evidence: opencli browser click + opencli xiaohongshu comments (verify new comment)
+evidence: cloudl browser click + cloudl xiaohongshu comments (verify new comment)
 ```
 
 ## Page pitfalls

@@ -25,17 +25,17 @@ do: click [data-testid="SideNav_NewTweet_Button"] || focus [data-testid="tweetTe
 post: textarea focused with role="textbox", submit button rendered
 fail: button_not_found | URL -> /i/flow/login
 recover: find --css [data-testid="tweetTextarea_0"] OR [data-testid="SideNav_NewTweet_Button"] (testid > visible text, cross locale stable); if both miss fallback find "What's happening" textarea; session 失效 -> AuthRequired
-evidence: opencli browser click + state
+evidence: cloudl browser click + state
 ```
 
 ```yaml
 ### action:submit_post
 pre: textarea has text, submit button enabled
-do: opencli twitter post --text "..." || click [data-testid="tweetButtonInline"]
+do: cloudl twitter post --text "..." || click [data-testid="tweetButtonInline"]
 post: textarea cleared + toast "Your post was sent"; new post in timeline within 5s
 fail: button disabled | toast missing | textarea retains content > 5s
-recover: adapter_health_update: opencli twitter post -> suspect; check text length / login; or workflows/post.md Fallback
-evidence: opencli twitter post
+recover: adapter_health_update: cloudl twitter post -> suspect; check text length / login; or workflows/post.md Fallback
+evidence: cloudl twitter post
 ```
 
 ```yaml
@@ -45,7 +45,7 @@ do: evaluate("window.scrollBy(0, window.innerHeight)")
 post: new [data-testid="cellInnerDiv"] entries appended in DOM
 fail: 2s 无新 entry | top "Try again" banner | 429 toast
 recover: wait 2s then retry; consecutive fail -> mark stale
-evidence: opencli browser evaluate
+evidence: cloudl browser evaluate
 ```
 
 ## Tweet card actions

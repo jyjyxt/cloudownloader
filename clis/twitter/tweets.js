@@ -86,7 +86,7 @@ function normalizeLimit(rawLimit) {
     if (!Number.isInteger(limit) || limit < 1 || limit > MAX_TWEETS_LIMIT) {
         throw new ArgumentError(
             `twitter tweets --limit must be an integer between 1 and ${MAX_TWEETS_LIMIT}`,
-            'Example: opencli twitter tweets @jack --limit 250',
+            'Example: cloudl twitter tweets @jack --limit 250',
         );
     }
     return limit;
@@ -97,7 +97,7 @@ function normalizePageDelaySeconds(rawDelay) {
     if (!Number.isInteger(delay) || delay < 0 || delay > 60) {
         throw new ArgumentError(
             'twitter tweets --page-delay must be an integer between 0 and 60 seconds',
-            'Example: opencli twitter tweets @jack --limit 250 --page-delay 2',
+            'Example: cloudl twitter tweets @jack --limit 250 --page-delay 2',
         );
     }
     return delay;

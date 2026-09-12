@@ -6,42 +6,42 @@
 
 | Command | Description |
 |---------|-------------|
-| `opencli xiaoyuzhou podcast` | View a podcast profile (requires local credentials) |
-| `opencli xiaoyuzhou podcast-episodes` | List podcast episodes (requires local credentials) |
-| `opencli xiaoyuzhou episode` | View episode details (requires local credentials) |
-| `opencli xiaoyuzhou history` | List the logged-in account's playback history and progress (requires local credentials) |
-| `opencli xiaoyuzhou download` | Download episode audio (requires local credentials) |
-| `opencli xiaoyuzhou transcript` | Download transcript JSON and extracted text (requires local credentials) |
+| `cloudl xiaoyuzhou podcast` | View a podcast profile (requires local credentials) |
+| `cloudl xiaoyuzhou podcast-episodes` | List podcast episodes (requires local credentials) |
+| `cloudl xiaoyuzhou episode` | View episode details (requires local credentials) |
+| `cloudl xiaoyuzhou history` | List the logged-in account's playback history and progress (requires local credentials) |
+| `cloudl xiaoyuzhou download` | Download episode audio (requires local credentials) |
+| `cloudl xiaoyuzhou transcript` | Download transcript JSON and extracted text (requires local credentials) |
 
 ## Usage Examples
 
 ```bash
 # Podcast profile
-opencli xiaoyuzhou podcast 6013f9f58e2f7ee375cf4216
+cloudl xiaoyuzhou podcast 6013f9f58e2f7ee375cf4216
 
 # Recent episodes
-opencli xiaoyuzhou podcast-episodes 6013f9f58e2f7ee375cf4216 --limit 5
+cloudl xiaoyuzhou podcast-episodes 6013f9f58e2f7ee375cf4216 --limit 5
 
 # Episode details
-opencli xiaoyuzhou episode 69b3b675772ac2295bfc01d0
+cloudl xiaoyuzhou episode 69b3b675772ac2295bfc01d0
 
 # Recent playback history
-opencli xiaoyuzhou history --limit 20
+cloudl xiaoyuzhou history --limit 20
 
 # Fetch all playback-history pages as JSON
-opencli xiaoyuzhou history --all -f json
+cloudl xiaoyuzhou history --all -f json
 
 # Download episode audio
-opencli xiaoyuzhou download 69b3b675772ac2295bfc01d0 --output ./xiaoyuzhou
+cloudl xiaoyuzhou download 69b3b675772ac2295bfc01d0 --output ./xiaoyuzhou
 
 # Download transcript JSON + text
-opencli xiaoyuzhou transcript 69dd0c98e2c8be31551f6a33 --output ./xiaoyuzhou-transcripts
+cloudl xiaoyuzhou transcript 69dd0c98e2c8be31551f6a33 --output ./xiaoyuzhou-transcripts
 
 # JSON output
-opencli xiaoyuzhou episode 69b3b675772ac2295bfc01d0 -f json
+cloudl xiaoyuzhou episode 69b3b675772ac2295bfc01d0 -f json
 
 # Verbose mode
-opencli xiaoyuzhou transcript 69dd0c98e2c8be31551f6a33 -v
+cloudl xiaoyuzhou transcript 69dd0c98e2c8be31551f6a33 -v
 ```
 
 ### Playback history semantics

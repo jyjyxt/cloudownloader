@@ -8,19 +8,19 @@ Access 通达信 (TDX) hot-search stock ranking from the terminal.
 
 | Command | Description |
 |---------|-------------|
-| `opencli tdx hot-rank` | 通达信热搜榜 (TDX hot-search ranking) |
+| `cloudl tdx hot-rank` | 通达信热搜榜 (TDX hot-search ranking) |
 
 ## Usage Examples
 
 ```bash
 # Top 20 trending searches (default)
-opencli tdx hot-rank
+cloudl tdx hot-rank
 
 # Top 50 trending searches
-opencli tdx hot-rank --limit 50
+cloudl tdx hot-rank --limit 50
 
 # JSON output
-opencli tdx hot-rank -f json
+cloudl tdx hot-rank -f json
 ```
 
 ## Options

@@ -16,16 +16,16 @@ Skim signals, then drill in. The point is to filter, not to read everything.
 
 ```bash
 # 1. arxiv recent in the two relevant categories (newest 30 each)
-opencli arxiv recent cs.LG --limit 30 -f json > /tmp/lg.json
-opencli arxiv recent cs.AI --limit 30 -f json > /tmp/ai.json
+cloudl arxiv recent cs.LG --limit 30 -f json > /tmp/lg.json
+cloudl arxiv recent cs.AI --limit 30 -f json > /tmp/ai.json
 
 # 2. NeurIPS 2025 oral track from OpenReview (use natural-language
 #    venue text; the EMPTY_RESULT error helpfully echoes valid syntax
 #    if a venue is not yet open)
-opencli openreview venue "NeurIPS 2025 oral" --limit 50 -f json > /tmp/neurips.json
+cloudl openreview venue "NeurIPS 2025 oral" --limit 50 -f json > /tmp/neurips.json
 
 # 3. Hugging Face Daily Papers (community-upvoted research)
-opencli hf top --period daily --limit 20 -f json > /tmp/hf.json
+cloudl hf top --period daily --limit 20 -f json > /tmp/hf.json
 ```
 
 That is the entire collection step. The four files together are the whole signal surface for one morning.

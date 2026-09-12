@@ -42,7 +42,7 @@ async function resolveTargetUrl(page, query) {
     if (!match || !match.Url) {
         throw new EmptyResultError(
             'gemini detail',
-            `No sidebar conversation matched "${raw}". Try the exact id from \`opencli gemini history\` instead.`,
+            `No sidebar conversation matched "${raw}". Try the exact id from \`cloudl gemini history\` instead.`,
         );
     }
     return match.Url;

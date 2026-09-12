@@ -11,7 +11,7 @@ import { ArgumentError, CommandExecutionError, selectorError } from '@jackwener/
 // Clicking the button opens a menu with BOTH:
 //   - Reasoning levels:  Low / Medium / High / Extra High / Speed / Auto
 //   - Model versions:    GPT-5.5 / GPT-5.4 / ...
-// Either kind of value can be selected via 'opencli codex model <name>'.
+// Either kind of value can be selected via 'cloudl codex model <name>'.
 
 const MODEL_BTN_TEXT_RE = /5\.\d|[Ee]xtra [Hh]igh|^High$|^Medium$|^Low$|^Auto$|^Fast$|^Speed$|^Pro$|GPT-/;
 const MODEL_BTN_PATTERN = MODEL_BTN_TEXT_RE.source;

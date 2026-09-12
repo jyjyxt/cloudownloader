@@ -6,11 +6,11 @@
 
 | Command | Description |
 |---------|-------------|
-| `opencli uiverse code <input> --target html` | Export the raw component HTML |
-| `opencli uiverse code <input> --target css` | Export the raw component CSS |
-| `opencli uiverse code <input> --target react` | Export the React version shown in the Export dialog |
-| `opencli uiverse code <input> --target vue` | Export the Vue single-file component shown in the Export dialog |
-| `opencli uiverse preview <input>` | Capture only the component preview element, not the full page |
+| `cloudl uiverse code <input> --target html` | Export the raw component HTML |
+| `cloudl uiverse code <input> --target css` | Export the raw component CSS |
+| `cloudl uiverse code <input> --target react` | Export the React version shown in the Export dialog |
+| `cloudl uiverse code <input> --target vue` | Export the Vue single-file component shown in the Export dialog |
+| `cloudl uiverse preview <input>` | Capture only the component preview element, not the full page |
 
 ## Input Format
 
@@ -23,19 +23,19 @@
 
 ```bash
 # Export HTML
-opencli uiverse code "Galahhad/strong-squid-82" --target html -f json
+cloudl uiverse code "Galahhad/strong-squid-82" --target html -f json
 
 # Export CSS
-opencli uiverse code "Galahhad/strong-squid-82" --target css -f json
+cloudl uiverse code "Galahhad/strong-squid-82" --target css -f json
 
 # Export React
-opencli uiverse code "Galahhad/strong-squid-82" --target react -f json
+cloudl uiverse code "Galahhad/strong-squid-82" --target react -f json
 
 # Export Vue
-opencli uiverse code "Galahhad/strong-squid-82" --target vue -f json
+cloudl uiverse code "Galahhad/strong-squid-82" --target vue -f json
 
 # Capture only the preview element
-opencli uiverse preview "Galahhad/strong-squid-82" --output ./uiverse-preview.png -f json
+cloudl uiverse preview "Galahhad/strong-squid-82" --output ./uiverse-preview.png -f json
 ```
 
 ## Notes
