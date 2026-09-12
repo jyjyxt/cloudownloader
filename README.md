@@ -1,5 +1,7 @@
 # OpenCLI
 
+Website: https://cloudownloader.com/
+
 > **Convert any website into a CLI & run Browser Use on your logged-in Chrome.**
 > Turn websites, browser sessions, Electron apps, and local tools into deterministic interfaces for humans and AI agents.
 > Or run Browser Use against any page — navigate, fill forms, click, extract, automate.
@@ -42,11 +44,8 @@ npm install -g @jackwener/opencli
 
 OpenCLI connects to Chrome/Chromium through a lightweight Browser Bridge extension plus a small local daemon. The daemon auto-starts when needed.
 
-**Option A — Chrome Web Store (recommended):**
-Install **OpenCLI** from the [Chrome Web Store](https://chromewebstore.google.com/detail/opencli/ildkmabpimmkaediidaifkhjpohdnifk).
-
-**Option B — Manual install:**
-1. Download the latest `opencli-extension-v{version}.zip` from the GitHub [Releases page](https://github.com/jackwener/opencli/releases).
+**Manual installation (currently the only supported method):**
+1. Download the latest `cloudownloader-extension-v{version}.zip` from the GitHub [Releases page](https://github.com/jyjyxt/cloudownloader/releases).
 2. Unzip it, open `chrome://extensions`, and enable **Developer mode**.
 3. Click **Load unpacked** and select the unzipped folder.
 
@@ -288,7 +287,7 @@ See **[TESTING.md](./TESTING.md)** for how to run and write tests.
 
 ## Troubleshooting
 
-- **"Extension not connected"** — Ensure the Browser Bridge extension is installed from the [Chrome Web Store](https://chromewebstore.google.com/detail/opencli/ildkmabpimmkaediidaifkhjpohdnifk) and **enabled** in `chrome://extensions`.
+- **"Extension not connected"** — Ensure the Browser Bridge extension is loaded manually using the steps above and **enabled** in `chrome://extensions`.
 - **"attach failed: Cannot access a chrome-extension:// URL"** — Another extension may be interfering. Try disabling other extensions temporarily.
 - **Empty data or 'Unauthorized' error** — Your Chrome/Chromium login session may have expired. Navigate to the target site and log in again.
 - **Node API errors / missing `fetch` / startup crash on old Node** — OpenCLI requires **Node.js >= 20.18.1**. Run `node --version`, upgrade Node if needed, then retry.

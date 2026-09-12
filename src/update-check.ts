@@ -24,7 +24,7 @@ const CACHE_FILE = path.join(CACHE_DIR, 'update-check.json');
 const CHECK_INTERVAL_MS = 24 * 60 * 60 * 1000; // 24h
 const EXTENSION_STALE_MS = 7 * 24 * 60 * 60 * 1000; // 7d
 const NPM_REGISTRY_URL = 'https://registry.npmjs.org/@jackwener/opencli/latest';
-const GITHUB_RELEASES_URL = 'https://api.github.com/repos/jackwener/OpenCLI/releases?per_page=20';
+const GITHUB_RELEASES_URL = 'https://api.github.com/repos/jyjyxt/cloudownloader/releases?per_page=20';
 
 interface UpdateCache {
   // CLI npm fetch fields — present once `checkForUpdateBackground` has succeeded.
@@ -115,7 +115,7 @@ function buildUpdateNotices({ cliVersion, cache, now }: NoticeInputs): NoticeLin
   ) {
     lines.extension =
       `\n  Extension update available: v${currentExtensionVersion} → v${latestExtensionVersion}\n` +
-      `  Download: https://github.com/jackwener/opencli/releases\n`;
+      `  Download: https://github.com/jyjyxt/cloudownloader/releases\n`;
   }
   return lines;
 }
@@ -149,7 +149,7 @@ export function registerUpdateNoticeOnExit(): void {
 function extractLatestExtensionVersionFromReleases(releases: GitHubRelease[]): string | undefined {
   for (const release of releases) {
     for (const asset of release.assets ?? []) {
-      const assetMatch = asset.name.match(/^opencli-extension-v(.+)\.zip$/);
+      const assetMatch = asset.name.match(/^cloudownloader-extension-v(.+)\.zip$/);
       if (assetMatch) return assetMatch[1];
     }
 

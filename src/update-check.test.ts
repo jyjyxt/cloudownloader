@@ -13,7 +13,7 @@ describe('extractLatestExtensionVersionFromReleases', () => {
           tag_name: 'v1.7.3',
           assets: [
             { name: 'opencli-extension.zip' },
-            { name: 'opencli-extension-v1.0.2.zip' },
+            { name: 'cloudownloader-extension-v1.0.2.zip' },
           ],
         },
       ]),
@@ -74,6 +74,7 @@ describe('buildUpdateNotices', () => {
     });
     expect(lines.cli).toBeUndefined();
     expect(lines.extension).toContain('v2.0.0 → v2.1.0');
+    expect(lines.extension).toContain('https://github.com/jyjyxt/cloudownloader/releases');
   });
 
   it('skips the extension notice when lastSeenAt is older than the stale window', () => {
@@ -133,5 +134,6 @@ describe('buildUpdateNotices', () => {
     });
     expect(lines.cli).toContain('v1.0.0 → v1.1.0');
     expect(lines.extension).toContain('v2.0.0 → v2.1.0');
+    expect(lines.extension).toContain('https://github.com/jyjyxt/cloudownloader/releases');
   });
 });
