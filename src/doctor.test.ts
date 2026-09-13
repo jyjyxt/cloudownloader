@@ -185,6 +185,24 @@ describe('doctor report rendering', () => {
     ]));
   });
 
+  it('explains a legacy daemon conflict without reporting the service as missing', async () => {
+    mockSendCommand.mockRejectedValueOnce(new Error('Forbidden: missing X-OpenCLI header'));
+    mockGetDaemonHealth.mockResolvedValueOnce({ state: 'stopped', status: null });
+
+    const report = await runBrowserDoctor();
+    const text = strip(renderBrowserDoctorReport(report));
+
+    expect(report.legacyDaemon).toBe(true);
+    expect(text).toContain('[FAIL] Daemon: incompatible legacy service on port 19825');
+    expect(text).toContain('Extension: cannot verify');
+    expect(text).toContain('kill -TERM <PID>');
+    expect(text).toContain('Run cloudl doctor again');
+    expect(text).not.toContain('X-OpenCLI');
+    expect(text).not.toContain('Daemon is not running');
+    expect(text).not.toContain('[MISSING]');
+    expect(mockSetDaemonCommandTimeoutSeconds).toHaveBeenLastCalledWith(null);
+  });
+
   it('reports a stale default profile when it is not among the connected profiles', async () => {
     const fs = await import('node:fs');
     const os = await import('node:os');

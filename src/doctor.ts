@@ -54,6 +54,7 @@ export type DoctorOptions = {
 export type ConnectivityResult = {
   ok: boolean;
   error?: string;
+  legacyDaemon?: boolean;
   durationMs: number;
 };
 
@@ -61,6 +62,7 @@ export type ConnectivityResult = {
 export type DoctorReport = {
   cliVersion?: string;
   daemonRunning: boolean;
+  legacyDaemon?: boolean;
   daemonFlaky?: boolean;
   daemonStale?: boolean;
   daemonVersion?: string;
@@ -92,7 +94,16 @@ export async function checkConnectivity(opts?: { timeout?: number }): Promise<Co
     });
     return { ok: true, durationMs: Date.now() - start };
   } catch (err) {
-    return { ok: false, error: getErrorMessage(err), durationMs: Date.now() - start };
+    const error = getErrorMessage(err);
+    if (/Forbidden: missing X-OpenCLI header/i.test(error)) {
+      return {
+        ok: false,
+        legacyDaemon: true,
+        error: `An incompatible legacy daemon is responding on port ${DEFAULT_DAEMON_PORT}. Stop the old process, then run cloudl doctor again.`,
+        durationMs: Date.now() - start,
+      };
+    }
+    return { ok: false, error, durationMs: Date.now() - start };
   } finally {
     setDaemonCommandTimeoutSeconds(null);
   }
@@ -117,7 +128,14 @@ export async function runBrowserDoctor(opts: DoctorOptions = {}): Promise<Doctor
   const adapterShadows = findShadowedUserAdapters();
 
   const issues: string[] = [];
-  if (daemonFlaky) {
+  if (connectivity.legacyDaemon) {
+    issues.push(
+      `An incompatible legacy daemon is occupying port ${DEFAULT_DAEMON_PORT}. Rebuilding the CLI does not restart an already running process.\n` +
+      `  On macOS/Linux, run: lsof -nP -iTCP:${DEFAULT_DAEMON_PORT} -sTCP:LISTEN\n` +
+      '  Confirm the listed PID belongs to the old daemon, then run: kill -TERM <PID>\n' +
+      '  Run cloudl doctor again to start the current daemon and reconnect the extension.',
+    );
+  } else if (daemonFlaky) {
     issues.push(
       'Daemon connectivity is unstable. The live browser test succeeded, but the daemon was no longer running immediately afterward.\n' +
       'This usually means the daemon crashed or exited right after serving the live probe.',
@@ -219,6 +237,7 @@ export async function runBrowserDoctor(opts: DoctorOptions = {}): Promise<Doctor
   return {
     cliVersion: opts.cliVersion,
     daemonRunning,
+    legacyDaemon: connectivity.legacyDaemon,
     daemonFlaky,
     daemonStale,
     daemonVersion: health.status?.daemonVersion,
@@ -249,7 +268,9 @@ export function renderBrowserDoctorReport(report: DoctorReport): string {
         ? `${formatDaemonVersion(report)}, stale; CLI v${report.cliVersion ?? 'unknown'}`
         : formatDaemonVersion(report)})`
       : 'not running';
-  lines.push(`${daemonIcon} Daemon: ${daemonLabel}`);
+  lines.push(report.legacyDaemon
+    ? `[FAIL] Daemon: incompatible legacy service on port ${DEFAULT_DAEMON_PORT}`
+    : `${daemonIcon} Daemon: ${daemonLabel}`);
 
   // Extension status
   const extIcon = report.extensionFlaky || (report.extensionConnected && !report.extensionVersion)
@@ -266,7 +287,9 @@ export function renderBrowserDoctorReport(report: DoctorReport): string {
   const extLabel = report.extensionFlaky
     ? 'unstable (connected during live check, then disconnected)'
     : report.extensionConnected ? 'connected' : 'not connected';
-  lines.push(`${extIcon} Extension: ${extLabel}${extVersion}`);
+  lines.push(report.legacyDaemon
+    ? '[WARN] Extension: cannot verify until the legacy daemon is stopped'
+    : `${extIcon} Extension: ${extLabel}${extVersion}`);
 
   if (report.profiles && report.profiles.length > 0) {
     const config = loadProfileConfig();

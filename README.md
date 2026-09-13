@@ -36,10 +36,28 @@ cloudl --help
 
 cloudl connects to Chrome/Chromium through a lightweight Browser Bridge extension plus a small local daemon. The daemon auto-starts when needed.
 
-**Manual installation (currently the only supported method):**
+Install manually using either option below.
+
+**Option A: Download a prebuilt extension (no build required)**
+
 1. Download the latest `cloudl-extension-v{version}.zip` from the GitHub [Releases page](https://github.com/jyjyxt/cloudownloader/releases).
 2. Unzip it, open `chrome://extensions`, and enable **Developer mode**.
-3. Click **Load unpacked** and select the unzipped folder.
+3. Click **Load unpacked** and select the unzipped folder containing `manifest.json`.
+
+**Option B: Build and load the extension from this repository**
+
+Run these commands from the repository root:
+
+```bash
+npm --prefix extension install
+npm --prefix extension run build
+```
+
+Open `chrome://extensions`, enable **Developer mode**, click **Load unpacked**, and select the repository's **`extension/` directory**. This directory contains `manifest.json`, which references the built files in `dist/`. Do not select the repository root or `extension/dist/`.
+
+The root `npm run build` builds only the CLI; the extension needs its own build. After changing extension source code, rerun `npm --prefix extension run build`, then click **Reload** on the Cloudl extension in Chrome.
+
+Keep the directory loaded by Chrome in its original location: Chrome continues to read its files. You may delete the downloaded ZIP after extraction, but keep the loaded extension directory.
 
 ### 3. Verify the setup
 

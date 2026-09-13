@@ -36,10 +36,28 @@ cloudl --help
 
 cloudl 通过轻量 Browser Bridge 扩展和本地微型 daemon 与 Chrome/Chromium 通信。daemon 会按需自动启动。
 
-**手动安装（目前唯一支持的方式）：**
+通过以下任一方式手动安装。
+
+**方式 A：下载已构建的扩展包（无需编译）**
+
 1. 到 GitHub [Releases 页面](https://github.com/jyjyxt/cloudownloader/releases) 下载最新的 `cloudl-extension-v{version}.zip`。
 2. 解压后打开 `chrome://extensions`，启用 **开发者模式**。
-3. 点击 **加载已解压的扩展程序**，选择解压后的目录。
+3. 点击 **加载已解压的扩展程序**，选择解压后包含 `manifest.json` 的目录。
+
+**方式 B：构建并加载本仓库中的扩展**
+
+在仓库根目录执行：
+
+```bash
+npm --prefix extension install
+npm --prefix extension run build
+```
+
+打开 `chrome://extensions`，启用 **开发者模式**，点击 **加载已解压的扩展程序**，选择仓库中的 **`extension/` 目录**。该目录包含 `manifest.json`，它会引用 `dist/` 中的构建产物。不要选择仓库根目录，也不要选择 `extension/dist/`。
+
+根目录的 `npm run build` 只构建 CLI，扩展需要单独构建。修改扩展源码后，重新执行 `npm --prefix extension run build`，再到 Chrome 中点击 Cloudl 扩展的 **重新加载** 按钮。
+
+Chrome 会持续读取已加载目录中的文件，因此请保留该目录及其路径。下载的 ZIP 解压后可以删除，但已加载的扩展目录不能删除。
 
 ### 3. 验证环境
 
