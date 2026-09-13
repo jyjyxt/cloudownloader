@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { getRegistry } from '@jackwener/opencli/registry';
+import { getRegistry } from '@jyjyxt/cloudl/registry';
 import './subject.js';
 
 describe('douban subject command', () => {

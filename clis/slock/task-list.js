@@ -9,8 +9,8 @@
 // Filtering: pass --status to narrow server-side; one of
 //   todo | in_progress | in_review | done | closed.
 
-import { cli, Strategy } from '@jackwener/opencli/registry';
-import { ArgumentError, CommandExecutionError } from '@jackwener/opencli/errors';
+import { cli, Strategy } from '@jyjyxt/cloudl/registry';
+import { ArgumentError, CommandExecutionError } from '@jyjyxt/cloudl/errors';
 import { authHeadersFragment, channelResolveFragment } from './in-page.js';
 import { dispatchEvaluateResult } from './errors.js';
 import { SLOCK_SITE, SLOCK_DOMAIN, SLOCK_HOME_URL, SLOCK_API_BASE } from './shared.js';

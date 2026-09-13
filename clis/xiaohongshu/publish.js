@@ -17,8 +17,8 @@
  */
 import * as fs from 'node:fs';
 import * as path from 'node:path';
-import { CommandExecutionError, ArgumentError } from '@jackwener/opencli/errors';
-import { cli, Strategy } from '@jackwener/opencli/registry';
+import { CommandExecutionError, ArgumentError } from '@jyjyxt/cloudl/errors';
+import { cli, Strategy } from '@jyjyxt/cloudl/registry';
 const PUBLISH_URL = 'https://creator.xiaohongshu.com/publish/publish?from=menu_left&target=image';
 const MAX_IMAGES = 9;
 const MAX_TITLE_LEN = 20;
@@ -256,7 +256,7 @@ async function waitForUploads(page, maxWaitMs = 30_000) {
 async function fillField(page, selectors, text, fieldName) {
     const located = await page.evaluate(`
     (function(selectors) {
-      const __opencli_xhs_fill_phase = "locate";
+      const __cloudl_xhs_fill_phase = "locate";
       for (const sel of selectors) {
         const candidates = document.querySelectorAll(sel);
         for (const el of candidates) {
@@ -276,7 +276,7 @@ async function fillField(page, selectors, text, fieldName) {
     }
     const applyInPage = () => page.evaluate(`
       ((selector, expectedText) => {
-        const __opencli_xhs_fill_phase = "apply";
+        const __cloudl_xhs_fill_phase = "apply";
         const normalize = (value) => (value || '').replace(/\\s+/g, ' ').trim();
         const fireBeforeInput = (el, value) => {
           try {
@@ -336,7 +336,7 @@ async function fillField(page, selectors, text, fieldName) {
     if (located.kind === 'contenteditable' && page.insertText) {
         const prepared = await page.evaluate(`
       ((selector, nextText) => {
-        const __opencli_xhs_fill_phase = "prepare";
+        const __cloudl_xhs_fill_phase = "prepare";
         const fireBeforeInput = (el, value) => {
           try {
             el.dispatchEvent(new InputEvent('beforeinput', {
@@ -370,7 +370,7 @@ async function fillField(page, selectors, text, fieldName) {
             await page.insertText(text);
             result = await page.evaluate(`
       ((selector, expectedText) => {
-        const __opencli_xhs_fill_phase = "verify";
+        const __cloudl_xhs_fill_phase = "verify";
         const normalize = (value) => (value || '').replace(/\\s+/g, ' ').trim();
         const fireInput = (el, value) => {
           try {
@@ -527,7 +527,7 @@ function topicEntityCountScript(topic, bodySelectors) {
 function topicMarkerCountScript(topic, bodySelectors) {
     return `
     ((topicName, selectors) => {
-      const __opencli_xhs_topic_marker_count = true;
+      const __cloudl_xhs_topic_marker_count = true;
       const marker = '#' + topicName + '[话题]';
       const editor = selectors
         .map(sel => Array.from(document.querySelectorAll(sel)))
@@ -685,7 +685,7 @@ async function selectImageTextTab(page) {
 }
 /**
  * Click the first visible element whose trimmed text equals `label`.
- * Marker constant `__opencli_xhs_click_label` lets the test mock branch on it.
+ * Marker constant `__cloudl_xhs_click_label` lets the test mock branch on it.
  */
 async function clickByText(page, label, maxWaitMs = 7_000) {
     const pollMs = 500;
@@ -696,7 +696,7 @@ async function clickByText(page, label, maxWaitMs = 7_000) {
     for (let attempt = 0; attempt < maxAttempts; attempt++) {
         result = unwrapBrowserResult(await page.evaluate(`
     ((cfg) => {
-      const __opencli_xhs_click_label = { wantLabel: ${JSON.stringify(label)} };
+      const __cloudl_xhs_click_label = { wantLabel: ${JSON.stringify(label)} };
       const wantLabel = ${JSON.stringify(label)};
       const isVisible = (el) => {
         if (!el || el.offsetParent === null) return false;
@@ -743,7 +743,7 @@ async function clickByText(page, label, maxWaitMs = 7_000) {
 async function focusActiveCard(page) {
     const result = await page.evaluate(`
     (() => {
-      const __opencli_xhs_focus_card = true;
+      const __cloudl_xhs_focus_card = true;
       const sel = ${JSON.stringify(CARD_EDITOR_SELECTOR)};
       const editors = Array.from(document.querySelectorAll(sel)).filter((el) => el.offsetParent !== null);
       // Prefer the editor inside the active swiper slide if present.
@@ -765,7 +765,7 @@ async function focusActiveCard(page) {
 async function activeCardText(page) {
     const result = await page.evaluate(`
     (() => {
-      const __opencli_xhs_card_text = true;
+      const __cloudl_xhs_card_text = true;
       const sel = ${JSON.stringify(CARD_EDITOR_SELECTOR)};
       const editors = Array.from(document.querySelectorAll(sel)).filter((el) => el.offsetParent !== null);
       const active = editors.find((el) => el.closest('.swiper-slide-active')) || editors[editors.length - 1];
@@ -782,7 +782,7 @@ async function activeCardText(page) {
 async function cardEditorState(page) {
     const result = await page.evaluate(`
     (() => {
-      const __opencli_xhs_card_count = true;
+      const __cloudl_xhs_card_count = true;
       const sel = ${JSON.stringify(CARD_EDITOR_SELECTOR)};
       const editors = Array.from(document.querySelectorAll(sel)).filter((el) => el.offsetParent !== null);
       const active = editors.find((el) => el.closest('.swiper-slide-active')) || editors[editors.length - 1];
@@ -841,7 +841,7 @@ async function addCard(page, expectedCount, maxAttempts = 4) {
 async function previewStepReady(page) {
     const result = await page.evaluate(`
     (() => {
-      const __opencli_xhs_preview_ready = true;
+      const __cloudl_xhs_preview_ready = true;
       const ready = Array.from(document.querySelectorAll('button'))
         .some((b) => b.offsetParent !== null && (b.innerText || '').replace(/\\s+/g, '') === '下一步');
       return { ok: ready };
@@ -925,7 +925,7 @@ async function selectCardStyle(page, styleName) {
     // real options vary per note — hence no static whitelist.
     const available = unwrapBrowserResult(await page.evaluate(`
     (async () => {
-      const __opencli_xhs_card_styles = true;
+      const __cloudl_xhs_card_styles = true;
       const want = ${JSON.stringify(styleName)};
       const norm = (el) => ((el && (el.innerText || el.textContent)) || '').trim();
       const names = () => Array.from(document.querySelectorAll('.cover-list-container .cover-name'));
@@ -973,7 +973,7 @@ async function selectCardStyle(page, styleName) {
 async function currentComposerMediaCount(page) {
     const result = await page.evaluate(`
     (() => {
-      const __opencli_xhs_composer_media_count = true;
+      const __cloudl_xhs_composer_media_count = true;
       const visibleBox = (el) => {
         if (!el || el.offsetParent === null) return false;
         const r = el.getBoundingClientRect();

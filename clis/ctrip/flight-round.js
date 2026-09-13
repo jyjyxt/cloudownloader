@@ -9,8 +9,8 @@
  * (see `buildFlightExtractJs` in utils). The `price` is the round-trip total for
  * the outbound flight shown; picking the return leg is a second step out of scope.
  */
-import { ArgumentError, AuthRequiredError, CommandExecutionError, EmptyResultError } from '@jackwener/opencli/errors';
-import { cli, Strategy } from '@jackwener/opencli/registry';
+import { ArgumentError, AuthRequiredError, CommandExecutionError, EmptyResultError } from '@jyjyxt/cloudl/errors';
+import { cli, Strategy } from '@jyjyxt/cloudl/registry';
 import { buildFlightExtractJs, buildScrollUntilJs, parseIataCode, parseIsoDate, parseListLimit } from './utils.js';
 
 const ROUND_CARD_SELECTOR = '.flight-item';

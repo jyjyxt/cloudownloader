@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { JSDOM } from 'jsdom';
 import { __test__ } from './shared.js';
-import { ArgumentError } from '@jackwener/opencli/errors';
+import { ArgumentError } from '@jyjyxt/cloudl/errors';
 
 const {
     extractMedia,
@@ -590,7 +590,7 @@ describe('twitter extractCard', () => {
         const tweet = makeCardTweet({
             name: 'summary_large_image',
             bindings: [
-                strBinding('title', 'OpenCLI release'),
+                strBinding('title', 'Cloudl release'),
                 strBinding('card_url', 'https://t.co/card123'),
             ],
             urls: [

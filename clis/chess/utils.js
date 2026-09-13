@@ -2,10 +2,10 @@
  * Shared helpers for the public Chess.com REST API
  * (https://api.chess.com/pub/). No auth, no rate-limit headers.
  */
-import { ArgumentError, CommandExecutionError, EmptyResultError } from '@jackwener/opencli/errors';
+import { ArgumentError, CommandExecutionError, EmptyResultError } from '@jyjyxt/cloudl/errors';
 
 export const API_BASE = 'https://api.chess.com/pub';
-export const UA = 'Mozilla/5.0 (compatible; opencli/1.0)';
+export const UA = 'Mozilla/5.0 (compatible; cloudl/1.0)';
 
 const USERNAME_RE = /^[a-zA-Z0-9_-]{3,25}$/;
 const GAME_URL_RE = /^https:\/\/www\.chess\.com\/game\/(live|daily)\/(\d+)/i;

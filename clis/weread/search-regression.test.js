@@ -1,6 +1,6 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
-import { getRegistry } from '@jackwener/opencli/registry';
-import { CommandExecutionError, EmptyResultError } from '@jackwener/opencli/errors';
+import { getRegistry } from '@jyjyxt/cloudl/registry';
+import { CommandExecutionError, EmptyResultError } from '@jyjyxt/cloudl/errors';
 import './search.js';
 describe('weread/search regression', () => {
     beforeEach(() => {

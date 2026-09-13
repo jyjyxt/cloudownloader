@@ -49,7 +49,7 @@ cloudl weibo hot -v
 cloudl weibo favorites --limit 20
 
 # Publish text (executes immediately)
-cloudl weibo publish "Hello from OpenCLI"
+cloudl weibo publish "Hello from Cloudl"
 
 # Publish text with images (executes immediately)
 cloudl weibo publish "Hello with images" --images /path/a.jpg,/path/b.png

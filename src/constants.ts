@@ -7,14 +7,14 @@ export const DEFAULT_DAEMON_PORT = 19825;
 
 export function unsupportedDaemonPortEnvMessage(value?: string): string {
   const suffix = value ? ` (received ${value})` : '';
-  return `OPENCLI_DAEMON_PORT is no longer supported${suffix}. ` +
-    `The OpenCLI Chrome extension can only connect to localhost:${DEFAULT_DAEMON_PORT}. ` +
-    'Unset OPENCLI_DAEMON_PORT and rerun cloudl.';
+  return `CLOUDL_DAEMON_PORT is no longer supported${suffix}. ` +
+    `The Cloudl Chrome extension can only connect to localhost:${DEFAULT_DAEMON_PORT}. ` +
+    'Unset CLOUDL_DAEMON_PORT and rerun cloudl.';
 }
 
 /**
- * True when OPENCLI_DAEMON_PORT carries no real configuration: unset, empty,
- * or equal to the default port. Launchers (notably OpenCLIApp) inject the
+ * True when CLOUDL_DAEMON_PORT carries no real configuration: unset, empty,
+ * or equal to the default port. Launchers (notably CloudlApp) inject the
  * variable with the default value into every CLI they manage — rejecting that
  * harmless redundancy bricked all commands on fresh installs (#2068). Only a
  * NON-default value is a genuine misconfiguration worth failing on.

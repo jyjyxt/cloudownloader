@@ -78,8 +78,8 @@ jobs:
         if: runner.os == 'Linux'
         env:
           CHROME_PATH: ${{ steps.setup-chrome.outputs.chrome-path }}
-          OPENCLI_AX_E2E: '1'
-          OPENCLI_E2E_HEADED: '1'
+          CLOUDL_AX_E2E: '1'
+          CLOUDL_E2E_HEADED: '1'
         run: |
           xvfb-run --auto-servernum --server-args="-screen 0 1280x720x24" \
             npx vitest run --project e2e tests/e2e/browser-ax-chrome.test.ts --reporter=verbose
@@ -95,7 +95,7 @@ jobs:
       - name: Run E2E tests (Linux, via xvfb)
         if: runner.os == 'Linux'
         env:
-          OPENCLI_AX_E2E: '0'
+          CLOUDL_AX_E2E: '0'
         run: |
           xvfb-run --auto-servernum --server-args="-screen 0 1280x720x24" \
             npx vitest run tests/e2e/ --reporter=verbose
@@ -105,5 +105,5 @@ jobs:
       - name: Run E2E tests (macOS)
         if: runner.os == 'macOS'
         env:
-          OPENCLI_AX_E2E: '0'
+          CLOUDL_AX_E2E: '0'
         run: npx vitest run tests/e2e/ --reporter=verbose

@@ -44,7 +44,7 @@ function loadBuiltinCommandFiles(builtinClisDir: string): Set<string> {
 }
 
 export function findShadowedUserAdapters(opts: AdapterShadowOptions = {}): AdapterShadow[] {
-  const userClisDir = opts.userClisDir ?? path.join(os.homedir(), '.opencli', 'clis');
+  const userClisDir = opts.userClisDir ?? path.join(os.homedir(), '.cloudl', 'clis');
   const builtinClisDir = opts.builtinClisDir ?? defaultBuiltinClisDir();
   const builtinCommandFiles = loadBuiltinCommandFiles(builtinClisDir);
   const shadows: AdapterShadow[] = [];
@@ -82,6 +82,6 @@ export function formatAdapterShadowIssue(shadows: AdapterShadow[]): string {
   if (shadows.length > visible.length) {
     lines.push(`  ... and ${shadows.length - visible.length} more`);
   }
-  lines.push('Remove the local ~/.opencli/clis copy, or run cloudl adapter reset <site>, when you want packaged updates.');
+  lines.push('Remove the local ~/.cloudl/clis copy, or run cloudl adapter reset <site>, when you want packaged updates.');
   return lines.join('\n');
 }

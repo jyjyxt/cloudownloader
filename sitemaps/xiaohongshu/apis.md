@@ -6,7 +6,7 @@ source: global
 
 ## Endpoint index
 
-> 引用规则（schema §2.4）：`endpoint_id` 必须存在于 `~/.opencli/sites/xiaohongshu/endpoints.json`。本文件只放 endpoint_id + 触发关系 + contract_strength，URL/method/params/response 是 endpoints.json 单一来源。
+> 引用规则（schema §2.4）：`endpoint_id` 必须存在于 `~/.cloudl/sites/xiaohongshu/endpoints.json`。本文件只放 endpoint_id + 触发关系 + contract_strength，URL/method/params/response 是 endpoints.json 单一来源。
 
 ### endpoint:HomeFeed_HydratedStore
 
@@ -41,7 +41,7 @@ xhs adapter family (`clis/xiaohongshu/*.js`) 引用的 endpoint 大多是 **SSR 
 
 行动建议（不在本 PoC scope，留给 adapter-author follow-up）：
 
-- 跑 `cloudl browser network` 抓 xhs session 拿到当前 XHR endpoint set，回填 `~/.opencli/sites/xiaohongshu/endpoints.json`
+- 跑 `cloudl browser network` 抓 xhs session 拿到当前 XHR endpoint set，回填 `~/.cloudl/sites/xiaohongshu/endpoints.json`
 - comments / notifications / creator-stats 这几条 XHR 形 endpoint 优先补，可见 contract 加强
 
 ---

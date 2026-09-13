@@ -1,6 +1,6 @@
 import { beforeAll, describe, expect, it, vi } from 'vitest';
-import { getRegistry } from '@jackwener/opencli/registry';
-import { ArgumentError, CommandExecutionError, TimeoutError } from '@jackwener/opencli/errors';
+import { getRegistry } from '@jyjyxt/cloudl/registry';
+import { ArgumentError, CommandExecutionError, TimeoutError } from '@jyjyxt/cloudl/errors';
 import { JSDOM } from 'jsdom';
 import { clickBySvgNameScript, isKimiUrl, parseChatId } from './_utils.js';
 import './chat.js';

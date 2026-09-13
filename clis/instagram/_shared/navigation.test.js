@@ -32,7 +32,7 @@ describe('instagram navigation helpers', () => {
         await gotoInstagramHome(page, true);
 
         expect(page.goto).toHaveBeenCalledTimes(2);
-        expect(page.goto).toHaveBeenNthCalledWith(1, 'https://www.instagram.com/?__opencli_reset=1700000000000');
+        expect(page.goto).toHaveBeenNthCalledWith(1, 'https://www.instagram.com/?__cloudl_reset=1700000000000');
         expect(page.wait).toHaveBeenCalledTimes(1);
         expect(page.wait).toHaveBeenNthCalledWith(1, { time: 1 });
         expect(page.goto).toHaveBeenNthCalledWith(2, 'https://www.instagram.com/');

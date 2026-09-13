@@ -1,6 +1,6 @@
 // channel-list.js
-import { cli, Strategy } from '@jackwener/opencli/registry';
-import { CommandExecutionError } from '@jackwener/opencli/errors';
+import { cli, Strategy } from '@jyjyxt/cloudl/registry';
+import { CommandExecutionError } from '@jyjyxt/cloudl/errors';
 import { buildFetchSnippet } from './in-page.js';
 import { dispatchEvaluateResult } from './errors.js';
 import { SLOCK_SITE, SLOCK_DOMAIN, SLOCK_HOME_URL } from './shared.js';

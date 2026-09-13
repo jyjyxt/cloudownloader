@@ -1,18 +1,18 @@
 ---
-name: opencli-usage
-description: Use at the start of any OpenCLI session — this is the top-level map of what `cloudl` can do, how to discover adapters, what flags and output formats are universal, and which specialized skill to load next. Point here when an agent asks "what can cloudl do?" or "how do I find the right command?".
-allowed-tools: Bash(opencli:*), Read
+name: cloudl-usage
+description: Use at the start of any Cloudl session — this is the top-level map of what `cloudl` can do, how to discover adapters, what flags and output formats are universal, and which specialized skill to load next. Point here when an agent asks "what can cloudl do?" or "how do I find the right command?".
+allowed-tools: Bash(cloudl:*), Read
 ---
 
-# opencli-usage
+# cloudl-usage
 
-OpenCLI turns any website, Electron desktop app, or external CLI into a uniform `cloudl <site> <command>` surface that agents can drive without screen-scraping. This skill is the orientation layer — once you know what you want to do, load one of the specialized skills below.
+Cloudl turns any website, Electron desktop app, or external CLI into a uniform `cloudl <site> <command>` surface that agents can drive without screen-scraping. This skill is the orientation layer — once you know what you want to do, load one of the specialized skills below.
 
 ## The three pillars
 
-- **Adapter commands** — `cloudl <site> <command> [...]`. Built-in adapters live in `clis/`, user adapters in `~/.opencli/clis/`. Each is backed by a strategy (`PUBLIC | COOKIE | INTERCEPT | UI | LOCAL`) that tells you whether a Chrome session is needed.
-- **Browser driving** — `cloudl browser *` subcommands (`open`, `state`, `click`, `type`, `select`, `find`, `extract`, `network`, …) for ad-hoc interaction and scraping when no adapter covers the task. See `opencli-browser`.
-- **Current-tab binding** — `cloudl browser <session> bind` attaches the Chrome tab the user already opened/logged into to that browser session. Follow-up commands use `cloudl browser <session> ...`. See `opencli-browser` before using it; bound sessions still block tab mutation.
+- **Adapter commands** — `cloudl <site> <command> [...]`. Built-in adapters live in `clis/`, user adapters in `~/.cloudl/clis/`. Each is backed by a strategy (`PUBLIC | COOKIE | INTERCEPT | UI | LOCAL`) that tells you whether a Chrome session is needed.
+- **Browser driving** — `cloudl browser *` subcommands (`open`, `state`, `click`, `type`, `select`, `find`, `extract`, `network`, …) for ad-hoc interaction and scraping when no adapter covers the task. See `cloudl-browser`.
+- **Current-tab binding** — `cloudl browser <session> bind` attaches the Chrome tab the user already opened/logged into to that browser session. Follow-up commands use `cloudl browser <session> ...`. See `cloudl-browser` before using it; bound sessions still block tab mutation.
 - **External CLI passthrough** — `cloudl gh`, `cloudl docker`, `cloudl vercel`, etc. Managed via `cloudl external install <name>` (auto-install from `external-clis.yaml`) or `cloudl external register <name>` (bring your own).
 
 ## Install
@@ -33,7 +33,7 @@ cloudl doctor
 | Strategy tag on `cloudl list` | What it needs |
 |--------------------------------|---------------|
 | `PUBLIC` | Nothing — pure HTTP, no browser. |
-| `COOKIE` | Chrome logged into the target site + **OpenCLI** extension installed manually from [GitHub Releases](https://github.com/jyjyxt/cloudownloader/releases). Command captures the credential from your live session — no re-login. |
+| `COOKIE` | Chrome logged into the target site + **Cloudl** extension installed manually from [GitHub Releases](https://github.com/jyjyxt/cloudownloader/releases). Command captures the credential from your live session — no re-login. |
 | `INTERCEPT` | Same as COOKIE, plus cloudl opens an automation window to capture a signed request. |
 | `UI` | Same as COOKIE, full DOM interaction. |
 | `LOCAL` | No browser; talks to a local/dev endpoint. |
@@ -59,7 +59,7 @@ Before falling back to raw `cloudl browser` commands on high-change authenticate
 | flag | effect |
 |------|--------|
 | `-f, --format <fmt>` | `table` (default in TTY) · `yaml` (default in non-TTY) · `json` · `plain` · `md` · `csv`. Pass explicitly when you want a specific shape; agents almost always want `-f json`. |
-| `-v, --verbose` | Debug logs + stack traces on failure; also sets `OPENCLI_VERBOSE=1` for the process. |
+| `-v, --verbose` | Debug logs + stack traces on failure; also sets `CLOUDL_VERBOSE=1` for the process. |
 
 Command-specific flags (`--limit`, `--tab`, `--filter`, …) are not universal — consult `<site> <command> --help`.
 
@@ -77,22 +77,22 @@ A few commands override the default via `cmd.defaultFormat` (e.g. chat commands 
 
 | variable | default | purpose |
 |----------|---------|---------|
-| `OPENCLI_BROWSER_CONNECT_TIMEOUT` | `45` | Seconds to wait for the browser bridge. |
-| `OPENCLI_BROWSER_COMMAND_TIMEOUT` | `60` | Per-command timeout. |
-| `OPENCLI_CDP_ENDPOINT` | — | Manual CDP endpoint override (dev / remote Chrome / Electron). |
-| `OPENCLI_CACHE_DIR` | `~/.opencli/cache` | Network capture + browser-state cache. |
-| `OPENCLI_WINDOW` | command-specific | `foreground` or `background` browser window mode. |
-| `OPENCLI_VERBOSE` | `false` | Verbose logging (also triggered by `-v`). |
+| `CLOUDL_BROWSER_CONNECT_TIMEOUT` | `45` | Seconds to wait for the browser bridge. |
+| `CLOUDL_BROWSER_COMMAND_TIMEOUT` | `60` | Per-command timeout. |
+| `CLOUDL_CDP_ENDPOINT` | — | Manual CDP endpoint override (dev / remote Chrome / Electron). |
+| `CLOUDL_CACHE_DIR` | `~/.cloudl/cache` | Network capture + browser-state cache. |
+| `CLOUDL_WINDOW` | command-specific | `foreground` or `background` browser window mode. |
+| `CLOUDL_VERBOSE` | `false` | Verbose logging (also triggered by `-v`). |
 
 ## Self-repair
 
-When an adapter command fails because the site changed (selectors drifted, API rotated, response schema shifted), re-run with `--trace retain-on-failure`. The error envelope includes a `trace` block pointing at `summary.md`; patch only the `adapterSourcePath` from that summary and retry. Max 3 repair rounds. The full flow is in `opencli-autofix`.
+When an adapter command fails because the site changed (selectors drifted, API rotated, response schema shifted), re-run with `--trace retain-on-failure`. The error envelope includes a `trace` block pointing at `summary.md`; patch only the `adapterSourcePath` from that summary and retry. Max 3 repair rounds. The full flow is in `cloudl-autofix`.
 
 ## Writing your own adapter
 
 Two-path storage:
 
-- **Private**: `~/.opencli/clis/<site>/<command>.js` — no build step, hot-available, not visible in the public package.
+- **Private**: `~/.cloudl/clis/<site>/<command>.js` — no build step, hot-available, not visible in the public package.
 - **Public / PR**: `clis/<site>/<command>.js` — for upstream contribution; requires build.
 
 Scaffolding & verification:
@@ -104,7 +104,7 @@ cloudl verify [target] [--smoke]       # run the command with synthetic args
 cloudl browser verify <site>/<command> # end-to-end smoke inside the bridge
 ```
 
-Adapters import only `@jackwener/opencli/registry` and `@jackwener/opencli/errors`. `columns` must align 1:1 (in name and order) with keys of the object returned by `func`. For the full workflow see `opencli-adapter-author`.
+Adapters import only `@jyjyxt/cloudl/registry` and `@jyjyxt/cloudl/errors`. `columns` must align 1:1 (in name and order) with keys of the object returned by `func`. For the full workflow see `cloudl-adapter-author`.
 
 ## Plugins
 
@@ -133,7 +133,7 @@ cloudl gh pr list --limit 5   # passthrough; stdio is inherited, exit code propa
 cloudl docker ps
 ```
 
-Built-in entries live in `src/external-clis.yaml`; user overrides and additions in `~/.opencli/external-clis.yaml`. Commonly shipped: `gh`, `docker`, `vercel`, `lark-cli`, `longbridge`, `dws`, `wecom-cli`, `obsidian`, `ntn`, `tg(tg-cli)`, `discord(discord-cli)`, `wx(wx-cli)`.
+Built-in entries live in `src/external-clis.yaml`; user overrides and additions in `~/.cloudl/external-clis.yaml`. Commonly shipped: `gh`, `docker`, `vercel`, `lark-cli`, `longbridge`, `dws`, `wecom-cli`, `obsidian`, `ntn`, `tg(tg-cli)`, `discord(discord-cli)`, `wx(wx-cli)`.
 
 Some official CLIs use shell-script installers instead of a shell-free package-manager command. Entries without an `install` config, such as `ntn`, must be installed manually from their homepage before passthrough use.
 
@@ -148,16 +148,16 @@ cloudl completion bash   # also: zsh, fish
 
 | If you're about to… | Load this skill |
 |---------------------|-----------------|
-| Drive a live browser ad-hoc (no adapter available, or prototyping) | `opencli-browser` |
-| Write a new adapter, or add a command to an existing site | `opencli-adapter-author` |
-| Fix a broken adapter after a command failure | `opencli-autofix` |
+| Drive a live browser ad-hoc (no adapter available, or prototyping) | `cloudl-browser` |
+| Write a new adapter, or add a command to an existing site | `cloudl-adapter-author` |
+| Fix a broken adapter after a command failure | `cloudl-autofix` |
 | Route a search / lookup / research request to the right adapter | `smart-search` |
 
 ## Commands that used to exist
 
 The following were removed in the PR #1094 consolidation — don't try to invoke them:
 
-- `cloudl explore <url>` — superseded by `cloudl browser network` + `cloudl browser find` for live API discovery, and by the `opencli-adapter-author` workflow for capture.
+- `cloudl explore <url>` — superseded by `cloudl browser network` + `cloudl browser find` for live API discovery, and by the `cloudl-adapter-author` workflow for capture.
 - `cloudl record <url>` — removed; manual capture now lives in `cloudl browser network --detail`.
 - `cloudl web read` / `cloudl desktop *` as top-level groups — folded into their respective adapters (`cloudl web read` still exists as the `web` adapter's `read` command, but there is no standalone `web` / `desktop` top-level group command).
 

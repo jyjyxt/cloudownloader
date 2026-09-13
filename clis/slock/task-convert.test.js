@@ -1,6 +1,6 @@
 import { describe, it, expect, vi } from 'vitest';
-import { getRegistry } from '@jackwener/opencli/registry';
-import { ArgumentError } from '@jackwener/opencli/errors';
+import { getRegistry } from '@jyjyxt/cloudl/registry';
+import { ArgumentError } from '@jyjyxt/cloudl/errors';
 import './task-convert.js';
 
 function makePage(envelope) {

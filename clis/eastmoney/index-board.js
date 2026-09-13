@@ -4,8 +4,8 @@
 //   cloudl eastmoney index-board
 //   cloudl eastmoney index-board --group all
 
-import { cli, Strategy } from '@jackwener/opencli/registry';
-import { CliError } from '@jackwener/opencli/errors';
+import { cli, Strategy } from '@jyjyxt/cloudl/registry';
+import { CliError } from '@jyjyxt/cloudl/errors';
 
 const INDEX_GROUPS = {
   main: [

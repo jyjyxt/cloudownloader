@@ -1,6 +1,6 @@
 import { describe, it, expect, vi } from 'vitest';
-import { ArgumentError } from '@jackwener/opencli/errors';
-import { getRegistry } from '@jackwener/opencli/registry';
+import { ArgumentError } from '@jyjyxt/cloudl/errors';
+import { getRegistry } from '@jyjyxt/cloudl/registry';
 import './reaction-add.js';
 
 const UUID = '550e8400-e29b-41d4-a716-446655440000';

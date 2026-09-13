@@ -33,7 +33,7 @@ function createChromeMock() {
       tabs,
       debugger: debuggerApi,
       scripting,
-      runtime: { id: 'opencli-test' },
+      runtime: { id: 'cloudl-test' },
     },
     debuggerApi,
     scripting,
@@ -144,7 +144,7 @@ function chromeMockForScreenshot(content: { width: number; height: number } = { 
     onUpdated: { addListener: vi.fn() },
   };
   return {
-    chrome: { tabs, debugger: debuggerApi, scripting: {}, runtime: { id: 'opencli-test' } },
+    chrome: { tabs, debugger: debuggerApi, scripting: {}, runtime: { id: 'cloudl-test' } },
     debuggerApi,
     calls,
   };
@@ -265,7 +265,7 @@ describe('cdp screenshot', () => {
       },
       debugger: debuggerApi,
       scripting: {},
-      runtime: { id: 'opencli-test' },
+      runtime: { id: 'cloudl-test' },
     };
     vi.stubGlobal('chrome', chrome);
 
@@ -436,7 +436,7 @@ describe('cdp network capture survives forced re-attach', () => {
       onUpdated: { addListener: vi.fn() },
     };
     return {
-      chrome: { tabs, debugger: debuggerApi, scripting: {}, runtime: { id: 'opencli-test' } },
+      chrome: { tabs, debugger: debuggerApi, scripting: {}, runtime: { id: 'cloudl-test' } },
       debuggerApi,
       failNextHealthCheck: () => { failNextHealthCheck = true; },
       networkEnableCount: () => networkEnableCount,
@@ -497,7 +497,7 @@ describe('cdp network capture correctness', () => {
       for (const fn of onEventListeners) await fn({ tabId: 1 }, method, params);
     };
     return {
-      chrome: { tabs, debugger: debuggerApi, scripting: {}, runtime: { id: 'opencli-test' } },
+      chrome: { tabs, debugger: debuggerApi, scripting: {}, runtime: { id: 'cloudl-test' } },
       fire,
     };
   }
@@ -626,7 +626,7 @@ describe('cdp evaluateInFrame stale context fallback', () => {
       onRemoved: { addListener: vi.fn() },
       onUpdated: { addListener: vi.fn() },
     };
-    vi.stubGlobal('chrome', { tabs, debugger: debuggerApi, scripting: {}, runtime: { id: 'opencli-test' } });
+    vi.stubGlobal('chrome', { tabs, debugger: debuggerApi, scripting: {}, runtime: { id: 'cloudl-test' } });
 
     const mod = await import('./cdp');
     mod.registerFrameTracking();

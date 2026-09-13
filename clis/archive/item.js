@@ -1,10 +1,10 @@
 // archive item: Internet Archive item metadata (one row per identifier).
-import { cli, Strategy } from '@jackwener/opencli/registry';
+import { cli, Strategy } from '@jyjyxt/cloudl/registry';
 import {
     ArgumentError,
     CommandExecutionError,
     EmptyResultError,
-} from '@jackwener/opencli/errors';
+} from '@jyjyxt/cloudl/errors';
 
 const IDENTIFIER_RE = /^[A-Za-z0-9._-]+$/;
 
@@ -41,7 +41,7 @@ cli({
             resp = await fetch(url, {
                 headers: {
                     'Accept': 'application/json',
-                    'User-Agent': 'opencli/1.0 (+https://github.com/jyjyxt/cloudownloader)',
+                    'User-Agent': 'cloudl/1.0 (+https://github.com/jyjyxt/cloudownloader)',
                 },
             });
         } catch (error) {

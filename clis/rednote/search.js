@@ -5,8 +5,8 @@
  * web host and the login-gate detection differ. See issue #1136 for the
  * 1:1 comparison between the two frontends.
  */
-import { cli, Strategy } from '@jackwener/opencli/registry';
-import { ArgumentError, AuthRequiredError, CommandExecutionError } from '@jackwener/opencli/errors';
+import { cli, Strategy } from '@jyjyxt/cloudl/registry';
+import { ArgumentError, AuthRequiredError, CommandExecutionError } from '@jyjyxt/cloudl/errors';
 import { buildScrollUntilJs, buildSearchExtractJs, noteIdToDate } from '../xiaohongshu/search.js';
 import { unwrapEvaluateResult } from '../xiaohongshu/shared.js';
 

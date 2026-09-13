@@ -1,4 +1,4 @@
-import { AuthRequiredError, CommandExecutionError } from '@jackwener/opencli/errors';
+import { AuthRequiredError, CommandExecutionError } from '@jyjyxt/cloudl/errors';
 
 export const API_BASE = 'https://api2.mubu.com/v3/api';
 const MUBU_DOMAIN = 'mubu.com';

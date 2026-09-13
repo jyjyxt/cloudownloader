@@ -1,4 +1,4 @@
-import { cli } from '@jackwener/opencli/registry';
+import { cli } from '@jyjyxt/cloudl/registry';
 import { setInstagramPostLike } from './_shared/post-like.js';
 
 cli({

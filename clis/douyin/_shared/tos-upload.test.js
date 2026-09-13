@@ -127,7 +127,7 @@ describe('resume state read/write', () => {
 });
 // ── getResumeFilePath ────────────────────────────────────────────────────────
 describe('getResumeFilePath', () => {
-    it('returns a path inside ~/.opencli/douyin-resume/', () => {
+    it('returns a path inside ~/.cloudl/douyin-resume/', () => {
         const result = getResumeFilePath('/some/video/file.mp4');
         expect(result).toContain('douyin-resume');
         expect(result).toMatch(/\.json$/);

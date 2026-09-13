@@ -29,7 +29,7 @@ import {
     AuthRequiredError,
     CommandExecutionError,
     EmptyResultError,
-} from '@jackwener/opencli/errors';
+} from '@jyjyxt/cloudl/errors';
 
 import {
     FB_HOST,

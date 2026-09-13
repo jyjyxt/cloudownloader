@@ -4,7 +4,7 @@ import {
   CommandExecutionError,
   EmptyResultError,
   TimeoutError,
-} from '@jackwener/opencli/errors';
+} from '@jyjyxt/cloudl/errors';
 
 export const GMAIL_ORIGIN = 'https://mail.google.com';
 export const GMAIL_HOST = 'mail.google.com';

@@ -1,14 +1,14 @@
 ---
-name: opencli-browser
-description: Use when an agent needs to drive a real Chrome window via cloudl — inspect a page, fill forms, click through logged-in flows, or extract data ad-hoc. Covers the selector-first target contract, compound form fields, stale-ref handling, network capture, and the agent-native envelopes the CLI returns. Not for writing adapters — see opencli-adapter-author for that.
-allowed-tools: Bash(opencli:*), Read, Edit, Write
+name: cloudl-browser
+description: Use when an agent needs to drive a real Chrome window via cloudl — inspect a page, fill forms, click through logged-in flows, or extract data ad-hoc. Covers the selector-first target contract, compound form fields, stale-ref handling, network capture, and the agent-native envelopes the CLI returns. Not for writing adapters — see cloudl-adapter-author for that.
+allowed-tools: Bash(cloudl:*), Read, Edit, Write
 ---
 
-# opencli-browser
+# cloudl-browser
 
 The first reader of this CLI is an agent, not a human. Every subcommand returns a structured envelope that tells you exactly what matched, how confident the match is, and what to do if it didn't. Lean on those envelopes — do not guess.
 
-This skill is for **driving a live browser** to accomplish an agent task. If you are building a reusable adapter under `~/.opencli/clis/<site>/` use `opencli-adapter-author` instead.
+This skill is for **driving a live browser** to accomplish an agent task. If you are building a reusable adapter under `~/.cloudl/clis/<site>/` use `cloudl-adapter-author` instead.
 
 ---
 
@@ -28,7 +28,7 @@ Until `doctor` is green, nothing else will work. Typical failures: Chrome not ru
 - Use a stable session name for any multi-command or human-paced browser workflow. Example: `cloudl browser fb-yaya-warmup open https://example.com`, then reuse `cloudl browser fb-yaya-warmup state`, `extract`, `click`, etc.
 - Owned browser sessions keep a tab lease alive between calls. Release it with `cloudl browser <session> close` or let the idle timeout expire.
 - `cloudl browser <session> bind` binds the Chrome tab you already have open to that session. Use this for logged-in pages, SSO flows, or pages you manually positioned before handing control to the agent.
-- `--window foreground|background` (or `OPENCLI_WINDOW=foreground|background`) chooses whether OpenCLI creates/focuses a foreground browser window or uses a background browser window for owned sessions.
+- `--window foreground|background` (or `CLOUDL_WINDOW=foreground|background`) chooses whether Cloudl creates/focuses a foreground browser window or uses a background browser window for owned sessions.
 
 ### Bind Tab
 
@@ -42,9 +42,9 @@ cloudl browser gmail unbind
 
 Binding never owns the user window and never closes the user tab. It fails closed if the tab is closed or becomes non-debuggable. Re-run `cloudl browser <session> bind` when you switch to a different real tab.
 
-Navigation is allowed on bound sessions because the session now represents explicit agent ownership of that tab. Tab mutation (`tab new`, `tab select`, `tab close`) is still blocked for bound sessions. Use an owned session when you want OpenCLI to manage tab lifecycle.
+Navigation is allowed on bound sessions because the session now represents explicit agent ownership of that tab. Tab mutation (`tab new`, `tab select`, `tab close`) is still blocked for bound sessions. Use an owned session when you want Cloudl to manage tab lifecycle.
 
-Bound sessions have no OpenCLI idle-close timer; the binding lasts until `unbind`, tab close, window close, or daemon restart.
+Bound sessions have no Cloudl idle-close timer; the binding lasts until `unbind`, tab close, window close, or daemon restart.
 
 ---
 
@@ -74,7 +74,7 @@ Bound sessions have no OpenCLI idle-close timer; the binding lasts until `unbind
 
 ## Sitemaps
 
-If `browser open` or `browser analyze` returns `sitemap.available: true`, switch to `opencli-browser-sitemap` before continuing a multi-step site flow. The sitemap is prior context for pages, actions, workflows, APIs, and pitfalls; it is not truth. If the browser state disagrees with the sitemap, trust the browser and mark the sitemap stale via `opencli-sitemap-author`.
+If `browser open` or `browser analyze` returns `sitemap.available: true`, switch to `cloudl-browser-sitemap` before continuing a multi-step site flow. The sitemap is prior context for pages, actions, workflows, APIs, and pitfalls; it is not truth. If the browser state disagrees with the sitemap, trust the browser and mark the sitemap stale via `cloudl-sitemap-author`.
 
 ---
 
@@ -204,7 +204,7 @@ browser network --raw                  # full bodies inline — large; use spari
 browser network --ttl <ms>             # cache TTL (default 24h)
 ```
 
-List entries look like `{key, method, status, url, ct, size, shape, body_truncated?}`. Detail envelope is `{key, url, method, status, ct, size, shape, body, body_truncated?, body_full_size?, body_truncation_reason}`. Cache lives in `~/.opencli/cache/browser-network/` so you can re-inspect without re-triggering the request.
+List entries look like `{key, method, status, url, ct, size, shape, body_truncated?}`. Detail envelope is `{key, url, method, status, ct, size, shape, body, body_truncated?, body_full_size?, body_truncation_reason}`. Cache lives in `~/.cloudl/cache/browser-network/` so you can re-inspect without re-triggering the request.
 
 Default output keeps JSON/XML/plain-text and JS-like API responses, then drops obvious static assets and telemetry by URL. If an expected endpoint is missing, run `browser network --all` once and check whether an unusual content type or URL filter hid it.
 
@@ -432,13 +432,13 @@ normal DOM `state`, or navigate/bind directly to the iframe URL when possible.
 | `click` succeeds but nothing happens | The element is probably a decorative wrapper stealing clicks from the real target. `find --css "..."` with a narrower selector and retry on the inner element. |
 | `type` appears to finish but value is wrong | Autocomplete, masked input, or React controlled re-render. Verify with `get value`. Add `keys Enter` or re-type. |
 | Giant `get html` output | Pass `--selector` + `--as json --depth 3 --children-max 20 --text-max 200`. |
-| Network cache seems stale | Bump `--ttl` down, or let it expire. The cache lives at `~/.opencli/cache/browser-network/`. |
+| Network cache seems stale | Bump `--ttl` down, or let it expire. The cache lives at `~/.cloudl/cache/browser-network/`. |
 
 ---
 
 ## See also
 
-- `opencli-adapter-author` — turning what you just figured out into a reusable `~/.opencli/clis/<site>/<command>.js`.
-- `opencli-browser-sitemap` — consuming site sitemap context while driving a browser task.
-- `opencli-sitemap-author` — creating or updating sitemap knowledge when you discover a durable path or stale entry.
-- `opencli-autofix` — when an existing adapter breaks, this skill walks you through `--trace retain-on-failure` evidence and filing a fix.
+- `cloudl-adapter-author` — turning what you just figured out into a reusable `~/.cloudl/clis/<site>/<command>.js`.
+- `cloudl-browser-sitemap` — consuming site sitemap context while driving a browser task.
+- `cloudl-sitemap-author` — creating or updating sitemap knowledge when you discover a durable path or stale entry.
+- `cloudl-autofix` — when an existing adapter breaks, this skill walks you through `--trace retain-on-failure` evidence and filing a fix.

@@ -1,6 +1,6 @@
 import { describe, expect, it, vi } from 'vitest';
-import { getRegistry } from '@jackwener/opencli/registry';
-import { ArgumentError, AuthRequiredError, CommandExecutionError, EmptyResultError, LoginWallError } from '@jackwener/opencli/errors';
+import { getRegistry } from '@jyjyxt/cloudl/registry';
+import { ArgumentError, AuthRequiredError, CommandExecutionError, EmptyResultError, LoginWallError } from '@jyjyxt/cloudl/errors';
 import { parseRedditSubscribedLimit, unwrapEvaluateResult } from './subscribed.js';
 import './subscribed.js';
 

@@ -12,7 +12,7 @@ export { DEFAULT_BROWSER_COMMAND_TIMEOUT, DEFAULT_BROWSER_CONNECT_TIMEOUT };
  * and all other sites use BrowserBridge.
  */
 export function getBrowserFactory(site?: string): new () => IBrowserFactory {
-  if (process.env.OPENCLI_CDP_ENDPOINT) return CDPBridge;
+  if (process.env.CLOUDL_CDP_ENDPOINT) return CDPBridge;
   if (site && isElectronApp(site)) return CDPBridge;
   return BrowserBridge;
 }

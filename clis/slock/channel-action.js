@@ -1,6 +1,6 @@
 // channel-action.js — factory for no-body POST /channels/:id/<verb> ops.
-import { cli, Strategy } from '@jackwener/opencli/registry';
-import { ArgumentError } from '@jackwener/opencli/errors';
+import { cli, Strategy } from '@jyjyxt/cloudl/registry';
+import { ArgumentError } from '@jyjyxt/cloudl/errors';
 import { buildChannelScopedSnippet } from './in-page.js';
 import { dispatchEvaluateResult } from './errors.js';
 import { SLOCK_SITE, SLOCK_DOMAIN, SLOCK_HOME_URL } from './shared.js';

@@ -1,5 +1,5 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
-import { AuthRequiredError, CommandExecutionError } from '@jackwener/opencli/errors';
+import { AuthRequiredError, CommandExecutionError } from '@jyjyxt/cloudl/errors';
 
 const mocks = vi.hoisted(() => ({
     ensureSunoSession: vi.fn(),

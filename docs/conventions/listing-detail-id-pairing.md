@@ -130,5 +130,5 @@ The script reads `cli-manifest.json`, so always rebuild the manifest
   authoring conventions, including the required `access: 'read' | 'write'`
   metadata.
 - "Output design" reference inside the bundled
-  `opencli-adapter-author` skill — column naming, ordering, and id-first
+  `cloudl-adapter-author` skill — column naming, ordering, and id-first
   conventions.

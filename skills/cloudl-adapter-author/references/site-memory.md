@@ -7,11 +7,11 @@
 ## 两层结构
 
 ```
-skills/opencli-adapter-author/references/site-memory/<site>.md
+skills/cloudl-adapter-author/references/site-memory/<site>.md
     — 公共种子。手写 + PR 审核进入。多 agent 共享的第一批起点。
     — 已铺：eastmoney / xueqiu / bilibili / tonghuashun / gmail
 
-~/.opencli/sites/<site>/
+~/.cloudl/sites/<site>/
     — 本地累积。agent 跑 adapter 过程里自动写入，跨 session 复用。
     — 不进 git，不进 PR。
 ```
@@ -52,12 +52,12 @@ skills/opencli-adapter-author/references/site-memory/<site>.md
 
 ---
 
-## Layer 2 — 本地工作目录（`~/.opencli/sites/<site>/`）
+## Layer 2 — 本地工作目录（`~/.cloudl/sites/<site>/`）
 
 agent 每跑一次相关 adapter 就可以自动写/读：
 
 ```
-~/.opencli/sites/<site>/
+~/.cloudl/sites/<site>/
   notes.md               — 累积笔记（时间戳 + 写入人 + 发现）
   endpoints.json         — 已验证的 endpoint 目录
   field-map.json         — 字段代号 → 含义（key 为字段代号，value 为 {meaning, verified_at, source}）
@@ -171,7 +171,7 @@ key = 字段代号（`f237` / `f152`），value 三件套：
 ### `notes.md` 格式
 
 ```markdown
-## 2026-04-20 by opencli-user
+## 2026-04-20 by cloudl-user
 写 `convertible.js` 时遇到：
 - f237 推断是溢价率（排序对比法，页面对照）
 - `fltt=2` 不加的话价格是整数 × 10^f152
@@ -200,16 +200,16 @@ key = 字段代号（`f237` / `f152`），value 三件套：
 ## runbook 里的读/写时机
 
 ```
-Step 2 开始前 → 读  ~/.opencli/sites/<site>/
+Step 2 开始前 → 读  ~/.cloudl/sites/<site>/
                 → 读  references/site-memory/<site>.md
                 命中后 → 不跳写 adapter，仍要跑 Step 5 (endpoint 验证) + Step 7 (字段抽查)
                         verified_at 超 30 天 → 当作过期，按冷启动走 Step 3 → 4
 
-Step 10 verify 首轮通过后 → 写 ~/.opencli/sites/<site>/verify/<cmd>.json
+Step 10 verify 首轮通过后 → 写 ~/.cloudl/sites/<site>/verify/<cmd>.json
                             - 先 `--write-fixture` 拿种子，再手改 patterns / notEmpty / rowCount
                             - 没这份后续 verify 挡不住数据错位，**必填**
 
-Step 11 肉眼对比通过后 → 写 ~/.opencli/sites/<site>/
+Step 11 肉眼对比通过后 → 写 ~/.cloudl/sites/<site>/
                         - endpoints.json：按 schema 追加或更新 verified_at
                         - field-map.json：只追加新 key，已有的不默默覆盖
                         - notes.md：顶部追加一段
@@ -220,7 +220,7 @@ Step 11 肉眼对比通过后 → 写 ~/.opencli/sites/<site>/
 
 ---
 
-## 不要写进 `~/.opencli/sites/` 的东西
+## 不要写进 `~/.cloudl/sites/` 的东西
 
 - 真实账户 cookie / token — 不要保存任何鉴权凭据
 - 用户私有数据：高敏内容一律不存；低敏内容只有完成字段级脱敏才可存
@@ -228,10 +228,10 @@ Step 11 肉眼对比通过后 → 写 ~/.opencli/sites/<site>/
 
 ## 不要写进 **repo / adapter 目录** 的东西
 
-调试过程里的临时 dump（`.dbg-*.html` / `raw-*.json` / `sample-*` / `trace-*.txt`）**只能**落在系统 `/tmp/`；只有通过上面数据分级、准备长期保留的安全样本才进入 `~/.opencli/sites/<site>/fixtures/`。PR diff 会把 repo 根目录和 `clis/<site>/` 下的文件一起带走；任务结束还要删除原始 capture/cache。
+调试过程里的临时 dump（`.dbg-*.html` / `raw-*.json` / `sample-*` / `trace-*.txt`）**只能**落在系统 `/tmp/`；只有通过上面数据分级、准备长期保留的安全样本才进入 `~/.cloudl/sites/<site>/fixtures/`。PR diff 会把 repo 根目录和 `clis/<site>/` 下的文件一起带走；任务结束还要删除原始 capture/cache。
 
 ---
 
 ## 没有 site-memory 时
 
-新站点没对应 `.md`，也没本地目录 → 完整走 recon + discovery，跑完直接写 `~/.opencli/sites/<site>/`，后面就有了。
+新站点没对应 `.md`，也没本地目录 → 完整走 recon + discovery，跑完直接写 `~/.cloudl/sites/<site>/`，后面就有了。

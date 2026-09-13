@@ -1,7 +1,7 @@
 /**
  * DOM Snapshot Engine — Advanced DOM pruning for LLM consumption.
  *
- * Inspired by browser-use's multi-layer pruning pipeline, adapted for opencli's
+ * Inspired by browser-use's multi-layer pruning pipeline, adapted for cloudl's
  * Chrome Extension + CDP architecture. Runs entirely in-page via Runtime.evaluate.
  *
  * Pipeline:
@@ -20,7 +20,7 @@
  *  13. Incremental diff (mark new elements with *)
  *
  * Additional tools:
- *   - scrollToRefJs(ref) — scroll to a data-opencli-ref element
+ *   - scrollToRefJs(ref) — scroll to a data-cloudl-ref element
  *   - getFormStateJs()  — extract all form fields as structured JSON
  *
  * Compound sidecar:
@@ -56,7 +56,7 @@ export interface DomSnapshotOptions {
   maxIframes?: number;
   /** Enable paint-order occlusion detection (default true) */
   paintOrderCheck?: boolean;
-  /** Annotate interactive elements with data-opencli-ref (default true) */
+  /** Annotate interactive elements with data-cloudl-ref (default true) */
   annotateRefs?: boolean;
   /** Report hidden interactive elements outside viewport (default true) */
   reportHidden?: boolean;
@@ -71,7 +71,7 @@ export interface DomSnapshotOptions {
 // ─── Utility JS Generators ───────────────────────────────────────────
 
 /**
- * Generate JS to scroll to an element identified by data-opencli-ref.
+ * Generate JS to scroll to an element identified by data-cloudl-ref.
  * Completes the snapshot→action loop: snapshot identifies `[3]<button>`,
  * caller can then `scrollToRef('3')` to bring it into view.
  */
@@ -80,7 +80,7 @@ export function scrollToRefJs(ref: string): string {
   return `
     (() => {
       const ref = ${safeRef};
-      const el = document.querySelector('[data-opencli-ref="' + ref + '"]')
+      const el = document.querySelector('[data-cloudl-ref="' + ref + '"]')
         || document.querySelector('[data-ref="' + ref + '"]');
       if (!el) throw new Error('Element not found: ref=' + ref);
       el.scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'nearest' });
@@ -127,7 +127,7 @@ export function getFormStateJs(): string {
         const type = (el.getAttribute('type') || (tag === 'textarea' ? 'textarea' : tag === 'select' ? 'select' : 'text')).toLowerCase();
         if (type === 'hidden' || type === 'submit' || type === 'button' || type === 'reset') return null;
         const name = el.name || el.id || null;
-        const ref = el.getAttribute('data-opencli-ref') || null;
+        const ref = el.getAttribute('data-cloudl-ref') || null;
         const label = findLabel(el);
         let value;
         if (tag === 'select') {
@@ -679,7 +679,7 @@ export function generateSnapshotJs(opts: DomSnapshotOptions = {}): string {
       let prefix = '';
       if (interactive) {
         interactiveIndex++;
-        if (ANNOTATE_REFS) el.setAttribute('data-opencli-ref', '' + interactiveIndex);
+        if (ANNOTATE_REFS) el.setAttribute('data-cloudl-ref', '' + interactiveIndex);
         prefix = '[' + interactiveIndex + ']';
       }
       lines.push('  '.repeat(depth) + prefix + '<svg' + (attrs ? ' ' + attrs : '') + ' />');
@@ -812,7 +812,7 @@ export function generateSnapshotJs(opts: DomSnapshotOptions = {}): string {
     // Interactive index + data-ref + fingerprint
     if (interactive) {
       interactiveIndex++;
-      if (ANNOTATE_REFS) el.setAttribute('data-opencli-ref', '' + interactiveIndex);
+      if (ANNOTATE_REFS) el.setAttribute('data-cloudl-ref', '' + interactiveIndex);
       line += isScrollable ? '|scroll[' + interactiveIndex + ']|' : '[' + interactiveIndex + ']';
       // Store fingerprint for stale-ref detection
       refIdentity['' + interactiveIndex] = {
@@ -926,9 +926,9 @@ export function generateSnapshotJs(opts: DomSnapshotOptions = {}): string {
   lines.push('interactive: ' + interactiveIndex + ' | iframes: ' + iframeCount);
 
   // Store hashes on window for next diff snapshot
-  try { window.__opencli_prev_hashes = JSON.stringify(currentHashes); } catch {}
+  try { window.__cloudl_prev_hashes = JSON.stringify(currentHashes); } catch {}
   // Store ref identity map for stale-ref detection by target resolver
-  try { window.__opencli_ref_identity = refIdentity; } catch {}
+  try { window.__cloudl_ref_identity = refIdentity; } catch {}
 
   return lines.join('\\n');
 })()

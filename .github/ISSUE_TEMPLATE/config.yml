@@ -5,4 +5,4 @@ contact_links:
     about: Check the README and docs before opening an issue.
   - name: 🧪 Testing Guide
     url: https://github.com/jyjyxt/cloudownloader/blob/main/TESTING.md
-    about: How to run and write tests for OpenCLI.
+    about: How to run and write tests for Cloudl.

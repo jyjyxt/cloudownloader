@@ -7,8 +7,8 @@
  *
  * Requires: logged into creator.xiaohongshu.com in Chrome.
  */
-import { cli, Strategy } from '@jackwener/opencli/registry';
-import { EmptyResultError } from '@jackwener/opencli/errors';
+import { cli, Strategy } from '@jyjyxt/cloudl/registry';
+import { EmptyResultError } from '@jyjyxt/cloudl/errors';
 cli({
     site: 'xiaohongshu',
     name: 'creator-stats',

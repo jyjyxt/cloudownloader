@@ -2,21 +2,21 @@ import * as fs from 'node:fs';
 import * as os from 'node:os';
 import * as path from 'node:path';
 import { afterAll, afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
-import { AuthRequiredError, CommandExecutionError } from '@jackwener/opencli/errors';
-import { getRegistry } from '@jackwener/opencli/registry';
+import { AuthRequiredError, CommandExecutionError } from '@jyjyxt/cloudl/errors';
+import { getRegistry } from '@jyjyxt/cloudl/registry';
 import * as privatePublish from './_shared/private-publish.js';
 import { buildClickActionJs, buildEnsureComposerOpenJs, buildInspectUploadStageJs, buildPublishStatusProbeJs } from './post.js';
 import './post.js';
 const tempDirs = [];
 function createTempImage(name = 'demo.jpg', bytes = Buffer.from([0xff, 0xd8, 0xff, 0xd9])) {
-    const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'opencli-instagram-post-'));
+    const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'cloudl-instagram-post-'));
     tempDirs.push(dir);
     const filePath = path.join(dir, name);
     fs.writeFileSync(filePath, bytes);
     return filePath;
 }
 function createTempVideo(name = 'demo.mp4', bytes = Buffer.from('video')) {
-    const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'opencli-instagram-post-video-'));
+    const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'cloudl-instagram-post-video-'));
     tempDirs.push(dir);
     const filePath = path.join(dir, name);
     fs.writeFileSync(filePath, bytes);
@@ -63,7 +63,7 @@ afterAll(() => {
     for (const dir of tempDirs) {
         fs.rmSync(dir, { recursive: true, force: true });
     }
-    delete process.env.OPENCLI_INSTAGRAM_CAPTURE;
+    delete process.env.CLOUDL_INSTAGRAM_CAPTURE;
 });
 describe('instagram auth detection', () => {
     it('does not treat generic homepage text containing "log in" as an auth failure', () => {
@@ -385,7 +385,7 @@ describe('instagram post registration', () => {
                 return { ok: false };
             if (js.includes('window.location?.pathname'))
                 return { ok: true };
-            if (js.includes('const data = Array.isArray(window[') && js.includes('__opencli_ig_protocol_capture'))
+            if (js.includes('const data = Array.isArray(window[') && js.includes('__cloudl_ig_protocol_capture'))
                 return { data: [], errors: [] };
             return { ok: true };
         });
@@ -414,8 +414,8 @@ describe('instagram post registration', () => {
                 return { ok: false };
             if (js.includes('window.location?.pathname'))
                 return { ok: true };
-            if (js.includes('data-opencli-ig-upload-index'))
-                return { ok: true, selectors: ['[data-opencli-ig-upload-index="0"]'] };
+            if (js.includes('data-cloudl-ig-upload-index'))
+                return { ok: true, selectors: ['[data-cloudl-ig-upload-index="0"]'] };
             if (js.includes("dispatchEvent(new Event('input'"))
                 return { ok: true };
             if (js.includes('const hasPreviewUi ='))
@@ -435,7 +435,7 @@ describe('instagram post registration', () => {
         const cmd = getRegistry().get('instagram/post');
         const result = await cmd.func(page, { media: imagePath, content: 'private fallback' });
         expect(privateSpy).toHaveBeenCalledTimes(1);
-        expect(page.setFileInput).toHaveBeenCalledWith([imagePath], '[data-opencli-ig-upload-index="0"]');
+        expect(page.setFileInput).toHaveBeenCalledWith([imagePath], '[data-cloudl-ig-upload-index="0"]');
         expect(result).toEqual([
             {
                 status: '✅ Posted',
@@ -454,8 +454,8 @@ describe('instagram post registration', () => {
                 return { ok: false };
             if (js.includes('window.location?.pathname'))
                 return { ok: true };
-            if (js.includes('data-opencli-ig-upload-index'))
-                return { ok: true, selectors: ['[data-opencli-ig-upload-index="0"]'] };
+            if (js.includes('data-cloudl-ig-upload-index'))
+                return { ok: true, selectors: ['[data-cloudl-ig-upload-index="0"]'] };
             if (js.includes("dispatchEvent(new Event('input'"))
                 return { ok: true };
             if (js.includes('const hasPreviewUi ='))
@@ -478,7 +478,7 @@ describe('instagram post registration', () => {
             content: 'mixed ui fallback',
         });
         expect(privateSpy).toHaveBeenCalledTimes(1);
-        expect(page.setFileInput).toHaveBeenCalledWith([imagePath, videoPath], '[data-opencli-ig-upload-index="0"]');
+        expect(page.setFileInput).toHaveBeenCalledWith([imagePath, videoPath], '[data-cloudl-ig-upload-index="0"]');
         expect(result).toEqual([
             {
                 status: '✅ Posted',
@@ -543,7 +543,7 @@ describe('instagram post registration', () => {
         const imagePath = createTempImage();
         const page = createPageMock(withInitialDialogDismiss([
             { ok: true },
-            { ok: true, selectors: ['[data-opencli-ig-upload-index="0"]'] },
+            { ok: true, selectors: ['[data-cloudl-ig-upload-index="0"]'] },
             { ok: true },
             { ok: true },
             { ok: false },
@@ -557,10 +557,10 @@ describe('instagram post registration', () => {
         const cmd = getRegistry().get('instagram/post');
         const result = await cmd.func(page, {
             media: imagePath,
-            content: 'hello from opencli',
+            content: 'hello from cloudl',
         });
         expect(page.goto).toHaveBeenCalledWith('https://www.instagram.com/');
-        expect(page.setFileInput).toHaveBeenCalledWith([imagePath], '[data-opencli-ig-upload-index="0"]');
+        expect(page.setFileInput).toHaveBeenCalledWith([imagePath], '[data-cloudl-ig-upload-index="0"]');
         expect(page.evaluate.mock.calls.some((args) => String(args[0]).includes("dispatchEvent(new Event('change'"))).toBe(true);
         expect(result).toEqual([
             {
@@ -575,7 +575,7 @@ describe('instagram post registration', () => {
         const secondImagePath = createTempImage('carousel-2.jpg');
         const page = createPageMock(withInitialDialogDismiss([
             { ok: true },
-            { ok: true, selectors: ['[data-opencli-ig-upload-index="0"]'] },
+            { ok: true, selectors: ['[data-cloudl-ig-upload-index="0"]'] },
             { ok: true },
             { ok: true },
             { ok: false },
@@ -591,7 +591,7 @@ describe('instagram post registration', () => {
             media: `${firstImagePath},${secondImagePath}`,
             content: 'hello carousel',
         });
-        expect(page.setFileInput).toHaveBeenCalledWith([firstImagePath, secondImagePath], '[data-opencli-ig-upload-index="0"]');
+        expect(page.setFileInput).toHaveBeenCalledWith([firstImagePath, secondImagePath], '[data-cloudl-ig-upload-index="0"]');
         expect(result).toEqual([
             {
                 status: '✅ Posted',
@@ -600,21 +600,21 @@ describe('instagram post registration', () => {
             },
         ]);
     });
-    it('installs and dumps protocol capture when OPENCLI_INSTAGRAM_CAPTURE is enabled', async () => {
-        process.env.OPENCLI_INSTAGRAM_CAPTURE = '1';
+    it('installs and dumps protocol capture when CLOUDL_INSTAGRAM_CAPTURE is enabled', async () => {
+        process.env.CLOUDL_INSTAGRAM_CAPTURE = '1';
         const imagePath = createTempImage('capture-enabled.jpg');
         const evaluate = vi.fn(async (js) => {
-            if (js.includes('__opencli_ig_protocol_capture') && js.includes('PATCH_GUARD'))
+            if (js.includes('__cloudl_ig_protocol_capture') && js.includes('PATCH_GUARD'))
                 return { ok: true };
-            if (js.includes('const data = Array.isArray(window[') && js.includes('__opencli_ig_protocol_capture')) {
+            if (js.includes('const data = Array.isArray(window[') && js.includes('__cloudl_ig_protocol_capture')) {
                 return { data: [], errors: [] };
             }
             if (js.includes('sharing') && js.includes('create new post'))
                 return { ok: false };
             if (js.includes('window.location?.pathname'))
                 return { ok: true };
-            if (js.includes('data-opencli-ig-upload-index'))
-                return { ok: true, selectors: ['[data-opencli-ig-upload-index="0"]'] };
+            if (js.includes('data-cloudl-ig-upload-index'))
+                return { ok: true, selectors: ['[data-cloudl-ig-upload-index="0"]'] };
             if (js.includes("dispatchEvent(new Event('input'"))
                 return { ok: true };
             if (js.includes('const hasPreviewUi ='))
@@ -634,8 +634,8 @@ describe('instagram post registration', () => {
             content: 'capture enabled',
         });
         const evaluateCalls = evaluate.mock.calls.map((args) => String(args[0]));
-        expect(evaluateCalls.some((js) => js.includes('__opencli_ig_protocol_capture') && js.includes('PATCH_GUARD'))).toBe(true);
-        expect(evaluateCalls.some((js) => js.includes('const data = Array.isArray(window[') && js.includes('__opencli_ig_protocol_capture'))).toBe(true);
+        expect(evaluateCalls.some((js) => js.includes('__cloudl_ig_protocol_capture') && js.includes('PATCH_GUARD'))).toBe(true);
+        expect(evaluateCalls.some((js) => js.includes('const data = Array.isArray(window[') && js.includes('__cloudl_ig_protocol_capture'))).toBe(true);
         expect(result).toEqual([
             {
                 status: '✅ Posted',
@@ -643,7 +643,7 @@ describe('instagram post registration', () => {
                 url: 'https://www.instagram.com/p/CAPTURE123/',
             },
         ]);
-        delete process.env.OPENCLI_INSTAGRAM_CAPTURE;
+        delete process.env.CLOUDL_INSTAGRAM_CAPTURE;
     });
     it('retries media Next when preview is visible before the button becomes clickable', async () => {
         const firstImagePath = createTempImage('carousel-delay-1.jpg');
@@ -654,8 +654,8 @@ describe('instagram post registration', () => {
                 return { ok: false };
             if (js.includes('window.location?.pathname'))
                 return { ok: true };
-            if (js.includes('data-opencli-ig-upload-index'))
-                return { ok: true, selectors: ['[data-opencli-ig-upload-index="0"]'] };
+            if (js.includes('data-cloudl-ig-upload-index'))
+                return { ok: true, selectors: ['[data-cloudl-ig-upload-index="0"]'] };
             if (js.includes("dispatchEvent(new Event('input'"))
                 return { ok: true };
             if (js.includes('const hasVisibleButtonInDialogs'))
@@ -704,8 +704,8 @@ describe('instagram post registration', () => {
                 composerRuns += 1;
                 return { ok: true };
             }
-            if (js.includes('data-opencli-ig-upload-index'))
-                return { ok: true, selectors: ['[data-opencli-ig-upload-index="0"]'] };
+            if (js.includes('data-cloudl-ig-upload-index'))
+                return { ok: true, selectors: ['[data-cloudl-ig-upload-index="0"]'] };
             if (js.includes("dispatchEvent(new Event('input'"))
                 return { ok: true };
             if (js.includes('const hasVisibleButtonInDialogs')) {
@@ -758,8 +758,8 @@ describe('instagram post registration', () => {
                 return { ok: false };
             if (js.includes('window.location?.pathname'))
                 return { ok: true };
-            if (js.includes('data-opencli-ig-upload-index'))
-                return { ok: true, selectors: ['[data-opencli-ig-upload-index="0"]'] };
+            if (js.includes('data-cloudl-ig-upload-index'))
+                return { ok: true, selectors: ['[data-cloudl-ig-upload-index="0"]'] };
             if (js.includes("dispatchEvent(new Event('input'"))
                 return { ok: true };
             if (js.includes('const hasPreviewUi ='))
@@ -796,9 +796,9 @@ describe('instagram post registration', () => {
                 return { ok: false };
             if (js.includes('window.location?.pathname'))
                 return { ok: true };
-            if (js.includes('data-opencli-ig-upload-index'))
-                return { ok: true, selectors: ['[data-opencli-ig-upload-index="0"]'] };
-            if (js.includes('__opencliInstagramUpload_') && js.includes('] = [];'))
+            if (js.includes('data-cloudl-ig-upload-index'))
+                return { ok: true, selectors: ['[data-cloudl-ig-upload-index="0"]'] };
+            if (js.includes('__cloudlInstagramUpload_') && js.includes('] = [];'))
                 return { ok: true };
             if (js.includes('parts.push(chunk)'))
                 return { ok: true, count: 1 };
@@ -829,7 +829,7 @@ describe('instagram post registration', () => {
             media: imagePath,
             content: 'legacy bridge fallback',
         });
-        expect(page.setFileInput).toHaveBeenCalledWith([imagePath], '[data-opencli-ig-upload-index="0"]');
+        expect(page.setFileInput).toHaveBeenCalledWith([imagePath], '[data-cloudl-ig-upload-index="0"]');
         expect(result).toEqual([
             {
                 status: '✅ Posted',
@@ -845,8 +845,8 @@ describe('instagram post registration', () => {
                 return { ok: false };
             if (js.includes('window.location?.pathname'))
                 return { ok: true };
-            if (js.includes('data-opencli-ig-upload-index'))
-                return { ok: true, selectors: ['[data-opencli-ig-upload-index="0"]'] };
+            if (js.includes('data-cloudl-ig-upload-index'))
+                return { ok: true, selectors: ['[data-cloudl-ig-upload-index="0"]'] };
             if (js.includes('window[') && js.includes('] = [];'))
                 return { ok: true };
             if (js.includes('parts.push(chunk)'))
@@ -894,7 +894,7 @@ describe('instagram post registration', () => {
         const cmd = getRegistry().get('instagram/post');
         await expect(cmd.func(page, {
             media: imagePath,
-            content: 'hello from opencli',
+            content: 'hello from cloudl',
         })).rejects.toThrow(CommandExecutionError);
     });
     it('maps login-gated composer access to AuthRequiredError', async () => {
@@ -912,7 +912,7 @@ describe('instagram post registration', () => {
         const imagePath = createTempImage('no-preview.jpg');
         const page = createPageMock(withInitialDialogDismiss([
             { ok: true },
-            { ok: true, selectors: ['[data-opencli-ig-upload-index="0"]'] },
+            { ok: true, selectors: ['[data-cloudl-ig-upload-index="0"]'] },
             { ok: true },
             { ok: false },
             { ok: false },
@@ -939,7 +939,7 @@ describe('instagram post registration', () => {
         const imagePath = createTempImage('upload-error.jpg');
         const page = createPageMock(withInitialDialogDismiss([
             { ok: true },
-            { ok: true, selectors: ['[data-opencli-ig-upload-index="0"]'] },
+            { ok: true, selectors: ['[data-cloudl-ig-upload-index="0"]'] },
             { ok: true },
             { ok: false, state: 'failed', detail: 'Something went wrong. Please try again.' },
         ]));
@@ -953,7 +953,7 @@ describe('instagram post registration', () => {
         const imagePath = createTempImage('upload-preview-wins.jpg');
         const page = createPageMock(withInitialDialogDismiss([
             { ok: true },
-            { ok: true, selectors: ['[data-opencli-ig-upload-index="0"]'] },
+            { ok: true, selectors: ['[data-cloudl-ig-upload-index="0"]'] },
             { ok: true },
             {
                 ok: false,
@@ -990,8 +990,8 @@ describe('instagram post registration', () => {
                 return { ok: false };
             if (js.includes('window.location?.pathname'))
                 return { ok: true };
-            if (js.includes('data-opencli-ig-upload-index'))
-                return { ok: true, selectors: ['[data-opencli-ig-upload-index="0"]'] };
+            if (js.includes('data-cloudl-ig-upload-index'))
+                return { ok: true, selectors: ['[data-cloudl-ig-upload-index="0"]'] };
             if (js.includes("dispatchEvent(new Event('input'"))
                 return { ok: true };
             if (js.includes('const failed =') && js.includes('const hasCaption =')) {
@@ -1037,8 +1037,8 @@ describe('instagram post registration', () => {
                 return { ok: false };
             if (js.includes('window.location?.pathname'))
                 return { ok: true };
-            if (js.includes('data-opencli-ig-upload-index'))
-                return { ok: true, selectors: ['[data-opencli-ig-upload-index="0"]'] };
+            if (js.includes('data-cloudl-ig-upload-index'))
+                return { ok: true, selectors: ['[data-cloudl-ig-upload-index="0"]'] };
             if (js.includes("dispatchEvent(new Event('input'"))
                 return { ok: true };
             if (js.includes('const hasVisibleButtonInDialogs')) {
@@ -1099,8 +1099,8 @@ describe('instagram post registration', () => {
                 return { ok: false };
             if (js.includes('window.location?.pathname'))
                 return { ok: true };
-            if (js.includes('data-opencli-ig-upload-index'))
-                return { ok: true, selectors: ['[data-opencli-ig-upload-index="0"]'] };
+            if (js.includes('data-cloudl-ig-upload-index'))
+                return { ok: true, selectors: ['[data-cloudl-ig-upload-index="0"]'] };
             if (js.includes("dispatchEvent(new Event('input'"))
                 return { ok: true };
             if (js.includes('const hasVisibleButtonInDialogs')) {
@@ -1149,8 +1149,8 @@ describe('instagram post registration', () => {
         const evaluate = vi.fn(async (js) => {
             if (js.includes('window.location?.pathname'))
                 return { ok: true };
-            if (js.includes('data-opencli-ig-upload-index'))
-                return { ok: true, selectors: ['[data-opencli-ig-upload-index="0"]'] };
+            if (js.includes('data-cloudl-ig-upload-index'))
+                return { ok: true, selectors: ['[data-cloudl-ig-upload-index="0"]'] };
             if (js.includes("dispatchEvent(new Event('input'"))
                 return { ok: true };
             if (js.includes("dialogText.includes('write a caption')") || js.includes("const editable = document.querySelector('textarea, [contenteditable=\"true\"]');")) {
@@ -1161,7 +1161,7 @@ describe('instagram post registration', () => {
                 if (uploadProbeCount === 1) {
                     return { ok: false, state: 'failed', detail: 'Something went wrong. Please try again.' };
                 }
-                return gotoUrls.some((url) => url.includes('__opencli_reset='))
+                return gotoUrls.some((url) => url.includes('__cloudl_reset='))
                     ? { ok: true, state: 'preview' }
                     : { ok: false, state: 'failed', detail: 'Something went wrong. Please try again.' };
             }
@@ -1191,7 +1191,7 @@ describe('instagram post registration', () => {
             media: imagePath,
             content: 'fresh reload after upload failure',
         });
-        expect(gotoUrls.some((url) => url.includes('__opencli_reset='))).toBe(true);
+        expect(gotoUrls.some((url) => url.includes('__cloudl_reset='))).toBe(true);
         expect(result).toEqual([
             {
                 status: '✅ Posted',
@@ -1208,8 +1208,8 @@ describe('instagram post registration', () => {
                 return { ok: false };
             if (js.includes('window.location?.pathname'))
                 return { ok: true };
-            if (js.includes('data-opencli-ig-upload-index'))
-                return { ok: true, selectors: ['[data-opencli-ig-upload-index="0"]'] };
+            if (js.includes('data-cloudl-ig-upload-index'))
+                return { ok: true, selectors: ['[data-cloudl-ig-upload-index="0"]'] };
             if (js.includes("dispatchEvent(new Event('input'"))
                 return { ok: true };
             if (js.includes('const hasVisibleButtonInDialogs'))
@@ -1253,12 +1253,12 @@ describe('instagram post registration', () => {
     it('re-resolves the upload input when the tagged selector goes stale before setFileInput runs', async () => {
         const imagePath = createTempImage('stale-selector.jpg');
         const setFileInput = vi.fn()
-            .mockRejectedValueOnce(new Error('No element found matching selector: [data-opencli-ig-upload-index="0"]'))
+            .mockRejectedValueOnce(new Error('No element found matching selector: [data-cloudl-ig-upload-index="0"]'))
             .mockResolvedValueOnce(undefined);
         const page = createPageMock(withInitialDialogDismiss([
             { ok: true },
-            { ok: true, selectors: ['[data-opencli-ig-upload-index="0"]'] },
-            { ok: true, selectors: ['[data-opencli-ig-upload-index="0"]'] },
+            { ok: true, selectors: ['[data-cloudl-ig-upload-index="0"]'] },
+            { ok: true, selectors: ['[data-cloudl-ig-upload-index="0"]'] },
             { ok: true },
             { ok: true },
             { ok: false },
@@ -1290,8 +1290,8 @@ describe('instagram post registration', () => {
             .mockResolvedValueOnce(undefined);
         const page = createPageMock(withInitialDialogDismiss([
             { ok: true },
-            { ok: true, selectors: ['[data-opencli-ig-upload-index="0"]'] },
-            { ok: true, selectors: ['[data-opencli-ig-upload-index="0"]'] },
+            { ok: true, selectors: ['[data-cloudl-ig-upload-index="0"]'] },
+            { ok: true, selectors: ['[data-cloudl-ig-upload-index="0"]'] },
             { ok: true },
             { ok: true },
             { ok: false },
@@ -1322,7 +1322,7 @@ describe('instagram post registration', () => {
             { ok: true },
             { ok: false },
             { ok: true },
-            { ok: true, selectors: ['[data-opencli-ig-upload-index="0"]'] },
+            { ok: true, selectors: ['[data-cloudl-ig-upload-index="0"]'] },
             { ok: true },
             { ok: true },
             { ok: false },
@@ -1357,8 +1357,8 @@ describe('instagram post registration', () => {
                 return { ok: false };
             if (js.includes('window.location?.pathname'))
                 return { ok: true };
-            if (js.includes('data-opencli-ig-upload-index'))
-                return { ok: true, selectors: ['[data-opencli-ig-upload-index="0"]'] };
+            if (js.includes('data-cloudl-ig-upload-index'))
+                return { ok: true, selectors: ['[data-cloudl-ig-upload-index="0"]'] };
             if (js.includes("dispatchEvent(new Event('input'"))
                 return { ok: true };
             if (js.includes('const hasVisibleButtonInDialogs'))
@@ -1401,7 +1401,7 @@ describe('instagram post registration', () => {
             .mockResolvedValueOnce(undefined);
         const page = createPageMock(withInitialDialogDismiss([
             { ok: true },
-            { ok: true, selectors: ['[data-opencli-ig-upload-index="0"]', '[data-opencli-ig-upload-index="1"]'] },
+            { ok: true, selectors: ['[data-cloudl-ig-upload-index="0"]', '[data-cloudl-ig-upload-index="1"]'] },
             { ok: true },
             { ok: false },
             { ok: false },
@@ -1426,8 +1426,8 @@ describe('instagram post registration', () => {
             media: imagePath,
             content: 'second input works',
         });
-        expect(setFileInput).toHaveBeenNthCalledWith(1, [imagePath], '[data-opencli-ig-upload-index="0"]');
-        expect(setFileInput).toHaveBeenNthCalledWith(2, [imagePath], '[data-opencli-ig-upload-index="1"]');
+        expect(setFileInput).toHaveBeenNthCalledWith(1, [imagePath], '[data-cloudl-ig-upload-index="0"]');
+        expect(setFileInput).toHaveBeenNthCalledWith(2, [imagePath], '[data-cloudl-ig-upload-index="1"]');
         expect(result).toEqual([
             {
                 status: '✅ Posted',
@@ -1440,7 +1440,7 @@ describe('instagram post registration', () => {
         const imagePath = createTempImage('share-failed.jpg');
         const page = createPageMock(withInitialDialogDismiss([
             { ok: true },
-            { ok: true, selectors: ['[data-opencli-ig-upload-index="0"]'] },
+            { ok: true, selectors: ['[data-cloudl-ig-upload-index="0"]'] },
             { ok: true },
             { ok: true },
             { ok: false },
@@ -1461,7 +1461,7 @@ describe('instagram post registration', () => {
         const imagePath = createTempImage('slow-share.jpg');
         const page = createPageMock(withInitialDialogDismiss([
             { ok: true },
-            { ok: true, selectors: ['[data-opencli-ig-upload-index="0"]'] },
+            { ok: true, selectors: ['[data-cloudl-ig-upload-index="0"]'] },
             { ok: true },
             { ok: true },
             { ok: false },
@@ -1493,7 +1493,7 @@ describe('instagram post registration', () => {
         const setFileInput = vi.fn().mockResolvedValue(undefined);
         const page = createPageMock(withInitialDialogDismiss([
             { ok: true },
-            { ok: true, selectors: ['[data-opencli-ig-upload-index="0"]'] },
+            { ok: true, selectors: ['[data-cloudl-ig-upload-index="0"]'] },
             { ok: true },
             { ok: true },
             { ok: false },
@@ -1514,7 +1514,7 @@ describe('instagram post registration', () => {
     it('recovers the latest post URL from the current logged-in profile when success does not navigate to /p/', async () => {
         const imagePath = createTempImage('url-recovery.jpg');
         const evaluate = vi.fn(async (js) => {
-            if (js.includes('const data = Array.isArray(window[') && js.includes('__opencli_ig_protocol_capture')) {
+            if (js.includes('const data = Array.isArray(window[') && js.includes('__cloudl_ig_protocol_capture')) {
                 return { data: [], errors: [] };
             }
             if (js.includes('fetch(') && js.includes('/api/v1/users/') && js.includes('X-IG-App-ID')) {
@@ -1524,8 +1524,8 @@ describe('instagram post registration', () => {
             }
             if (js.includes('window.location?.pathname'))
                 return { ok: true };
-            if (js.includes('data-opencli-ig-upload-index'))
-                return { ok: true, selectors: ['[data-opencli-ig-upload-index="0"]'] };
+            if (js.includes('data-cloudl-ig-upload-index'))
+                return { ok: true, selectors: ['[data-cloudl-ig-upload-index="0"]'] };
             if (js.includes("dispatchEvent(new Event('input'"))
                 return { ok: true };
             if (js.includes('const hasPreviewUi ='))
@@ -1576,7 +1576,7 @@ describe('instagram post registration', () => {
             { ok: true, hrefs: ['/p/OLD111/'] },
             { ok: false },
             { ok: true },
-            { ok: true, selectors: ['[data-opencli-ig-upload-index="0"]'] },
+            { ok: true, selectors: ['[data-cloudl-ig-upload-index="0"]'] },
             { ok: true },
             { ok: true },
             { ok: false },
@@ -1615,7 +1615,7 @@ describe('instagram post registration', () => {
             { ok: true, hrefs: ['/p/PINNED111/', '/p/OLD222/'] },
             { ok: false },
             { ok: true },
-            { ok: true, selectors: ['[data-opencli-ig-upload-index="0"]'] },
+            { ok: true, selectors: ['[data-cloudl-ig-upload-index="0"]'] },
             { ok: true },
             { ok: true },
             { ok: false },

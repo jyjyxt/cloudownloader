@@ -5,7 +5,7 @@
  * Douyin transcodes the video asynchronously. This module polls the transcode
  * status endpoint until encode=2 (complete) or a timeout is reached.
  */
-import { TimeoutError } from '@jackwener/opencli/errors';
+import { TimeoutError } from '@jyjyxt/cloudl/errors';
 import { browserFetch } from './browser-fetch.js';
 const POLL_INTERVAL_MS = 3_000;
 const DEFAULT_TIMEOUT_MS = 300_000;

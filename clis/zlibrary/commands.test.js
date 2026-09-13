@@ -1,6 +1,6 @@
 import { describe, expect, it, vi } from 'vitest';
-import { ArgumentError, EmptyResultError } from '@jackwener/opencli/errors';
-import { getRegistry } from '@jackwener/opencli/registry';
+import { ArgumentError, EmptyResultError } from '@jyjyxt/cloudl/errors';
+import { getRegistry } from '@jyjyxt/cloudl/registry';
 import {
   buildSearchUrl,
   normalizeZlibraryBookUrl,

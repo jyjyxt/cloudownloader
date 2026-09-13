@@ -81,7 +81,7 @@ cloudl suno download a1b2c3d4-1111-2222-3333-444444444444 \
 
 ## Auth notes
 
-The Suno studio API (`studio-api-prod.suno.com`) requires three things on every request: a Clerk JWT, an anti-replay `browser-token`, and a persistent `device-id`. The OpenCLI bridge's `credentials: 'include'` cross-origin fetch drops Suno's session cookie due to third-party-cookie isolation in the evaluate context, so this adapter explicitly reads `await window.Clerk.session.getToken()` and forwards it as `Authorization: Bearer`. `browser-token` is generated per request (a base64-encoded `{ timestamp }` object) and `device-id` is read from the `suno_device_id` cookie that Suno's frontend writes on first load.
+The Suno studio API (`studio-api-prod.suno.com`) requires three things on every request: a Clerk JWT, an anti-replay `browser-token`, and a persistent `device-id`. The Cloudl bridge's `credentials: 'include'` cross-origin fetch drops Suno's session cookie due to third-party-cookie isolation in the evaluate context, so this adapter explicitly reads `await window.Clerk.session.getToken()` and forwards it as `Authorization: Bearer`. `browser-token` is generated per request (a base64-encoded `{ timestamp }` object) and `device-id` is read from the `suno_device_id` cookie that Suno's frontend writes on first load.
 
 ## Prerequisites
 

@@ -3,7 +3,7 @@
   "configVersion": 0,
   "workspaces": {
     "": {
-      "name": "opencli-extension",
+      "name": "cloudl-extension",
       "devDependencies": {
         "@types/chrome": "^0.0.287",
         "typescript": "^5.7.0",

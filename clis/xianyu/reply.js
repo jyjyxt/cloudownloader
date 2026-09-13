@@ -1,5 +1,5 @@
-import { ArgumentError, AuthRequiredError, CommandExecutionError, selectorError } from '@jackwener/opencli/errors';
-import { cli, Strategy } from '@jackwener/opencli/registry';
+import { ArgumentError, AuthRequiredError, CommandExecutionError, selectorError } from '@jyjyxt/cloudl/errors';
+import { cli, Strategy } from '@jyjyxt/cloudl/registry';
 import { buildChatUrl, buildClickInboxConversationEvaluate, buildExtractChatStateEvaluate, buildSendMessageEvaluate, normalizeRank, requireClickResult, requireEvaluateObject, requireText } from './im.js';
 import { normalizeNumericId } from './utils.js';
 

@@ -3,10 +3,10 @@
 // proxy.golang.org is the canonical Go module proxy. It is unauthenticated
 // and serves the GOPROXY protocol (`@latest`, `@v/list`, `@v/<ver>.info|mod|zip`).
 // Spec: https://go.dev/ref/mod#goproxy-protocol
-import { ArgumentError, CommandExecutionError, EmptyResultError } from '@jackwener/opencli/errors';
+import { ArgumentError, CommandExecutionError, EmptyResultError } from '@jyjyxt/cloudl/errors';
 
 export const GOPROXY_BASE = 'https://proxy.golang.org';
-const UA = 'opencli-goproxy-adapter (+https://github.com/jyjyxt/cloudownloader)';
+const UA = 'cloudl-goproxy-adapter (+https://github.com/jyjyxt/cloudownloader)';
 
 // Module paths look like host/path/...; conservative shape: at least one slash,
 // host segment is alnum + dots, path segments are alnum + dashes/dots/underscores/slashes.

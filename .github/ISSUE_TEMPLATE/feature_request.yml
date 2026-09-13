@@ -6,7 +6,7 @@ body:
   - type: markdown
     attributes:
       value: |
-        Have an idea to make OpenCLI better? We'd love to hear it!
+        Have an idea to make Cloudl better? We'd love to hear it!
 
   - type: textarea
     id: description

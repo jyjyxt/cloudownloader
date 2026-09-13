@@ -6,7 +6,7 @@
  * Why not XHR interception:
  *   The `www.douyin.com/search/<q>?type=video` page renders results into
  *   `<ul data-e2e="scroll-list">` server-side during initial navigation
- *   and (for the OpenCLI-bridged browser context) does NOT fire a
+ *   and (for the Cloudl-bridged browser context) does NOT fire a
  *   subsequent `/aweme/v1/web/general/search/single/` XHR — we confirmed
  *   this by `wait xhr "general/search/single"` timing out at 20s on a
  *   logged-in profile that has visible result cards in the DOM. Direct
@@ -40,8 +40,8 @@
  * https://www.douyin.com. The search results page renders an empty
  * skeleton for anonymous visitors, which we surface as AuthRequiredError.
  */
-import { cli, Strategy } from '@jackwener/opencli/registry';
-import { ArgumentError, AuthRequiredError, CommandExecutionError, EmptyResultError } from '@jackwener/opencli/errors';
+import { cli, Strategy } from '@jyjyxt/cloudl/registry';
+import { ArgumentError, AuthRequiredError, CommandExecutionError, EmptyResultError } from '@jyjyxt/cloudl/errors';
 
 export const MAX_SEARCH_LIMIT = 30;
 // Time budget for the SPA's initial DOM commit. Empirically the

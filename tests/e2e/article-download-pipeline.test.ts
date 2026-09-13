@@ -54,7 +54,7 @@ async function runWebReadOrSkip(
   url: string,
   label: string,
 ): Promise<WebReadResult | null> {
-  const tempDir = fs.mkdtempSync(path.join(os.tmpdir(), 'opencli-article-e2e-'));
+  const tempDir = fs.mkdtempSync(path.join(os.tmpdir(), 'cloudl-article-e2e-'));
   tempDirs.push(tempDir);
 
   const args = ['web', 'read', '--url', url, '--output', tempDir, '--download-images', 'false', '--format', 'json'];

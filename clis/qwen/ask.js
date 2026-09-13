@@ -1,5 +1,5 @@
-import { cli, Strategy } from '@jackwener/opencli/registry';
-import { ArgumentError, CommandExecutionError, TimeoutError } from '@jackwener/opencli/errors';
+import { cli, Strategy } from '@jyjyxt/cloudl/registry';
+import { ArgumentError, CommandExecutionError, TimeoutError } from '@jyjyxt/cloudl/errors';
 import {
     QIANWEN_DOMAIN,
     QIANWEN_URL,

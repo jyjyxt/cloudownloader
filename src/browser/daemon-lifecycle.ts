@@ -106,7 +106,7 @@ export async function ensureBrowserBridgeReady(
     const reason = daemonVersion
       ? `v${daemonVersion} ≠ v${PKG_VERSION}`
       : `pre-version daemon, CLI is v${PKG_VERSION}`;
-    if (verbose && (process.env.OPENCLI_VERBOSE || process.stderr.isTTY)) {
+    if (verbose && (process.env.CLOUDL_VERBOSE || process.stderr.isTTY)) {
       process.stderr.write(`⚠️  Stale daemon detected (${reason}). Restarting...\n`);
     }
     const shutdownAccepted = await daemonLifecycleHooks.requestDaemonShutdown();
@@ -144,13 +144,13 @@ export async function ensureBrowserBridgeReady(
   }
 
   if (staleDaemonReplaced || health.state === 'stopped') {
-    if (verbose && (process.env.OPENCLI_VERBOSE || process.stderr.isTTY)) {
+    if (verbose && (process.env.CLOUDL_VERBOSE || process.stderr.isTTY)) {
       process.stderr.write('⏳ Starting daemon...\n');
     }
     daemonLifecycleHooks.spawnDaemonProcess();
-  } else if (verbose && (process.env.OPENCLI_VERBOSE || process.stderr.isTTY)) {
+  } else if (verbose && (process.env.CLOUDL_VERBOSE || process.stderr.isTTY)) {
     process.stderr.write('⏳ Waiting for Chrome/Chromium extension to connect...\n');
-    process.stderr.write('   Make sure Chrome or Chromium is open and the OpenCLI extension is enabled.\n');
+    process.stderr.write('   Make sure Chrome or Chromium is open and the Cloudl extension is enabled.\n');
   }
 
   const finalHealth = await waitForBridgeReady(getDaemonHealth, { timeoutMs, contextId, preferredContextId });
@@ -162,7 +162,7 @@ function browserConnectErrorFromHealth(health: DaemonHealth, contextId?: string)
   if (health.state === 'profile-required') {
     return new BrowserConnectError(
       'Multiple Browser Bridge profiles are connected',
-      'Select one with --profile <name>, OPENCLI_PROFILE=<name>, or cloudl profile use <name>.\n' +
+      'Select one with --profile <name>, CLOUDL_PROFILE=<name>, or cloudl profile use <name>.\n' +
       'Run cloudl profile list to see connected profiles.',
       'profile-required',
     );
@@ -171,14 +171,14 @@ function browserConnectErrorFromHealth(health: DaemonHealth, contextId?: string)
     const label = contextId ?? health.status.contextId ?? 'unknown';
     return new BrowserConnectError(
       `Browser profile "${label}" is not connected`,
-      'Open the matching Chrome profile and make sure the OpenCLI extension is enabled, or choose another profile with cloudl profile use <name>.',
+      'Open the matching Chrome profile and make sure the Cloudl extension is enabled, or choose another profile with cloudl profile use <name>.',
       'profile-disconnected',
     );
   }
   if (health.state === 'no-extension') {
     return new BrowserConnectError(
       'Browser Bridge extension not connected',
-      'Make sure Chrome/Chromium is open and the OpenCLI extension is enabled.\n' +
+      'Make sure Chrome/Chromium is open and the Cloudl extension is enabled.\n' +
       'If not installed:\n' +
       '  1. Download: https://github.com/jyjyxt/cloudownloader/releases\n' +
       '  2. Open chrome://extensions → Developer Mode → Load unpacked',

@@ -2,8 +2,8 @@
 //
 // Endpoint: GET /<location>?format=j1  → returns current_condition + nearest_area.
 // One row (current snapshot).
-import { cli, Strategy } from '@jackwener/opencli/registry';
-import { EmptyResultError } from '@jackwener/opencli/errors';
+import { cli, Strategy } from '@jyjyxt/cloudl/registry';
+import { EmptyResultError } from '@jyjyxt/cloudl/errors';
 import { requireString, wttrFetch, pickWeatherDesc } from './utils.js';
 
 cli({

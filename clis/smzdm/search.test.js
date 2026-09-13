@@ -1,6 +1,6 @@
 import { JSDOM } from 'jsdom';
 import { describe, expect, it, vi } from 'vitest';
-import { ArgumentError, CommandExecutionError } from '@jackwener/opencli/errors';
+import { ArgumentError, CommandExecutionError } from '@jyjyxt/cloudl/errors';
 import { smzdmSearchCommand, __test__ } from './search.js';
 
 function runBrowserScript(html, script, url = 'https://search.smzdm.com/?c=home&s=test&v=b') {

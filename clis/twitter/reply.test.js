@@ -3,8 +3,8 @@ import * as os from 'node:os';
 import * as path from 'node:path';
 import { JSDOM } from 'jsdom';
 import { describe, expect, it, vi } from 'vitest';
-import { ArgumentError, CommandExecutionError } from '@jackwener/opencli/errors';
-import { getRegistry } from '@jackwener/opencli/registry';
+import { ArgumentError, CommandExecutionError } from '@jyjyxt/cloudl/errors';
+import { getRegistry } from '@jyjyxt/cloudl/registry';
 import { __test__ } from './reply.js';
 import { __test__ as utilsTest } from './utils.js';
 import { createPageMock } from '../test-utils.js';
@@ -74,7 +74,7 @@ describe('twitter reply command', () => {
     it('uploads a local image through the dedicated reply composer when --image is provided', async () => {
         const cmd = getRegistry().get('twitter/reply');
         expect(cmd?.func).toBeTypeOf('function');
-        const tempDir = fs.mkdtempSync(path.join(os.tmpdir(), 'opencli-twitter-reply-'));
+        const tempDir = fs.mkdtempSync(path.join(os.tmpdir(), 'cloudl-twitter-reply-'));
         const imagePath = path.join(tempDir, 'qr.png');
         fs.writeFileSync(imagePath, Buffer.from([0x89, 0x50, 0x4e, 0x47]));
         const setFileInput = vi.fn().mockResolvedValue(undefined);
@@ -133,8 +133,8 @@ describe('twitter reply command', () => {
         expect(setFileInput).toHaveBeenCalledTimes(1);
         const uploadedPath = setFileInput.mock.calls[0][0][0];
         // Tmp dir is created by utils.downloadRemoteImage with the
-        // 'opencli-twitter-' prefix; final extension comes from Content-Type.
-        expect(uploadedPath).toMatch(/opencli-twitter-.*\/image\.png$/);
+        // 'cloudl-twitter-' prefix; final extension comes from Content-Type.
+        expect(uploadedPath).toMatch(/cloudl-twitter-.*\/image\.png$/);
         // Per-call tmp dir is removed in the adapter's finally block, so the
         // downloaded file no longer exists once the command returns.
         expect(fs.existsSync(uploadedPath)).toBe(false);
@@ -365,7 +365,7 @@ describe('twitter image helpers (utils.js)', () => {
     });
 
     it('fails closed when a composer image preview never appears', async () => {
-        const tempDir = fs.mkdtempSync(path.join(os.tmpdir(), 'opencli-twitter-helper-'));
+        const tempDir = fs.mkdtempSync(path.join(os.tmpdir(), 'cloudl-twitter-helper-'));
         const imagePath = path.join(tempDir, 'missing-preview.png');
         fs.writeFileSync(imagePath, Buffer.from([0x89, 0x50, 0x4e, 0x47]));
         const page = createPageMock([{ ok: false, message: 'Image upload timed out (30s).' }], {

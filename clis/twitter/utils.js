@@ -1,7 +1,7 @@
 import * as fs from 'node:fs';
 import * as os from 'node:os';
 import * as path from 'node:path';
-import { ArgumentError } from '@jackwener/opencli/errors';
+import { ArgumentError } from '@jyjyxt/cloudl/errors';
 
 /**
  * Public read-only Twitter web bearer token used by the GraphQL endpoints we
@@ -101,7 +101,7 @@ export async function downloadRemoteImage(imageUrl) {
         throw new ArgumentError(`Image too large: ${(contentLength / 1024 / 1024).toFixed(1)} MB (max ${MAX_IMAGE_SIZE_BYTES / 1024 / 1024} MB)`);
     }
     const ext = resolveImageExtension(imageUrl, response.headers.get('content-type'));
-    const cleanupDir = fs.mkdtempSync(path.join(os.tmpdir(), 'opencli-twitter-'));
+    const cleanupDir = fs.mkdtempSync(path.join(os.tmpdir(), 'cloudl-twitter-'));
     const absPath = path.join(cleanupDir, `image${ext}`);
     const buffer = Buffer.from(await response.arrayBuffer());
     if (buffer.byteLength > MAX_IMAGE_SIZE_BYTES) {
@@ -122,7 +122,7 @@ export async function downloadRemoteImage(imageUrl) {
  * actually rendered — without this, a 200 from setFileInput could mask a
  * silent-no-attachment post.
  *
- * @param {object} page - OpenCLI page handle.
+ * @param {object} page - Cloudl page handle.
  * @param {string} absImagePath - Already-validated absolute path.
  * @param {string} [fileInputSelector] - Override (post.js historically used
  *   the same selector; default matches the X composer route).

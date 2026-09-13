@@ -37,18 +37,18 @@ describe('duckduckgo suggest', () => {
   it('rejects empty query and invalid limit before fetch', async () => {
     const fetchSpy = vi.spyOn(globalThis, 'fetch');
     await expect(command.func({ keyword: '', limit: 5 })).rejects.toMatchObject({ code: 'ARGUMENT' });
-    await expect(command.func({ keyword: 'opencli', limit: 21 })).rejects.toMatchObject({ code: 'ARGUMENT' });
+    await expect(command.func({ keyword: 'cloudl', limit: 21 })).rejects.toMatchObject({ code: 'ARGUMENT' });
     expect(fetchSpy).not.toHaveBeenCalled();
   });
 
   it('returns filtered suggestion rows from the public API payload', async () => {
     vi.spyOn(globalThis, 'fetch').mockResolvedValue({
       ok: true,
-      json: async () => ['open', ['opencli', '', 'open source']],
+      json: async () => ['open', ['cloudl', '', 'open source']],
     });
 
     await expect(command.func({ keyword: 'open', limit: 3 })).resolves.toEqual([
-      { phrase: 'opencli' },
+      { phrase: 'cloudl' },
       { phrase: 'open source' },
     ]);
   });

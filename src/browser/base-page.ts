@@ -522,7 +522,7 @@ export abstract class BasePage implements IPage {
     const cdp = (this as IPage).cdp;
     if (typeof cdp !== 'function') return false;
 
-    const markerAttr = 'data-opencli-cdp-target';
+    const markerAttr = 'data-cloudl-cdp-target';
     const markerValue = `${Date.now().toString(36)}-${++this._cdpTargetMarkerSeq}`;
     const selector = `[${markerAttr}="${markerValue}"]`;
     let marked = false;
@@ -801,7 +801,7 @@ export abstract class BasePage implements IPage {
       });
     }
     const resolved = await runResolve(this, ref, opts);
-    const markerAttr = 'data-opencli-upload-target';
+    const markerAttr = 'data-cloudl-upload-target';
     const markerValue = `${Date.now().toString(36)}-${Math.random().toString(36).slice(2)}`;
     const selector = `[${markerAttr}="${markerValue}"]`;
     let marked = false;
@@ -889,7 +889,7 @@ export abstract class BasePage implements IPage {
       (() => {
         const el = window.__resolved;
         if (!el) throw new Error('No resolved drag source');
-        window.__opencli_drag_source = el;
+        window.__cloudl_drag_source = el;
         if (${sourceScrolled ? 'false' : 'true'}) el.scrollIntoView({ behavior: 'instant', block: 'center' });
         const rect = el.getBoundingClientRect();
         const w = Math.round(rect.width);
@@ -911,7 +911,7 @@ export abstract class BasePage implements IPage {
       const targetScrolled = await this.tryCdpOnResolvedElement('DOM.scrollIntoViewIfNeeded');
       const endpoints = await this.evaluate(`
         (() => {
-          const sourceEl = window.__opencli_drag_source;
+          const sourceEl = window.__cloudl_drag_source;
           const targetEl = window.__resolved;
           if (!sourceEl) throw new Error('No resolved drag source');
           if (!targetEl) throw new Error('No resolved drag target');
@@ -957,7 +957,7 @@ export abstract class BasePage implements IPage {
         target_match_level: targetResolved.match_level,
       };
     } finally {
-      await this.evaluate('delete window.__opencli_drag_source').catch(() => {});
+      await this.evaluate('delete window.__cloudl_drag_source').catch(() => {});
     }
   }
 
@@ -1129,7 +1129,7 @@ export abstract class BasePage implements IPage {
       const result = await this.evaluate(snapshotJs);
       // Read back the hashes stored by the snapshot for next diff
       try {
-        const hashes = await this.evaluate('window.__opencli_prev_hashes') as string | null;
+        const hashes = await this.evaluate('window.__cloudl_prev_hashes') as string | null;
         this._prevSnapshotHashes = typeof hashes === 'string' ? hashes : null;
       } catch {
         // Non-fatal: diff is best-effort
@@ -1181,14 +1181,14 @@ export abstract class BasePage implements IPage {
   async installInterceptor(pattern: string): Promise<void> {
     const { generateInterceptorJs } = await import('../interceptor.js');
     await this.evaluate(generateInterceptorJs(JSON.stringify(pattern), {
-      arrayName: '__opencli_xhr',
-      patchGuard: '__opencli_interceptor_patched',
+      arrayName: '__cloudl_xhr',
+      patchGuard: '__cloudl_interceptor_patched',
     }));
   }
 
   async getInterceptedRequests(): Promise<unknown[]> {
     const { generateReadInterceptedJs } = await import('../interceptor.js');
-    const result = await this.evaluate(generateReadInterceptedJs('__opencli_xhr'));
+    const result = await this.evaluate(generateReadInterceptedJs('__cloudl_xhr'));
     return Array.isArray(result) ? result : [];
   }
 

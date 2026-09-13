@@ -2,7 +2,7 @@
 
 ## Goal
 
-Build a comprehensive test suite using V2EX (https://v2ex.com/) as the single target website to iteratively improve OpenCLI Browser's reliability and Claude Code skill effectiveness. Run 10 rounds of AutoResearch iteration (5 code-level + 5 SKILL.md-level).
+Build a comprehensive test suite using V2EX (https://v2ex.com/) as the single target website to iteratively improve Cloudl Browser's reliability and Claude Code skill effectiveness. Run 10 rounds of AutoResearch iteration (5 code-level + 5 SKILL.md-level).
 
 ## Test Suite Structure — 5 Layers, 40 Tasks
 
@@ -32,7 +32,7 @@ Long chains: cross-post reference, multi-node comparison, full workflows.
 ## AutoResearch Iteration Plan
 
 - Rounds 1-5: Layer 1 preset → optimize src/browser/*.ts code
-- Rounds 6-10: Layer 2 preset → optimize skills/opencli-browser/SKILL.md
+- Rounds 6-10: Layer 2 preset → optimize skills/cloudl-browser/SKILL.md
 - Alternating: fix code issues first, then improve LLM guidance
 
 ## Success Criteria

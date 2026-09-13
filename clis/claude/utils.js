@@ -1,4 +1,4 @@
-import { ArgumentError, AuthRequiredError, CommandExecutionError } from '@jackwener/opencli/errors';
+import { ArgumentError, AuthRequiredError, CommandExecutionError } from '@jyjyxt/cloudl/errors';
 
 export const CLAUDE_DOMAIN = 'claude.ai';
 export const CLAUDE_URL = 'https://claude.ai/new';
@@ -71,7 +71,7 @@ export function requireNonEmptyPrompt(prompt, commandName) {
     if (!text) {
         throw new ArgumentError(
             `${commandName} prompt cannot be empty`,
-            `Example: opencli ${commandName} "hello"`,
+            `Example: cloudl ${commandName} "hello"`,
         );
     }
     return text;

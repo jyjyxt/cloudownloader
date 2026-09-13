@@ -20,7 +20,7 @@
 
 ### 1. Fresh automation page
 
-Use the site command directly when OpenCLI is allowed to open its own GeoGebra page.
+Use the site command directly when Cloudl is allowed to open its own GeoGebra page.
 
 ```bash
 cloudl geogebra triangle --size 4
@@ -58,7 +58,7 @@ This bound-tab workflow is the safest option when:
 
 - the user explicitly asks to use an existing Chrome tab
 - the tab is already positioned the way the user wants
-- you do not want OpenCLI to navigate away or replace the user's page state
+- you do not want Cloudl to navigate away or replace the user's page state
 
 ## Geometry Notes
 

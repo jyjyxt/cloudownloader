@@ -1,10 +1,10 @@
 // Pinterest download — save a pin's original image to disk (PinResource + httpDownload).
 import * as fs from 'node:fs';
 import * as path from 'node:path';
-import { cli, Strategy } from '@jackwener/opencli/registry';
-import { httpDownload } from '@jackwener/opencli/download';
-import { formatBytes } from '@jackwener/opencli/download/progress';
-import { CommandExecutionError, EmptyResultError, getErrorMessage } from '@jackwener/opencli/errors';
+import { cli, Strategy } from '@jyjyxt/cloudl/registry';
+import { httpDownload } from '@jyjyxt/cloudl/download';
+import { formatBytes } from '@jyjyxt/cloudl/download/progress';
+import { CommandExecutionError, EmptyResultError, getErrorMessage } from '@jyjyxt/cloudl/errors';
 import { PINTEREST_BASE, parsePinId, pickPinImage, pinterestResourceFetch } from './utils.js';
 
 cli({

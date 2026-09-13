@@ -3,7 +3,7 @@
  *
  * Uses the internal Ajax search API with browser cookies for authentication.
  */
-import { cli, Strategy } from '@jackwener/opencli/registry';
+import { cli, Strategy } from '@jyjyxt/cloudl/registry';
 import { pixivFetch } from './utils.js';
 cli({
     site: 'pixiv',

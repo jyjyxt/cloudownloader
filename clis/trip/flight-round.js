@@ -6,8 +6,8 @@
  * shared flight extractor and wait helper against a `triptype=rt` search URL.
  * Rows missing the airline, both airports, or both times are dropped.
  */
-import { ArgumentError, AuthRequiredError, CommandExecutionError, EmptyResultError } from '@jackwener/opencli/errors';
-import { cli, Strategy } from '@jackwener/opencli/registry';
+import { ArgumentError, AuthRequiredError, CommandExecutionError, EmptyResultError } from '@jyjyxt/cloudl/errors';
+import { cli, Strategy } from '@jyjyxt/cloudl/registry';
 import {
     WAIT_FOR_FLIGHTS_JS,
     buildFlightExtractJs,

@@ -3,10 +3,10 @@
 // datatracker.ietf.org publishes a free, unauthenticated REST API. The
 // `/doc/<name>/doc.json` endpoint returns rich metadata for any IETF document
 // (RFCs, internet drafts, etc.). Docs: https://datatracker.ietf.org/api/
-import { ArgumentError, CommandExecutionError, EmptyResultError } from '@jackwener/opencli/errors';
+import { ArgumentError, CommandExecutionError, EmptyResultError } from '@jyjyxt/cloudl/errors';
 
 export const RFC_BASE = 'https://datatracker.ietf.org';
-const UA = 'opencli-rfc-adapter (+https://github.com/jyjyxt/cloudownloader)';
+const UA = 'cloudl-rfc-adapter (+https://github.com/jyjyxt/cloudownloader)';
 
 export function requireRfcNumber(value) {
     const raw = value;

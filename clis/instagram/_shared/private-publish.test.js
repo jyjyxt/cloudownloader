@@ -5,7 +5,7 @@ import { afterAll, describe, expect, it, vi } from 'vitest';
 import { buildConfigureBody, buildConfigureSidecarPayload, buildConfigureToStoryPhotoPayload, buildConfigureToStoryVideoPayload, deriveInstagramJazoest, derivePrivateApiContextFromCapture, extractInstagramRuntimeInfo, getInstagramFeedNormalizedDimensions, getInstagramStoryNormalizedDimensions, isInstagramFeedAspectRatioAllowed, isInstagramStoryAspectRatioAllowed, publishStoryViaPrivateApi, publishMediaViaPrivateApi, publishImagesViaPrivateApi, readImageAsset, resolveInstagramPrivatePublishConfig, } from './private-publish.js';
 const tempDirs = [];
 function createTempFile(name, bytes) {
-    const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'opencli-instagram-private-'));
+    const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'cloudl-instagram-private-'));
     tempDirs.push(dir);
     const filePath = path.join(dir, name);
     fs.writeFileSync(filePath, bytes);
@@ -104,7 +104,7 @@ describe('instagram private publish helpers', () => {
             expect(page.startNetworkCapture).toHaveBeenCalledTimes(1);
             expect(page.startNetworkCapture).toHaveBeenNthCalledWith(1, '/api/v1/|/graphql/');
             expect(page.goto).toHaveBeenCalledTimes(1);
-            expect(page.goto).toHaveBeenNthCalledWith(1, 'https://www.instagram.com/?__opencli_private_probe=1700000000000');
+            expect(page.goto).toHaveBeenNthCalledWith(1, 'https://www.instagram.com/?__cloudl_private_probe=1700000000000');
             expect(page.wait).toHaveBeenCalledTimes(1);
             expect(page.wait).toHaveBeenNthCalledWith(1, { time: 2 });
             expect(page.readNetworkCapture).toHaveBeenCalledTimes(1);

@@ -1,6 +1,6 @@
 # AI Workflow
 
-OpenCLI is designed for AI agents writing adapters. The workflow is built on a small set of browser primitives plus a skill that teaches the end-to-end loop.
+Cloudl is designed for AI agents writing adapters. The workflow is built on a small set of browser primitives plus a skill that teaches the end-to-end loop.
 
 ## The Loop
 
@@ -8,7 +8,7 @@ From a new site URL to a passing `cloudl browser verify` — one skill, one set 
 
 ```bash
 # 1. Pick up the skill (Claude Code)
-#    skills/opencli-adapter-author/SKILL.md
+#    skills/cloudl-adapter-author/SKILL.md
 
 # 2. Reconnaissance
 cloudl browser analyze https://example.com
@@ -22,9 +22,9 @@ cloudl browser init <site>/<name>
 cloudl browser verify <site>/<name>
 ```
 
-The skill `opencli-adapter-author` walks through: coverage self-test → site recon → API discovery → field decoding → output design → adapter coding → verify → write-back to site memory.
+The skill `cloudl-adapter-author` walks through: coverage self-test → site recon → API discovery → field decoding → output design → adapter coding → verify → write-back to site memory.
 
-See [skills/opencli-adapter-author/SKILL.md](https://github.com/jyjyxt/cloudownloader/blob/main/skills/opencli-adapter-author/SKILL.md).
+See [skills/cloudl-adapter-author/SKILL.md](https://github.com/jyjyxt/cloudownloader/blob/main/skills/cloudl-adapter-author/SKILL.md).
 
 ## Primitives
 
@@ -36,16 +36,16 @@ See [skills/opencli-adapter-author/SKILL.md](https://github.com/jyjyxt/cloudownl
 | `cloudl browser network` | List recent XHR / fetch calls |
 | `cloudl browser state` | Page state: URL, title, interactive elements |
 | `cloudl browser eval '<expr>'` | Evaluate JS in the page context (cookies + origin honored) |
-| `cloudl browser init <site>/<name>` | Scaffold `~/.opencli/clis/<site>/<name>.js` |
+| `cloudl browser init <site>/<name>` | Scaffold `~/.cloudl/clis/<site>/<name>.js` |
 | `cloudl browser verify <site>/<name>` | Run the adapter and print first rows |
 
 No `explore` / `synthesize` / `generate` / `cascade` command. The skill drives the loop — the primitives are small and composable.
 
 ## Site Memory
 
-Every site accumulates knowledge at `~/.opencli/sites/<site>/` (endpoints, field decode map, notes, response fixtures). The adapter-author skill reads memory on Step 2 and writes back on Step 12 — see `skills/opencli-adapter-author/references/site-memory.md` for the schema.
+Every site accumulates knowledge at `~/.cloudl/sites/<site>/` (endpoints, field decode map, notes, response fixtures). The adapter-author skill reads memory on Step 2 and writes back on Step 12 — see `skills/cloudl-adapter-author/references/site-memory.md` for the schema.
 
-In-repo seeds for well-known sites live at `skills/opencli-adapter-author/references/site-memory/<site>.md` (eastmoney / xueqiu / bilibili / tonghuashun already covered).
+In-repo seeds for well-known sites live at `skills/cloudl-adapter-author/references/site-memory/<site>.md` (eastmoney / xueqiu / bilibili / tonghuashun already covered).
 
 ## Authentication Strategies
 
@@ -60,6 +60,6 @@ Pick per the `coverage-matrix.md` and `api-discovery.md` references inside the s
 
 ## When Something Breaks
 
-- Verify failure → run `cloudl doctor`, then consult `skills/opencli-autofix/SKILL.md`
-- Field values wrong → jump back to `skills/opencli-adapter-author/references/field-decode-playbook.md`
+- Verify failure → run `cloudl doctor`, then consult `skills/cloudl-autofix/SKILL.md`
+- Field values wrong → jump back to `skills/cloudl-adapter-author/references/field-decode-playbook.md`
 - Endpoint returns 401/403 → `api-discovery.md` §4 (token) / §5 (intercept)

@@ -1,8 +1,8 @@
 /**
  * BOSS直聘 job search — browser cookie API.
  */
-import { cli, Strategy } from '@jackwener/opencli/registry';
-import { ArgumentError, CommandExecutionError, EmptyResultError } from '@jackwener/opencli/errors';
+import { cli, Strategy } from '@jyjyxt/cloudl/registry';
+import { ArgumentError, CommandExecutionError, EmptyResultError } from '@jyjyxt/cloudl/errors';
 import { assertOk, readPositiveInteger, requirePage, navigateTo, verbose } from './utils.js';
 /** City name → BOSS Zhipin city code mapping */
 const CITY_CODES = {
@@ -100,7 +100,7 @@ async function captureJobList(page, url) {
     await page.readNetworkCapture();
     for (let attempt = 0; attempt < 2; attempt++) {
         const separator = url.includes('?') ? '&' : '?';
-        await navigateTo(page, `${url}${separator}_opencli=${Date.now()}`, 5);
+        await navigateTo(page, `${url}${separator}_cloudl=${Date.now()}`, 5);
         await page.wait(1);
         const captures = await page.readNetworkCapture();
         for (const entry of Array.isArray(captures) ? captures : []) {

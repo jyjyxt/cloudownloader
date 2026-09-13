@@ -1,6 +1,6 @@
 import { describe, expect, it, vi } from 'vitest';
-import { getRegistry } from '@jackwener/opencli/registry';
-import { ArgumentError, AuthRequiredError, CommandExecutionError, EmptyResultError } from '@jackwener/opencli/errors';
+import { getRegistry } from '@jyjyxt/cloudl/registry';
+import { ArgumentError, AuthRequiredError, CommandExecutionError, EmptyResultError } from '@jyjyxt/cloudl/errors';
 import './search.js';
 
 const identity = {
@@ -49,7 +49,7 @@ describe('jike search API pagination', () => {
             post('post-1', { content: 'hello\nworld', likeCount: '4', commentCount: null }),
         ], { skip: 20 }));
 
-        await expect(command().func(page, { query: 'OpenCLI', limit: 1 })).resolves.toEqual([{
+        await expect(command().func(page, { query: 'Cloudl', limit: 1 })).resolves.toEqual([{
             id: 'post-1',
             author: 'Alice',
             content: 'hello world',
@@ -59,7 +59,7 @@ describe('jike search API pagination', () => {
             url: 'https://web.okjike.com/originalPost/post-1',
         }]);
         expect(command().columns).toEqual(['id', 'author', 'content', 'likes', 'comments', 'time', 'url']);
-        expect(page.goto).toHaveBeenCalledWith('https://web.okjike.com/search?q=OpenCLI');
+        expect(page.goto).toHaveBeenCalledWith('https://web.okjike.com/search?q=Cloudl');
         expect(page.evaluate).toHaveBeenCalledTimes(2);
     });
 
@@ -79,7 +79,7 @@ describe('jike search API pagination', () => {
 
     it('does not validate an unused cursor after satisfying --limit', async () => {
         const page = makePage(identity, apiPage([post('post-1')], 'future-cursor-shape'));
-        await expect(command().func(page, { query: 'OpenCLI', limit: 1 })).resolves.toHaveLength(1);
+        await expect(command().func(page, { query: 'Cloudl', limit: 1 })).resolves.toHaveLength(1);
     });
 
     it('returns EmptyResult only for a valid exhausted response with no posts', async () => {
@@ -99,17 +99,17 @@ describe('jike search API pagination', () => {
         [{ kind: 'response', status: 200, body: { success: true, data: null } }, CommandExecutionError],
     ])('maps API failure %# to a typed error', async (outcome, ErrorType) => {
         const page = makePage(identity, outcome);
-        await expect(command().func(page, { query: 'OpenCLI', limit: 20 })).rejects.toBeInstanceOf(ErrorType);
+        await expect(command().func(page, { query: 'Cloudl', limit: 20 })).rejects.toBeInstanceOf(ErrorType);
     });
 
     it('rejects malformed posts and cursors instead of returning partial rows', async () => {
         await expect(command().func(makePage(identity, apiPage([
             post('post-1'),
             { type: 'ORIGINAL_POST', content: 'missing id' },
-        ])), { query: 'OpenCLI', limit: 20 })).rejects.toBeInstanceOf(CommandExecutionError);
+        ])), { query: 'Cloudl', limit: 20 })).rejects.toBeInstanceOf(CommandExecutionError);
 
         await expect(command().func(makePage(identity, apiPage([], 'bad-cursor')), {
-            query: 'OpenCLI', limit: 20,
+            query: 'Cloudl', limit: 20,
         })).rejects.toMatchObject({ code: 'COMMAND_EXEC', message: expect.stringContaining('malformed pagination cursor') });
     });
 
@@ -119,21 +119,21 @@ describe('jike search API pagination', () => {
             identity,
             apiPage([post('post-1')], cursor),
             apiPage([], cursor),
-        ), { query: 'OpenCLI', limit: 20 })).rejects.toMatchObject({
+        ), { query: 'Cloudl', limit: 20 })).rejects.toMatchObject({
             code: 'COMMAND_EXEC',
             message: expect.stringContaining('repeated cursor'),
         });
 
         const pages = Array.from({ length: 50 }, (_, index) => apiPage([], { skip: index + 1 }));
-        await expect(command().func(makePage(identity, ...pages), { query: 'OpenCLI', limit: 20 }))
+        await expect(command().func(makePage(identity, ...pages), { query: 'Cloudl', limit: 20 }))
             .rejects.toMatchObject({ code: 'COMMAND_EXEC', message: expect.stringContaining('exceeded 50 pages') });
     });
 
     it.each([
         [{ query: '', limit: 20 }, ArgumentError],
-        [{ query: 'OpenCLI', limit: 0 }, ArgumentError],
-        [{ query: 'OpenCLI', limit: 1.5 }, ArgumentError],
-        [{ query: 'OpenCLI', limit: '20' }, ArgumentError],
+        [{ query: 'Cloudl', limit: 0 }, ArgumentError],
+        [{ query: 'Cloudl', limit: 1.5 }, ArgumentError],
+        [{ query: 'Cloudl', limit: '20' }, ArgumentError],
     ])('validates arguments before browser work: %#', async (args, ErrorType) => {
         const page = makePage();
         await expect(command().func(page, args)).rejects.toBeInstanceOf(ErrorType);

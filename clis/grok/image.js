@@ -1,8 +1,8 @@
 import * as fs from 'node:fs';
 import * as path from 'node:path';
 import * as crypto from 'node:crypto';
-import { cli, Strategy } from '@jackwener/opencli/registry';
-import { ArgumentError, CommandExecutionError, TimeoutError } from '@jackwener/opencli/errors';
+import { cli, Strategy } from '@jyjyxt/cloudl/registry';
+import { ArgumentError, CommandExecutionError, TimeoutError } from '@jyjyxt/cloudl/errors';
 import { GROK_URL, isOnGrok, normalizeBooleanFlag } from './utils.js';
 
 const SESSION_HINT = 'Likely login/auth/challenge/session issue in the existing grok.com browser session.';

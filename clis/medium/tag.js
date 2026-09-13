@@ -3,8 +3,8 @@
 //
 // Complements existing `medium feed` (per-publication / per-user) and
 // `medium search` by surfacing topical streams.
-import { cli, Strategy } from '@jackwener/opencli/registry';
-import { ArgumentError, CommandExecutionError, EmptyResultError } from '@jackwener/opencli/errors';
+import { cli, Strategy } from '@jyjyxt/cloudl/registry';
+import { ArgumentError, CommandExecutionError, EmptyResultError } from '@jyjyxt/cloudl/errors';
 
 const TAG_PATTERN = /^[a-z0-9][a-z0-9-]*$/i;
 
@@ -95,7 +95,7 @@ cli({
         try {
             resp = await fetch(url, {
                 headers: {
-                    'user-agent': 'opencli-medium-adapter (+https://github.com/jyjyxt/cloudownloader)',
+                    'user-agent': 'cloudl-medium-adapter (+https://github.com/jyjyxt/cloudownloader)',
                     accept: 'application/rss+xml, application/xml',
                 },
             });

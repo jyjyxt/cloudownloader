@@ -1,6 +1,6 @@
 # Download Support
 
-OpenCLI supports downloading images, videos, and articles from supported platforms.
+Cloudl supports downloading images, videos, and articles from supported platforms.
 
 ## Supported Platforms
 
@@ -66,7 +66,7 @@ cloudl midjourney download <image-job> --kind image --index all --output ./midjo
 cloudl midjourney download <video-job> --kind video-social --index 1 --output ./midjourney
 ```
 
-`cloudl xiaoyuzhou download` and `transcript` require local Xiaoyuzhou credentials in `~/.opencli/xiaoyuzhou.json`.
+`cloudl xiaoyuzhou download` and `transcript` require local Xiaoyuzhou credentials in `~/.cloudl/xiaoyuzhou.json`.
 
 ## Pipeline Step
 

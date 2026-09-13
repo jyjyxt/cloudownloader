@@ -1,10 +1,10 @@
 ---
-name: opencli-autofix
-description: Automatically fix broken OpenCLI adapters when commands fail. Load this skill when an cloudl command fails — it guides you through collecting a trace artifact, patching the adapter, retrying, and filing an upstream GitHub issue after a verified fix. Works with any AI agent.
-allowed-tools: Bash(opencli:*), Bash(gh:*), Read, Edit, Write
+name: cloudl-autofix
+description: Automatically fix broken Cloudl adapters when commands fail. Load this skill when an cloudl command fails — it guides you through collecting a trace artifact, patching the adapter, retrying, and filing an upstream GitHub issue after a verified fix. Works with any AI agent.
+allowed-tools: Bash(cloudl:*), Bash(gh:*), Read, Edit, Write
 ---
 
-# OpenCLI AutoFix — Automatic Adapter Self-Repair
+# Cloudl AutoFix — Automatic Adapter Self-Repair
 
 When an `cloudl` command fails because a website changed its DOM, API, or response schema, **automatically diagnose, fix the adapter, and retry** — don't just report the error.
 
@@ -17,7 +17,7 @@ When an `cloudl` command fails because a website changed its DOM, API, or respon
 - **CAPTCHA / rate limiting** — **STOP.** Not an adapter issue.
 
 **Scope constraint:**
-- **Only modify the file at `adapterSourcePath` in the trace `summary.md` front matter** — this is the authoritative adapter location (may be `clis/<site>/` in repo or `~/.opencli/clis/<site>/` for npm installs)
+- **Only modify the file at `adapterSourcePath` in the trace `summary.md` front matter** — this is the authoritative adapter location (may be `clis/<site>/` in repo or `~/.cloudl/clis/<site>/` for npm installs)
 - **Never modify** `src/`, `extension/`, `tests/`, `package.json`, or `tsconfig.json`
 
 **Retry budget:** Max **3 repair rounds** per failure. If 3 rounds of diagnose → fix → retry don't resolve it, stop and report what was tried.
@@ -66,11 +66,11 @@ error:
   message: "Could not find element: .old-selector"
 trace:
   schemaVersion: 1
-  opencliVersion: "..."
+  cloudlVersion: "..."
   traceId: "..."
-  dir: "/path/to/.opencli/profiles/default/traces/..."
-  summaryPath: "/path/to/.opencli/profiles/default/traces/.../summary.md"
-  receiptPath: "/path/to/.opencli/profiles/default/traces/.../receipt.json"
+  dir: "/path/to/.cloudl/profiles/default/traces/..."
+  summaryPath: "/path/to/.cloudl/profiles/default/traces/.../summary.md"
+  receiptPath: "/path/to/.cloudl/profiles/default/traces/.../receipt.json"
 ```
 
 Read `summaryPath` first. It is the LLM-oriented entry point and includes front matter:
@@ -78,7 +78,7 @@ Read `summaryPath` first. It is the LLM-oriented entry point and includes front 
 ```yaml
 ---
 schemaVersion: 1
-opencliVersion: "..."
+cloudlVersion: "..."
 traceId: "..."
 status: failure
 site: "example"
@@ -156,7 +156,7 @@ cloudl browser network --detail <key>
 
 ## Step 4: Patch the Adapter
 
-Read the adapter source file at `adapterSourcePath` from the trace summary front matter and make targeted fixes. This path is authoritative — it may be in the repo (`clis/`) or user-local (`~/.opencli/clis/`).
+Read the adapter source file at `adapterSourcePath` from the trace summary front matter and make targeted fixes. This path is authoritative — it may be in the repo (`clis/`) or user-local (`~/.cloudl/clis/`).
 
 Use the `Read` tool on the exact path from summary.md front matter.
 
@@ -191,9 +191,9 @@ Use the `Read` tool on the exact path from summary.md front matter.
 1. **Make minimal changes** — fix only what's broken, don't refactor
 2. **Keep the same output structure** — `columns` and return format must stay compatible
 3. **Prefer API over DOM scraping** — if you discover a JSON API during exploration, switch to it
-4. **Use `@jackwener/opencli/*` imports only** — never add third-party package imports
+4. **Use `cloudl/*` imports only** — never add third-party package imports
 5. **Test after patching** — run the command again to verify
-6. **Never relax `verify/<cmd>.json` fixtures to silence a failure.** A failing `patterns` / `notEmpty` / `mustNotContain` / `mustBeTruthy` rule means the adapter's output is broken. Tighten the adapter so it produces correct values; do not loosen the fixture to accept the broken values. The one legitimate reason to edit a fixture during repair is when the **site itself** changed shape (e.g. URL format migration) — in that case update the fixture and note the change in `~/.opencli/sites/<site>/notes.md`. Otherwise editing the fixture is covering up a silent correctness regression.
+6. **Never relax `verify/<cmd>.json` fixtures to silence a failure.** A failing `patterns` / `notEmpty` / `mustNotContain` / `mustBeTruthy` rule means the adapter's output is broken. Tighten the adapter so it produces correct values; do not loosen the fixture to accept the broken values. The one legitimate reason to edit a fixture during repair is when the **site itself** changed shape (e.g. URL format migration) — in that case update the fixture and note the change in `~/.cloudl/sites/<site>/notes.md`. Otherwise editing the fixture is covering up a silent correctness regression.
 
 ## Step 5: Verify the Fix
 
@@ -223,12 +223,12 @@ If the retry **passes**, the local adapter has drifted from upstream. File a Git
 
 ```markdown
 ## Summary
-OpenCLI autofix repaired this adapter locally, and the retry passed.
+Cloudl autofix repaired this adapter locally, and the retry passed.
 
 ## Adapter
 - Site: `<site>`
 - Command: `<command>`
-- OpenCLI version: `<version from cloudl --version>`
+- Cloudl version: `<version from cloudl --version>`
 
 ## Original failure
 - Error code: `<error_code>`
@@ -243,7 +243,7 @@ OpenCLI autofix repaired this adapter locally, and the retry passed.
 <1-2 sentence description of what you changed and why>
 ~~~
 
-_Issue filed by OpenCLI autofix after a verified local repair._
+_Issue filed by Cloudl autofix after a verified local repair._
 ```
 
 2. **Ask the user before filing.** Show them the draft title and body. Only proceed if they confirm.
@@ -268,7 +268,7 @@ If `gh` is not installed or not authenticated, tell the user and skip — do not
 **Soft stops (report after attempting):**
 - **3 repair rounds exhausted** — stop, report what was tried and what failed
 - **Feature completely removed** — the data no longer exists
-- **Major redesign** — needs full adapter rewrite via `opencli-adapter-author` skill
+- **Major redesign** — needs full adapter rewrite via `cloudl-adapter-author` skill
 
 In all stop cases, clearly communicate the situation to the user rather than making futile patches.
 

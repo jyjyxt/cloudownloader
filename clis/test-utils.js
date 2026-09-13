@@ -5,7 +5,7 @@ import { vi } from 'vitest';
  *
  * @param {any[]} evaluateResults - Sequential results for page.evaluate() calls
  * @param {Record<string, any>} [overrides] - Override or add mock methods
- * @returns A mock page object compatible with OpenCLI's browser page interface
+ * @returns A mock page object compatible with Cloudl's browser page interface
  */
 export function createPageMock(evaluateResults = [], overrides = {}) {
     const evaluate = vi.fn();

@@ -1,12 +1,12 @@
 # Plugins
 
-OpenCLI supports community-contributed plugins. Install third-party adapters from GitHub, and they're automatically discovered alongside built-in commands.
+Cloudl supports community-contributed plugins. Install third-party adapters from GitHub, and they're automatically discovered alongside built-in commands.
 
 ## Quick Start
 
 ```bash
 # Install a plugin
-cloudl plugin install github:ByteYue/opencli-plugin-github-trending
+cloudl plugin install github:your-user/cloudl-plugin-my-tool
 
 # List installed plugins
 cloudl plugin list
@@ -26,7 +26,7 @@ cloudl plugin uninstall github-trending
 
 ## How Plugins Work
 
-Plugins live in `~/.opencli/plugins/<name>/`. Each subdirectory is scanned at startup for `.ts` or `.js` command files — the same formats used by built-in adapters.
+Plugins live in `~/.cloudl/plugins/<name>/`. Each subdirectory is scanned at startup for `.ts` or `.js` command files — the same formats used by built-in adapters.
 
 ### Supported Source Formats
 
@@ -46,17 +46,17 @@ cloudl plugin install file:///path/to/plugin
 cloudl plugin install /path/to/plugin
 ```
 
-The repo name prefix `opencli-plugin-` is automatically stripped for the local directory name. For example, `opencli-plugin-hot-digest` becomes `hot-digest`.
+The repo name prefix `cloudl-plugin-` is automatically stripped for the local directory name. For example, `cloudl-plugin-hot-digest` becomes `hot-digest`.
 
-## Plugin Manifest (`opencli-plugin.json`)
+## Plugin Manifest (`cloudl-plugin.json`)
 
-Plugins can include an `opencli-plugin.json` manifest file at the repo root to declare metadata:
+Plugins can include an `cloudl-plugin.json` manifest file at the repo root to declare metadata:
 
 ```json
 {
   "name": "my-plugin",
   "version": "1.0.0",
-  "opencli": ">=1.0.0",
+  "cloudl": ">=1.0.0",
   "description": "My awesome plugin"
 }
 ```
@@ -65,7 +65,7 @@ Plugins can include an `opencli-plugin.json` manifest file at the repo root to d
 |-------|-------------|
 | `name` | Plugin name (overrides repo-derived name) |
 | `version` | Semantic version |
-| `opencli` | Required cloudl version range (e.g. `>=1.0.0`, `^1.2.0`) |
+| `cloudl` | Required cloudl version range (e.g. `>=1.0.0`, `^1.2.0`) |
 | `description` | Human-readable description |
 | `plugins` | Monorepo sub-plugin declarations (see below) |
 
@@ -73,12 +73,12 @@ The manifest is optional — plugins without one continue to work exactly as bef
 
 ## Monorepo Plugins
 
-A single repository can contain multiple plugins by declaring a `plugins` field in `opencli-plugin.json`:
+A single repository can contain multiple plugins by declaring a `plugins` field in `cloudl-plugin.json`:
 
 ```json
 {
   "version": "1.0.0",
-  "opencli": ">=1.0.0",
+  "cloudl": ">=1.0.0",
   "description": "My plugin collection",
   "plugins": {
     "polymarket": {
@@ -90,7 +90,7 @@ A single repository can contain multiple plugins by declaring a `plugins` field 
       "path": "packages/defi",
       "description": "DeFi protocol data",
       "version": "0.8.0",
-      "opencli": ">=1.2.0"
+      "cloudl": ">=1.2.0"
     },
     "experimental": {
       "path": "packages/experimental",
@@ -104,19 +104,19 @@ A single repository can contain multiple plugins by declaring a `plugins` field 
 
 ```bash
 # Install ALL enabled sub-plugins from a monorepo
-cloudl plugin install github:user/opencli-plugins
+cloudl plugin install github:user/cloudl-plugins
 
 # Install a SPECIFIC sub-plugin
-cloudl plugin install github:user/opencli-plugins/polymarket
+cloudl plugin install github:user/cloudl-plugins/polymarket
 ```
 
 ### How It Works
 
-- The monorepo is cloned once to `~/.opencli/monorepos/<repo>/`
-- Each sub-plugin gets a symlink in `~/.opencli/plugins/<name>/` pointing to its subdirectory
+- The monorepo is cloned once to `~/.cloudl/monorepos/<repo>/`
+- Each sub-plugin gets a symlink in `~/.cloudl/plugins/<name>/` pointing to its subdirectory
 - Command discovery works transparently — symlinks are scanned just like regular directories
 - Disabled sub-plugins (with `"disabled": true`) are skipped during install
-- Sub-plugins can specify their own `opencli` compatibility range
+- Sub-plugins can specify their own `cloudl` compatibility range
 
 ### Updating
 
@@ -136,7 +136,7 @@ When the last sub-plugin from a monorepo is uninstalled, the monorepo clone is a
 
 ## Version Tracking
 
-OpenCLI records installed plugin versions in `~/.opencli/plugins.lock.json`. Each entry stores the plugin source, current git commit hash, install time, and last update time. `cloudl plugin list` shows the short commit hash when version metadata is available.
+Cloudl records installed plugin versions in `~/.cloudl/plugins.lock.json`. Each entry stores the plugin source, current git commit hash, install time, and last update time. `cloudl plugin list` shows the short commit hash when version metadata is available.
 
 ## Creating a Plugin
 
@@ -153,11 +153,11 @@ my-plugin/
 
 ```json
 {
-  "name": "opencli-plugin-my-plugin",
+  "name": "cloudl-plugin-my-plugin",
   "version": "0.1.0",
   "type": "module",
   "peerDependencies": {
-    "@jackwener/opencli": ">=1.0.0"
+    "@jyjyxt/cloudl": ">=1.0.0"
   }
 }
 ```
@@ -165,7 +165,7 @@ my-plugin/
 `my-command.ts`:
 
 ```typescript
-import { cli, Strategy } from '@jackwener/opencli/registry';
+import { cli, Strategy } from '@jyjyxt/cloudl/registry';
 
 cli({
   site: 'my-plugin',
@@ -196,20 +196,14 @@ When you run `cloudl plugin install`, TS plugins are automatically set up:
 
 1. **Clone** — `git clone --depth 1` from GitHub
 2. **npm install** — Resolves regular dependencies
-3. **Host symlink** — Links the running `@jackwener/opencli` into the plugin's `node_modules/` so `import from '@jackwener/opencli/registry'` always resolves against the host
+3. **Host symlink** — Links the running `cloudl` into the plugin's `node_modules/` so `import from '@jyjyxt/cloudl/registry'` always resolves against the host
 4. **Transpile** — Compiles `.ts` → `.js` via `esbuild` (production `node` cannot load `.ts` directly)
 
 On startup, if both `my-command.ts` and `my-command.js` exist, the `.js` version is loaded to avoid duplicate registration.
 
 ## Example Plugins
 
-| Repo | Type | Description |
-|------|------|-------------|
-| [opencli-plugin-github-trending](https://github.com/ByteYue/opencli-plugin-github-trending) | TS | GitHub Trending repositories |
-| [opencli-plugin-hot-digest](https://github.com/ByteYue/opencli-plugin-hot-digest) | TS | Multi-platform trending aggregator (zhihu, weibo, bilibili, v2ex, stackoverflow, reddit, linux-do) |
-| [opencli-plugin-juejin](https://github.com/Astro-Han/opencli-plugin-juejin) | TS | 稀土掘金 (Juejin) hot articles, categories, and article feed |
-| [opencli-plugin-rubysec](https://github.com/nullptrKey/opencli-plugin-rubysec) | TS | RubySec advisory archive and advisory article reader |
-| [opencli-plugin-x-article-publisher](https://github.com/genoooool/opencli-plugin-x-article-publisher) | JS | Publish Markdown with local images as X long-form Articles via OpenCLI and xPoster |
+Create a plugin with `cloudl plugin create my-plugin`. Third-party plugins must use the `@jyjyxt/cloudl` package imports and `cloudl-plugin.json` manifest before installation.
 
 ## Troubleshooting
 
@@ -219,9 +213,9 @@ Restart cloudl (or open a new terminal) — plugins are discovered at startup.
 
 ### TS plugin import errors
 
-If you see `Cannot find module '@jackwener/opencli/registry'`, the host symlink may be broken. Reinstall the plugin:
+If you see `Cannot find module '@jyjyxt/cloudl/registry'`, the host symlink may be broken. Reinstall the plugin:
 
 ```bash
 cloudl plugin uninstall my-plugin
-cloudl plugin install github:user/opencli-plugin-my-plugin
+cloudl plugin install github:user/cloudl-plugin-my-plugin
 ```

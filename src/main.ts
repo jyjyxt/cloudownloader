@@ -28,7 +28,7 @@ const __filename = fileURLToPath(import.meta.url);
 // Adapters are JS-first and live at <package-root>/clis/.
 // Use findPackageRoot so the path works both in dev (src/main.ts) and prod (dist/src/main.js).
 const BUILTIN_CLIS = path.join(findPackageRoot(__filename), 'clis');
-const USER_CLIS = path.join(os.homedir(), '.opencli', 'clis');
+const USER_CLIS = path.join(os.homedir(), '.cloudl', 'clis');
 
 // ── Ultra-fast path: lightweight commands bypass full discovery ──────────
 // These are high-frequency or trivial paths that must not pay the startup tax.
@@ -46,8 +46,8 @@ if (typeof (globalThis as { Bun?: unknown }).Bun === 'undefined' && !isSupported
   process.exit(EXIT_CODES.CONFIG_ERROR);
 }
 
-if (!isIgnorableDaemonPortEnv(process.env.OPENCLI_DAEMON_PORT)) {
-  process.stderr.write(`error: ${unsupportedDaemonPortEnvMessage(process.env.OPENCLI_DAEMON_PORT)}\n`);
+if (!isIgnorableDaemonPortEnv(process.env.CLOUDL_DAEMON_PORT)) {
+  process.stderr.write(`error: ${unsupportedDaemonPortEnvMessage(process.env.CLOUDL_DAEMON_PORT)}\n`);
   process.exit(EXIT_CODES.CONFIG_ERROR);
 }
 
@@ -110,7 +110,7 @@ installNodeNetwork();
 // Parallelise independent startup I/O:
 //  - Built-in adapter discovery has no dependency on user-dir setup.
 //  - ensureUserCliCompatShims and ensureUserAdapters operate on different paths
-//    (~/.opencli/node_modules/ vs ~/.opencli/clis/ + adapter-manifest.json).
+//    (~/.cloudl/node_modules/ vs ~/.cloudl/clis/ + adapter-manifest.json).
 //  - registerCommand() overwrites on name collision (see registry.ts), so
 //    user-CLI discovery MUST run after built-in discovery to preserve the
 //    intended override order (user adapters override built-in ones).

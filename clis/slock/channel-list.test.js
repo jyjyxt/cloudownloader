@@ -1,6 +1,6 @@
 import { describe, it, expect, vi } from 'vitest';
-import { AuthRequiredError } from '@jackwener/opencli/errors';
-import { getRegistry } from '@jackwener/opencli/registry';
+import { AuthRequiredError } from '@jyjyxt/cloudl/errors';
+import { getRegistry } from '@jyjyxt/cloudl/registry';
 import './channel-list.js';
 
 function makePage(result = { kind: 'ok', rows: [] }) {

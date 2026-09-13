@@ -57,8 +57,8 @@ export class CDPBridge implements IBrowserFactory {
   async connect(opts?: { timeout?: number; session?: string; cdpEndpoint?: string; contextId?: string; idleTimeout?: number; windowMode?: 'foreground' | 'background'; surface?: 'browser' | 'adapter'; siteSession?: 'ephemeral' | 'persistent' }): Promise<IPage> {
     if (this._ws) throw new Error('CDPBridge is already connected. Call close() before reconnecting.');
 
-    const endpoint = opts?.cdpEndpoint ?? process.env.OPENCLI_CDP_ENDPOINT;
-    if (!endpoint) throw new Error('CDP endpoint not provided (pass cdpEndpoint or set OPENCLI_CDP_ENDPOINT)');
+    const endpoint = opts?.cdpEndpoint ?? process.env.CLOUDL_CDP_ENDPOINT;
+    if (!endpoint) throw new Error('CDP endpoint not provided (pass cdpEndpoint or set CLOUDL_CDP_ENDPOINT)');
 
     let wsUrl = endpoint;
     if (endpoint.startsWith('http')) {
@@ -118,7 +118,7 @@ export class CDPBridge implements IBrowserFactory {
             }
           }
         } catch (err) {
-          if (process.env.OPENCLI_VERBOSE) {
+          if (process.env.CLOUDL_VERBOSE) {
             // eslint-disable-next-line no-console
             console.error('[cdp] Failed to parse WebSocket message:', err instanceof Error ? err.message : err);
           }
@@ -394,7 +394,7 @@ class CDPPage extends CDPBasePage {
             }
           }).catch((err) => {
             // Body unavailable for some requests (e.g. uploads) — non-fatal
-            if (process.env.OPENCLI_VERBOSE) {
+            if (process.env.CLOUDL_VERBOSE) {
               // eslint-disable-next-line no-console
               console.error(`[cdp] getResponseBody failed for ${p.requestId}:`, err instanceof Error ? err.message : err);
             }
@@ -477,7 +477,7 @@ function matchesCookieDomain(cookieDomain: string, targetDomain: string): boolea
 }
 
 function selectCDPTarget(targets: CDPTarget[]): CDPTarget | undefined {
-  const preferredPattern = compilePreferredPattern(process.env.OPENCLI_CDP_TARGET);
+  const preferredPattern = compilePreferredPattern(process.env.CLOUDL_CDP_TARGET);
 
   const candidates = targets
     .map((target, index) => ({ target, index, score: scoreCDPTarget(target, preferredPattern) }))

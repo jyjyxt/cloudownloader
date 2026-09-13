@@ -1,4 +1,4 @@
-import { CliError } from '@jackwener/opencli/errors';
+import { CliError } from '@jyjyxt/cloudl/errors';
 
 /**
  * Xiaohongshu risk-control pacing shared by the note / comments / download

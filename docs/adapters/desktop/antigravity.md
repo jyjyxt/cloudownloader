@@ -19,7 +19,7 @@ Start the Antigravity desktop app with the Chrome DevTools `remote-debugging-por
 Then set the target port:
 
 ```bash
-export OPENCLI_CDP_ENDPOINT="http://127.0.0.1:9224"
+export CLOUDL_CDP_ENDPOINT="http://127.0.0.1:9224"
 ```
 
 ## Commands
@@ -54,12 +54,12 @@ Start an Anthropic-compatible `/v1/messages` proxy server backed by the local An
 ```bash
 cloudl antigravity serve --port 8082
 cloudl antigravity serve --timeout 300
-OPENCLI_ANTIGRAVITY_TIMEOUT=300 cloudl antigravity serve
+CLOUDL_ANTIGRAVITY_TIMEOUT=300 cloudl antigravity serve
 ```
 
 - `--port <port>`: HTTP listen port, default `8082`
 - `--timeout <seconds>`: maximum time to wait for one reply before returning a timeout error, default `120`
-- `OPENCLI_ANTIGRAVITY_TIMEOUT`: default timeout in seconds when `--timeout` is not provided
+- `CLOUDL_ANTIGRAVITY_TIMEOUT`: default timeout in seconds when `--timeout` is not provided
 
 Runtime notes:
 

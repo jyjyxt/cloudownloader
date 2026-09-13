@@ -24,10 +24,10 @@ cloudl zsxq groups
 cloudl zsxq topics --limit 20
 
 # Search inside the active group
-cloudl zsxq search "opencli"
+cloudl zsxq search "cloudl"
 
 # Search inside a specific group explicitly
-cloudl zsxq search "opencli" --group_id 123456789
+cloudl zsxq search "cloudl" --group_id 123456789
 
 # Export a single topic with comments
 cloudl zsxq topic 987654321 --comment_limit 20

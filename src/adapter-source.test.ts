@@ -14,8 +14,8 @@ function makeCmd(overrides: Partial<InternalCliCommand> = {}): InternalCliComman
 
 describe('resolveAdapterSourcePath', () => {
   it('returns source when it is a real file path (not manifest:)', () => {
-    const cmd = makeCmd({ source: '/home/user/.opencli/clis/arxiv/search.js' });
-    expect(resolveAdapterSourcePath(cmd)).toBe('/home/user/.opencli/clis/arxiv/search.js');
+    const cmd = makeCmd({ source: '/home/user/.cloudl/clis/arxiv/search.js' });
+    expect(resolveAdapterSourcePath(cmd)).toBe('/home/user/.cloudl/clis/arxiv/search.js');
   });
 
   it('skips manifest: pseudo-paths and falls back to _modulePath', () => {

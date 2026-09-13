@@ -2,7 +2,7 @@ import { DEFAULT_DAEMON_PORT, isIgnorableDaemonPortEnv, unsupportedDaemonPortEnv
 
 const DAEMON_PORT = DEFAULT_DAEMON_PORT;
 const DAEMON_URL = `http://127.0.0.1:${DAEMON_PORT}`;
-const OPENCLI_HEADERS = { 'X-OpenCLI': '1' };
+const CLOUDL_HEADERS = { 'X-Cloudl': '1' };
 
 class UnsupportedDaemonPortEnvError extends Error {
   constructor(value: string) {
@@ -12,7 +12,7 @@ class UnsupportedDaemonPortEnvError extends Error {
 }
 
 function assertSupportedDaemonPortEnv(): void {
-  const value = process.env.OPENCLI_DAEMON_PORT;
+  const value = process.env.CLOUDL_DAEMON_PORT;
   if (!isIgnorableDaemonPortEnv(value)) throw new UnsupportedDaemonPortEnvError(value!);
 }
 
@@ -58,7 +58,7 @@ export async function requestDaemon(pathname: string, init?: RequestInit & { tim
   try {
     return await fetch(`${DAEMON_URL}${pathname}`, {
       ...rest,
-      headers: { ...OPENCLI_HEADERS, ...headers },
+      headers: { ...CLOUDL_HEADERS, ...headers },
       signal: controller.signal,
     });
   } finally {

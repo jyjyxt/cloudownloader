@@ -1,5 +1,5 @@
-import { cli, Strategy } from '@jackwener/opencli/registry';
-import { AuthRequiredError, CommandExecutionError, EmptyResultError } from '@jackwener/opencli/errors';
+import { cli, Strategy } from '@jyjyxt/cloudl/registry';
+import { AuthRequiredError, CommandExecutionError, EmptyResultError } from '@jyjyxt/cloudl/errors';
 import { TWITTER_BEARER_TOKEN } from './utils.js';
 import { describeTwitterApiError } from './shared.js';
 
@@ -124,7 +124,7 @@ export const command = cli({
         const ct0 = cookies.find((c) => c.name === 'ct0')?.value || null;
         if (!ct0)
             throw new AuthRequiredError('x.com', 'Not logged into x.com (no ct0 cookie)');
-        // opencli >=1.7.x wraps primitive page.evaluate returns as { session, data: <value> }.
+        // cloudl >=1.7.x wraps primitive page.evaluate returns as { session, data: <value> }.
         const unwrap = (v) => (v && typeof v === 'object' && 'session' in v && 'data' in v ? v.data : v);
         const queryIdRaw = await page.evaluate(`async () => {
             try {

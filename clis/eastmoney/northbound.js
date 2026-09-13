@@ -4,8 +4,8 @@
 //   cloudl eastmoney northbound
 //   cloudl eastmoney northbound --direction south
 
-import { cli, Strategy } from '@jackwener/opencli/registry';
-import { CliError } from '@jackwener/opencli/errors';
+import { cli, Strategy } from '@jyjyxt/cloudl/registry';
+import { CliError } from '@jyjyxt/cloudl/errors';
 
 cli({
   site: 'eastmoney',

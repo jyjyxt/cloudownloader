@@ -165,7 +165,7 @@ export async function ensureAttached(tabId: number, aggressiveRetry: boolean = f
     } catch (e: unknown) {
       lastError = e instanceof Error ? e.message : String(e);
       if (attempt < MAX_ATTACH_RETRIES) {
-        console.warn(`[opencli] attach attempt ${attempt}/${MAX_ATTACH_RETRIES} failed: ${lastError}, retrying in ${RETRY_DELAY_MS}ms...`);
+        console.warn(`[cloudl] attach attempt ${attempt}/${MAX_ATTACH_RETRIES} failed: ${lastError}, retrying in ${RETRY_DELAY_MS}ms...`);
         await new Promise(resolve => setTimeout(resolve, RETRY_DELAY_MS));
         // Re-verify tab URL before retrying (it may have changed)
         try {
@@ -193,7 +193,7 @@ export async function ensureAttached(tabId: number, aggressiveRetry: boolean = f
       finalUrl = tab.url ?? 'undefined';
       finalWindowId = String(tab.windowId);
     } catch { /* tab gone */ }
-    console.warn(`[opencli] attach failed for tab ${tabId}: url=${finalUrl}, windowId=${finalWindowId}, error=${lastError}`);
+    console.warn(`[cloudl] attach failed for tab ${tabId}: url=${finalUrl}, windowId=${finalWindowId}, error=${lastError}`);
 
     const hint = lastError.includes('chrome-extension://')
       ? '. Tip: another Chrome extension may be interfering — try disabling other extensions'

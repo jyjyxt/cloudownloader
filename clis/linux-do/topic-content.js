@@ -1,6 +1,6 @@
-import { AuthRequiredError, CommandExecutionError, EmptyResultError } from '@jackwener/opencli/errors';
-import { cli, Strategy } from '@jackwener/opencli/registry';
-import { htmlToMarkdown, isRecord } from '@jackwener/opencli/utils';
+import { AuthRequiredError, CommandExecutionError, EmptyResultError } from '@jyjyxt/cloudl/errors';
+import { cli, Strategy } from '@jyjyxt/cloudl/registry';
+import { htmlToMarkdown, isRecord } from '@jyjyxt/cloudl/utils';
 import { toLocalTime } from './format.js';
 const LINUX_DO_DOMAIN = 'linux.do';
 const LINUX_DO_HOME = 'https://linux.do';

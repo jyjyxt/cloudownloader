@@ -4,8 +4,8 @@ import {
     AuthRequiredError,
     CommandExecutionError,
     EmptyResultError,
-} from '@jackwener/opencli/errors';
-import { getRegistry } from '@jackwener/opencli/registry';
+} from '@jyjyxt/cloudl/errors';
+import { getRegistry } from '@jyjyxt/cloudl/registry';
 import {
     UPWORK_ORIGIN,
     LIST_COLUMNS,

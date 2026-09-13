@@ -20,7 +20,7 @@ Browser adapter for [Doubao Chat](https://www.doubao.com/chat).
 
 - Chrome is running
 - You are already logged into [doubao.com](https://www.doubao.com/)
-- Browser Bridge extension is installed and enabled for OpenCLI
+- Browser Bridge extension is installed and enabled for Cloudl
 
 ## Examples
 

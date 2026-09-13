@@ -1,4 +1,4 @@
-import { cli } from '@jackwener/opencli/registry';
+import { cli } from '@jyjyxt/cloudl/registry';
 import { buildResolveInstagramUserIdJs } from './_shared/user-id.js';
 cli({
     site: 'instagram',

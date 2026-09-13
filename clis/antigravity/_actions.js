@@ -19,7 +19,7 @@
 // All clicks go through the full pointer-event chain because the menu is
 // likely radix-based and ignores bare .click().
 
-import { CommandExecutionError, selectorError } from '@jackwener/opencli/errors';
+import { CommandExecutionError, selectorError } from '@jyjyxt/cloudl/errors';
 
 const PILL_SELECTOR_PREFIX = 'convo-pill-';
 

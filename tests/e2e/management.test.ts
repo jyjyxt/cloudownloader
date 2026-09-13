@@ -93,7 +93,7 @@ describe('management commands E2E', () => {
   it('--help shows usage', async () => {
     const { stdout, code } = await runCli(['--help']);
     expect(code).toBe(0);
-    expect(stdout).toContain('opencli');
+    expect(stdout).toContain('cloudl');
     expect(stdout).toContain('list');
     expect(stdout).toContain('validate');
   });

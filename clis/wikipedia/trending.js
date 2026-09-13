@@ -1,5 +1,5 @@
-import { CliError } from '@jackwener/opencli/errors';
-import { cli, Strategy } from '@jackwener/opencli/registry';
+import { CliError } from '@jyjyxt/cloudl/errors';
+import { cli, Strategy } from '@jyjyxt/cloudl/registry';
 import { DESC_MAX_LEN, wikiFetch } from './utils.js';
 cli({
     site: 'wikipedia',

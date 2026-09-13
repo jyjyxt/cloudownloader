@@ -1,5 +1,5 @@
 name: "🐛 Bug Report"
-description: Report a bug or unexpected behavior in OpenCLI
+description: Report a bug or unexpected behavior in Cloudl
 title: "[Bug]: "
 labels: ["bug"]
 body:
@@ -23,7 +23,7 @@ body:
       label: Steps to Reproduce
       description: How can we reproduce this behavior?
       value: |
-        1. Run `opencli ...`
+        1. Run `cloudl ...`
         2. ...
         3. See error
     validations:
@@ -40,7 +40,7 @@ body:
   - type: input
     id: version
     attributes:
-      label: OpenCLI Version
+      label: Cloudl Version
       description: "Run `cloudl --version` to find out."
       placeholder: "0.8.0"
     validations:

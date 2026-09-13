@@ -5,7 +5,7 @@
  * REST API: https://en.wikipedia.org/api/rest_v1/
  * Action API: https://en.wikipedia.org/w/api.php
  */
-import { CliError } from '@jackwener/opencli/errors';
+import { CliError } from '@jyjyxt/cloudl/errors';
 /** Maximum character length for article extract fields. */
 export const EXTRACT_MAX_LEN = 300;
 /** Maximum character length for short description fields. */
@@ -13,7 +13,7 @@ export const DESC_MAX_LEN = 80;
 export async function wikiFetch(lang, path) {
     const url = `https://${lang}.wikipedia.org${path}`;
     const resp = await fetch(url, {
-        headers: { 'User-Agent': 'opencli/1.0 (https://github.com/jyjyxt/cloudownloader)' },
+        headers: { 'User-Agent': 'cloudl/1.0 (https://github.com/jyjyxt/cloudownloader)' },
     });
     if (!resp.ok) {
         throw new CliError('FETCH_ERROR', `Wikipedia API HTTP ${resp.status}`, `Check your title or search term`);

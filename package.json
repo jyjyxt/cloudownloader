@@ -1,5 +1,5 @@
 {
-  "name": "@jackwener/opencli",
+  "name": "@jyjyxt/cloudl",
   "version": "1.8.8",
   "publishConfig": {
     "access": "public"
@@ -33,13 +33,14 @@
   "files": [
     "dist/src/",
     "clis/",
-    "skills/opencli-*/**",
+    "skills/cloudl-*/**",
     "cli-manifest.json",
     "scripts/",
     "README.md",
     "LICENSE",
     "!**/*.test.*",
-    "!**/__fixtures__/"
+    "!**/__fixtures__/",
+    "NOTICE"
   ],
   "scripts": {
     "dev": "tsx src/main.ts",
@@ -51,7 +52,7 @@
     "copy-yaml": "node scripts/copy-yaml.cjs",
     "start": "node dist/src/main.js",
     "start:bun": "bun dist/src/main.js",
-    "preuninstall": "node -e \"fetch('http://127.0.0.1:19825/shutdown',{method:'POST',headers:{'X-OpenCLI':'1'},signal:AbortSignal.timeout(3000)}).catch(()=>{})\" || true",
+    "preuninstall": "node -e \"fetch('http://127.0.0.1:19825/shutdown',{method:'POST',headers:{'X-Cloudl':'1'},signal:AbortSignal.timeout(3000)}).catch(()=>{})\" || true",
     "postinstall": "node scripts/postinstall.js || true; node scripts/fetch-adapters.js || true",
     "typecheck": "tsc --noEmit",
     "prepare": "node scripts/prepare.cjs",
@@ -74,7 +75,7 @@
     "web",
     "ai"
   ],
-  "author": "jackwener",
+  "author": "jyjyxt",
   "license": "Apache-2.0",
   "repository": {
     "type": "git",

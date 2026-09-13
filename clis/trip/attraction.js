@@ -7,8 +7,8 @@
  * gives a real per-row `url`) and reads rating / reviews / booked / price from
  * the card text by data-format pattern (see `buildAttractionExtractJs` in utils).
  */
-import { AuthRequiredError, CommandExecutionError, EmptyResultError } from '@jackwener/opencli/errors';
-import { cli, Strategy } from '@jackwener/opencli/registry';
+import { AuthRequiredError, CommandExecutionError, EmptyResultError } from '@jyjyxt/cloudl/errors';
+import { cli, Strategy } from '@jyjyxt/cloudl/registry';
 import {
     WAIT_FOR_ATTRACTIONS_JS,
     buildAttractionExtractJs,

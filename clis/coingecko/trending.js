@@ -1,9 +1,9 @@
 // coingecko trending — top trending coins on CoinGecko (by user search activity).
-import { cli, Strategy } from '@jackwener/opencli/registry';
+import { cli, Strategy } from '@jyjyxt/cloudl/registry';
 import {
     CommandExecutionError,
     EmptyResultError,
-} from '@jackwener/opencli/errors';
+} from '@jyjyxt/cloudl/errors';
 
 cli({
     site: 'coingecko',

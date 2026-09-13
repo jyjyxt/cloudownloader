@@ -1,7 +1,7 @@
 /**
  * Shared utilities for CLI adapters.
  */
-import { ArgumentError } from '@jackwener/opencli/errors';
+import { ArgumentError } from '@jyjyxt/cloudl/errors';
 /**
  * Clamp a numeric value to [min, max].
  * Matches the signature of lodash.clamp and Rust's clamp.

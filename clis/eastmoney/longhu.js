@@ -3,8 +3,8 @@
 //   cloudl eastmoney longhu
 //   cloudl eastmoney longhu --date 2025-12-10 --limit 20
 
-import { cli, Strategy } from '@jackwener/opencli/registry';
-import { CliError } from '@jackwener/opencli/errors';
+import { cli, Strategy } from '@jyjyxt/cloudl/registry';
+import { CliError } from '@jyjyxt/cloudl/errors';
 
 function defaultTradeDate() {
   // Default window = 30 days back; results sorted DESC so latest comes first.

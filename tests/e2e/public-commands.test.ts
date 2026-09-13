@@ -98,7 +98,7 @@ describe('public commands E2E', () => {
   }, 30_000);
 
   it('paperreview submit dry-run validates a local PDF without remote upload', async () => {
-    const tempDir = await fs.mkdtemp(path.join(os.tmpdir(), 'opencli-paperreview-'));
+    const tempDir = await fs.mkdtemp(path.join(os.tmpdir(), 'cloudl-paperreview-'));
     const pdfPath = path.join(tempDir, 'sample.pdf');
     await fs.writeFile(pdfPath, Buffer.concat([Buffer.from('%PDF-1.4\n'), Buffer.alloc(256, 1)]));
 

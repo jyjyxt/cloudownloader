@@ -24,19 +24,19 @@ git pull --ff-only
 npm install
 npm link
 
-# If you use the packaged OpenCLI skills, refresh them too
+# If you use the packaged Cloudl skills, refresh them too
 npx skills add jyjyxt/cloudownloader
 ```
 
 Or refresh only the skills you actually use:
 
 ```bash
-npx skills add jyjyxt/cloudownloader --skill opencli-adapter-author
-npx skills add jyjyxt/cloudownloader --skill opencli-autofix
-npx skills add jyjyxt/cloudownloader --skill opencli-browser
-npx skills add jyjyxt/cloudownloader --skill opencli-browser-sitemap
-npx skills add jyjyxt/cloudownloader --skill opencli-sitemap-author
-npx skills add jyjyxt/cloudownloader --skill opencli-usage
+npx skills add jyjyxt/cloudownloader --skill cloudl-adapter-author
+npx skills add jyjyxt/cloudownloader --skill cloudl-autofix
+npx skills add jyjyxt/cloudownloader --skill cloudl-browser
+npx skills add jyjyxt/cloudownloader --skill cloudl-browser-sitemap
+npx skills add jyjyxt/cloudownloader --skill cloudl-sitemap-author
+npx skills add jyjyxt/cloudownloader --skill cloudl-usage
 npx skills add jyjyxt/cloudownloader --skill smart-search
 ```
 

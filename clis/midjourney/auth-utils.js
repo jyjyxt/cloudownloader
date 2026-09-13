@@ -1,4 +1,4 @@
-import { AuthRequiredError } from '@jackwener/opencli/errors';
+import { AuthRequiredError } from '@jyjyxt/cloudl/errors';
 import {
   MIDJOURNEY_DOMAIN,
   MIDJOURNEY_IMAGINE_URL,

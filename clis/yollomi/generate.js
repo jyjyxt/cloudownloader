@@ -7,9 +7,9 @@
  *   POST /api/ai/flux-2-pro     { prompt, aspectRatio, imageUrl?, ... }
  */
 import * as path from 'node:path';
-import { cli, Strategy } from '@jackwener/opencli/registry';
-import { CliError } from '@jackwener/opencli/errors';
-import { log } from '@jackwener/opencli/logger';
+import { cli, Strategy } from '@jyjyxt/cloudl/registry';
+import { CliError } from '@jyjyxt/cloudl/errors';
+import { log } from '@jyjyxt/cloudl/logger';
 import { YOLLOMI_DOMAIN, yollomiPost, downloadOutput, fmtBytes, MODEL_ROUTES } from './utils.js';
 function getDimensions(ratio) {
     const map = {

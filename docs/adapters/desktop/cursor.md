@@ -1,6 +1,6 @@
 # Cursor
 
-Control the **Cursor IDE** from the terminal via Chrome DevTools Protocol (CDP). Since Cursor is built on Electron (VS Code fork), OpenCLI can drive its internal UI, automate Composer interactions, and manipulate chat sessions.
+Control the **Cursor IDE** from the terminal via Chrome DevTools Protocol (CDP). Since Cursor is built on Electron (VS Code fork), Cloudl can drive its internal UI, automate Composer interactions, and manipulate chat sessions.
 
 ## Prerequisites
 
@@ -13,7 +13,7 @@ Control the **Cursor IDE** from the terminal via Chrome DevTools Protocol (CDP).
 ## Setup
 
 ```bash
-export OPENCLI_CDP_ENDPOINT="http://127.0.0.1:9226"
+export CLOUDL_CDP_ENDPOINT="http://127.0.0.1:9226"
 ```
 
 ## Commands

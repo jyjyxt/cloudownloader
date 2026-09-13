@@ -4,7 +4,7 @@ last_verified: 2026-06-02
 source: global
 ---
 
-> **Scope**：本文件只列 **task-executing agent** 跑 sitemap workflow 时会撞的坑。adapter-author 实现层的坑（pinned_tweet TimelinePinEntry 跳过 / `unwrapBrowserResult` envelope / bigint id 精度 / queryId bundle 解析）放在 `~/.opencli/sites/twitter/notes.md`，与本文件互补。
+> **Scope**：本文件只列 **task-executing agent** 跑 sitemap workflow 时会撞的坑。adapter-author 实现层的坑（pinned_tweet TimelinePinEntry 跳过 / `unwrapBrowserResult` envelope / bigint id 精度 / queryId bundle 解析）放在 `~/.cloudl/sites/twitter/notes.md`，与本文件互补。
 
 ## Site-specific pitfalls
 

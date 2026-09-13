@@ -4,10 +4,10 @@
 // regex pulling viewer counts from card text). We extract from the live-discover
 // state injected on `/live`, then top up via `/api/live/discover/get/`.
 
-import { cli, Strategy } from '@jackwener/opencli/registry';
+import { cli, Strategy } from '@jyjyxt/cloudl/registry';
 import {
     EmptyResultError,
-} from '@jackwener/opencli/errors';
+} from '@jyjyxt/cloudl/errors';
 import {
     BROWSER_HELPERS,
     LIVE_ITEM_NORMALIZER,

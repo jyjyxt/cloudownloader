@@ -1,5 +1,5 @@
-import { cli, Strategy } from '@jackwener/opencli/registry';
-import { ArgumentError } from '@jackwener/opencli/errors';
+import { cli, Strategy } from '@jyjyxt/cloudl/registry';
+import { ArgumentError } from '@jyjyxt/cloudl/errors';
 import { browserFetch } from './_shared/browser-fetch.js';
 const WORK_LIST_URL = 'https://creator.douyin.com/janus/douyin/creator/pc/work_list';
 // The server caps how many works come back per request regardless of page_size,

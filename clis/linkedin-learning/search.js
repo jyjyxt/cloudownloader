@@ -2,8 +2,8 @@
  * LinkedIn Learning search via the public learning-api REST endpoint.
  * Shares cookie session with linkedin.com; no Commercial Use Limit.
  */
-import { cli, Strategy } from '@jackwener/opencli/registry';
-import { ArgumentError, CommandExecutionError, EmptyResultError } from '@jackwener/opencli/errors';
+import { cli, Strategy } from '@jyjyxt/cloudl/registry';
+import { ArgumentError, CommandExecutionError, EmptyResultError } from '@jyjyxt/cloudl/errors';
 import { DOMAIN, MAX_LIMIT, fetchLinkedInLearningApi, normalizeWhitespace, parseLimit } from './shared.js';
 
 function parseAuthors(authors) {

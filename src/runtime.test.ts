@@ -11,8 +11,8 @@ describe('getBrowserFactory', () => {
     expect(getBrowserFactory('xianyu')).toBe(BrowserBridge);
   });
 
-  it('uses CDPBridge when OPENCLI_CDP_ENDPOINT is configured', () => {
-    vi.stubEnv('OPENCLI_CDP_ENDPOINT', 'http://127.0.0.1:9333');
+  it('uses CDPBridge when CLOUDL_CDP_ENDPOINT is configured', () => {
+    vi.stubEnv('CLOUDL_CDP_ENDPOINT', 'http://127.0.0.1:9333');
 
     expect(getBrowserFactory('xianyu')).toBe(CDPBridge);
   });

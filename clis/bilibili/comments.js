@@ -3,8 +3,8 @@
  * Top-level and pinned comments come from /x/v2/reply/main (WBI-signed); with
  * --parent, replies nested under a given comment come from /x/v2/reply/reply.
  */
-import { cli, Strategy } from '@jackwener/opencli/registry';
-import { ArgumentError, AuthRequiredError, CommandExecutionError, EmptyResultError } from '@jackwener/opencli/errors';
+import { cli, Strategy } from '@jyjyxt/cloudl/registry';
+import { ArgumentError, AuthRequiredError, CommandExecutionError, EmptyResultError } from '@jyjyxt/cloudl/errors';
 import { apiGet, resolveBvid } from './utils.js';
 
 const MAX_LIMIT = 50;

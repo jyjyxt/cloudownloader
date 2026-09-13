@@ -50,16 +50,16 @@ describe('duckduckgo search', () => {
   it('rejects empty query and out-of-range pagination before navigation', async () => {
     const page = createPageMock();
     await expect(command.func(page, { keyword: ' ', limit: 5 })).rejects.toMatchObject({ code: 'ARGUMENT' });
-    await expect(command.func(page, { keyword: 'opencli', limit: 11 })).rejects.toMatchObject({ code: 'ARGUMENT' });
-    await expect(command.func(page, { keyword: 'opencli', limit: 5, offset: 5 })).rejects.toMatchObject({ code: 'ARGUMENT' });
+    await expect(command.func(page, { keyword: 'cloudl', limit: 11 })).rejects.toMatchObject({ code: 'ARGUMENT' });
+    await expect(command.func(page, { keyword: 'cloudl', limit: 5, offset: 5 })).rejects.toMatchObject({ code: 'ARGUMENT' });
     expect(page.goto).not.toHaveBeenCalled();
   });
 
   it('decodes DuckDuckGo redirect URLs and assigns listing rank', async () => {
     const page = createPageMock([
       [
-        'OpenCLI',
-        '/l/?uddg=https%3A%2F%2Fgithub.com%2Fjackwener%2FOpenCLI',
+        'Cloudl',
+        '/l/?uddg=https%3A%2F%2Fgithub.com%2Fjyjyxt%2Fcloudownloader',
         'CLI browser tooling',
         'github.com/jyjyxt/cloudownloader',
         '',
@@ -67,9 +67,9 @@ describe('duckduckgo search', () => {
       ],
     ]);
 
-    await expect(command.func(page, { keyword: 'opencli', limit: 1 })).resolves.toEqual([{
+    await expect(command.func(page, { keyword: 'cloudl', limit: 1 })).resolves.toEqual([{
       rank: 1,
-      title: 'OpenCLI',
+      title: 'Cloudl',
       url: 'https://github.com/jyjyxt/cloudownloader',
       snippet: 'CLI browser tooling',
       displayUrl: 'github.com/jyjyxt/cloudownloader',
@@ -96,7 +96,7 @@ describe('duckduckgo search', () => {
       evaluate: vi.fn(async (source) => Function('document', `return ${source};`)(dom.window.document)),
     };
 
-    await expect(command.func(page, { keyword: 'opencli', limit: 5 })).resolves.toEqual([{
+    await expect(command.func(page, { keyword: 'cloudl', limit: 5 })).resolves.toEqual([{
       rank: 1,
       title: 'Organic result',
       url: 'https://example.com/article',
@@ -112,7 +112,7 @@ describe('duckduckgo search', () => {
       ['Result', 'https://example.com/', 'snippet', 'example.com', '', 'web'],
     ] });
 
-    const result = await command.func(page, { keyword: 'opencli', limit: 1, offset: 10 });
+    const result = await command.func(page, { keyword: 'cloudl', limit: 1, offset: 10 });
 
     expect(result[0]).toMatchObject({ rank: 11, url: 'https://example.com/' });
   });
@@ -120,7 +120,7 @@ describe('duckduckgo search', () => {
   it('fails typed instead of returning [] for malformed extraction payloads', async () => {
     const page = createPageMock({ rows: [] });
 
-    await expect(command.func(page, { keyword: 'opencli', limit: 1 })).rejects.toMatchObject({
+    await expect(command.func(page, { keyword: 'cloudl', limit: 1 })).rejects.toMatchObject({
       code: 'COMMAND_EXEC',
       message: expect.stringContaining('payload shape'),
     });

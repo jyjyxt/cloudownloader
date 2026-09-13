@@ -8,8 +8,8 @@
  * Uses the public v2 endpoint `/notes?content.authorids=~<profile-id>`,
  * which returns the same note shape as `paper`, sorted by `cdate:desc`.
  */
-import { cli, Strategy } from '@jackwener/opencli/registry';
-import { EmptyResultError } from '@jackwener/opencli/errors';
+import { cli, Strategy } from '@jyjyxt/cloudl/registry';
+import { EmptyResultError } from '@jyjyxt/cloudl/errors';
 import {
     noteToRow,
     openreviewFetch,

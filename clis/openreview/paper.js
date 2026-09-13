@@ -1,8 +1,8 @@
 /**
  * OpenReview single paper detail (full abstract + metadata).
  */
-import { cli, Strategy } from '@jackwener/opencli/registry';
-import { EmptyResultError } from '@jackwener/opencli/errors';
+import { cli, Strategy } from '@jyjyxt/cloudl/registry';
+import { EmptyResultError } from '@jyjyxt/cloudl/errors';
 import { noteToRow, openreviewFetch, requireForumId } from './utils.js';
 
 cli({

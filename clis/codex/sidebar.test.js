@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { ArgumentError, CommandExecutionError, EmptyResultError } from '@jackwener/opencli/errors';
+import { ArgumentError, CommandExecutionError, EmptyResultError } from '@jyjyxt/cloudl/errors';
 import { askCommand } from './ask.js';
 import { extractDiffCommand } from './extract-diff.js';
 import { historyCommand } from './history.js';
@@ -144,8 +144,8 @@ function fixtureDocument() {
             thread({ threadId: 'local:stock-sync', hostId: 'local', kind: 'local', active: true }, '同步各仓库最新代码', '4 小时'),
             thread({ threadId: 'local:trading-agents' }, '借鉴 TradingAgents', '2 小时'),
         ]),
-        project('opencli', '/Users/youngcan/opencli', [
-            thread({ threadId: 'local:opencli-groups' }, '统一 opencli 二级命令分组', '1 天'),
+        project('cloudl', '/Users/youngcan/cloudl', [
+            thread({ threadId: 'local:cloudl-groups' }, '统一 cloudl 二级命令分组', '1 天'),
         ]),
     ]);
 }
@@ -171,13 +171,13 @@ describe('codex sidebar helpers', () => {
 
     it('flattens project rows with project filters', () => {
         const projects = collectCodexProjectsFromDocument(fixtureDocument());
-        const rows = flattenCodexProjects(projects, { project: 'opencli' });
+        const rows = flattenCodexProjects(projects, { project: 'cloudl' });
 
         expect(rows).toEqual([
             expect.objectContaining({
-                Project: 'opencli',
+                Project: 'cloudl',
                 Index: 1,
-                Title: '统一 opencli 二级命令分组',
+                Title: '统一 cloudl 二级命令分组',
                 Updated: '1 天',
             }),
         ]);
@@ -196,16 +196,16 @@ describe('codex sidebar helpers', () => {
         projects.push({
             index: 3,
             project: 'nested',
-            projectPath: '/Users/youngcan/opencli/nested',
+            projectPath: '/Users/youngcan/cloudl/nested',
             collapsed: false,
             conversations: [
                 { index: 1, title: 'Nested thread', updated: '', active: false, threadId: 'local:nested' },
             ],
         });
 
-        const rows = flattenCodexProjects(projects, { project: 'opencli' });
+        const rows = flattenCodexProjects(projects, { project: 'cloudl' });
 
-        expect(rows.map(row => row.Project)).toEqual(['opencli']);
+        expect(rows.map(row => row.Project)).toEqual(['cloudl']);
     });
 
     it('selects a conversation by project and title', () => {
@@ -254,15 +254,15 @@ describe('codex sidebar helpers', () => {
 
     it('selects a conversation by index within a project', () => {
         const result = selectCodexConversationInDocument({
-            project: '/Users/youngcan/opencli',
+            project: '/Users/youngcan/cloudl',
             index: '1',
         }, fixtureDocument());
 
         expect(result).toMatchObject({
             ok: true,
-            project: 'opencli',
-            conversation: '统一 opencli 二级命令分组',
-            threadId: 'local:opencli-groups',
+            project: 'cloudl',
+            conversation: '统一 cloudl 二级命令分组',
+            threadId: 'local:cloudl-groups',
         });
     });
 

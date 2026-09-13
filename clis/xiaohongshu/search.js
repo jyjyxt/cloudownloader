@@ -5,8 +5,8 @@
  * the search results page and extracts data from rendered DOM elements.
  * Ref: https://github.com/jyjyxt/cloudownloader/issues/10
  */
-import { cli, Strategy } from '@jackwener/opencli/registry';
-import { ArgumentError, AuthRequiredError, CliError, CommandExecutionError, EmptyResultError, TimeoutError } from '@jackwener/opencli/errors';
+import { cli, Strategy } from '@jyjyxt/cloudl/registry';
+import { ArgumentError, AuthRequiredError, CliError, CommandExecutionError, EmptyResultError, TimeoutError } from '@jyjyxt/cloudl/errors';
 import { unwrapEvaluateResult } from './shared.js';
 /**
  * Wait for search results or login wall using MutationObserver (max 5s).

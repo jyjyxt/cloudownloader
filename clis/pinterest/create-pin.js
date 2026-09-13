@@ -1,11 +1,11 @@
 import * as fs from 'node:fs';
 import * as path from 'node:path';
-import { cli, Strategy } from '@jackwener/opencli/registry';
-import { ArgumentError, AuthRequiredError, CommandExecutionError, TimeoutError } from '@jackwener/opencli/errors';
+import { cli, Strategy } from '@jyjyxt/cloudl/registry';
+import { ArgumentError, AuthRequiredError, CommandExecutionError, TimeoutError } from '@jyjyxt/cloudl/errors';
 
 const PINTEREST_DOMAIN = 'www.pinterest.com';
 const PINTEREST_HOME_URL = `https://${PINTEREST_DOMAIN}/`;
-const DEFAULT_PROFILE_SLUG = process.env.OPENCLI_PINTEREST_PROFILE || 'imyuqlee';
+const DEFAULT_PROFILE_SLUG = process.env.CLOUDL_PINTEREST_PROFILE || 'imyuqlee';
 const IMAGE_SELECTOR = 'input[type="file"]';
 const SUPPORTED_EXTENSIONS = new Set(['.jpg', '.jpeg', '.png', '.webp', '.gif']);
 const MIME_BY_EXTENSION = {
@@ -457,7 +457,7 @@ const PREPARE_DESCRIPTION_FIELD_SCRIPT = `(() => {
         return { ok: false, needsWait: true, message: 'Pinterest description input not ready' };
     }
 
-    editable.setAttribute('data-opencli-pinterest-description', 'true');
+    editable.setAttribute('data-cloudl-pinterest-description', 'true');
     editable.scrollIntoView({ block: 'center', inline: 'center' });
     editable.focus();
 
@@ -487,7 +487,7 @@ const PREPARE_DESCRIPTION_FIELD_SCRIPT = `(() => {
 
 const VERIFY_DESCRIPTION_FIELD_SCRIPT = `(() => {
     const normalize = text => String(text || '').replace(/\\s+/g, ' ').trim();
-    const editable = document.querySelector('[data-opencli-pinterest-description="true"]');
+    const editable = document.querySelector('[data-cloudl-pinterest-description="true"]');
     if (!editable) return { ok: false, message: 'Pinterest description field lost focus' };
     try {
         editable.dispatchEvent(new InputEvent('input', { bubbles: true, data: value, inputType: 'insertText' }));
@@ -503,7 +503,7 @@ const VERIFY_DESCRIPTION_FIELD_SCRIPT = `(() => {
 
 const SET_DESCRIPTION_FIELD_SCRIPT = `(() => {
     const normalize = text => String(text || '').replace(/\\s+/g, ' ').trim();
-    const editable = document.querySelector('[data-opencli-pinterest-description="true"]');
+    const editable = document.querySelector('[data-cloudl-pinterest-description="true"]');
     if (!editable) return { ok: false, message: 'Pinterest description field lost focus' };
     const proto = editable.tagName === 'TEXTAREA' ? HTMLTextAreaElement.prototype : HTMLInputElement.prototype;
     const setter = Object.getOwnPropertyDescriptor(proto, 'value')?.set;
@@ -656,7 +656,7 @@ async function clickPublish(page) {
     }
     if (!result?.ok) throw new CommandExecutionError(result?.message || 'Pinterest publish button not found');
     if (!page.nativeClick || !Number.isFinite(result.x) || !Number.isFinite(result.y)) {
-        throw new CommandExecutionError('OpenCLI native click is unavailable for Pinterest publish button');
+        throw new CommandExecutionError('Cloudl native click is unavailable for Pinterest publish button');
     }
     await page.nativeClick(Math.round(result.x), Math.round(result.y));
     await page.wait({ time: 1 });
@@ -710,9 +710,9 @@ const MARK_PUBLISH_BUTTON_SCRIPT = `(() => {
         return { ok: false, needsWait: true, message: 'Publish button is disabled', label: target.text };
     }
 
-    document.querySelectorAll('[data-opencli-pinterest-publish="true"]')
-        .forEach(el => el.removeAttribute('data-opencli-pinterest-publish'));
-    btn.setAttribute('data-opencli-pinterest-publish', 'true');
+    document.querySelectorAll('[data-cloudl-pinterest-publish="true"]')
+        .forEach(el => el.removeAttribute('data-cloudl-pinterest-publish'));
+    btn.setAttribute('data-cloudl-pinterest-publish', 'true');
     btn.scrollIntoView({ block: 'center', inline: 'center' });
     const rect = btn.getBoundingClientRect();
     return {

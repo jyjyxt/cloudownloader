@@ -1,6 +1,6 @@
 import { execSync } from 'node:child_process';
-import { cli, Strategy } from '@jackwener/opencli/registry';
-import { CommandExecutionError, ConfigError, getErrorMessage } from '@jackwener/opencli/errors';
+import { cli, Strategy } from '@jyjyxt/cloudl/registry';
+import { CommandExecutionError, ConfigError, getErrorMessage } from '@jyjyxt/cloudl/errors';
 import { getVisibleChatMessages } from './ax.js';
 export const readCommand = cli({
     site: 'chatgpt-app',

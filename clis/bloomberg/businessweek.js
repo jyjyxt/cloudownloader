@@ -1,5 +1,5 @@
-import { cli, Strategy } from '@jackwener/opencli/registry';
-import { ArgumentError, CliError } from '@jackwener/opencli/errors';
+import { cli, Strategy } from '@jyjyxt/cloudl/registry';
+import { ArgumentError, CliError } from '@jyjyxt/cloudl/errors';
 
 const SECTION_URL = 'https://www.bloomberg.com/businessweek';
 

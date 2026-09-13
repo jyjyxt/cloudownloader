@@ -23,7 +23,7 @@ import {
     ArgumentError,
     CommandExecutionError,
     EmptyResultError,
-} from '@jackwener/opencli/errors';
+} from '@jyjyxt/cloudl/errors';
 
 export const AH_BASE = 'https://www.autohome.com.cn';
 export const AH_KOUBEI_BASE = 'https://k.autohome.com.cn';

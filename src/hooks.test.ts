@@ -120,7 +120,7 @@ describe('clearAllHooks', () => {
 });
 
 describe('globalThis singleton', () => {
-  it('uses globalThis.__opencli_hooks__ for shared state', () => {
-    expect(globalThis.__opencli_hooks__).toBeInstanceOf(Map);
+  it('uses globalThis.__cloudl_hooks__ for shared state', () => {
+    expect(globalThis.__cloudl_hooks__).toBeInstanceOf(Map);
   });
 });

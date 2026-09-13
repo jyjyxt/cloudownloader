@@ -3,8 +3,8 @@
 // Hits `https://api.tvmaze.com/shows/<id>`. Returns one row with name, status,
 // premiered/ended dates, network, runtime, rating, official site, IMDB / TheTVDB
 // cross-refs (so agents can hop into other adapters), and a plain-text summary.
-import { cli, Strategy } from '@jackwener/opencli/registry';
-import { EmptyResultError } from '@jackwener/opencli/errors';
+import { cli, Strategy } from '@jyjyxt/cloudl/registry';
+import { EmptyResultError } from '@jyjyxt/cloudl/errors';
 import { TVMAZE_BASE, joinList, requireShowId, stripHtml, tvmazeFetch } from './utils.js';
 
 cli({

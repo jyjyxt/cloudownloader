@@ -1,9 +1,9 @@
 /**
  * YouTube playlist — get playlist info and video list via InnerTube browse API.
  */
-import { cli, Strategy } from '@jackwener/opencli/registry';
+import { cli, Strategy } from '@jyjyxt/cloudl/registry';
 import { prepareYoutubeApiPage, FETCH_BROWSE_FN, extractPlaylistVideos } from './utils.js';
-import { CommandExecutionError, EmptyResultError } from '@jackwener/opencli/errors';
+import { CommandExecutionError, EmptyResultError } from '@jyjyxt/cloudl/errors';
 
 /**
  * Parse a playlist ID from a URL or bare ID string.

@@ -40,7 +40,7 @@ function registerWhoami(site: string, opts: {
 }
 
 async function tempStatePath(): Promise<string> {
-  const dir = await mkdtemp(join(tmpdir(), 'opencli-auth-refresh-test-'));
+  const dir = await mkdtemp(join(tmpdir(), 'cloudl-auth-refresh-test-'));
   return join(dir, 'auth-refresh.json');
 }
 

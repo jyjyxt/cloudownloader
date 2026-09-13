@@ -1,7 +1,7 @@
 import fs from 'node:fs';
 import { describe, expect, it, vi } from 'vitest';
-import { getRegistry } from '@jackwener/opencli/registry';
-import { ArgumentError, AuthRequiredError, EmptyResultError } from '@jackwener/opencli/errors';
+import { getRegistry } from '@jyjyxt/cloudl/registry';
+import { ArgumentError, AuthRequiredError, EmptyResultError } from '@jyjyxt/cloudl/errors';
 import { __test__ } from './likes.js';
 
 function likesPayload() {
@@ -179,7 +179,7 @@ describe('twitter likes archive safety', () => {
 
     it('refuses to overwrite an existing output file without matching resume state', async () => {
         const command = getRegistry().get('twitter/likes');
-        const outputFile = `/tmp/opencli-likes-existing-${process.pid}-${Date.now()}.jsonl`;
+        const outputFile = `/tmp/cloudl-likes-existing-${process.pid}-${Date.now()}.jsonl`;
         const resumeFile = `${outputFile}.resume.json`;
         fs.writeFileSync(outputFile, 'user-owned\n');
         try {
@@ -198,7 +198,7 @@ describe('twitter likes archive safety', () => {
     });
 
     it('rejects cross-source and malformed resume state instead of silently restarting', () => {
-        const resumeFile = `/tmp/opencli-likes-mismatch-${process.pid}-${Date.now()}.json`;
+        const resumeFile = `/tmp/cloudl-likes-mismatch-${process.pid}-${Date.now()}.json`;
         try {
             fs.writeFileSync(resumeFile, JSON.stringify({
                 cursor: 'NEXT',
@@ -224,7 +224,7 @@ describe('twitter likes archive safety', () => {
 
     it('rejects output files whose JSONL record count differs from resume state', async () => {
         const command = getRegistry().get('twitter/likes');
-        const outputFile = `/tmp/opencli-likes-count-mismatch-${process.pid}-${Date.now()}.jsonl`;
+        const outputFile = `/tmp/cloudl-likes-count-mismatch-${process.pid}-${Date.now()}.jsonl`;
         const resumeFile = `${outputFile}.resume.json`;
         fs.writeFileSync(outputFile, '{"id":"1"}\n{"id":"2"}\n');
         fs.writeFileSync(resumeFile, JSON.stringify({
@@ -251,7 +251,7 @@ describe('twitter likes archive safety', () => {
 
     it('throws for an incomplete in-memory --all run while retaining resume state', async () => {
         const command = getRegistry().get('twitter/likes');
-        const resumeFile = `/tmp/opencli-likes-memory-${process.pid}-${Date.now()}.json`;
+        const resumeFile = `/tmp/cloudl-likes-memory-${process.pid}-${Date.now()}.json`;
         const payload = likesPayload();
         payload.data.user.result.timeline_v2.timeline.instructions[0].entries.push({
             entryId: 'cursor-bottom-1',
@@ -355,8 +355,8 @@ describe('twitter likes command', () => {
 
     it('keeps resume state and reports complete=false when --max-pages stops early', async () => {
         const command = getRegistry().get('twitter/likes');
-        const resumeFile = `/tmp/opencli-likes-resume-${process.pid}-${Date.now()}.json`;
-        const outputFile = `/tmp/opencli-likes-out-${process.pid}-${Date.now()}.jsonl`;
+        const resumeFile = `/tmp/cloudl-likes-resume-${process.pid}-${Date.now()}.json`;
+        const outputFile = `/tmp/cloudl-likes-out-${process.pid}-${Date.now()}.jsonl`;
         const page = {
             goto: vi.fn().mockResolvedValue(undefined),
             wait: vi.fn().mockResolvedValue(undefined),
@@ -425,8 +425,8 @@ describe('twitter likes command', () => {
 
     it('removes resume file only after the likes timeline is exhausted', async () => {
         const command = getRegistry().get('twitter/likes');
-        const resumeFile = `/tmp/opencli-likes-resume-done-${process.pid}-${Date.now()}.json`;
-        const outputFile = `/tmp/opencli-likes-out-done-${process.pid}-${Date.now()}.jsonl`;
+        const resumeFile = `/tmp/cloudl-likes-resume-done-${process.pid}-${Date.now()}.json`;
+        const outputFile = `/tmp/cloudl-likes-out-done-${process.pid}-${Date.now()}.jsonl`;
         const page = {
             goto: vi.fn().mockResolvedValue(undefined),
             wait: vi.fn().mockResolvedValue(undefined),

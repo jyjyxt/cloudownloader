@@ -1,12 +1,12 @@
-import { CDPBridge } from '@jackwener/opencli/browser/cdp';
-import { ArgumentError } from '@jackwener/opencli/errors';
-import { cli, Strategy } from '@jackwener/opencli/registry';
+import { CDPBridge } from '@jyjyxt/cloudl/browser/cdp';
+import { ArgumentError } from '@jyjyxt/cloudl/errors';
+import { cli, Strategy } from '@jyjyxt/cloudl/registry';
 import { activityScript } from './utils.js';
 
 function normalizeEndpoint(value) {
-  const endpoint = String(value || process.env.OPENCLI_CDP_ENDPOINT || 'http://127.0.0.1:39240').trim();
+  const endpoint = String(value || process.env.CLOUDL_CDP_ENDPOINT || 'http://127.0.0.1:39240').trim();
   if (!endpoint) {
-    throw new ArgumentError('Set OPENCLI_CDP_ENDPOINT, for example http://127.0.0.1:39240');
+    throw new ArgumentError('Set CLOUDL_CDP_ENDPOINT, for example http://127.0.0.1:39240');
   }
   return endpoint.replace(/\/$/, '');
 }
@@ -56,11 +56,11 @@ export const targetsCommand = cli({
   name: 'targets',
   access: 'read',
   description: 'List Trae CN CDP targets and show which workspace/window is waiting',
-  example: 'OPENCLI_CDP_ENDPOINT=http://127.0.0.1:39240 cloudl trae-cn targets -f table',
+  example: 'CLOUDL_CDP_ENDPOINT=http://127.0.0.1:39240 cloudl trae-cn targets -f table',
   strategy: Strategy.LOCAL,
   browser: false,
   args: [
-    { name: 'endpoint', type: 'string', required: false, help: 'CDP endpoint (default: OPENCLI_CDP_ENDPOINT)' },
+    { name: 'endpoint', type: 'string', required: false, help: 'CDP endpoint (default: CLOUDL_CDP_ENDPOINT)' },
     { name: 'probe-activity', type: 'boolean', required: false, help: 'Probe each target for Trae activity state (default: true)', default: true },
     { name: 'max-chars', type: 'int', required: false, help: 'Max chars for approval prompt/activity snippets (default: 240)', default: 240 },
   ],
@@ -69,7 +69,7 @@ export const targetsCommand = cli({
     const endpoint = normalizeEndpoint(kwargs.endpoint);
     const probe = normalizeBoolean(kwargs['probe-activity'], true);
     const maxChars = Number.isInteger(Number(kwargs['max-chars'])) ? Number(kwargs['max-chars']) : 240;
-    const wanted = process.env.OPENCLI_CDP_TARGET || '';
+    const wanted = process.env.CLOUDL_CDP_TARGET || '';
     const targets = (await fetchTargets(endpoint)).filter(target => target.webSocketDebuggerUrl && target.type !== 'worker');
     const rows = [];
 

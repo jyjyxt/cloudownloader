@@ -1,14 +1,14 @@
-# Extending OpenCLI
+# Extending Cloudl
 
-OpenCLI has five extension paths. Pick the path based on where you want the source code to live and how you want commands to be shared.
+Cloudl has five extension paths. Pick the path based on where you want the source code to live and how you want commands to be shared.
 
 | Goal | Use | Source location | Command surface |
 |------|-----|-----------------|-----------------|
-| Build a personal website command in your own Git repo | Local plugin | Your project directory, symlinked into `~/.opencli/plugins/` | `cloudl <plugin> <command>` |
-| Quickly draft a private adapter on this machine | User adapter | `~/.opencli/clis/<site>/<command>.js` | `cloudl <site> <command>` |
-| Edit an official adapter locally | Adapter override | `~/.opencli/clis/<site>/` | `cloudl <site> <command>` |
-| Publish or install third-party commands | Plugin | Git repo, installed into `~/.opencli/plugins/` | `cloudl <plugin> <command>` |
-| Wrap an existing local binary | External CLI | `~/.opencli/external-clis.yaml` | `cloudl <tool> ...` |
+| Build a personal website command in your own Git repo | Local plugin | Your project directory, symlinked into `~/.cloudl/plugins/` | `cloudl <plugin> <command>` |
+| Quickly draft a private adapter on this machine | User adapter | `~/.cloudl/clis/<site>/<command>.js` | `cloudl <site> <command>` |
+| Edit an official adapter locally | Adapter override | `~/.cloudl/clis/<site>/` | `cloudl <site> <command>` |
+| Publish or install third-party commands | Plugin | Git repo, installed into `~/.cloudl/plugins/` | `cloudl <plugin> <command>` |
+| Wrap an existing local binary | External CLI | `~/.cloudl/external-clis.yaml` | `cloudl <tool> ...` |
 
 ## Personal commands in your own Git repo
 
@@ -22,17 +22,17 @@ cloudl plugin install file://$(pwd)
 cloudl my-cnn hello
 ```
 
-`plugin install file://...` creates a symlink under `~/.opencli/plugins/`. Your source files stay in your project directory, so edits and commits happen there.
+`plugin install file://...` creates a symlink under `~/.cloudl/plugins/`. Your source files stay in your project directory, so edits and commits happen there.
 
 This is the recommended path for custom commands you own long-term.
 
-## Private adapters in `~/.opencli/clis`
+## Private adapters in `~/.cloudl/clis`
 
 Use a user adapter when you want the fastest local adapter loop and do not need a separate project directory.
 
 ```bash
 cloudl browser init cnn/top
-# edit ~/.opencli/clis/cnn/top.js
+# edit ~/.cloudl/clis/cnn/top.js
 cloudl browser verify cnn/top
 cloudl cnn top
 ```
@@ -40,7 +40,7 @@ cloudl cnn top
 User adapters are loaded from:
 
 ```text
-~/.opencli/clis/<site>/<command>.js
+~/.cloudl/clis/<site>/<command>.js
 ```
 
 This path is convenient for quick local automation. For code you want to version, review, or share, prefer a plugin.
@@ -48,11 +48,11 @@ This path is convenient for quick local automation. For code you want to version
 If the command takes required positional args and no fixture exists yet, seed the first verify run explicitly:
 
 ```bash
-cloudl browser verify instagram/collection-create --write-fixture --seed-args opencli-verify
+cloudl browser verify instagram/collection-create --write-fixture --seed-args cloudl-verify
 cloudl browser verify example/detail --write-fixture --seed-args '["https://example.com/item/1", "--limit", 3]'
 ```
 
-`--seed-args` is only used when the fixture has no `args`. Once the fixture is written, `cloudl browser verify` reads args from `~/.opencli/sites/<site>/verify/<command>.json`.
+`--seed-args` is only used when the fixture has no `args`. Once the fixture is written, `cloudl browser verify` reads args from `~/.cloudl/sites/<site>/verify/<command>.json`.
 
 `browser verify` also enforces row shape before fixture checks: each row should
 stay compact (at most 12 top-level keys), avoid nesting deeper than one level,
@@ -64,11 +64,11 @@ Use `adapter eject` when you want to customize an existing official adapter.
 
 ```bash
 cloudl adapter eject twitter
-# edit ~/.opencli/clis/twitter/*.js
+# edit ~/.cloudl/clis/twitter/*.js
 cloudl adapter reset twitter
 ```
 
-Files in `~/.opencli/clis/<site>/<command>.js` override packaged adapters with the same `site/command` on this machine. `cloudl browser verify <site>/<command>` also runs the local override, so a passing local verify does not prove that the packaged adapter was changed.
+Files in `~/.cloudl/clis/<site>/<command>.js` override packaged adapters with the same `site/command` on this machine. `cloudl browser verify <site>/<command>` also runs the local override, so a passing local verify does not prove that the packaged adapter was changed.
 
 The packaged `cli-manifest.json` only describes bundled adapters. User adapters are discovered at runtime and do not need manifest entries.
 
@@ -79,8 +79,8 @@ After copying a local fix into the repository for a PR, remove the local copy or
 Plugins are third-party command packages. They can be installed from GitHub, any git-cloneable URL, or a local directory.
 
 ```bash
-cloudl plugin install github:user/opencli-plugin-my-tool
-cloudl plugin install https://github.com/user/opencli-plugin-my-tool
+cloudl plugin install github:user/cloudl-plugin-my-tool
+cloudl plugin install https://github.com/user/cloudl-plugin-my-tool
 cloudl plugin install file:///absolute/path/to/plugin
 cloudl plugin list
 cloudl plugin update --all
@@ -93,7 +93,7 @@ See [Plugins](./plugins.md) for manifest fields, TypeScript examples, update beh
 
 ## Multiple custom sites in one repo
 
-For a Git-hosted plugin collection, declare sub-plugins in `opencli-plugin.json` and install from GitHub:
+For a Git-hosted plugin collection, declare sub-plugins in `cloudl-plugin.json` and install from GitHub:
 
 ```json
 {
@@ -105,15 +105,15 @@ For a Git-hosted plugin collection, declare sub-plugins in `opencli-plugin.json`
 ```
 
 ```bash
-cloudl plugin install github:user/opencli-plugins
-cloudl plugin install github:user/opencli-plugins/cnn
+cloudl plugin install github:user/cloudl-plugins
+cloudl plugin install github:user/cloudl-plugins/cnn
 ```
 
 For local development, install each sub-plugin directory directly:
 
 ```bash
-cloudl plugin install file:///absolute/path/opencli-plugins/packages/cnn
-cloudl plugin install file:///absolute/path/opencli-plugins/packages/reuters
+cloudl plugin install file:///absolute/path/cloudl-plugins/packages/cnn
+cloudl plugin install file:///absolute/path/cloudl-plugins/packages/reuters
 ```
 
 Local `file://` installs expect the target directory itself to be a valid plugin with command files. For a monorepo root, push it to GitHub and install it with the GitHub monorepo flow.

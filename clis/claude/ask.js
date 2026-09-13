@@ -1,5 +1,5 @@
-import { cli, Strategy } from '@jackwener/opencli/registry';
-import { ArgumentError, CommandExecutionError, EmptyResultError } from '@jackwener/opencli/errors';
+import { cli, Strategy } from '@jyjyxt/cloudl/registry';
+import { ArgumentError, CommandExecutionError, EmptyResultError } from '@jyjyxt/cloudl/errors';
 import {
     CLAUDE_DOMAIN, CLAUDE_URL, COMPOSER_SELECTOR, MESSAGE_SELECTOR,
     ensureOnClaude, selectModel, setAdaptiveThinking,
@@ -72,7 +72,7 @@ export const askCommand = cli({
         // UI selection unless --model was explicitly passed.
         const currentUrl = await page.evaluate('window.location.href') || '';
         const inConversation = currentUrl.includes('/chat/');
-        const modelExplicit = kwargs.__opencliOptionSources?.model === 'cli';
+        const modelExplicit = kwargs.__cloudlOptionSources?.model === 'cli';
 
         const wantModel = kwargs.model || 'sonnet';
         if (modelExplicit) {

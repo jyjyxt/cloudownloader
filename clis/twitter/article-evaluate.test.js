@@ -1,12 +1,12 @@
 import { describe, expect, it } from 'vitest';
-import { getRegistry } from '@jackwener/opencli/registry';
+import { getRegistry } from '@jyjyxt/cloudl/registry';
 import { createPageMock } from '../test-utils.js';
 import './article.js';
 
 describe('twitter article command', () => {
     it('embeds tweet-id in page.evaluate through JSON.stringify', async () => {
         const command = getRegistry().get('twitter/article');
-        const tweetId = '123"; window.__opencliInjected = true; //';
+        const tweetId = '123"; window.__cloudlInjected = true; //';
         const page = createPageMock([
             null,
             [{
@@ -30,6 +30,6 @@ describe('twitter article command', () => {
         expect(page.goto).toHaveBeenCalledWith(`https://x.com/i/status/${tweetId}`);
         const graphqlScript = page.evaluate.mock.calls[1][0];
         expect(graphqlScript).toContain(`const tweetId = ${JSON.stringify(tweetId)};`);
-        expect(graphqlScript).not.toContain('const tweetId = "123"; window.__opencliInjected = true; //";');
+        expect(graphqlScript).not.toContain('const tweetId = "123"; window.__cloudlInjected = true; //";');
     });
 });

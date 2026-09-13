@@ -7,11 +7,11 @@
 // accept Semantic Scholar paperIds, DOIs, arXiv ids, ACL ids, MAG ids, PMID,
 // or full URLs; they round-trip through `paper <ref>` to `citations <ref>`
 // and `recommendations <ref>`.
-import { ArgumentError, CommandExecutionError, EmptyResultError } from '@jackwener/opencli/errors';
+import { ArgumentError, CommandExecutionError, EmptyResultError } from '@jyjyxt/cloudl/errors';
 
 export const S2_GRAPH_BASE = 'https://api.semanticscholar.org/graph/v1';
 export const S2_REC_BASE = 'https://api.semanticscholar.org/recommendations/v1';
-const UA = 'opencli-semanticscholar-adapter (+https://github.com/jyjyxt/cloudownloader)';
+const UA = 'cloudl-semanticscholar-adapter (+https://github.com/jyjyxt/cloudownloader)';
 
 // Semantic Scholar paperId: 40-char lowercase hex (SHA-ish).
 const S2_PAPER_ID = /^[0-9a-f]{40}$/i;

@@ -18,7 +18,7 @@ export const PRODUCTHUNT_CATEGORY_SLUGS = [
     'social-community',
     'engineering-development',
 ];
-const UA = 'Mozilla/5.0 (compatible; opencli/1.0)';
+const UA = 'Mozilla/5.0 (compatible; cloudl/1.0)';
 /**
  * Fetch Product Hunt Atom RSS feed.
  * @param category  Optional category slug (e.g. "ai", "developer-tools")

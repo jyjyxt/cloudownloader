@@ -1,5 +1,5 @@
-import { cli, Strategy } from '@jackwener/opencli/registry';
-import { AuthRequiredError } from '@jackwener/opencli/errors';
+import { cli, Strategy } from '@jyjyxt/cloudl/registry';
+import { AuthRequiredError } from '@jyjyxt/cloudl/errors';
 import { getCourses, initSession, enterCourse, getTabIframeUrl, parseAssignmentsFromDom, sleep, } from './utils.js';
 cli({
     site: 'chaoxing',

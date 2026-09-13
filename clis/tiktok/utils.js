@@ -1,6 +1,6 @@
 // Shared TikTok adapter helpers.
 //
-// - Node-side: input validation (typed errors per OpenCLI rules).
+// - Node-side: input validation (typed errors per Cloudl rules).
 // - Browser-side: a string template embedded into each `page.evaluate(...)` IIFE so
 //   the helpers run alongside the adapter-specific logic in the live page context.
 //   This keeps `findUniversalData / fetchJson / cleanText / asNumber / getCookie`
@@ -13,7 +13,7 @@ import {
     CommandExecutionError,
     EmptyResultError,
     getErrorMessage,
-} from '@jackwener/opencli/errors';
+} from '@jyjyxt/cloudl/errors';
 
 export const TIKTOK_AID = '1988';
 export const TIKTOK_HOST = 'https://www.tiktok.com';

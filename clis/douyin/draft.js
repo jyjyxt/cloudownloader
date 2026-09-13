@@ -7,8 +7,8 @@
  */
 import * as fs from 'node:fs';
 import * as path from 'node:path';
-import { cli, Strategy } from '@jackwener/opencli/registry';
-import { ArgumentError, CommandExecutionError } from '@jackwener/opencli/errors';
+import { cli, Strategy } from '@jyjyxt/cloudl/registry';
+import { ArgumentError, CommandExecutionError } from '@jyjyxt/cloudl/errors';
 const VISIBILITY_LABELS = {
     public: '公开',
     friends: '好友可见',
@@ -144,10 +144,10 @@ async function prepareCustomCoverInput(page) {
       }
 
       document
-        .querySelectorAll('[data-opencli-cover-input="1"]')
-        .forEach((el) => el.removeAttribute('data-opencli-cover-input'));
-      target.setAttribute('data-opencli-cover-input', '1');
-      return { ok: true, selector: '[data-opencli-cover-input="1"]' };
+        .querySelectorAll('[data-cloudl-cover-input="1"]')
+        .forEach((el) => el.removeAttribute('data-cloudl-cover-input'));
+      target.setAttribute('data-cloudl-cover-input', '1');
+      return { ok: true, selector: '[data-cloudl-cover-input="1"]' };
     }`));
         if (result?.ok && result.selector) {
             return result.selector;

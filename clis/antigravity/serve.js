@@ -10,9 +10,9 @@
  *   ANTHROPIC_BASE_URL=http://localhost:8082 claude
  */
 import { createServer } from 'node:http';
-import { CDPBridge } from '@jackwener/opencli/browser/cdp';
-import { resolveElectronEndpoint } from '@jackwener/opencli/launcher';
-import { EXIT_CODES, getErrorMessage } from '@jackwener/opencli/errors';
+import { CDPBridge } from '@jyjyxt/cloudl/browser/cdp';
+import { resolveElectronEndpoint } from '@jyjyxt/cloudl/launcher';
+import { EXIT_CODES, getErrorMessage } from '@jyjyxt/cloudl/errors';
 // ─── Helpers ─────────────────────────────────────────────────────────
 function generateMsgId() {
     const chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
@@ -387,7 +387,7 @@ async function handleMessages(body, page, opts = {}) {
 // ─── Server ──────────────────────────────────────────────────────────
 export async function startServe(opts = {}) {
     const port = opts.port ?? 8082;
-    const envTimeoutSeconds = parseEnvTimeout('OPENCLI_ANTIGRAVITY_TIMEOUT', 120);
+    const envTimeoutSeconds = parseEnvTimeout('CLOUDL_ANTIGRAVITY_TIMEOUT', 120);
     const effectiveTimeoutSeconds = parseTimeoutValue(opts.timeout, '--timeout', envTimeoutSeconds);
     const effectiveTimeout = effectiveTimeoutSeconds * 1000;
     console.error(`[serve] Starting Antigravity API proxy on port ${port} (timeout: ${effectiveTimeout / 1000}s)`);
@@ -410,9 +410,9 @@ export async function startServe(opts = {}) {
         }
         const endpoint = await resolveElectronEndpoint('antigravity');
         // Note: Antigravity chat panel lives inside editor windows, not in Launchpad.
-        // If multiple editor windows are open, set OPENCLI_CDP_TARGET to the window title.
-        if (process.env.OPENCLI_CDP_TARGET) {
-            console.error(`[serve] Using OPENCLI_CDP_TARGET=${process.env.OPENCLI_CDP_TARGET}`);
+        // If multiple editor windows are open, set CLOUDL_CDP_TARGET to the window title.
+        if (process.env.CLOUDL_CDP_TARGET) {
+            console.error(`[serve] Using CLOUDL_CDP_TARGET=${process.env.CLOUDL_CDP_TARGET}`);
         }
         // List available targets for debugging
         try {
@@ -422,7 +422,7 @@ export async function startServe(opts = {}) {
             console.error(`[serve] Available targets: ${pages.map(t => `"${t.title}"`).join(', ')}`);
         }
         catch { /* ignore */ }
-        console.error(`[serve] Connecting via CDP (target pattern: "${process.env.OPENCLI_CDP_TARGET}")...`);
+        console.error(`[serve] Connecting via CDP (target pattern: "${process.env.CLOUDL_CDP_TARGET}")...`);
         cdp = new CDPBridge();
         try {
             page = await cdp.connect({ timeout: 15_000, cdpEndpoint: endpoint });
@@ -444,7 +444,7 @@ export async function startServe(opts = {}) {
       (() => !!document.getElementById('conversation') || !!document.getElementById('antigravity.agentSidePanelInputBox'))()
     `);
         if (!hasUI) {
-            console.error('[serve] ⚠️  Warning: chat UI elements not found in this target. Try setting OPENCLI_CDP_TARGET to the correct window title.');
+            console.error('[serve] ⚠️  Warning: chat UI elements not found in this target. Try setting CLOUDL_CDP_TARGET to the correct window title.');
         }
         return page;
     }

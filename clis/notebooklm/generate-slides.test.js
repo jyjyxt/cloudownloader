@@ -1,6 +1,6 @@
 import { describe, expect, it, vi } from 'vitest';
-import { ArgumentError } from '@jackwener/opencli/errors';
-import { getRegistry } from '@jackwener/opencli/registry';
+import { ArgumentError } from '@jyjyxt/cloudl/errors';
+import { getRegistry } from '@jyjyxt/cloudl/registry';
 import { __test__ } from './generate-slides.js';
 
 const { SLIDE_DECK_CONFIG_BLOCK, buildCreateSlidesArgs, parseSlideDeckLength, parseSlidesIdFromResult } = __test__;
@@ -46,12 +46,12 @@ describe('notebooklm generate-slides', () => {
 
     it('parseSlidesIdFromResult finds a UUID-shaped slides id anywhere in the tree', () => {
         const id = '1f8ada7d-cb33-49a4-8498-c5b81c1a899d';
-        expect(parseSlidesIdFromResult([[id, 'opencli-slides-test']])).toBe(id);
+        expect(parseSlidesIdFromResult([[id, 'cloudl-slides-test']])).toBe(id);
         expect(parseSlidesIdFromResult({ artifactId: id })).toBe(id);
     });
 
     it('parseSlidesIdFromResult ignores non-UUID strings and empty inputs', () => {
-        expect(parseSlidesIdFromResult([[null, 'opencli-slides-test']])).toBe('');
+        expect(parseSlidesIdFromResult([[null, 'cloudl-slides-test']])).toBe('');
         expect(parseSlidesIdFromResult({})).toBe('');
         expect(parseSlidesIdFromResult([])).toBe('');
         expect(parseSlidesIdFromResult(null)).toBe('');

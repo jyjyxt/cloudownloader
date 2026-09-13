@@ -78,7 +78,7 @@ function formatValuePlaceholder(name: string): string {
 
 /** Agent-facing canonical invocation. Adapter authors may override with `example`. */
 export function formatCommandExample(cmd: CliCommand): string {
-  if (cmd.example?.trim()) return cmd.example.trim().replace(/^opencli(?=\s|$)/, 'cloudl');
+  if (cmd.example?.trim()) return cmd.example.trim().replace(/^cloudl(?=\s|$)/, 'cloudl');
   const parts = ['cloudl', cmd.site, cmd.name];
   for (const arg of cmd.args) {
     if (arg.positional && arg.required) {

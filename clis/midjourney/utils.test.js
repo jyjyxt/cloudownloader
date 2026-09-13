@@ -307,7 +307,7 @@ it('setting mutation verifies the selected account-wide value after clicking', a
     wait: vi.fn(),
   };
   await expect(selectSiteSetting(page, 'Video Resolution', ['SD', 'HD'], 'SD')).resolves.toBe(true);
-  expect(page.click).toHaveBeenCalledWith('[data-opencli-setting-target="1"]');
+  expect(page.click).toHaveBeenCalledWith('[data-cloudl-setting-target="1"]');
 });
 
 it('setting mutation verifies the selected video batch size after clicking', async () => {
@@ -406,7 +406,7 @@ function mp4Bytes(size = 260_000) {
 }
 
 it('raw-video downloads cross the browser bridge in bounded chunks', async () => {
-  const outputDir = await fs.mkdtemp(path.join(os.tmpdir(), 'opencli-midjourney-media-'));
+  const outputDir = await fs.mkdtemp(path.join(os.tmpdir(), 'cloudl-midjourney-media-'));
   tempDirs.push(outputDir);
   const bytes = mp4Bytes();
   const page = browserPageFor(bytes);
@@ -419,7 +419,7 @@ it('raw-video downloads cross the browser bridge in bounded chunks', async () =>
 });
 
 it('a corrupt non-empty cache entry is replaced instead of reported as cached', async () => {
-  const outputDir = await fs.mkdtemp(path.join(os.tmpdir(), 'opencli-midjourney-cache-'));
+  const outputDir = await fs.mkdtemp(path.join(os.tmpdir(), 'cloudl-midjourney-cache-'));
   tempDirs.push(outputDir);
   const filePath = path.join(outputDir, `${JOB}_1_raw.mp4`);
   await fs.writeFile(filePath, 'not an mp4');
@@ -431,7 +431,7 @@ it('a corrupt non-empty cache entry is replaced instead of reported as cached', 
 });
 
 it('rendered downloads trust file magic over stale Browser Bridge MIME metadata', async () => {
-  const outputDir = await fs.mkdtemp(path.join(os.tmpdir(), 'opencli-midjourney-rendered-'));
+  const outputDir = await fs.mkdtemp(path.join(os.tmpdir(), 'cloudl-midjourney-rendered-'));
   tempDirs.push(outputDir);
   const sourcePath = path.join(outputDir, 'browser-download.gif');
   const gif = Buffer.concat([Buffer.from('GIF89a', 'ascii'), Buffer.alloc(128, 1)]);

@@ -1,5 +1,5 @@
-import { AuthRequiredError, TimeoutError } from '@jackwener/opencli/errors';
-import { cli, Strategy } from '@jackwener/opencli/registry';
+import { AuthRequiredError, TimeoutError } from '@jyjyxt/cloudl/errors';
+import { cli, Strategy } from '@jyjyxt/cloudl/registry';
 import { midjourneyIdentity } from './auth-utils.js';
 import { MIDJOURNEY_DOMAIN, MIDJOURNEY_IMAGINE_URL, normalizePositiveInt } from './utils.js';
 

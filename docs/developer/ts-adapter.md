@@ -5,8 +5,8 @@ Use TypeScript adapters when you need browser-side logic, multi-step flows, DOM 
 ## Basic Structure
 
 ```typescript
-import { cli, Strategy } from '@jackwener/opencli/registry';
-import { CommandExecutionError, EmptyResultError } from '@jackwener/opencli/errors';
+import { cli, Strategy } from '@jyjyxt/cloudl/registry';
+import { CommandExecutionError, EmptyResultError } from '@jyjyxt/cloudl/errors';
 
 cli({
   site: 'mysite',
@@ -140,7 +140,7 @@ Avoid raw `Error` for normal adapter control flow. This keeps top-level CLI outp
 
 ## AI-Assisted Development
 
-Use the `opencli-adapter-author` skill plus the `cloudl browser *` primitives to scaffold and verify adapters end-to-end:
+Use the `cloudl-adapter-author` skill plus the `cloudl browser *` primitives to scaffold and verify adapters end-to-end:
 
 ```bash
 # Recon on the target site

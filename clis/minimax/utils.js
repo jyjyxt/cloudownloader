@@ -2,7 +2,7 @@ import * as fs from 'node:fs';
 import * as os from 'node:os';
 import * as path from 'node:path';
 import { randomUUID } from 'node:crypto';
-import { ArgumentError, AuthRequiredError, CommandExecutionError, ConfigError, TimeoutError } from '@jackwener/opencli/errors';
+import { ArgumentError, AuthRequiredError, CommandExecutionError, ConfigError, TimeoutError } from '@jyjyxt/cloudl/errors';
 
 export const MINIMAX_API_KEY_VAR = 'MINIMAX_API_KEY';
 export const MUSIC_REGIONS = {

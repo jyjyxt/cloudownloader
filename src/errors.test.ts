@@ -122,7 +122,7 @@ describe('toEnvelope', () => {
 
   it('passes through cross-package CliError copies (duck-typed shape)', () => {
     // Simulates a CliError thrown by a plugin that resolves its own copy of
-    // @jackwener/opencli — different class identity, same shape.
+    // cloudl — different class identity, same shape.
     class ForeignCliError extends Error {
       code = 'INVALID_ARGS';
       hint: string | undefined;

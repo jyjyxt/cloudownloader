@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from 'vitest';
-import { ArgumentError, AuthRequiredError, CommandExecutionError, EmptyResultError } from '@jackwener/opencli/errors';
+import { ArgumentError, AuthRequiredError, CommandExecutionError, EmptyResultError } from '@jyjyxt/cloudl/errors';
 import { creatorVideosCommand, __test__ } from './creator-videos.js';
 
 function makePage(evaluateResults = []) {

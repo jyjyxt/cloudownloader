@@ -1,8 +1,8 @@
 import * as fs from 'node:fs';
 import * as path from 'node:path';
-import { cli, Strategy } from '@jackwener/opencli/registry';
-import { formatCookieHeader, httpDownload } from '@jackwener/opencli/download';
-import { ArgumentError, CommandExecutionError, EmptyResultError } from '@jackwener/opencli/errors';
+import { cli, Strategy } from '@jyjyxt/cloudl/registry';
+import { formatCookieHeader, httpDownload } from '@jyjyxt/cloudl/download';
+import { ArgumentError, CommandExecutionError, EmptyResultError } from '@jyjyxt/cloudl/errors';
 import { pixivFetch } from './utils.js';
 import { fetchCurrentBookmarks, normalizeBookmarkType } from './bookmark-utils.js';
 import {
@@ -94,7 +94,7 @@ async function commitIllustPlan(plan, cookies) {
   let staging;
   try {
     fs.mkdirSync(parent, { recursive: true });
-    staging = fs.mkdtempSync(path.join(parent, `.opencli-${plan.illustId}-`));
+    staging = fs.mkdtempSync(path.join(parent, `.cloudl-${plan.illustId}-`));
     for (const file of plan.files) {
       const destination = path.join(staging, file.filename);
       const result = await httpDownload(file.url, destination, {

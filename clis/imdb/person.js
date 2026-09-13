@@ -1,5 +1,5 @@
-import { CommandExecutionError } from '@jackwener/opencli/errors';
-import { cli, Strategy } from '@jackwener/opencli/registry';
+import { CommandExecutionError } from '@jyjyxt/cloudl/errors';
+import { cli, Strategy } from '@jyjyxt/cloudl/registry';
 import { forceEnglishUrl, getCurrentImdbId, isChallengePage, normalizeImdbId, waitForImdbPath, } from './utils.js';
 /**
  * Read IMDb person details from public profile pages.

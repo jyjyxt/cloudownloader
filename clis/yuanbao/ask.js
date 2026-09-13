@@ -1,6 +1,6 @@
-import { cli, Strategy } from '@jackwener/opencli/registry';
-import { htmlToMarkdown } from '@jackwener/opencli/utils';
-import { ArgumentError, CommandExecutionError, TimeoutError } from '@jackwener/opencli/errors';
+import { cli, Strategy } from '@jyjyxt/cloudl/registry';
+import { htmlToMarkdown } from '@jyjyxt/cloudl/utils';
+import { ArgumentError, CommandExecutionError, TimeoutError } from '@jyjyxt/cloudl/errors';
 import {
     YUANBAO_DOMAIN,
     IS_VISIBLE_JS,

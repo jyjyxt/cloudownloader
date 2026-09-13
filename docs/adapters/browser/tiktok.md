@@ -220,7 +220,7 @@ times out (server-fan-out semantics) — auto-retrying would double-post.
 **Follow / unfollow are `retryable=true`** because TikTok dedupes the relation
 flip server-side, so a transient blip can be safely retried.
 
-> Importing `retryable` as a first-class metadata layer in OpenCLI core is a
+> Importing `retryable` as a first-class metadata layer in Cloudl core is a
 > candidate for follow-up — for now we keep the contract human-readable.
 
 ## Implementation Notes

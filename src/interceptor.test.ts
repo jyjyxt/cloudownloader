@@ -17,8 +17,8 @@ describe('generateInterceptorJs', () => {
 
   it('uses default array name and patch guard', () => {
     const js = generateInterceptorJs('"test"');
-    expect(js).toContain('__opencli_intercepted');
-    expect(js).toContain('__opencli_interceptor_patched');
+    expect(js).toContain('__cloudl_intercepted');
+    expect(js).toContain('__cloudl_interceptor_patched');
   });
 
   it('uses custom array name and patch guard', () => {
@@ -28,7 +28,7 @@ describe('generateInterceptorJs', () => {
     });
     expect(js).toContain('__my_data');
     expect(js).toContain('__my_guard');
-    expect(js).not.toContain('__opencli_intercepted');
+    expect(js).not.toContain('__cloudl_intercepted');
   });
 
   it('includes fetch clone and json parsing', () => {
@@ -48,7 +48,7 @@ describe('generateInterceptorJs', () => {
 describe('generateReadInterceptedJs', () => {
   it('generates valid JavaScript to read and clear data', () => {
     const js = generateReadInterceptedJs();
-    expect(js).toContain('__opencli_intercepted');
+    expect(js).toContain('__cloudl_intercepted');
     // Should clear the array after reading
     expect(js).toContain('= []');
   });
@@ -56,7 +56,7 @@ describe('generateReadInterceptedJs', () => {
   it('uses custom array name', () => {
     const js = generateReadInterceptedJs('__custom_arr');
     expect(js).toContain('__custom_arr');
-    expect(js).not.toContain('__opencli_intercepted');
+    expect(js).not.toContain('__cloudl_intercepted');
   });
 });
 

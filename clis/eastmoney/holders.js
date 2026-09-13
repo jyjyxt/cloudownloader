@@ -3,8 +3,8 @@
 //   cloudl eastmoney holders 600519
 //   cloudl eastmoney holders sh600519 --limit 10
 
-import { cli, Strategy } from '@jackwener/opencli/registry';
-import { CliError } from '@jackwener/opencli/errors';
+import { cli, Strategy } from '@jyjyxt/cloudl/registry';
+import { CliError } from '@jyjyxt/cloudl/errors';
 
 /**
  * Convert a bare A-share symbol to eastmoney's SECUCODE form ("600519.SH").

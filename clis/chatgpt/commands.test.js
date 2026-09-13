@@ -2,8 +2,8 @@ import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
 import { afterEach, describe, expect, it, vi } from 'vitest';
-import { CommandExecutionError, EmptyResultError } from '@jackwener/opencli/errors';
-import { getRegistry } from '@jackwener/opencli/registry';
+import { CommandExecutionError, EmptyResultError } from '@jyjyxt/cloudl/errors';
+import { getRegistry } from '@jyjyxt/cloudl/registry';
 import './ask.js';
 import './send.js';
 import './read.js';
@@ -416,7 +416,7 @@ describe('chatgpt browser command registration', () => {
     });
 
     it('maps successful project-file-add uploads to table rows', async () => {
-        const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'opencli-chatgpt-'));
+        const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'cloudl-chatgpt-'));
         tempDirs.push(dir);
         const filePath = path.join(dir, 'report.pdf');
         fs.writeFileSync(filePath, 'fake-pdf');

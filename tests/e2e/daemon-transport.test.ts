@@ -31,7 +31,7 @@ const ROOT = path.resolve(__dirname, '../..');
 const DAEMON_ENTRY = path.join(ROOT, 'dist', 'src', 'daemon.js');
 const PORT = 19825;
 const BASE = `http://127.0.0.1:${PORT}`;
-const HEADERS = { 'X-OpenCLI': '1', 'Content-Type': 'application/json' };
+const HEADERS = { 'X-Cloudl': '1', 'Content-Type': 'application/json' };
 
 type WireResult = {
   id?: string;

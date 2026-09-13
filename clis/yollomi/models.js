@@ -1,4 +1,4 @@
-import { cli, Strategy } from '@jackwener/opencli/registry';
+import { cli, Strategy } from '@jyjyxt/cloudl/registry';
 import { IMAGE_MODELS, VIDEO_MODELS, TOOL_MODELS } from './utils.js';
 cli({
     site: 'yollomi',

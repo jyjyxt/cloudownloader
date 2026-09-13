@@ -11,7 +11,7 @@
 //   - "Knowledge"  = personal/team knowledge base
 //   - "Marketplace"= plugin/skill marketplace
 
-import { ArgumentError, CommandExecutionError } from '@jackwener/opencli/errors';
+import { ArgumentError, CommandExecutionError } from '@jyjyxt/cloudl/errors';
 
 export const IS_VISIBLE_JS = `
   const isVisible = (el) => {

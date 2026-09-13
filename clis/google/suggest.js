@@ -2,8 +2,8 @@
  * Google Search Suggestions via public JSON API.
  * Uses suggestqueries.google.com with client=firefox for pure JSON (not JSONP).
  */
-import { cli, Strategy } from '@jackwener/opencli/registry';
-import { CliError } from '@jackwener/opencli/errors';
+import { cli, Strategy } from '@jyjyxt/cloudl/registry';
+import { CliError } from '@jyjyxt/cloudl/errors';
 cli({
     site: 'google',
     name: 'suggest',

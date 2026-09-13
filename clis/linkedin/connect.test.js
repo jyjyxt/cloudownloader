@@ -1,7 +1,7 @@
 import { describe, expect, it, vi } from 'vitest';
 import { JSDOM } from 'jsdom';
-import { getRegistry } from '@jackwener/opencli/registry';
-import { ArgumentError, CommandExecutionError } from '@jackwener/opencli/errors';
+import { getRegistry } from '@jyjyxt/cloudl/registry';
+import { ArgumentError, CommandExecutionError } from '@jyjyxt/cloudl/errors';
 import './connect.js';
 
 const {
@@ -84,7 +84,7 @@ describe('linkedin connect helpers', () => {
             .toBe('https://www.linkedin.com/in/jane/');
         expect(canonicalizeLinkedInProfileUrl('https://ca.linkedin.com/in/jane/?mini=true#x'))
             .toBe('https://www.linkedin.com/in/jane/');
-        expect(canonicalizeLinkedInProfileUrl('https://www.linkedin.com/company/opencli/')).toBe('');
+        expect(canonicalizeLinkedInProfileUrl('https://www.linkedin.com/company/cloudl/')).toBe('');
         expect(canonicalizeLinkedInProfileUrl('https://evil-linkedin.com/in/jane/')).toBe('');
         expect(canonicalizeLinkedInProfileUrl('http://www.linkedin.com/in/jane/')).toBe('');
     });
@@ -219,7 +219,7 @@ describe('linkedin connect command', () => {
         const page = makeFakePage({});
 
         await expect(command.func(page, {
-            'profile-url': 'https://www.linkedin.com/company/opencli/',
+            'profile-url': 'https://www.linkedin.com/company/cloudl/',
             'expected-name': 'Jane Doe',
             send: true,
         })).rejects.toBeInstanceOf(ArgumentError);

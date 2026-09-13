@@ -52,5 +52,5 @@ cloudl amazon discussion B0FJS72893 --limit 5 -f json
 ## Troubleshooting
 
 - If Amazon shows a robot-check page, clear it in Chrome and retry.
-- If CDP is attached to the wrong tab, retry with `OPENCLI_CDP_TARGET=amazon.com`.
+- If CDP is attached to the wrong tab, retry with `CLOUDL_CDP_TARGET=amazon.com`.
 - Avoid running multiple Amazon browser commands in parallel against the same shared Chrome target.

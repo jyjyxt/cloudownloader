@@ -7,7 +7,7 @@
  *
  * Security (defense-in-depth against browser-based CSRF):
  *   1. Origin check — reject HTTP/WS from non chrome-extension:// origins
- *   2. Custom header — require X-OpenCLI header (browsers can't send it
+ *   2. Custom header — require X-Cloudl header (browsers can't send it
  *      without CORS preflight, which we deny)
  *   3. No CORS headers on command endpoints — only /ping is readable from the
  *      Browser Bridge extension origin so the extension can probe daemon reachability
@@ -44,8 +44,8 @@ import {
 } from './session-lease.js';
 
 const PORT = DEFAULT_DAEMON_PORT;
-if (!isIgnorableDaemonPortEnv(process.env.OPENCLI_DAEMON_PORT)) {
-  log.error(unsupportedDaemonPortEnvMessage(process.env.OPENCLI_DAEMON_PORT));
+if (!isIgnorableDaemonPortEnv(process.env.CLOUDL_DAEMON_PORT)) {
+  log.error(unsupportedDaemonPortEnvMessage(process.env.CLOUDL_DAEMON_PORT));
   process.exit(EXIT_CODES.USAGE_ERROR);
 }
 
@@ -268,7 +268,7 @@ async function handleRequest(req: IncomingMessage, res: ServerResponse): Promise
   const url = req.url ?? '/';
   const pathname = url.split('?')[0];
 
-  // Health-check endpoint — no X-OpenCLI header required.
+  // Health-check endpoint — no X-Cloudl header required.
   // Used by the extension to silently probe daemon reachability before
   // attempting a WebSocket connection (avoids uncatchable ERR_CONNECTION_REFUSED).
   // Security note: this endpoint is reachable by any client that passes the
@@ -284,8 +284,8 @@ async function handleRequest(req: IncomingMessage, res: ServerResponse): Promise
   // custom headers in "simple" requests, and our preflight returns no
   // Access-Control-Allow-Headers, so scripted fetch() from web pages is
   // blocked even if Origin check is somehow bypassed.
-  if (!req.headers['x-opencli']) {
-    jsonResponse(res, 403, { ok: false, error: 'Forbidden: missing X-OpenCLI header' });
+  if (!req.headers['x-cloudl']) {
+    jsonResponse(res, 403, { ok: false, error: 'Forbidden: missing X-Cloudl header' });
     return;
   }
 

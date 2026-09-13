@@ -4,11 +4,11 @@
 // `flathub.org/api/v2`, no auth, no key. Two endpoints we surface:
 //   • POST /search      → keyword search, returns app metadata
 //   • GET  /appstream/<appId> → full appstream metadata for one app
-import { ArgumentError, CommandExecutionError, EmptyResultError } from '@jackwener/opencli/errors';
+import { ArgumentError, CommandExecutionError, EmptyResultError } from '@jyjyxt/cloudl/errors';
 
 export const FLATHUB_API_BASE = 'https://flathub.org/api/v2';
 export const FLATHUB_APP_BASE = 'https://flathub.org/apps';
-const UA = 'opencli-flathub-adapter/1.0 (+https://github.com/jyjyxt/cloudownloader; mailto:opencli@example.com)';
+const UA = 'cloudl-flathub-adapter/1.0 (+https://github.com/jyjyxt/cloudownloader; mailto:cloudl@example.com)';
 
 // AppStream IDs are reverse-DNS (e.g. "org.gnome.Calculator"); the spec allows
 // letters, digits, `.`, `_`, `-`. Min two segments separated by `.`.

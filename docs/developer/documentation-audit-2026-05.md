@@ -1,6 +1,6 @@
 # Documentation Audit — 2026-05
 
-This document reviews the current long-form docs, README surfaces, and developer guides in `opencli`. It focuses on stale facts, internal contradictions, and documentation structure that now causes drift.
+This document reviews the current long-form docs, README surfaces, and developer guides in `cloudl`. It focuses on stale facts, internal contradictions, and documentation structure that now causes drift.
 
 ## Scope
 

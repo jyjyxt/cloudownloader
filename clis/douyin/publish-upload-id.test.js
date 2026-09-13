@@ -43,7 +43,7 @@ describe('douyin publish upload identifier handling', () => {
     const video = path.join(tmpDir, 'video.mp4');
     fs.writeFileSync(video, Buffer.from('fake-video'));
 
-    const { getRegistry } = await import('@jackwener/opencli/registry');
+    const { getRegistry } = await import('@jyjyxt/cloudl/registry');
     getRegistry().delete('douyin/publish');
     await import('./publish.js');
     const cmd = getRegistry().get('douyin/publish');
@@ -51,7 +51,7 @@ describe('douyin publish upload identifier handling', () => {
 
     await cmd.func({}, {
       video,
-      title: 'OpenCLI自测',
+      title: 'Cloudl自测',
       schedule: new Date(Date.now() + 3 * 60 * 60 * 1000).toISOString(),
       caption: '',
       visibility: 'private',
@@ -66,7 +66,7 @@ describe('douyin publish upload identifier handling', () => {
     const createCall = mocks.browserFetch.mock.calls.find((call) => String(call[2]).includes('/aweme/create_v2/'));
     expect(createCall?.[3]?.body.item.common.video_id).toBe('canonical-video-id');
     expect(createCall?.[3]?.body.item.common.video_id).not.toBe('object-key-returned-by-complete');
-    expect(createCall?.[3]?.body.item.common.text).toBe('OpenCLI自测');
+    expect(createCall?.[3]?.body.item.common.text).toBe('Cloudl自测');
   });
 
   it('keeps title-prefixed publish text and hashtag offsets aligned for create_v2', async () => {
@@ -74,7 +74,7 @@ describe('douyin publish upload identifier handling', () => {
     const video = path.join(tmpDir, 'video.mp4');
     fs.writeFileSync(video, Buffer.from('fake-video'));
 
-    const { getRegistry } = await import('@jackwener/opencli/registry');
+    const { getRegistry } = await import('@jyjyxt/cloudl/registry');
     getRegistry().delete('douyin/publish');
     await import('./publish.js');
     const cmd = getRegistry().get('douyin/publish');
@@ -82,7 +82,7 @@ describe('douyin publish upload identifier handling', () => {
 
     await cmd.func({}, {
       video,
-      title: 'OpenCLI标题',
+      title: 'Cloudl标题',
       schedule: new Date(Date.now() + 3 * 60 * 60 * 1000).toISOString(),
       caption: '正文 #话题',
       visibility: 'private',
@@ -91,15 +91,15 @@ describe('douyin publish upload identifier handling', () => {
 
     const createCall = mocks.browserFetch.mock.calls.find((call) => String(call[2]).includes('/aweme/create_v2/'));
     const common = createCall?.[3]?.body.item.common;
-    expect(common.text).toBe('OpenCLI标题 正文 #话题');
+    expect(common.text).toBe('Cloudl标题 正文 #话题');
     expect(common.caption).toBe('正文 #话题');
-    expect(common.item_title).toBe('OpenCLI标题');
+    expect(common.item_title).toBe('Cloudl标题');
     const textExtra = JSON.parse(common.text_extra);
     expect(textExtra).toEqual([
       expect.objectContaining({
         hashtag_name: '话题',
-        start: 'OpenCLI标题 正文 '.length,
-        end: 'OpenCLI标题 正文 #话题'.length,
+        start: 'Cloudl标题 正文 '.length,
+        end: 'Cloudl标题 正文 #话题'.length,
       }),
     ]);
   });
@@ -117,7 +117,7 @@ describe('douyin publish upload identifier handling', () => {
       return { status_code: 0 };
     });
 
-    const { getRegistry } = await import('@jackwener/opencli/registry');
+    const { getRegistry } = await import('@jyjyxt/cloudl/registry');
     getRegistry().delete('douyin/publish');
     await import('./publish.js');
     const cmd = getRegistry().get('douyin/publish');
@@ -125,7 +125,7 @@ describe('douyin publish upload identifier handling', () => {
 
     await cmd.func({}, {
       video,
-      title: 'OpenCLI自测',
+      title: 'Cloudl自测',
       schedule: new Date(Date.now() + 3 * 60 * 60 * 1000).toISOString(),
       visibility: 'public',
       caption: 'caption',
@@ -153,7 +153,7 @@ describe('douyin publish upload identifier handling', () => {
         .mockResolvedValueOnce({ session: 'site:douyin:test', data: { Result: {} } }),
     };
 
-    const { getRegistry } = await import('@jackwener/opencli/registry');
+    const { getRegistry } = await import('@jyjyxt/cloudl/registry');
     getRegistry().delete('douyin/publish');
     await import('./publish.js');
     const cmd = getRegistry().get('douyin/publish');
@@ -162,7 +162,7 @@ describe('douyin publish upload identifier handling', () => {
     await cmd.func(page, {
       video,
       cover,
-      title: 'OpenCLI自测',
+      title: 'Cloudl自测',
       schedule: new Date(Date.now() + 3 * 60 * 60 * 1000).toISOString(),
       caption: '',
       visibility: 'private',
@@ -186,7 +186,7 @@ describe('douyin publish upload identifier handling', () => {
 
     const page = { evaluate: vi.fn().mockResolvedValueOnce({ session: 'site:douyin:test', data: { Result: { UploadAddress: { StoreInfos: [] } } } }) };
 
-    const { getRegistry } = await import('@jackwener/opencli/registry');
+    const { getRegistry } = await import('@jyjyxt/cloudl/registry');
     getRegistry().delete('douyin/publish');
     await import('./publish.js');
     const cmd = getRegistry().get('douyin/publish');
@@ -195,7 +195,7 @@ describe('douyin publish upload identifier handling', () => {
     await expect(cmd.func(page, {
       video,
       cover,
-      title: 'OpenCLI自测',
+      title: 'Cloudl自测',
       schedule: new Date(Date.now() + 3 * 60 * 60 * 1000).toISOString(),
       caption: '',
       visibility: 'private',

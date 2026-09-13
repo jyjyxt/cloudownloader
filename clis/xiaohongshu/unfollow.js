@@ -10,8 +10,8 @@
  *
  * Requires: logged into www.xiaohongshu.com in Chrome.
  */
-import { cli, Strategy } from '@jackwener/opencli/registry';
-import { ArgumentError, AuthRequiredError, CliError, CommandExecutionError } from '@jackwener/opencli/errors';
+import { cli, Strategy } from '@jyjyxt/cloudl/registry';
+import { ArgumentError, AuthRequiredError, CliError, CommandExecutionError } from '@jyjyxt/cloudl/errors';
 import { normalizeXhsUserId } from './user-helpers.js';
 import { unwrapEvaluateResult } from './shared.js';
 

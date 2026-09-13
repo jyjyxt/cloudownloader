@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from 'vitest';
-import { TimeoutError } from '@jackwener/opencli/errors';
+import { TimeoutError } from '@jyjyxt/cloudl/errors';
 import { pollTranscodeWithFetch } from './transcode.js';
 // ── Helpers ──────────────────────────────────────────────────────────────────
 function makePage() {

@@ -30,7 +30,7 @@ cloudl hupu detail 638234927 --replies true
 cloudl hupu mentions --limit 20
 
 # Reply to the thread
-cloudl hupu reply 638234927 "hello from opencli" --topic_id 502
+cloudl hupu reply 638234927 "hello from cloudl" --topic_id 502
 
 # Quote one hot reply by pid
 cloudl hupu reply 638234927 "replying to this comment" --topic_id 502 --quote_id 174908

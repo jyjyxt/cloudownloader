@@ -1,16 +1,16 @@
 import * as fs from 'node:fs';
 import * as path from 'node:path';
-import { cli, Strategy } from '@jackwener/opencli/registry';
+import { cli, Strategy } from '@jyjyxt/cloudl/registry';
 import {
   ArgumentError,
   AuthRequiredError,
   CommandExecutionError,
   TimeoutError,
-} from '@jackwener/opencli/errors';
+} from '@jyjyxt/cloudl/errors';
 
 const FACEBOOK_HOME = 'https://www.facebook.com/';
 const COMPOSER_SELECTOR = '[role="dialog"] [contenteditable="true"], [contenteditable="true"][role="textbox"]';
-const UPLOAD_SELECTOR = '[data-opencli-facebook-upload-target="true"]';
+const UPLOAD_SELECTOR = '[data-cloudl-facebook-upload-target="true"]';
 const SUBMIT_TIMEOUT_SECONDS = 20;
 const SUPPORTED_IMAGE_EXTENSIONS = new Set(['.jpg', '.jpeg', '.png', '.gif', '.webp']);
 
@@ -102,7 +102,7 @@ export function buildResolveUploadSelectorScript() {
     const root = document.querySelector('[role="dialog"]') || document;
     const input = root.querySelector('input[type="file"]') || document.querySelector('input[type="file"]');
     if (!input) return { ok: false, message: 'Facebook image upload input did not appear.' };
-    input.setAttribute('data-opencli-facebook-upload-target', 'true');
+    input.setAttribute('data-cloudl-facebook-upload-target', 'true');
     return { ok: true, selector: '${UPLOAD_SELECTOR}' };
   })()`;
 }
@@ -192,9 +192,9 @@ export function buildSubmitClickScript(text) {
       if (visible(el) && clean(el.textContent || '').includes(wanted)) el.setAttribute(attribute, 'true');
     });
     Array.from(document.querySelectorAll('[role="alert"], [data-testid="toast"]')).forEach((el) => {
-      if (visible(el)) el.setAttribute('data-opencli-facebook-before-submit-toast', 'true');
+      if (visible(el)) el.setAttribute('data-cloudl-facebook-before-submit-toast', 'true');
     });
-    mark('[dir="auto"], [role="article"]', 'data-opencli-facebook-before-submit-match');
+    mark('[dir="auto"], [role="article"]', 'data-cloudl-facebook-before-submit-match');
 
     const submitLabels = /^(?:post|publish|share now|发布|发表|分享)$/i;
     const buttons = Array.from(root.querySelectorAll('button, [role="button"]'));
@@ -221,7 +221,7 @@ export function buildSubmitStatusScript(text) {
     const failure = /something went wrong|could not post|failed to post|try again|出错|失败|无法发布/i;
     for (let i = 0; i < 40; i += 1) {
       const alerts = Array.from(document.querySelectorAll('[role="alert"], [data-testid="toast"]')).filter(visible);
-      const freshAlert = alerts.find((el) => !el.hasAttribute('data-opencli-facebook-before-submit-toast'));
+      const freshAlert = alerts.find((el) => !el.hasAttribute('data-cloudl-facebook-before-submit-toast'));
       if (freshAlert && success.test(freshAlert.textContent || '')) {
         return { ok: true, verification: 'success_toast', message: clean(freshAlert.textContent) };
       }
@@ -230,7 +230,7 @@ export function buildSubmitStatusScript(text) {
       }
 
       const freshMatch = Array.from(document.querySelectorAll('[dir="auto"], [role="article"]'))
-        .some((el) => visible(el) && !el.hasAttribute('data-opencli-facebook-before-submit-match')
+        .some((el) => visible(el) && !el.hasAttribute('data-cloudl-facebook-before-submit-match')
           && clean(el.textContent || '').includes(wanted));
       if (freshMatch) return { ok: true, verification: 'feed_match', message: 'Facebook post appeared in the feed.' };
 

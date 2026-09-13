@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { buildNotebooklmNotebookUrl, buildNotebooklmRpcBody, classifyNotebooklmPage, extractNotebooklmHistoryPreview, extractNotebooklmRpcResult, getNotebooklmPageState, isPlainObject, listNotebooklmLinks, normalizeNotebooklmTitle, parseNotebooklmHistoryThreadIdsResult, parseNotebooklmIdFromUrl, parseNotebooklmListResult, parseNotebooklmNoteListRawRows, parseNotebooklmNotebookDetailResult, parseNotebooklmNotebookTarget, parseNotebooklmSourceFulltextResult, parseNotebooklmSourceGuideResult, parseNotebooklmSourceListResult, readCurrentNotebooklm, requireNotebooklmSession, } from './utils.js';
-import { AuthRequiredError, CliError, CommandExecutionError } from '@jackwener/opencli/errors';
+import { AuthRequiredError, CliError, CommandExecutionError } from '@jyjyxt/cloudl/errors';
 import { isNotebooklmHost, parseTrustedNotebooklmUrl } from './shared.js';
 describe('notebooklm utils', () => {
     it('matches only the two exact NotebookLM hosts', () => {

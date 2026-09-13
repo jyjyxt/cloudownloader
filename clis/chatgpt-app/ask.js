@@ -1,6 +1,6 @@
 import { statSync } from 'node:fs';
-import { cli, Strategy } from '@jackwener/opencli/registry';
-import { ArgumentError, ConfigError, TimeoutError } from '@jackwener/opencli/errors';
+import { cli, Strategy } from '@jyjyxt/cloudl/registry';
+import { ArgumentError, ConfigError, TimeoutError } from '@jyjyxt/cloudl/errors';
 import { activateChatGPT, getVisibleChatMessages, selectModel, MODEL_CHOICES, isGenerating, sendPrompt } from './ax.js';
 export const askCommand = cli({
     site: 'chatgpt-app',

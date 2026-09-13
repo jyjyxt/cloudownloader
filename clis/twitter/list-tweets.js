@@ -1,6 +1,6 @@
-import { cli, Strategy } from '@jackwener/opencli/registry';
-import { AuthRequiredError, CommandExecutionError } from '@jackwener/opencli/errors';
-import { BROWSER_JSON_SNIFF_FN, throwIfLoginWall } from '@jackwener/opencli/utils';
+import { cli, Strategy } from '@jyjyxt/cloudl/registry';
+import { AuthRequiredError, CommandExecutionError } from '@jyjyxt/cloudl/errors';
+import { BROWSER_JSON_SNIFF_FN, throwIfLoginWall } from '@jyjyxt/cloudl/utils';
 import { TWITTER_BEARER_TOKEN, applyTopByEngagement } from './utils.js';
 import { extractCard, extractQuotedTweet, extractMedia, describeTwitterApiError } from './shared.js';
 
@@ -136,7 +136,7 @@ cli({
         const ct0 = cookies.find((c) => c.name === 'ct0')?.value || null;
         if (!ct0)
             throw new AuthRequiredError('x.com', 'Not logged into x.com (no ct0 cookie)');
-        // opencli >=1.7.x wraps primitive page.evaluate returns as { session, data: <value> }.
+        // cloudl >=1.7.x wraps primitive page.evaluate returns as { session, data: <value> }.
         // Without unwrap, the string queryId becomes "[object Object]" when interpolated into the URL,
         // causing HTTP 400 "queryId may have expired".
         const unwrap = (v) => (v && typeof v === 'object' && 'session' in v && 'data' in v ? v.data : v);

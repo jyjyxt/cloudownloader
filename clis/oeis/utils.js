@@ -2,10 +2,10 @@
 //
 // OEIS exposes a single search endpoint that handles both keyword search and
 // id lookup via `q=id:Annnnnn`. JSON output via `fmt=json`. No API key.
-import { ArgumentError, CommandExecutionError, EmptyResultError } from '@jackwener/opencli/errors';
+import { ArgumentError, CommandExecutionError, EmptyResultError } from '@jyjyxt/cloudl/errors';
 
 export const OEIS_BASE = 'https://oeis.org';
-const UA = 'opencli-oeis-adapter/1.0 (+https://github.com/jyjyxt/cloudownloader; mailto:opencli@example.com)';
+const UA = 'cloudl-oeis-adapter/1.0 (+https://github.com/jyjyxt/cloudownloader; mailto:cloudl@example.com)';
 
 // OEIS ids are A followed by 6 zero-padded digits (older entries use 6 by convention,
 // modern entries can be longer; OEIS itself accepts any digits after A).

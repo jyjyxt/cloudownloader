@@ -34,7 +34,7 @@ cloudl facebook marketplace-listings --limit 10
 cloudl facebook marketplace-inbox --limit 10
 
 # Publish a post
-cloudl facebook post "Hello from OpenCLI"
+cloudl facebook post "Hello from Cloudl"
 cloudl facebook post "Photo update" --image /path/to/photo.jpg
 
 # JSON output

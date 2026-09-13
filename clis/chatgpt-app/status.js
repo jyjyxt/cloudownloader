@@ -1,6 +1,6 @@
 import { execSync } from 'node:child_process';
-import { cli, Strategy } from '@jackwener/opencli/registry';
-import { CommandExecutionError, ConfigError } from '@jackwener/opencli/errors';
+import { cli, Strategy } from '@jyjyxt/cloudl/registry';
+import { CommandExecutionError, ConfigError } from '@jyjyxt/cloudl/errors';
 export const statusCommand = cli({
     site: 'chatgpt-app',
     name: 'status',

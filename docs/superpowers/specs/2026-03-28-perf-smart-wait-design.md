@@ -19,7 +19,7 @@ Three distinct performance/correctness issues:
 
 Add `waitForCapture(timeout?: number): Promise<void>` to `IPage`.
 
-Polls `window.__opencli_xhr.length > 0` every 100ms inside the browser tab. Resolves as soon as ≥1 capture arrives; rejects after `timeout` seconds.
+Polls `window.__cloudl_xhr.length > 0` every 100ms inside the browser tab. Resolves as soon as ≥1 capture arrives; rejects after `timeout` seconds.
 
 ```typescript
 // dom-helpers.ts
@@ -28,7 +28,7 @@ export function waitForCaptureJs(maxMs: number): string {
     new Promise((resolve, reject) => {
       const deadline = Date.now() + ${maxMs};
       const check = () => {
-        if ((window.__opencli_xhr || []).length > 0) return resolve('captured');
+        if ((window.__cloudl_xhr || []).length > 0) return resolve('captured');
         if (Date.now() > deadline) return reject(new Error('No capture within ${maxMs / 1000}s'));
         setTimeout(check, 100);
       };

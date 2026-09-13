@@ -53,7 +53,7 @@ cloudl xiaoyuzhou transcript 69dd0c98e2c8be31551f6a33 -v
 ## Prerequisites
 
 - No browser required — uses the authenticated Xiaoyuzhou API
-- All commands require local Xiaoyuzhou app credentials in `~/.opencli/xiaoyuzhou.json`
+- All commands require local Xiaoyuzhou app credentials in `~/.cloudl/xiaoyuzhou.json`
 
 Example credential file:
 

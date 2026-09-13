@@ -3,10 +3,10 @@
 // Lichess exposes a generous unauthenticated API at `lichess.org/api`. We keep
 // the surface narrow: `user` (profile) + `top` (per-perf top-N leaderboard).
 // No API key required; rate limit is 60 req/min per IP.
-import { ArgumentError, CommandExecutionError, EmptyResultError } from '@jackwener/opencli/errors';
+import { ArgumentError, CommandExecutionError, EmptyResultError } from '@jyjyxt/cloudl/errors';
 
 export const LICHESS_BASE = 'https://lichess.org';
-const UA = 'opencli-lichess-adapter/1.0 (+https://github.com/jyjyxt/cloudownloader; mailto:opencli@example.com)';
+const UA = 'cloudl-lichess-adapter/1.0 (+https://github.com/jyjyxt/cloudownloader; mailto:cloudl@example.com)';
 
 // Lichess usernames are 2-30 chars: letters, digits, underscore, dash. Case-insensitive.
 const USERNAME_PATTERN = /^[A-Za-z0-9_-]{2,30}$/;

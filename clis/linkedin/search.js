@@ -1,5 +1,5 @@
-import { cli, Strategy } from '@jackwener/opencli/registry';
-import { ArgumentError, AuthRequiredError, CommandExecutionError } from '@jackwener/opencli/errors';
+import { cli, Strategy } from '@jyjyxt/cloudl/registry';
+import { ArgumentError, AuthRequiredError, CommandExecutionError } from '@jyjyxt/cloudl/errors';
 const LINKEDIN_DOMAIN = 'linkedin.com';
 const MIN_LIMIT = 1;
 const MAX_LIMIT = 100;
@@ -328,10 +328,10 @@ async function enrichJobDetails(page, jobs) {
     const enriched = [];
     for (let i = 0; i < jobs.length; i++) {
         const job = jobs[i];
-        console.error(`[opencli:linkedin] Fetching details ${i + 1}/${jobs.length}: ${job.title}`);
+        console.error(`[cloudl:linkedin] Fetching details ${i + 1}/${jobs.length}: ${job.title}`);
         if (!job.url) {
             const reason = 'no url';
-            console.error(`[opencli:linkedin] Skipping detail for "${job.title}": ${reason}`);
+            console.error(`[cloudl:linkedin] Skipping detail for "${job.title}": ${reason}`);
             enriched.push({ ...job, description: null, apply_url: null, detail_error: reason });
             continue;
         }
@@ -386,7 +386,7 @@ async function enrichJobDetails(page, jobs) {
             if (err instanceof AuthRequiredError)
                 throw err;
             const reason = `fetch failed: ${err?.message || err}`;
-            console.error(`[opencli:linkedin] Detail fetch failed for ${job.url}: ${reason}`);
+            console.error(`[cloudl:linkedin] Detail fetch failed for ${job.url}: ${reason}`);
             enriched.push({ ...job, description: null, apply_url: null, detail_error: reason });
         }
     }

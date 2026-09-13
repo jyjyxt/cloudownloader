@@ -7,14 +7,14 @@ import { findPackageRoot } from './package-paths.js';
 
 const MODULE_FILE = fileURLToPath(import.meta.url);
 
-export interface OpenCliSkillInfo {
+export interface CloudlSkillInfo {
   name: string;
   description: string;
   version: string;
   path: string;
 }
 
-export interface OpenCliSkillReadResult {
+export interface CloudlSkillReadResult {
   skill: string;
   path: string;
   content: string;
@@ -30,34 +30,34 @@ export function getSkillsRoot(packageRoot: string = findPackageRoot(MODULE_FILE)
   return path.join(packageRoot, 'skills');
 }
 
-export function listOpenCliSkills(packageRoot?: string): OpenCliSkillInfo[] {
+export function listCloudlSkills(packageRoot?: string): CloudlSkillInfo[] {
   const skillsRoot = getSkillsRoot(packageRoot);
   if (!fs.existsSync(skillsRoot)) return [];
 
   return fs.readdirSync(skillsRoot, { withFileTypes: true })
-    .filter((entry) => entry.isDirectory() && entry.name.startsWith('opencli-'))
+    .filter((entry) => entry.isDirectory() && entry.name.startsWith('cloudl-'))
     .map((entry) => readSkillInfo(skillsRoot, entry.name))
-    .filter((entry): entry is OpenCliSkillInfo => entry !== null)
+    .filter((entry): entry is CloudlSkillInfo => entry !== null)
     .sort((a, b) => a.name.localeCompare(b.name));
 }
 
-export function readOpenCliSkill(target: string, relpath = '', packageRoot?: string): OpenCliSkillReadResult {
+export function readCloudlSkill(target: string, relpath = '', packageRoot?: string): CloudlSkillReadResult {
   const { name, pathInSkill } = parseSkillTarget(target, relpath);
-  if (!name.startsWith('opencli-')) {
-    throw new ArgumentError(`Unknown OpenCLI skill: ${name}`, 'Run "cloudl skills list" to see available OpenCLI skills.');
+  if (!name.startsWith('cloudl-')) {
+    throw new ArgumentError(`Unknown Cloudl skill: ${name}`, 'Run "cloudl skills list" to see available Cloudl skills.');
   }
 
   const skillsRoot = getSkillsRoot(packageRoot);
   const skillRoot = path.join(skillsRoot, name);
   if (!isDirectory(skillRoot) || !fs.existsSync(path.join(skillRoot, 'SKILL.md'))) {
-    throw new ArgumentError(`Unknown OpenCLI skill: ${name}`, 'Run "cloudl skills list" to see available OpenCLI skills.');
+    throw new ArgumentError(`Unknown Cloudl skill: ${name}`, 'Run "cloudl skills list" to see available Cloudl skills.');
   }
 
   const relativePath = normalizeSkillPath(pathInSkill || 'SKILL.md');
   const absolutePath = path.resolve(skillRoot, relativePath);
   const relativeToRoot = path.relative(skillRoot, absolutePath);
   if (relativeToRoot.startsWith('..') || path.isAbsolute(relativeToRoot)) {
-    throw new ArgumentError(`Invalid skill path: ${relativePath}`, 'Skill paths must stay inside the selected OpenCLI skill.');
+    throw new ArgumentError(`Invalid skill path: ${relativePath}`, 'Skill paths must stay inside the selected Cloudl skill.');
   }
   if (!fs.existsSync(absolutePath) || !fs.statSync(absolutePath).isFile()) {
     throw new ArgumentError(`Skill file not found: ${name}/${relativePath}`, 'Run "cloudl skills list <skill>" is not supported yet; read SKILL.md or a known references/... file.');
@@ -70,7 +70,7 @@ export function readOpenCliSkill(target: string, relpath = '', packageRoot?: str
   };
 }
 
-function readSkillInfo(skillsRoot: string, name: string): OpenCliSkillInfo | null {
+function readSkillInfo(skillsRoot: string, name: string): CloudlSkillInfo | null {
   const skillMdPath = path.join(skillsRoot, name, 'SKILL.md');
   if (!fs.existsSync(skillMdPath)) return null;
   const content = fs.readFileSync(skillMdPath, 'utf8');
@@ -104,7 +104,7 @@ function normalizeSkillPath(raw: string): string {
     throw new ArgumentError('Skill path must be non-empty.');
   }
   if (normalized.startsWith('/') || normalized.split('/').some((part) => part === '..')) {
-    throw new ArgumentError(`Invalid skill path: ${raw}`, 'Use a path relative to an OpenCLI skill directory.');
+    throw new ArgumentError(`Invalid skill path: ${raw}`, 'Use a path relative to an Cloudl skill directory.');
   }
   return path.posix.normalize(normalized);
 }

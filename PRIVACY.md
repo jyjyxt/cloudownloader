@@ -1,10 +1,10 @@
-# Privacy Policy — OpenCLI Browser Extension
+# Privacy Policy — Cloudl Browser Extension
 
 **Last updated**: 2026-03-25
 
 ## What the extension does
 
-The OpenCLI Browser Extension is a bridge between the [OpenCLI](https://github.com/jyjyxt/cloudownloader) command-line tool and your Chrome browser. It receives commands from a **locally running daemon** process via WebSocket (`localhost` only) and executes them in **isolated Chrome windows** that are separate from your normal browsing session.
+The Cloudl Browser Extension is a bridge between the [Cloudl](https://github.com/jyjyxt/cloudownloader) command-line tool and your Chrome browser. It receives commands from a **locally running daemon** process via WebSocket (`localhost` only) and executes them in **isolated Chrome windows** that are separate from your normal browsing session.
 
 ## Data collection
 
@@ -27,7 +27,7 @@ The extension does **NOT** collect, store, transmit, or sell any personal data. 
 ## Data flow
 
 ```
-User's terminal (opencli CLI)
+User's terminal (cloudl CLI)
     ↓ (spawns)
 Local daemon process (localhost:19825)
     ↓ (WebSocket, localhost only)

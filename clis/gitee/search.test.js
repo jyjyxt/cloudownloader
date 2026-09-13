@@ -1,5 +1,5 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
-import { getRegistry } from '@jackwener/opencli/registry';
+import { getRegistry } from '@jyjyxt/cloudl/registry';
 import './search.js';
 
 function mockGiteeResponse(hits) {

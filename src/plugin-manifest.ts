@@ -1,5 +1,5 @@
 /**
- * Plugin manifest: reads and validates opencli-plugin.json files.
+ * Plugin manifest: reads and validates cloudl-plugin.json files.
  *
  * Supports two modes:
  * 1. Single plugin: repo root IS the plugin directory.
@@ -18,7 +18,7 @@ export interface SubPluginEntry {
   version?: string;
   description?: string;
   /** Semver range for cloudl compatibility (overrides top-level). */
-  opencli?: string;
+  cloudl?: string;
   /** When true, this sub-plugin is skipped during install. */
   disabled?: boolean;
 }
@@ -29,19 +29,19 @@ export interface PluginManifest {
   /** Semantic version of the plugin (single-plugin mode). */
   version?: string;
   /** Semver range for cloudl compatibility, e.g. ">=1.0.0". */
-  opencli?: string;
+  cloudl?: string;
   /** Human-readable description. */
   description?: string;
   /** Monorepo sub-plugins. Key = logical plugin name. */
   plugins?: Record<string, SubPluginEntry>;
 }
 
-export const MANIFEST_FILENAME = 'opencli-plugin.json';
+export const MANIFEST_FILENAME = 'cloudl-plugin.json';
 
 // ── Read / Validate ─────────────────────────────────────────────────────────
 
 /**
- * Read and parse opencli-plugin.json from a directory.
+ * Read and parse cloudl-plugin.json from a directory.
  * Returns null if the file does not exist or is unparseable.
  */
 export function readPluginManifest(dir: string): PluginManifest | null {

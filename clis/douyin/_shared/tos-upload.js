@@ -9,9 +9,9 @@ import * as crypto from 'node:crypto';
 import * as fs from 'node:fs';
 import * as os from 'node:os';
 import * as path from 'node:path';
-import { CommandExecutionError } from '@jackwener/opencli/errors';
+import { CommandExecutionError } from '@jyjyxt/cloudl/errors';
 const PART_SIZE = 5 * 1024 * 1024; // 5 MB minimum per TOS/S3 spec
-const RESUME_DIR = path.join(os.homedir(), '.opencli', 'douyin-resume');
+const RESUME_DIR = path.join(os.homedir(), '.cloudl', 'douyin-resume');
 // ── Resume file helpers ──────────────────────────────────────────────────────
 function getResumeFilePath(filePath) {
     const hash = crypto.createHash('sha256').update(filePath).digest('hex');

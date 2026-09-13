@@ -1,7 +1,7 @@
-import { cli, Strategy } from '@jackwener/opencli/registry';
-import { ArgumentError, AuthRequiredError, CommandExecutionError, EmptyResultError } from '@jackwener/opencli/errors';
-import { log } from '@jackwener/opencli/logger';
-import { isRecord } from '@jackwener/opencli/utils';
+import { cli, Strategy } from '@jyjyxt/cloudl/registry';
+import { ArgumentError, AuthRequiredError, CommandExecutionError, EmptyResultError } from '@jyjyxt/cloudl/errors';
+import { log } from '@jyjyxt/cloudl/logger';
+import { isRecord } from '@jyjyxt/cloudl/utils';
 const XUEQIU_SYMBOL_PATTERN = /^(?:[A-Z]{2}\d{5,6}|\d{4,6}|[A-Z]{1,5}(?:[.-][A-Z]{1,2})?)$/;
 const FAILURE_REASON_BY_KIND = {
     auth: 'auth failure',

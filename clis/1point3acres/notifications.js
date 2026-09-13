@@ -3,8 +3,8 @@
  *
  * /bbs/home.php?mod=space&do=notice&view=interactive  needs login cookie.
  */
-import { cli, Strategy } from '@jackwener/opencli/registry';
-import { AuthRequiredError, EmptyResultError } from '@jackwener/opencli/errors';
+import { cli, Strategy } from '@jyjyxt/cloudl/registry';
+import { AuthRequiredError, EmptyResultError } from '@jyjyxt/cloudl/errors';
 import { fetchHtml, decodeEntities, getCookie, stripHtml, truncate, normalizePositiveInteger, BASE } from './utils.js';
 
 cli({

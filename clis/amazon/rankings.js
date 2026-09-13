@@ -1,5 +1,5 @@
-import { CommandExecutionError } from '@jackwener/opencli/errors';
-import { Strategy } from '@jackwener/opencli/registry';
+import { CommandExecutionError } from '@jyjyxt/cloudl/errors';
+import { Strategy } from '@jyjyxt/cloudl/registry';
 import { assertUsableState, buildProvenance, cleanText, extractAsin, extractCategoryNodeId, extractReviewCountFromCardText, firstMeaningfulLine, gotoAndReadState, isRankingPaginationUrl, normalizeProductUrl, parsePriceText, parseRatingValue, parseReviewCount, resolveRankingUrl, toAbsoluteAmazonUrl, uniqueNonEmpty, } from './shared.js';
 function parseRank(rawRank, fallback) {
     const normalized = cleanText(rawRank);

@@ -1,9 +1,9 @@
 // Shared helpers for the steam adapters that hit Steam's storefront JSON
 // endpoints (no browser).
-import { ArgumentError, CommandExecutionError, EmptyResultError } from '@jackwener/opencli/errors';
+import { ArgumentError, CommandExecutionError, EmptyResultError } from '@jyjyxt/cloudl/errors';
 
 export const STEAM_STORE = 'https://store.steampowered.com';
-const UA = 'opencli-steam-adapter (+https://github.com/jyjyxt/cloudownloader)';
+const UA = 'cloudl-steam-adapter (+https://github.com/jyjyxt/cloudownloader)';
 
 export function requireString(value, label) {
     const s = String(value ?? '').trim();

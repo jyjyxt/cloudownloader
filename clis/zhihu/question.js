@@ -1,5 +1,5 @@
-import { cli, Strategy } from '@jackwener/opencli/registry';
-import { AuthRequiredError, CliError } from '@jackwener/opencli/errors';
+import { cli, Strategy } from '@jyjyxt/cloudl/registry';
+import { AuthRequiredError, CliError } from '@jyjyxt/cloudl/errors';
 import { stripHtml } from './text.js';
 
 function answerIdFromUrl(url) {

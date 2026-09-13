@@ -1,5 +1,5 @@
-import { ArgumentError, AuthRequiredError, EmptyResultError, CommandExecutionError, TimeoutError } from '@jackwener/opencli/errors';
-import { cli, Strategy } from '@jackwener/opencli/registry';
+import { ArgumentError, AuthRequiredError, EmptyResultError, CommandExecutionError, TimeoutError } from '@jyjyxt/cloudl/errors';
+import { cli, Strategy } from '@jyjyxt/cloudl/registry';
 import { looksLikePrivateTwitterTimeline, normalizeTwitterGraphqlPayload, normalizeTwitterScreenName, unwrapBrowserResult } from './shared.js';
 
 const MAX_PAGINATION_PAGES = 100;

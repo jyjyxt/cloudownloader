@@ -348,12 +348,12 @@ export class Page extends CDPBasePage {
   /** Precise click using DOM.getContentQuads/getBoxModel for inline elements */
   async clickWithQuads(ref: string): Promise<void> {
     const safeRef = JSON.stringify(ref);
-    const cssSelector = `[data-opencli-ref="${ref.replace(/"/g, '\\"')}"]`;
+    const cssSelector = `[data-cloudl-ref="${ref.replace(/"/g, '\\"')}"]`;
 
     // Scroll element into view first
     await this.evaluate(`
       (() => {
-        const el = document.querySelector('[data-opencli-ref="' + ${safeRef} + '"]');
+        const el = document.querySelector('[data-cloudl-ref="' + ${safeRef} + '"]');
         if (el) el.scrollIntoView({ behavior: 'instant', block: 'center' });
         return !!el;
       })()
@@ -399,7 +399,7 @@ export class Page extends CDPBasePage {
     // Final fallback: regular click
     await this.evaluate(`
       (() => {
-        const el = document.querySelector('[data-opencli-ref="' + ${safeRef} + '"]');
+        const el = document.querySelector('[data-cloudl-ref="' + ${safeRef} + '"]');
         if (!el) throw new Error('Element not found: ' + ${safeRef});
         el.click();
         return 'clicked';

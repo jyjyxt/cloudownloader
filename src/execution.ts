@@ -41,7 +41,7 @@ import { resolveAdapterSourcePath } from './adapter-source.js';
 const _loadedModules = new Map<string, Promise<void>>();
 /** Track mtime of loaded user adapter files for hot-reload in daemon mode. */
 const _moduleMtimes = new Map<string, number>();
-const _userClisDir = `${os.homedir()}/.opencli/clis/`;
+const _userClisDir = `${os.homedir()}/.cloudl/clis/`;
 
 type TraceMode = 'off' | 'on' | 'retain-on-failure';
 
@@ -249,7 +249,7 @@ export async function executeCommand(
 
       if (electron) {
         // Electron apps: respect manual endpoint override, then try auto-detect
-        const manualEndpoint = process.env.OPENCLI_CDP_ENDPOINT;
+        const manualEndpoint = process.env.CLOUDL_CDP_ENDPOINT;
         if (manualEndpoint) {
           const port = Number(new URL(manualEndpoint).port);
           if (!await probeCDP(port)) {
@@ -265,7 +265,7 @@ export async function executeCommand(
       }
 
       const BrowserFactory = getBrowserFactory(cmd.site);
-      // Requirement vs preference: --profile / OPENCLI_PROFILE route strictly;
+      // Requirement vs preference: --profile / CLOUDL_PROFILE route strictly;
       // the config default is a soft preference the daemon arbitrates.
       const profileSelection = resolveProfileSelection(opts.profile);
       const profileRouting = profileRouteParams(profileSelection);
@@ -551,7 +551,7 @@ function exportTraceArtifact(
     if (status === 'failure' && error !== undefined) {
       attachTraceReceipt(error, trace.receipt);
     } else {
-      process.stderr.write(`OpenCLI trace artifact: ${trace.dir}\n`);
+      process.stderr.write(`Cloudl trace artifact: ${trace.dir}\n`);
     }
     try {
       onTraceExport?.(trace);
@@ -590,7 +590,7 @@ function normalizeSiteSession(name: string, raw: unknown): SiteSessionMode | nul
 
 function resolveSiteSession(cmd: CliCommand, rawOption?: unknown): SiteSessionMode {
   return normalizeSiteSession('--site-session', rawOption)
-    ?? normalizeSiteSession('OPENCLI_SITE_SESSION', process.env.OPENCLI_SITE_SESSION)
+    ?? normalizeSiteSession('CLOUDL_SITE_SESSION', process.env.CLOUDL_SITE_SESSION)
     ?? cmd.siteSession
     ?? 'ephemeral';
 }
@@ -620,7 +620,7 @@ function normalizeWindowMode(name: string, raw: unknown): BrowserWindowMode | nu
 
 function resolveBrowserWindowMode(defaultMode: BrowserWindowMode = 'background', rawOption?: unknown): BrowserWindowMode {
   return normalizeWindowMode('--window', rawOption)
-    ?? normalizeWindowMode('OPENCLI_WINDOW', process.env.OPENCLI_WINDOW)
+    ?? normalizeWindowMode('CLOUDL_WINDOW', process.env.CLOUDL_WINDOW)
     ?? defaultMode;
 }
 

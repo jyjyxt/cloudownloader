@@ -1,5 +1,5 @@
-import { ArgumentError, CommandExecutionError, TimeoutError } from '@jackwener/opencli/errors';
-import { cli, Strategy } from '@jackwener/opencli/registry';
+import { ArgumentError, CommandExecutionError, TimeoutError } from '@jyjyxt/cloudl/errors';
+import { cli, Strategy } from '@jyjyxt/cloudl/registry';
 import {
   MIDJOURNEY_IMAGINE_URL,
   displayPath,
@@ -70,13 +70,13 @@ cli({
       while (card && !String(card.className).includes('group/img')) card = card.parentElement;
       const button = card?.querySelector('button');
       if (!button) return false;
-      button.setAttribute('data-opencli-describe-menu', '1');
+      button.setAttribute('data-cloudl-describe-menu', '1');
       return true;
     }, sourceUrl);
     if (!menuMarked) {
       throw new CommandExecutionError('Could not open the uploaded image action menu for Describe');
     }
-    await page.click('[data-opencli-describe-menu="1"]');
+    await page.click('[data-cloudl-describe-menu="1"]');
     await page.wait(0.4);
     const startedAt = new Date().toISOString();
     const clicked = await page.evaluate(() => {

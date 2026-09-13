@@ -6,7 +6,7 @@
  *
  * The studio backend lives on `studio-api-prod.suno.com`; the page itself is
  * on `suno.com`. The browser's normal cross-origin cookie-bearing fetch
- * succeeds from a real Chrome tab, but the OpenCLI bridge's evaluate
+ * succeeds from a real Chrome tab, but the Cloudl bridge's evaluate
  * context isolates third-party cookies — `credentials: 'include'` drops the
  * Clerk session cookie. Sending the JWT explicitly as `Authorization: Bearer`
  * bypasses the isolation and matches the auth path the studio API expects.
@@ -17,7 +17,7 @@
  */
 import * as fs from 'node:fs';
 import * as path from 'node:path';
-import { ArgumentError, AuthRequiredError, CommandExecutionError, EmptyResultError, TimeoutError } from '@jackwener/opencli/errors';
+import { ArgumentError, AuthRequiredError, CommandExecutionError, EmptyResultError, TimeoutError } from '@jyjyxt/cloudl/errors';
 
 export const SUNO_DOMAIN = 'suno.com';
 export const SUNO_URL = 'https://suno.com';

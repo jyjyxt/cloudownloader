@@ -1,7 +1,7 @@
 import { describe, expect, it, vi } from 'vitest';
 import { JSDOM } from 'jsdom';
-import { CommandExecutionError, EmptyResultError } from '@jackwener/opencli/errors';
-import { getRegistry } from '@jackwener/opencli/registry';
+import { CommandExecutionError, EmptyResultError } from '@jyjyxt/cloudl/errors';
+import { getRegistry } from '@jyjyxt/cloudl/registry';
 import './channels.js';
 import './goto.js';
 import './read.js';
@@ -32,7 +32,7 @@ function createRoutePage({ route, rows = [] }) {
         goto: vi.fn().mockResolvedValue(undefined),
         wait: vi.fn().mockResolvedValue(undefined),
         evaluate: vi.fn(async (script) => {
-            if (script.includes('__opencliDiscordRouteState')) {
+            if (script.includes('__cloudlDiscordRouteState')) {
                 return {
                     url: route.url,
                     route: {
@@ -45,7 +45,7 @@ function createRoutePage({ route, rows = [] }) {
                     has_header: true,
                 };
             }
-            if (script.includes('__opencliDiscordReadMessages')) return rows;
+            if (script.includes('__cloudlDiscordReadMessages')) return rows;
             throw new Error(`unexpected evaluate script: ${script.slice(0, 80)}`);
         }),
     };
@@ -120,9 +120,9 @@ describe('discord-app DOM extraction scripts', () => {
             <div class="listItem_server">
               <svg>
                 <foreignObject>
-                  <div data-dnd-name="OpenCLI">
+                  <div data-dnd-name="Cloudl">
                     <div data-list-item-id="guildsnav___111" role="treeitem">
-                      <span>OpenCLI</span>
+                      <span>Cloudl</span>
                     </div>
                   </div>
                 </foreignObject>
@@ -139,7 +139,7 @@ describe('discord-app DOM extraction scripts', () => {
         expect(rows).toEqual([
             {
                 Index: 1,
-                Server: 'OpenCLI',
+                Server: 'Cloudl',
                 guild_id: '111',
                 url: 'https://discord.com/channels/111',
             },
@@ -378,12 +378,12 @@ describe('discord-app list row validation', () => {
         const page = {
             evaluate: vi.fn().mockResolvedValue({
                 session: 'site:discord-app',
-                data: [{ Server: 'OpenCLI', guild_id: '111', url: 'https://discord.com/channels/111' }],
+                data: [{ Server: 'Cloudl', guild_id: '111', url: 'https://discord.com/channels/111' }],
             }),
         };
 
         await expect(listDiscordServers(page)).resolves.toEqual([
-            { Server: 'OpenCLI', guild_id: '111', url: 'https://discord.com/channels/111' },
+            { Server: 'Cloudl', guild_id: '111', url: 'https://discord.com/channels/111' },
         ]);
     });
 
@@ -415,7 +415,7 @@ describe('discord-app list row validation', () => {
 
     it('typed-fails server rows missing stable guild identity', async () => {
         const page = {
-            evaluate: vi.fn().mockResolvedValue([{ Server: 'OpenCLI', url: 'https://discord.com/channels/111' }]),
+            evaluate: vi.fn().mockResolvedValue([{ Server: 'Cloudl', url: 'https://discord.com/channels/111' }]),
         };
 
         await expect(listDiscordServers(page)).rejects.toThrow(CommandExecutionError);
@@ -484,10 +484,10 @@ describe('discord-app targeted reads', () => {
             goto: vi.fn().mockResolvedValue(undefined),
             wait: vi.fn().mockResolvedValue(undefined),
             evaluate: vi.fn(async (script) => {
-                if (script.includes('__opencliDiscordRouteState')) {
+                if (script.includes('__cloudlDiscordRouteState')) {
                     return { url: 'https://discord.com/channels/111/222', route: { guild_id: '111', channel_id: '222', thread_id: '' }, has_messages: true };
                 }
-                if (script.includes('__opencliDiscordReadMessages')) return { rows: [] };
+                if (script.includes('__cloudlDiscordReadMessages')) return { rows: [] };
                 throw new Error(`unexpected evaluate script: ${script.slice(0, 80)}`);
             }),
         };
@@ -502,13 +502,13 @@ describe('discord-app targeted reads', () => {
             goto: vi.fn().mockResolvedValue(undefined),
             wait: vi.fn().mockResolvedValue(undefined),
             evaluate: vi.fn(async (script) => {
-                if (script.includes('__opencliDiscordRouteState')) {
+                if (script.includes('__cloudlDiscordRouteState')) {
                     return {
                         session: 'site:discord-app',
                         data: { url: 'https://discord.com/channels/111/222', route: { guild_id: '111', channel_id: '222', thread_id: '' }, has_messages: true },
                     };
                 }
-                if (script.includes('__opencliDiscordReadMessages')) {
+                if (script.includes('__cloudlDiscordReadMessages')) {
                     return {
                         session: 'site:discord-app',
                         data: [{ Author: 'Ada', Time: '', Message: 'wrapped', channel_id: '222', message_id: '999' }],
@@ -529,7 +529,7 @@ describe('discord-app targeted reads', () => {
             goto: vi.fn().mockResolvedValue(undefined),
             wait: vi.fn().mockResolvedValue(undefined),
             evaluate: vi.fn(async (script) => {
-                if (script.includes('__opencliDiscordRouteState')) {
+                if (script.includes('__cloudlDiscordRouteState')) {
                     routeStateCalls += 1;
                     return {
                         url: 'https://discord.com/channels/111/222',
@@ -539,7 +539,7 @@ describe('discord-app targeted reads', () => {
                         has_header: true,
                     };
                 }
-                if (script.includes('__opencliDiscordReadMessages')) {
+                if (script.includes('__cloudlDiscordReadMessages')) {
                     return [{ Author: 'Ada', Time: '', Message: 'hydrated', channel_id: '222', message_id: '999' }];
                 }
                 throw new Error(`unexpected evaluate script: ${script.slice(0, 80)}`);
@@ -571,7 +571,7 @@ describe('discord-app targeted reads', () => {
     it('resolves visible channel names from the current sidebar', async () => {
         const page = {
             evaluate: vi.fn(async (script) => {
-                if (script.includes('__opencliDiscordListChannels')) {
+                if (script.includes('__cloudlDiscordListChannels')) {
                     return [{ Channel: 'general', guild_id: '111', channel_id: '222', url: 'https://discord.com/channels/111/222' }];
                 }
                 throw new Error(`unexpected evaluate script: ${script.slice(0, 80)}`);

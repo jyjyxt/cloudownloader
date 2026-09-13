@@ -1,6 +1,6 @@
 # Architecture
 
-OpenCLI is a command surface that sits on top of four major subsystems:
+Cloudl is a command surface that sits on top of four major subsystems:
 
 1. command discovery and registry
 2. execution and formatting
@@ -10,7 +10,7 @@ OpenCLI is a command surface that sits on top of four major subsystems:
 ## Runtime Shape
 
 ```text
-opencli CLI
+cloudl CLI
   ├─ command discovery / registry
   ├─ execution / output
   ├─ browser runtime
@@ -74,13 +74,13 @@ opencli CLI
 
 ## Command Sources
 
-OpenCLI merges commands from multiple places into one registry:
+Cloudl merges commands from multiple places into one registry:
 
 | Source | Location | Examples |
 |---|---|---|
 | Built-in adapters | `clis/` | `twitter`, `bilibili`, `reddit`, `chatgpt-app` |
-| Generated / local adapters | `~/.opencli/clis/` | user-authored adapters |
-| Plugins | `~/.opencli/plugins/` | community-contributed commands |
+| Generated / local adapters | `~/.cloudl/clis/` | user-authored adapters |
+| Plugins | `~/.cloudl/plugins/` | community-contributed commands |
 | External CLIs | `src/external-clis.yaml` + local registrations | `gh`, `docker`, `vercel` |
 
 The user sees one unified command tree through `cloudl list`.
@@ -106,7 +106,7 @@ This path is used for:
 
 ### Direct CDP mode
 
-Used when OpenCLI talks directly to a Chrome or Electron debugging endpoint through `OPENCLI_CDP_ENDPOINT`.
+Used when Cloudl talks directly to a Chrome or Electron debugging endpoint through `CLOUDL_CDP_ENDPOINT`.
 
 Typical uses:
 
@@ -116,7 +116,7 @@ Typical uses:
 
 ## Authentication / Access Strategies
 
-OpenCLI currently uses these access strategies:
+Cloudl currently uses these access strategies:
 
 | Strategy | Purpose |
 |---|---|
@@ -150,7 +150,7 @@ These areas deserve targeted tests first, then broader validation when the chang
 
 The simplest accurate model is:
 
-1. OpenCLI discovers command definitions.
+1. Cloudl discovers command definitions.
 2. It registers them into one command registry.
 3. It resolves each invocation through execution + runtime.
 4. It reaches the target through one of:

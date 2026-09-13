@@ -1,6 +1,6 @@
 import { describe, expect, it, vi } from 'vitest';
-import { getRegistry, Strategy } from '@jackwener/opencli/registry';
-import { ArgumentError, AuthRequiredError, EmptyResultError } from '@jackwener/opencli/errors';
+import { getRegistry, Strategy } from '@jyjyxt/cloudl/registry';
+import { ArgumentError, AuthRequiredError, EmptyResultError } from '@jyjyxt/cloudl/errors';
 import { __test__ } from './search.js';
 import './search.js';
 
@@ -57,7 +57,7 @@ describe('boss search', () => {
                         securityId: 'sec',
                         jobName: '前端开发实习生',
                         salaryDesc: '150-200/天',
-                        brandName: 'OpenCLI',
+                        brandName: 'Cloudl',
                         cityName: '北京',
                         areaDistrict: '海淀区',
                         businessDistrict: '',

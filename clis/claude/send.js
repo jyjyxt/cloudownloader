@@ -1,5 +1,5 @@
-import { cli, Strategy } from '@jackwener/opencli/registry';
-import { CommandExecutionError } from '@jackwener/opencli/errors';
+import { cli, Strategy } from '@jyjyxt/cloudl/registry';
+import { CommandExecutionError } from '@jyjyxt/cloudl/errors';
 import { CLAUDE_DOMAIN, CLAUDE_URL, COMPOSER_SELECTOR, ensureOnClaude, sendMessage, parseBoolFlag, withRetry, ensureClaudeComposer, requireNonEmptyPrompt } from './utils.js';
 
 export const sendCommand = cli({

@@ -15,7 +15,7 @@
 // `result` row enum: `followed` / `already-following` / `already-friends`
 // (mutual). Failures throw — never returned as a success row.
 
-import { cli, Strategy } from '@jackwener/opencli/registry';
+import { cli, Strategy } from '@jyjyxt/cloudl/registry';
 import {
     BROWSER_HELPERS,
     BUTTON_WALKER_HELPERS,

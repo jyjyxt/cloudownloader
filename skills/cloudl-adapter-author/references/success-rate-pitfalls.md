@@ -13,8 +13,8 @@
 **根因**：adapter 丢了 URL 前缀 / 拼错了路径 / 吃到了相对路径。pattern 失败不是 fixture 太严，是 adapter 输出真的破了。
 
 **防御**：
-- `autofix` skill 现有纪律：**verify pattern 失败 = 收紧 adapter，不是收紧 fixture**（`opencli-autofix` SKILL.md §Rules for Patching 第 6 条）
-- 要改 fixture 的唯一合法理由：**站点本身换了格式**（例如 URL 规范迁移）。这种情况下在 `~/.opencli/sites/<site>/notes.md` 顶部写一段说明
+- `autofix` skill 现有纪律：**verify pattern 失败 = 收紧 adapter，不是收紧 fixture**（`cloudl-autofix` SKILL.md §Rules for Patching 第 6 条）
+- 要改 fixture 的唯一合法理由：**站点本身换了格式**（例如 URL 规范迁移）。这种情况下在 `~/.cloudl/sites/<site>/notes.md` 顶部写一段说明
 
 ---
 
@@ -113,7 +113,7 @@
 
 **现象**：本地开发时用自己的登录态验 endpoint 能通，PR 一合 verify fixture 跑在 CI 环境里立刻 401——顺手把样本数据也固化进了 fixture，看起来"一切正常"。
 
-**根因**：fixture 样本是带登录态跑出来的。存 `~/.opencli/sites/<site>/fixtures/*.json` 没脱敏，把 cookie / token / 自己的 uid / 昵称存了进去。
+**根因**：fixture 样本是带登录态跑出来的。存 `~/.cloudl/sites/<site>/fixtures/*.json` 没脱敏，把 cookie / token / 自己的 uid / 昵称存了进去。
 
 **防御**：
 - `site-memory.md` 的脱敏规则：存 fixtures 前去掉 cookie / token / 用户私有字段（手机号 / 邮箱 / 昵称 / uid）

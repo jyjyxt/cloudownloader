@@ -6,7 +6,7 @@
  * Flight rows are `.result-item` cards keyed by stable `data-testid` anchors
  * (`flights-name`, `stopInfoText`, `flight_price_*`).
  */
-import { ArgumentError, CommandExecutionError } from '@jackwener/opencli/errors';
+import { ArgumentError, CommandExecutionError } from '@jyjyxt/cloudl/errors';
 
 const MIN_LIMIT = 1;
 const MAX_LIMIT = 50;
@@ -835,7 +835,7 @@ export async function fetchPoiSearch(keyword) {
                 key: keyword,
                 mode: '0',
                 tripType: 'RT',
-                Head: { Currency: 'USD', Locale: 'en-US', Source: 'ONLINE', Channel: 'EnglishSite', ClientID: 'opencli-trip' },
+                Head: { Currency: 'USD', Locale: 'en-US', Source: 'ONLINE', Channel: 'EnglishSite', ClientID: 'cloudl-trip' },
             }),
         });
     } catch (err) {

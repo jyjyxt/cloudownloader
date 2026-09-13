@@ -6,8 +6,8 @@
  *
  * Requires a full Xiaohongshu note URL with xsec_token.
  */
-import { cli, Strategy } from '@jackwener/opencli/registry';
-import { AuthRequiredError, EmptyResultError } from '@jackwener/opencli/errors';
+import { cli, Strategy } from '@jyjyxt/cloudl/registry';
+import { AuthRequiredError, EmptyResultError } from '@jyjyxt/cloudl/errors';
 import { parseNoteId, buildNoteUrl } from './note-helpers.js';
 import { readXhsDetailPage } from './risk-control.js';
 /**

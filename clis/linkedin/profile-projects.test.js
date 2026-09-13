@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
-import { getRegistry } from '@jackwener/opencli/registry';
-import { CommandExecutionError } from '@jackwener/opencli/errors';
+import { getRegistry } from '@jyjyxt/cloudl/registry';
+import { CommandExecutionError } from '@jyjyxt/cloudl/errors';
 import './profile-projects.js';
 
 const { normalizeProfileUrl, profileProjectsUrl, parseProjectText, parseProjectsSectionText, normalizeProject } = await import('./profile-projects.js').then((m) => m.__test__);
@@ -38,13 +38,13 @@ describe('linkedin profile-projects adapter', () => {
   });
 
   it('parses visible project text into fields', () => {
-    expect(parseProjectText(`OpenCLI Contributions
+    expect(parseProjectText(`Cloudl Contributions
 Jan 2026 - Present
 Associated with Open Source
 Browser automation and CLI adapter work
 Skills: JavaScript, Browser Automation`, 'https://www.linkedin.com/in/me/', 0)).toMatchObject({
       rank: 1,
-      title: 'OpenCLI Contributions',
+      title: 'Cloudl Contributions',
       date_range: 'Jan 2026 - Present',
       associated_with: 'Open Source',
       description: 'Browser automation and CLI adapter work',

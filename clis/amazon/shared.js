@@ -1,4 +1,4 @@
-import { ArgumentError, CommandExecutionError } from '@jackwener/opencli/errors';
+import { ArgumentError, CommandExecutionError } from '@jyjyxt/cloudl/errors';
 export const SITE = 'amazon';
 export const DOMAIN = 'amazon.com';
 export const HOME_URL = 'https://www.amazon.com/';
@@ -356,7 +356,7 @@ export function isRobotState(state) {
 export function buildChallengeHint(action) {
     return [
         `Open a clean Amazon ${action} page in the shared Chrome profile and clear any robot check first.`,
-        'If you are using CDP, set OPENCLI_CDP_TARGET=amazon.com and avoid parallel Amazon commands against the same browser target.',
+        'If you are using CDP, set CLOUDL_CDP_TARGET=amazon.com and avoid parallel Amazon commands against the same browser target.',
     ].join(' ');
 }
 export async function readPageState(page) {

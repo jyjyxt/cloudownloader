@@ -11,7 +11,7 @@
  * XML. We parse it with conservative regexes (same pattern as the arxiv
  * adapter) to avoid pulling in an XML lib for this single endpoint.
  */
-import { ArgumentError, CommandExecutionError, EmptyResultError } from '@jackwener/opencli/errors';
+import { ArgumentError, CommandExecutionError, EmptyResultError } from '@jyjyxt/cloudl/errors';
 
 export const DBLP_ORIGIN = 'https://dblp.org';
 
@@ -33,7 +33,7 @@ async function dblpFetch(url, label, accept) {
         res = await fetch(url, {
             headers: {
                 accept,
-                'user-agent': 'opencli-dblp/1.0 (+https://github.com/jyjyxt/cloudownloader)',
+                'user-agent': 'cloudl-dblp/1.0 (+https://github.com/jyjyxt/cloudownloader)',
             },
         });
     }

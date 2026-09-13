@@ -3,7 +3,7 @@ import * as fs from 'node:fs';
 import * as os from 'node:os';
 import * as path from 'node:path';
 import { spawnSync } from 'node:child_process';
-import { CommandExecutionError } from '@jackwener/opencli/errors';
+import { CommandExecutionError } from '@jyjyxt/cloudl/errors';
 import { instagramPrivateApiFetch } from './protocol-capture.js';
 import { INSTAGRAM_HOME_URL } from './navigation.js';
 import { buildReadInstagramRuntimeInfoJs, } from './runtime-info.js';
@@ -91,7 +91,7 @@ export async function resolveInstagramPrivatePublishConfig(page) {
             if (typeof page.startNetworkCapture === 'function') {
                 await page.startNetworkCapture(INSTAGRAM_PRIVATE_CAPTURE_PATTERN);
             }
-            await page.goto(`${INSTAGRAM_HOME_URL}?__opencli_private_probe=${Date.now()}`);
+            await page.goto(`${INSTAGRAM_HOME_URL}?__cloudl_private_probe=${Date.now()}`);
             await page.wait({ time: 2 });
             const [cookies, runtime, entries] = await Promise.all([
                 page.getCookies({ domain: 'instagram.com' }),
@@ -327,7 +327,7 @@ export function getInstagramStoryNormalizedDimensions(width, height) {
 }
 function buildPrivateNormalizedImagePath(filePath) {
     const parsed = path.parse(filePath);
-    return path.join(os.tmpdir(), `opencli-instagram-private-${parsed.name}-${crypto.randomUUID()}${parsed.ext || '.png'}`);
+    return path.join(os.tmpdir(), `cloudl-instagram-private-${parsed.name}-${crypto.randomUUID()}${parsed.ext || '.png'}`);
 }
 export function prepareImageAssetForPrivateUpload(filePath) {
     const asset = readImageAsset(filePath);
@@ -398,7 +398,7 @@ export function prepareImageAssetForPrivateStoryUpload(filePath) {
     };
 }
 function runSwiftJsonScript(script, args, stage) {
-    const scriptPath = path.join(os.tmpdir(), `opencli-instagram-${crypto.randomUUID()}.swift`);
+    const scriptPath = path.join(os.tmpdir(), `cloudl-instagram-${crypto.randomUUID()}.swift`);
     fs.writeFileSync(scriptPath, script);
     try {
         const result = spawnSync('swift', [scriptPath, ...args], {
@@ -460,11 +460,11 @@ FileHandle.standardOutput.write(data)
 }
 function buildPrivateVideoCoverPath(filePath) {
     const parsed = path.parse(filePath);
-    return path.join(os.tmpdir(), `opencli-instagram-private-video-cover-${parsed.name}-${crypto.randomUUID()}.jpg`);
+    return path.join(os.tmpdir(), `cloudl-instagram-private-video-cover-${parsed.name}-${crypto.randomUUID()}.jpg`);
 }
 function buildPrivateStoryVideoPath(filePath) {
     const parsed = path.parse(filePath);
-    return path.join(os.tmpdir(), `opencli-instagram-story-video-${parsed.name}-${crypto.randomUUID()}${parsed.ext || '.mp4'}`);
+    return path.join(os.tmpdir(), `cloudl-instagram-story-video-${parsed.name}-${crypto.randomUUID()}${parsed.ext || '.mp4'}`);
 }
 function generateVideoCoverImage(filePath) {
     if (process.platform !== 'darwin') {

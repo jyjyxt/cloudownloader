@@ -2,7 +2,7 @@ import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import fs from 'node:fs';
 import path from 'node:path';
 import os from 'node:os';
-import { getRegistry } from '@jackwener/opencli/registry';
+import { getRegistry } from '@jyjyxt/cloudl/registry';
 import './attachment-upload.js';
 
 function makePage(envelope) {

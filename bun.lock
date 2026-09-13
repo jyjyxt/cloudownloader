@@ -3,7 +3,7 @@
   "configVersion": 0,
   "workspaces": {
     "": {
-      "name": "@jackwener/opencli",
+      "name": "@jyjyxt/cloudl",
       "dependencies": {
         "@mozilla/readability": "^0.6.0",
         "cli-table3": "^0.6.5",

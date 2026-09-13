@@ -22,7 +22,7 @@
  *
  * Readability runs in the page's own window because it needs real DOM APIs
  * (getComputedStyle, treeWalker). Running it Node-side would require jsdom —
- * a heavy dep the rest of OpenCLI doesn't need.
+ * a heavy dep the rest of Cloudl doesn't need.
  */
 
 import * as fs from 'node:fs';

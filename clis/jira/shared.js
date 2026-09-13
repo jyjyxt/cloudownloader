@@ -11,7 +11,7 @@ import {
     requirePayloadString,
     requireString,
 } from '../_atlassian/shared.js';
-import { ArgumentError, CommandExecutionError } from '@jackwener/opencli/errors';
+import { ArgumentError, CommandExecutionError } from '@jyjyxt/cloudl/errors';
 
 const DEFAULT_ISSUE_FIELDS = [
     'summary',

@@ -12,13 +12,13 @@
  *   8. Poll for success/failure feedback
  *
  * Usage:
- *   cloudl weibo publish "Hello from OpenCLI! #opencli"  # publishes immediately
+ *   cloudl weibo publish "Hello from Cloudl! #cloudl"  # publishes immediately
  *   cloudl weibo publish "Check this out" --images /path/a.jpg,/path/b.jpg
  */
 import * as fs from 'node:fs';
 import * as path from 'node:path';
-import { cli, Strategy } from '@jackwener/opencli/registry';
-import { ArgumentError, AuthRequiredError, CommandExecutionError } from '@jackwener/opencli/errors';
+import { cli, Strategy } from '@jyjyxt/cloudl/registry';
+import { ArgumentError, AuthRequiredError, CommandExecutionError } from '@jyjyxt/cloudl/errors';
 import { getSelfUid } from './utils.js';
 
 const MAX_IMAGES = 9;

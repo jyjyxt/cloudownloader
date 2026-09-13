@@ -1,4 +1,4 @@
-import { cli, Strategy } from '@jackwener/opencli/registry';
+import { cli, Strategy } from '@jyjyxt/cloudl/registry';
 import { fetchBloombergFeed } from './utils.js';
 cli({
     site: 'bloomberg',

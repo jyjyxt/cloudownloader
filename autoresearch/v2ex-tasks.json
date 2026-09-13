@@ -523,7 +523,7 @@
     "steps": [
       "cloudl browser open https://v2ex.com/",
       "cloudl browser state",
-      "cloudl browser eval \"(function(){var links=[...document.querySelectorAll('a')];var tab=links.find(a=>a.href&&a.href.includes('tab=tech'));if(tab){var ref=tab.getAttribute('data-opencli-ref');return ref||'no-ref';}return 'not-found';})()\""
+      "cloudl browser eval \"(function(){var links=[...document.querySelectorAll('a')];var tab=links.find(a=>a.href&&a.href.includes('tab=tech'));if(tab){var ref=tab.getAttribute('data-cloudl-ref');return ref||'no-ref';}return 'not-found';})()\""
     ],
     "judge": {
       "type": "matchesPattern",
@@ -838,13 +838,13 @@
     "steps": [
       "cloudl browser open https://v2ex.com/?tab=hot",
       "cloudl browser state",
-      "cloudl browser eval \"(function(){var links=document.querySelectorAll('[data-opencli-ref]');for(var i=0;i<links.length;i++){if(links[i].pathname&&links[i].pathname.startsWith('/t/'))return links[i].getAttribute('data-opencli-ref');}return 'none';})()\""
+      "cloudl browser eval \"(function(){var links=document.querySelectorAll('[data-cloudl-ref]');for(var i=0;i<links.length;i++){if(links[i].pathname&&links[i].pathname.startsWith('/t/'))return links[i].getAttribute('data-cloudl-ref');}return 'none';})()\""
     ],
     "judge": {
       "type": "matchesPattern",
       "pattern": "\\d+"
     },
-    "note": "Finds the index of first topic link via data-opencli-ref"
+    "note": "Finds the index of first topic link via data-cloudl-ref"
   },
   {
     "name": "v2ex-agent-type-search",
@@ -865,7 +865,7 @@
     "steps": [
       "cloudl browser open https://v2ex.com/?tab=hot",
       "cloudl browser state",
-      "cloudl browser eval \"(function(){var links=document.querySelectorAll('[data-opencli-ref]');for(var i=0;i<links.length;i++){if(links[i].pathname&&links[i].pathname.startsWith('/t/')){var ref=links[i].getAttribute('data-opencli-ref');document.querySelector('[data-opencli-ref=\\\"'+ref+'\\\"]').click();return 'clicked '+ref;}}return 'none';})()\"",
+      "cloudl browser eval \"(function(){var links=document.querySelectorAll('[data-cloudl-ref]');for(var i=0;i<links.length;i++){if(links[i].pathname&&links[i].pathname.startsWith('/t/')){var ref=links[i].getAttribute('data-cloudl-ref');document.querySelector('[data-cloudl-ref=\\\"'+ref+'\\\"]').click();return 'clicked '+ref;}}return 'none';})()\"",
       "cloudl browser wait time 2",
       "cloudl browser eval \"document.title\""
     ],

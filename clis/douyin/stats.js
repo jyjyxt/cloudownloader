@@ -1,5 +1,5 @@
-import { cli, Strategy } from '@jackwener/opencli/registry';
-import { ArgumentError, EmptyResultError } from '@jackwener/opencli/errors';
+import { cli, Strategy } from '@jyjyxt/cloudl/registry';
+import { ArgumentError, EmptyResultError } from '@jyjyxt/cloudl/errors';
 import { browserFetch } from './_shared/browser-fetch.js';
 
 // The creator item list is where the per-work metric set lives: play, completion,

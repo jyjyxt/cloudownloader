@@ -1,6 +1,6 @@
 import { describe, expect, it, vi } from 'vitest';
 import { JSDOM } from 'jsdom';
-import { CommandExecutionError } from '@jackwener/opencli/errors';
+import { CommandExecutionError } from '@jyjyxt/cloudl/errors';
 import { __test__, collectGeminiTranscriptAdditions, getGeminiConversationList, getGeminiPageState, getGeminiVisibleTurns, pickGeminiDeepResearchExportUrl, readGeminiSnapshot, sanitizeGeminiResponseText, selectGeminiModel, selectGeminiThinking, sendGeminiMessage, } from './utils.js';
 function createPageMock() {
     return {
@@ -30,13 +30,13 @@ function createPageMock() {
 }
 describe('sanitizeGeminiResponseText', () => {
     it('strips a prompt echo only when it appears as a prefixed block', () => {
-        const prompt = 'Reply with the word opencli';
-        const value = `Reply with the word opencli\n\nopencli`;
-        expect(sanitizeGeminiResponseText(value, prompt)).toBe('opencli');
+        const prompt = 'Reply with the word cloudl';
+        const value = `Reply with the word cloudl\n\ncloudl`;
+        expect(sanitizeGeminiResponseText(value, prompt)).toBe('cloudl');
     });
     it('does not strip prompt text that appears later in a legitimate answer', () => {
-        const prompt = 'opencli';
-        const value = 'You asked about opencli, and cloudl is the right keyword here.';
+        const prompt = 'cloudl';
+        const value = 'You asked about cloudl, and cloudl is the right keyword here.';
         expect(sanitizeGeminiResponseText(value, prompt)).toBe(value);
     });
     it('removes known Gemini footer noise', () => {

@@ -4,7 +4,7 @@ description: How to CLI-ify and automate any Electron Desktop Application via CD
 
 # CLI-ifying Electron Applications (Skill Guide)
 
-Based on the successful automation of **Cursor**, **Codex**, **Antigravity**, **ChatWise**, and **Discord** desktop apps, this guide serves as the standard operating procedure (SOP) for adapting ANY Electron-based application into an OpenCLI adapter.
+Based on the successful automation of **Cursor**, **Codex**, **Antigravity**, **ChatWise**, and **Discord** desktop apps, this guide serves as the standard operating procedure (SOP) for adapting ANY Electron-based application into an Cloudl adapter.
 
 ## Core Concept
 
@@ -82,7 +82,7 @@ await page.wait(1); // Wait for re-render
 
 ## Environment Variable
 ```bash
-export OPENCLI_CDP_ENDPOINT="http://127.0.0.1:<unique-port>"
+export CLOUDL_CDP_ENDPOINT="http://127.0.0.1:<unique-port>"
 ```
 
 ## Non-Electron Pattern (AppleScript)
@@ -109,7 +109,7 @@ Core techniques:
 ## Pitfalls & Gotchas
 
 1. **Port conflicts (EADDRINUSE)**: Only one app per port. Use unique ports matching the builtin registry: Codex=9238, Doubao=9225, Cursor=9226, ChatWise=9228, Discord=9232, Antigravity=9234, ChatGPT=9236. Avoid `9222`, the default Chrome DevTools port the cloudl browser bridge already binds.
-2. **IPage abstraction**: OpenCLI wraps the browser page as `IPage` (`src/types.ts`). Use `page.pressKey()` and `page.evaluate()`, NOT direct DOM APIs
+2. **IPage abstraction**: Cloudl wraps the browser page as `IPage` (`src/types.ts`). Use `page.pressKey()` and `page.evaluate()`, NOT direct DOM APIs
 3. **Timing**: Always add `await page.wait(0.5)` to `1.0` after DOM mutations. Returning too early disconnects prematurely
 4. **AppleScript requires Accessibility**: Terminal app must be granted permission in System Settings → Privacy & Security → Accessibility
 

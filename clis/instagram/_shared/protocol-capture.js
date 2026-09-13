@@ -1,7 +1,7 @@
 import * as fs from 'node:fs';
 import { resolveInstagramRuntimeInfo } from './runtime-info.js';
-const DEFAULT_CAPTURE_VAR = '__opencli_ig_protocol_capture';
-const DEFAULT_CAPTURE_ERRORS_VAR = '__opencli_ig_protocol_capture_errors';
+const DEFAULT_CAPTURE_VAR = '__cloudl_ig_protocol_capture';
+const DEFAULT_CAPTURE_ERRORS_VAR = '__cloudl_ig_protocol_capture_errors';
 const TRACE_OUTPUT_PATH = '/tmp/instagram_post_protocol_trace.json';
 const INSTAGRAM_PROTOCOL_CAPTURE_PATTERN = [
     '/rupload_igphoto/',
@@ -146,27 +146,27 @@ export function buildInstallInstagramProtocolCaptureJs(captureVar = DEFAULT_CAPT
       const origSetRequestHeader = XMLHttpRequest.prototype.setRequestHeader;
 
       XMLHttpRequest.prototype.open = function(method, url) {
-        this.__opencli_method = method;
-        this.__opencli_url = url;
-        this.__opencli_headers = {};
+        this.__cloudl_method = method;
+        this.__cloudl_url = url;
+        this.__cloudl_headers = {};
         return origOpen.apply(this, arguments);
       };
       XMLHttpRequest.prototype.setRequestHeader = function(name, value) {
         try {
-          this.__opencli_headers = this.__opencli_headers || {};
-          this.__opencli_headers[String(name)] = String(value);
+          this.__cloudl_headers = this.__cloudl_headers || {};
+          this.__cloudl_headers[String(name)] = String(value);
         } catch {}
         return origSetRequestHeader.apply(this, arguments);
       };
       XMLHttpRequest.prototype.send = function(body) {
         this.addEventListener('load', () => {
-          if (!shouldCapture(this.__opencli_url)) return;
+          if (!shouldCapture(this.__cloudl_url)) return;
           try {
             window[CAPTURE_VAR].push({
               kind: 'xhr',
-              url: String(this.__opencli_url || ''),
-              method: String(this.__opencli_method || 'GET').toUpperCase(),
-              requestHeaders: this.__opencli_headers || {},
+              url: String(this.__cloudl_url || ''),
+              method: String(this.__cloudl_method || 'GET').toUpperCase(),
+              requestHeaders: this.__cloudl_headers || {},
               requestBodyKind: body == null ? 'empty' : (body instanceof FormData ? 'formdata' : typeof body),
               requestBodyPreview: body == null ? '' : (body instanceof FormData ? '[formdata]' : String(body).slice(0, 2000)),
               responseStatus: this.status,
@@ -235,7 +235,7 @@ export async function readInstagramProtocolCapture(page) {
     };
 }
 export async function dumpInstagramProtocolCaptureIfEnabled(page) {
-    if (process.env.OPENCLI_INSTAGRAM_CAPTURE !== '1')
+    if (process.env.CLOUDL_INSTAGRAM_CAPTURE !== '1')
         return;
     const payload = await readInstagramProtocolCapture(page);
     fs.writeFileSync(TRACE_OUTPUT_PATH, JSON.stringify(payload, null, 2));

@@ -1,4 +1,4 @@
-import { ArgumentError, AuthRequiredError, CommandExecutionError } from '@jackwener/opencli/errors';
+import { ArgumentError, AuthRequiredError, CommandExecutionError } from '@jyjyxt/cloudl/errors';
 export const SITE = '1688';
 export const HOME_URL = 'https://www.1688.com/';
 export const SEARCH_URL_PREFIX = 'https://s.1688.com/selloffer/offer_search.htm?charset=utf8&keywords=';
@@ -121,28 +121,28 @@ export function uniqueNonEmpty(values) {
 export function parseSearchLimit(input) {
     const parsed = Number.parseInt(String(input ?? SEARCH_LIMIT_DEFAULT), 10);
     if (!Number.isFinite(parsed) || parsed < 1) {
-        throw new ArgumentError('1688 search --limit must be a positive integer', 'Example: opencli 1688 search "桌面置物架" --limit 20');
+        throw new ArgumentError('1688 search --limit must be a positive integer', 'Example: cloudl 1688 search "桌面置物架" --limit 20');
     }
     return Math.min(SEARCH_LIMIT_MAX, parsed);
 }
 export function buildSearchUrl(query) {
     const normalized = cleanText(query);
     if (!normalized) {
-        throw new ArgumentError('1688 search query cannot be empty', 'Example: opencli 1688 search "桌面置物架" --limit 20');
+        throw new ArgumentError('1688 search query cannot be empty', 'Example: cloudl 1688 search "桌面置物架" --limit 20');
     }
     return `${SEARCH_URL_PREFIX}${encodeURIComponent(normalized)}`;
 }
 export function buildDetailUrl(input) {
     const offerId = extractOfferId(input);
     if (!offerId) {
-        throw new ArgumentError('1688 item expects an offer URL or offer ID', 'Example: opencli 1688 item 887904326744');
+        throw new ArgumentError('1688 item expects an offer URL or offer ID', 'Example: cloudl 1688 item 887904326744');
     }
     return `${DETAIL_URL_PREFIX}${offerId}.html`;
 }
 export function resolveStoreUrl(input) {
     const normalized = cleanText(input);
     if (!normalized) {
-        throw new ArgumentError('1688 store expects a store URL or member ID', 'Example: opencli 1688 store https://yinuoweierfushi.1688.com/');
+        throw new ArgumentError('1688 store expects a store URL or member ID', 'Example: cloudl 1688 store https://yinuoweierfushi.1688.com/');
     }
     const memberId = extractMemberId(normalized);
     if (memberId) {
@@ -157,7 +157,7 @@ export function resolveStoreUrl(input) {
     if (/^[a-z0-9-]+$/i.test(normalized)) {
         return canonicalizeStoreUrl(`https://${normalized}.1688.com`);
     }
-    throw new ArgumentError('1688 store expects a store URL or member ID', 'Example: opencli 1688 store b2b-22154705262941f196');
+    throw new ArgumentError('1688 store expects a store URL or member ID', 'Example: cloudl 1688 store b2b-22154705262941f196');
 }
 export function canonicalizeStoreUrl(input) {
     const url = parse1688Url(input);
@@ -167,7 +167,7 @@ export function canonicalizeStoreUrl(input) {
     }
     const host = normalizeStoreHost(url.hostname);
     if (!host) {
-        throw new ArgumentError('Invalid 1688 store URL', 'Example: opencli 1688 store https://yinuoweierfushi.1688.com/');
+        throw new ArgumentError('Invalid 1688 store URL', 'Example: cloudl 1688 store https://yinuoweierfushi.1688.com/');
     }
     return `https://${host}`;
 }
@@ -370,7 +370,7 @@ export function isLoginState(state) {
 export function buildCaptchaHint(action) {
     return [
         `Open a clean 1688 ${action} page in the shared Chrome profile and finish any slider challenge first.`,
-        'If you run cloudl via CDP, set OPENCLI_CDP_TARGET=1688.com or a more specific 1688 host before retrying.',
+        'If you run cloudl via CDP, set CLOUDL_CDP_TARGET=1688.com or a more specific 1688 host before retrying.',
     ].join(' ');
 }
 export async function readPageState(page) {
@@ -398,7 +398,7 @@ export async function gotoAndReadState(page, url, settleMs = 2500, action = 'pag
         if (message.includes('Inspected target navigated or closed')
             || message.includes('Cannot find context with specified id')
             || message.includes('Target closed')) {
-            throw new CommandExecutionError(`1688 ${action} navigation lost the current browser target`, `${buildCaptchaHint(action)} If CDP is attached to a stale or blocked tab, open a fresh 1688 tab and point OPENCLI_CDP_TARGET at that tab.`);
+            throw new CommandExecutionError(`1688 ${action} navigation lost the current browser target`, `${buildCaptchaHint(action)} If CDP is attached to a stale or blocked tab, open a fresh 1688 tab and point CLOUDL_CDP_TARGET at that tab.`);
         }
         throw error;
     }

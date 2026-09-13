@@ -16,8 +16,8 @@ export interface ExportObservationOptions {
   retentionPolicy?: TraceRetentionPolicyInput;
 }
 
-function baseOpenCliDir(): string {
-  return process.env.OPENCLI_CONFIG_DIR || path.join(os.homedir(), '.opencli');
+function baseCloudlDir(): string {
+  return process.env.CLOUDL_CONFIG_DIR || path.join(os.homedir(), '.cloudl');
 }
 
 function safeSegment(value: string | undefined): string {
@@ -25,7 +25,7 @@ function safeSegment(value: string | undefined): string {
   return safe || 'default';
 }
 
-export function getTraceDirectory(contextId: string | undefined, traceId: string, baseDir: string = baseOpenCliDir()): string {
+export function getTraceDirectory(contextId: string | undefined, traceId: string, baseDir: string = baseCloudlDir()): string {
   return path.join(baseDir, 'profiles', safeSegment(contextId), 'traces', safeSegment(traceId));
 }
 
@@ -106,7 +106,7 @@ export function buildTraceReceipt(
   const createdAt = opts.createdAt ?? new Date().toISOString();
   return {
     schemaVersion: 1,
-    opencliVersion: PKG_VERSION,
+    cloudlVersion: PKG_VERSION,
     traceId: result.traceId,
     traceDir: result.dir,
     summaryPath: result.summaryPath,
@@ -170,7 +170,7 @@ function renderSummary(
   const lines = [
     '---',
     'schemaVersion: 1',
-    `opencliVersion: ${yamlScalar(PKG_VERSION)}`,
+    `cloudlVersion: ${yamlScalar(PKG_VERSION)}`,
     `traceId: ${yamlScalar(session.id)}`,
     `status: ${opts.status}`,
     `contextId: ${yamlScalar(session.scope.contextId ?? 'default')}`,
@@ -190,12 +190,12 @@ function renderSummary(
     ] : []),
     '---',
     '',
-    '# OpenCLI Trace Summary',
+    '# Cloudl Trace Summary',
     '',
     '## How To Use',
     '',
     '- Start with this summary, then inspect `trace.jsonl` only when the evidence below is insufficient.',
-    '- For adapter repair policy and retry limits, use the `opencli-autofix` skill.',
+    '- For adapter repair policy and retry limits, use the `cloudl-autofix` skill.',
     '- `adapterSourcePathExists: false` means the path is a best-effort hint, not a confirmed editable file.',
     '',
     '## Error',

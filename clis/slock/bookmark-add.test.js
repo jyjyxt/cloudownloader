@@ -1,5 +1,5 @@
 import { describe, it, expect, vi } from 'vitest';
-import { getRegistry } from '@jackwener/opencli/registry';
+import { getRegistry } from '@jyjyxt/cloudl/registry';
 import './bookmark-add.js';
 
 function makePage(result = { kind: 'ok', rows: [{ id: 'b1' }] }) {

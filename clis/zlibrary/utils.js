@@ -2,7 +2,7 @@
  * Z-Library adapter utilities.
  */
 
-import { ArgumentError } from '@jackwener/opencli/errors';
+import { ArgumentError } from '@jyjyxt/cloudl/errors';
 
 const ZLIBRARY_DOMAIN = 'z-library.im';
 const ZLIBRARY_ORIGIN = `https://${ZLIBRARY_DOMAIN}`;
@@ -63,7 +63,7 @@ export async function extractBookTitle(page) {
  * Clicks the three-dot menu to reveal download options.
  * NOTE: Z-Library download links redirect through /dl/<hash> URLs.
  * These require browser cookies and may not produce direct file downloads
- * in OpenCLI's browser automation. For actual file downloading,
+ * in Cloudl's browser automation. For actual file downloading,
  * consider using Playwright's download event handling instead.
  */
 export async function extractFormats(page) {

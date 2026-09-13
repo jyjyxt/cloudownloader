@@ -1,6 +1,6 @@
 import { describe, expect, it, vi } from 'vitest';
-import { AuthRequiredError, TimeoutError } from '@jackwener/opencli/errors';
-import { getRegistry } from '@jackwener/opencli/registry';
+import { AuthRequiredError, TimeoutError } from '@jyjyxt/cloudl/errors';
+import { getRegistry } from '@jyjyxt/cloudl/registry';
 import { registerSiteAuthCommands } from './site-auth.js';
 
 function pageMock() {

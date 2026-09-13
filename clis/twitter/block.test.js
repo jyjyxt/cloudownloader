@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
-import { CommandExecutionError } from '@jackwener/opencli/errors';
-import { getRegistry } from '@jackwener/opencli/registry';
+import { CommandExecutionError } from '@jyjyxt/cloudl/errors';
+import { getRegistry } from '@jyjyxt/cloudl/registry';
 import './block.js';
 import { createPageMock } from '../test-utils.js';
 import { createInteractiveTwitterDomPage, createTwitterDomPage } from './test-dom-utils.js';

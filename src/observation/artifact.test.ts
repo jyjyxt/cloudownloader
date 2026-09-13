@@ -9,7 +9,7 @@ describe('observation artifact', () => {
   let baseDir: string;
 
   beforeEach(() => {
-    baseDir = fs.mkdtempSync(path.join(os.tmpdir(), 'opencli-trace-'));
+    baseDir = fs.mkdtempSync(path.join(os.tmpdir(), 'cloudl-trace-'));
   });
 
   afterEach(() => {
@@ -55,7 +55,7 @@ describe('observation artifact', () => {
 
     const summary = fs.readFileSync(result.summaryPath, 'utf-8');
     expect(summary).toContain('schemaVersion: 1');
-    expect(summary).toContain('opencliVersion:');
+    expect(summary).toContain('cloudlVersion:');
     expect(summary).toContain('expiresAt:');
     expect(summary).toContain('status: failure');
     expect(summary).toContain('contextId: "work"');
@@ -68,7 +68,7 @@ describe('observation artifact', () => {
     const receipt = JSON.parse(fs.readFileSync(result.receiptPath, 'utf-8'));
     expect(receipt).toMatchObject({
       schemaVersion: 1,
-      opencliVersion: expect.any(String),
+      cloudlVersion: expect.any(String),
       traceId: 'trace-1',
       traceDir: result.dir,
       summaryPath: result.summaryPath,
@@ -89,9 +89,9 @@ describe('observation artifact', () => {
   it('builds a compact trace receipt', () => {
     const receipt = buildTraceReceipt({
       traceId: 'trace-1',
-      dir: '/tmp/opencli/profiles/work/traces/trace-1',
-      summaryPath: '/tmp/opencli/profiles/work/traces/trace-1/summary.md',
-      receiptPath: '/tmp/opencli/profiles/work/traces/trace-1/receipt.json',
+      dir: '/tmp/cloudl/profiles/work/traces/trace-1',
+      summaryPath: '/tmp/cloudl/profiles/work/traces/trace-1/summary.md',
+      receiptPath: '/tmp/cloudl/profiles/work/traces/trace-1/receipt.json',
     }, 'failure', new Error('failed with token=secret'), {
       createdAt: '2026-05-03T00:00:00.000Z',
       retentionPolicy: { maxAgeDays: 7 },
@@ -99,10 +99,10 @@ describe('observation artifact', () => {
 
     expect(receipt).toMatchObject({
       schemaVersion: 1,
-      opencliVersion: expect.any(String),
+      cloudlVersion: expect.any(String),
       traceId: 'trace-1',
-      traceDir: '/tmp/opencli/profiles/work/traces/trace-1',
-      receiptPath: '/tmp/opencli/profiles/work/traces/trace-1/receipt.json',
+      traceDir: '/tmp/cloudl/profiles/work/traces/trace-1',
+      receiptPath: '/tmp/cloudl/profiles/work/traces/trace-1/receipt.json',
       status: 'failure',
       expiresAt: '2026-05-10T00:00:00.000Z',
     });

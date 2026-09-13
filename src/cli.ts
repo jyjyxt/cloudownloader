@@ -17,7 +17,7 @@ import { render as renderOutput } from './output.js';
 import { PKG_VERSION } from './version.js';
 import { printCompletionScript } from './completion.js';
 import { loadExternalClis, executeExternalCli, installExternalCli, registerExternalCli, isBinaryInstalled, formatExternalCliLabel } from './external.js';
-import { listOpenCliSkills, readOpenCliSkill } from './skills.js';
+import { listCloudlSkills, readCloudlSkill } from './skills.js';
 import { registerAllCommands } from './commanderAdapter.js';
 import { classifyAdapter, formatRootAdapterHelpText, installCommanderNamespaceStructuredHelp, installStructuredHelp, leadingPositionalFromUsage, rootHelpData, type RootAdapterGroups } from './help.js';
 import { EXIT_CODES, getErrorMessage, BrowserConnectError, CliError } from './errors.js';
@@ -183,7 +183,7 @@ function copyEjectedRepoSharedDependencies(builtinSiteDir: string, builtinShared
 
 /**
  * Normalize raw capture entries (from daemon/CDP `readNetworkCapture` or
- * the JS interceptor's `window.__opencli_net`) into a consistent shape.
+ * the JS interceptor's `window.__cloudl_net`) into a consistent shape.
  * Response preview is parsed as JSON when possible, otherwise kept as string.
  * `bodyFullSize` / `bodyTruncated` surface capture-layer truncation so the
  * agent-facing envelope can warn when the body isn't whole.
@@ -224,7 +224,7 @@ async function captureNetworkItems(page: import('./types.js').IPage): Promise<Br
       });
     }
   }
-  const raw = await page.evaluate(`(function(){ var out = window.__opencli_net || []; window.__opencli_net = []; return JSON.stringify(out); })()`) as string;
+  const raw = await page.evaluate(`(function(){ var out = window.__cloudl_net || []; window.__cloudl_net = []; return JSON.stringify(out); })()`) as string;
   try {
     const parsed = JSON.parse(raw) as BrowserNetworkItem[];
     return parsed.map((item) => ({
@@ -233,7 +233,7 @@ async function captureNetworkItems(page: import('./types.js').IPage): Promise<Br
       timestamp: timestampFromRaw(item.timestamp),
     }));
   } catch {
-    if (process.env.OPENCLI_VERBOSE) log.warn(`[network] Failed to parse interceptor buffer: ${typeof raw === 'string' ? raw.slice(0, 200) : String(raw)}`);
+    if (process.env.CLOUDL_VERBOSE) log.warn(`[network] Failed to parse interceptor buffer: ${typeof raw === 'string' ? raw.slice(0, 200) : String(raw)}`);
     return [];
   }
 }
@@ -265,7 +265,7 @@ function emitNetworkError(code: string, message: string, extra: Record<string, u
 
 /**
  * Check whether the site-memory scaffolding exists under
- * ~/.opencli/sites/<site>/. Agents have a strong tendency to forget to write
+ * ~/.cloudl/sites/<site>/. Agents have a strong tendency to forget to write
  * endpoints.json / notes.md after a successful verify, which dooms the next
  * agent to redo recon from scratch. Surfacing the current state as part of
  * verify's final report converts that "silent skip" into a visible nudge;
@@ -303,7 +303,7 @@ type SitemapAvailabilityOptions = {
 };
 
 const SITEMAP_HINT =
-  'Site sitemap available. For navigation context, use the opencli-browser-sitemap skill; treat browser state as truth if it disagrees.';
+  'Site sitemap available. For navigation context, use the cloudl-browser-sitemap skill; treat browser state as truth if it disagrees.';
 
 function siteNameCandidatesFromUrl(url: string, registry: Map<string, CliCommand> = getRegistry()): string[] {
   let host: string;
@@ -345,7 +345,7 @@ function firstExistingSitemapPath(paths: string[], fileExists: (candidate: strin
 function sitemapPathsForSite(site: string, opts: Required<Pick<SitemapAvailabilityOptions, 'homeDir' | 'packageRoot' | 'fileExists'>>): { local?: string; global?: string } {
   const safeSite = site.replace(/[^a-zA-Z0-9_-]+/g, '-');
   if (!safeSite) return {};
-  const localBase = path.join(opts.homeDir, '.opencli', 'sites', safeSite);
+  const localBase = path.join(opts.homeDir, '.cloudl', 'sites', safeSite);
   return {
     local: firstExistingSitemapPath([
       path.join(localBase, 'sitemap'),
@@ -418,7 +418,7 @@ function sitemapHintForBrowserUrl(url: string, scope: string, opts: { oncePerSes
 }
 
 export function checkSiteMemory(site: string): SiteMemoryReport {
-  const siteDir = path.join(os.homedir(), '.opencli', 'sites', site);
+  const siteDir = path.join(os.homedir(), '.cloudl', 'sites', site);
   const endpointsPath = path.join(siteDir, 'endpoints.json');
   const notesPath = path.join(siteDir, 'notes.md');
   let endpointsCount = 0;
@@ -518,7 +518,7 @@ type BrowserTabSummary = {
 };
 
 function getBrowserCacheDir(): string {
-  return process.env.OPENCLI_CACHE_DIR || path.join(os.homedir(), '.opencli', 'cache');
+  return process.env.CLOUDL_CACHE_DIR || path.join(os.homedir(), '.cloudl', 'cache');
 }
 
 function getBrowserTargetStatePath(scope: string): string {
@@ -614,7 +614,7 @@ async function getBrowserPage(
   const { BrowserBridge } = await import('./browser/index.js');
   const bridge = new BrowserBridge();
   // Internal GC timeout for browser sessions. Not the per-command runtime timeout.
-  const envTimeout = process.env.OPENCLI_BROWSER_IDLE_TIMEOUT;
+  const envTimeout = process.env.CLOUDL_BROWSER_IDLE_TIMEOUT;
   const idleTimeout = envTimeout ? parseInt(envTimeout, 10) : undefined;
   const page = await bridge.connect({
     timeout: DEFAULT_BROWSER_CONNECT_TIMEOUT,
@@ -643,10 +643,10 @@ function getBrowserWindowMode(command: Command | undefined, defaultMode: Browser
     if (optionRaw === 'foreground' || optionRaw === 'background') return optionRaw;
     throw new Error(`--window must be one of: foreground, background. Received: "${String(optionRaw)}"`);
   }
-  const envRaw = process.env.OPENCLI_WINDOW;
+  const envRaw = process.env.CLOUDL_WINDOW;
   if (envRaw !== undefined && envRaw !== '') {
     if (envRaw === 'foreground' || envRaw === 'background') return envRaw;
-    throw new Error(`OPENCLI_WINDOW must be one of: foreground, background. Received: "${envRaw}"`);
+    throw new Error(`CLOUDL_WINDOW must be one of: foreground, background. Received: "${envRaw}"`);
   }
   return defaultMode;
 }
@@ -771,7 +771,7 @@ function parseScreenshotDim(val: string, label: string): number {
 }
 
 function applyVerbose(opts: { verbose?: boolean }): void {
-  if (opts.verbose) process.env.OPENCLI_VERBOSE = '1';
+  if (opts.verbose) process.env.CLOUDL_VERBOSE = '1';
 }
 
 function formatChildCommandSummary(command: Command): string {
@@ -829,7 +829,7 @@ export function createProgram(BUILTIN_CLIS: string, USER_CLIS: string): Command 
           fmt,
           columns: ['command', 'site', 'name', 'aliases', 'description', 'access', 'strategy', 'browser', 'args',
                      ...(isStructured ? ['columns', 'domain'] : [])],
-          title: 'opencli/list',
+          title: 'cloudl/list',
           source: 'cloudl list',
         });
         return;
@@ -916,33 +916,33 @@ export function createProgram(BUILTIN_CLIS: string, USER_CLIS: string): Command 
 
   const skillsCmd = program
     .command('skills')
-    .description('Read bundled OpenCLI skills');
+    .description('Read bundled Cloudl skills');
 
   skillsCmd
     .command('list')
-    .description('List bundled opencli-* skills')
+    .description('List bundled cloudl-* skills')
     .option('-f, --format <fmt>', 'Output format: table, json, yaml, md, csv', 'table')
     .action((opts) => {
-      const rows = listOpenCliSkills();
+      const rows = listCloudlSkills();
       renderOutput(rows, {
         fmt: opts.format,
         fmtExplicit: !!opts.format,
         columns: ['name', 'description', 'version', 'path'],
-        title: 'opencli/skills/list',
+        title: 'cloudl/skills/list',
         source: 'cloudl skills list',
       });
     });
 
   skillsCmd
     .command('read')
-    .description("Print an opencli-* skill's SKILL.md or reference file")
-    .argument('<skill>', 'Skill name, or skill/path like opencli-browser/references/foo.md')
+    .description("Print an cloudl-* skill's SKILL.md or reference file")
+    .argument('<skill>', 'Skill name, or skill/path like cloudl-browser/references/foo.md')
     .argument('[path]', 'Path under the skill directory')
     .option('--json', 'Output a JSON envelope instead of raw markdown', false)
     .action((skill: string, skillPath: string | undefined, opts) => {
-      let result: ReturnType<typeof readOpenCliSkill>;
+      let result: ReturnType<typeof readCloudlSkill>;
       try {
-        result = readOpenCliSkill(skill, skillPath ?? '');
+        result = readCloudlSkill(skill, skillPath ?? '');
       } catch (err) {
         console.error(`Error: ${getErrorMessage(err)}`);
         if (err instanceof CliError && err.hint) console.error(`Hint: ${err.hint}`);
@@ -1960,7 +1960,7 @@ Examples:
         return;
       }
       if (max > 0 && html.length > max) {
-        console.log(`<!-- opencli: truncated ${max} of ${html.length} chars; re-run without --max (or --max 0) for full -->\n${html.slice(0, max)}`);
+        console.log(`<!-- cloudl: truncated ${max} of ${html.length} chars; re-run without --max (or --max 0) for full -->\n${html.slice(0, max)}`);
         return;
       }
       console.log(html);
@@ -2594,7 +2594,7 @@ Examples:
   // Default output is JSON (agent-native). Each entry carries a stable `key`
   // (GraphQL operationName or `METHOD host+pathname`) so agents can fetch
   // full bodies with `--detail <key>` even after subsequent commands.
-  // Captures are persisted per browser session under ~/.opencli/cache/browser-network/.
+  // Captures are persisted per browser session under ~/.cloudl/cache/browser-network/.
 
   addBrowserTabOption(browser.command('network'))
     .option('--detail <key>', 'Emit full body for the entry with this key')
@@ -2856,7 +2856,7 @@ Examples:
 
   browser.command('init')
     .argument('<name>', 'Adapter name in site/command format (e.g. hn/top)')
-    .description('Generate adapter scaffold in ~/.opencli/clis/')
+    .description('Generate adapter scaffold in ~/.cloudl/clis/')
     .action(async (name: string) => {
       try {
         const parts = name.split('/');
@@ -2875,7 +2875,7 @@ Examples:
         const os = await import('node:os');
         const fs = await import('node:fs');
         const path = await import('node:path');
-        const dir = path.join(os.homedir(), '.opencli', 'clis', site);
+        const dir = path.join(os.homedir(), '.cloudl', 'clis', site);
         const filePath = path.join(dir, `${command}.js`);
 
         if (fs.existsSync(filePath)) {
@@ -2885,7 +2885,7 @@ Examples:
 
         let domain = site;
 
-        const template = `import { cli, Strategy } from '@jackwener/opencli/registry';
+        const template = `import { cli, Strategy } from '@jyjyxt/cloudl/registry';
 
 cli({
   site: '${site}',
@@ -2923,13 +2923,13 @@ cli({
 
   browser.command('verify')
     .argument('<name>', 'Adapter name in site/command format (e.g. hn/top)')
-    .option('--write-fixture', 'Write a starter fixture to ~/.opencli/sites/<site>/verify/<command>.json if none exists')
+    .option('--write-fixture', 'Write a starter fixture to ~/.cloudl/sites/<site>/verify/<command>.json if none exists')
     .option('--update-fixture', 'Overwrite an existing fixture with one derived from current output')
     .option('--no-fixture', 'Ignore any fixture file for this run (no value-level validation)')
-    .option('--strict-memory', 'Fail (not just warn) when ~/.opencli/sites/<site>/endpoints.json or notes.md is missing')
+    .option('--strict-memory', 'Fail (not just warn) when ~/.cloudl/sites/<site>/endpoints.json or notes.md is missing')
     .option('--seed-args <value>', 'Seed args when no fixture exists; use JSON array/object for multiple args or flags')
     .option('--trace <mode>', 'Trace capture for the adapter subprocess: off, on, retain-on-failure', 'off')
-    .description('Execute an adapter and validate output; uses fixture at ~/.opencli/sites/<site>/verify/<cmd>.json when present')
+    .description('Execute an adapter and validate output; uses fixture at ~/.cloudl/sites/<site>/verify/<cmd>.json when present')
     .action(async (name: string, opts: { fixture?: boolean; writeFixture?: boolean; updateFixture?: boolean; strictMemory?: boolean; seedArgs?: string; trace?: string } = {}) => {
       try {
         const parts = name.split('/');
@@ -2943,7 +2943,7 @@ cli({
 
         const { execFileSync } = await import('node:child_process');
         const { loadFixture, writeFixture, deriveFixture, validateRows, validateRowShape, fixturePath, expandFixtureArgs, parseSeedArgs } = await import('./browser/verify-fixture.js');
-        const filePath = path.join(os.homedir(), '.opencli', 'clis', site, `${command}.js`);
+        const filePath = path.join(os.homedir(), '.cloudl', 'clis', site, `${command}.js`);
         if (!fs.existsSync(filePath)) {
           console.error(`Adapter not found: ${filePath}`);
           console.error(`Run "cloudl browser init ${name}" to create it.`);
@@ -3230,7 +3230,7 @@ cli({
         renderOutput(plugins, {
           fmt: 'json',
           columns: ['name', 'commands', 'source'],
-          title: 'opencli/plugins',
+          title: 'cloudl/plugins',
           source: 'cloudl plugin list',
         });
         return;
@@ -3313,7 +3313,7 @@ cli({
     .description('Show which sites have local overrides vs using official baseline')
     .action(async () => {
       const os = await import('node:os');
-      const userClisDir = path.join(os.homedir(), '.opencli', 'clis');
+      const userClisDir = path.join(os.homedir(), '.cloudl', 'clis');
       const builtinClisDir = BUILTIN_CLIS;
       try {
         const userEntries = await fs.promises.readdir(userClisDir, { withFileTypes: true });
@@ -3329,7 +3329,7 @@ cli({
           return;
         }
 
-        console.log(`Local overrides in ~/.opencli/clis/ (${userSites.length} sites):\n`);
+        console.log(`Local overrides in ~/.cloudl/clis/ (${userSites.length} sites):\n`);
         for (const site of userSites) {
           const isOfficial = builtinSites.includes(site);
           const label = isOfficial ? 'override' : 'custom';
@@ -3343,11 +3343,11 @@ cli({
 
   adapterCmd
     .command('eject')
-    .description('Copy an official adapter to ~/.opencli/clis/ for local editing')
+    .description('Copy an official adapter to ~/.cloudl/clis/ for local editing')
     .argument('<site>', 'Site name (e.g. twitter, bilibili)')
     .action(async (site: string) => {
       const os = await import('node:os');
-      const userClisDir = path.join(os.homedir(), '.opencli', 'clis');
+      const userClisDir = path.join(os.homedir(), '.cloudl', 'clis');
       const builtinSiteDir = path.join(BUILTIN_CLIS, site);
       const builtinSharedDir = path.join(BUILTIN_CLIS, '_shared');
       const userSiteDir = path.join(userClisDir, site);
@@ -3362,14 +3362,14 @@ cli({
 
       try {
         await fs.promises.access(userSiteDir);
-        console.error(`Site "${site}" already exists in ~/.opencli/clis/. Use "cloudl adapter reset ${site}" first to restore official version.`);
+        console.error(`Site "${site}" already exists in ~/.cloudl/clis/. Use "cloudl adapter reset ${site}" first to restore official version.`);
         process.exitCode = EXIT_CODES.USAGE_ERROR;
         return;
       } catch { /* good, doesn't exist yet */ }
 
       fs.cpSync(builtinSiteDir, userSiteDir, { recursive: true });
       copyEjectedRepoSharedDependencies(builtinSiteDir, builtinSharedDir, userClisDir);
-      console.log(`✅ Ejected "${site}" to ~/.opencli/clis/${site}/`);
+      console.log(`✅ Ejected "${site}" to ~/.cloudl/clis/${site}/`);
       console.log('You can now edit the adapter files. Changes take effect immediately.');
       console.log('Note: Official updates to this adapter will overwrite your changes.');
     });
@@ -3381,7 +3381,7 @@ cli({
     .option('--all', 'Reset all local overrides')
     .action(async (site: string | undefined, opts: { all?: boolean }) => {
       const os = await import('node:os');
-      const userClisDir = path.join(os.homedir(), '.opencli', 'clis');
+      const userClisDir = path.join(os.homedir(), '.cloudl', 'clis');
 
       if (opts.all) {
         try {
@@ -3445,7 +3445,7 @@ cli({
       }
       if (profiles.length === 0) {
         console.log('No Browser Bridge profiles connected.');
-        console.log('Open a Chrome profile with the OpenCLI extension installed, then run cloudl profile list again.');
+        console.log('Open a Chrome profile with the Cloudl extension installed, then run cloudl profile list again.');
         return;
       }
 
@@ -3572,7 +3572,7 @@ cli({
       renderOutput(rows, {
         fmt: opts.format,
         columns: ['name', 'package', 'binary', 'installed', 'description', 'homepage', 'tags'],
-        title: 'opencli/external/list',
+        title: 'cloudl/external/list',
         source: 'cloudl external list',
       });
     });

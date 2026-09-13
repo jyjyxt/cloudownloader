@@ -1,4 +1,4 @@
-import { ArgumentError, AuthRequiredError, CommandExecutionError } from '@jackwener/opencli/errors';
+import { ArgumentError, AuthRequiredError, CommandExecutionError } from '@jyjyxt/cloudl/errors';
 import { buildUserByScreenNameQueryUrl, resolveTwitterQueryId, unwrapBrowserResult } from './shared.js';
 import { parseListsManagement } from './lists.js';
 import { TWITTER_BEARER_TOKEN } from './utils.js';
@@ -127,7 +127,7 @@ export async function listAddUser(page, kwargs) {
             'X-Twitter-Active-User': 'yes',
         });
 
-        // opencli >=1.7.x wraps page.evaluate return values as { session, data }.
+        // cloudl >=1.7.x wraps page.evaluate return values as { session, data }.
         // Unwrap before use so JSON.stringify of nested values doesn't become "[object Object]".
         const userLookupUrl = buildUserByScreenNameQueryUrl(userByScreenNameQueryId, username);
         const userIdRaw = await page.evaluate(`async () => {

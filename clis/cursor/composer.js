@@ -1,5 +1,5 @@
-import { cli, Strategy } from '@jackwener/opencli/registry';
-import { selectorError } from '@jackwener/opencli/errors';
+import { cli, Strategy } from '@jyjyxt/cloudl/registry';
+import { selectorError } from '@jyjyxt/cloudl/errors';
 export const composerCommand = cli({
     site: 'cursor',
     name: 'composer',

@@ -6,7 +6,7 @@ source: global
 
 ## Endpoint index
 
-> 引用规则（schema §2.4）：`endpoint_id` 必须存在于 `~/.opencli/sites/twitter/endpoints.json`。本文件只放 endpoint_id + 触发关系 + contract_strength，URL/method/params/response 是 endpoints.json 单一来源。
+> 引用规则（schema §2.4）：`endpoint_id` 必须存在于 `~/.cloudl/sites/twitter/endpoints.json`。本文件只放 endpoint_id + 触发关系 + contract_strength，URL/method/params/response 是 endpoints.json 单一来源。
 
 ### endpoint:UserByScreenName
 

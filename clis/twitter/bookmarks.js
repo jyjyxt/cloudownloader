@@ -1,7 +1,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
-import { cli, Strategy } from '@jackwener/opencli/registry';
-import { ArgumentError, AuthRequiredError, CommandExecutionError, EmptyResultError } from '@jackwener/opencli/errors';
+import { cli, Strategy } from '@jyjyxt/cloudl/registry';
+import { ArgumentError, AuthRequiredError, CommandExecutionError, EmptyResultError } from '@jyjyxt/cloudl/errors';
 import { extractMedia, describeTwitterApiError, resolveTwitterQueryId, unwrapBrowserResult } from './shared.js';
 import { DEFAULT_MAX_PAGINATION_PAGES, appendJsonlRows, ensureParentDir, loadJsonlArchiveState, removeResumeFile, resolveMaxPages, resolveOptionalFilePath } from './archive.js';
 import { TWITTER_BEARER_TOKEN, applyTopByEngagement } from './utils.js';

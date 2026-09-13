@@ -1,5 +1,5 @@
-import { cli, Strategy } from '@jackwener/opencli/registry';
-import { ArgumentError, AuthRequiredError, CommandExecutionError } from '@jackwener/opencli/errors';
+import { cli, Strategy } from '@jyjyxt/cloudl/registry';
+import { ArgumentError, AuthRequiredError, CommandExecutionError } from '@jyjyxt/cloudl/errors';
 import { createHash } from 'node:crypto';
 import { canonicalizeLinkedInThreadUrl, normalizeWhitespace, unwrapEvaluateResult } from './shared.js';
 
@@ -84,7 +84,7 @@ function requireLinkedInThreadUrl(value, label) {
 
 function buildThreadProbeScript() {
   return String.raw`(() => {
-    const marker = '__OPENCLI_LINKEDIN_PROBE__';
+    const marker = '__CLOUDL_LINKEDIN_PROBE__';
     void marker;
     const clean = (s) => String(s || '').replace(/[\u00a0\u202f]/g, ' ').replace(/\s+/g, ' ').trim();
     const text = document.body ? (document.body.innerText || '') : '';
@@ -143,7 +143,7 @@ function buildThreadProbeScript() {
 
 function buildFocusComposerScript() {
   return String.raw`(() => {
-    const marker = '__OPENCLI_LINKEDIN_FOCUS_COMPOSER__';
+    const marker = '__CLOUDL_LINKEDIN_FOCUS_COMPOSER__';
     void marker;
     const clean = (s) => String(s || '').replace(/[\u00a0\u202f]/g, ' ').replace(/\s+/g, ' ').trim();
     const composer = Array.from(document.querySelectorAll('[contenteditable="true"][role="textbox"], div.msg-form__contenteditable[contenteditable="true"], [aria-label*="Write a message" i]'))
@@ -158,7 +158,7 @@ function buildFocusComposerScript() {
 
 function buildReadComposerScript() {
   return String.raw`(() => {
-    const marker = '__OPENCLI_LINKEDIN_READ_COMPOSER__';
+    const marker = '__CLOUDL_LINKEDIN_READ_COMPOSER__';
     void marker;
     const clean = (s) => String(s || '').replace(/[\u00a0\u202f]/g, ' ').replace(/\s+/g, ' ').trim();
     const composer = Array.from(document.querySelectorAll('[contenteditable="true"][role="textbox"], div.msg-form__contenteditable[contenteditable="true"], [aria-label*="Write a message" i]'))
@@ -169,7 +169,7 @@ function buildReadComposerScript() {
 
 function buildClickSendScript() {
   return String.raw`(() => {
-    const marker = '__OPENCLI_LINKEDIN_CLICK_SEND__';
+    const marker = '__CLOUDL_LINKEDIN_CLICK_SEND__';
     void marker;
     const buttons = Array.from(document.querySelectorAll('button'));
     const send = buttons.find((button) => {

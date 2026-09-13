@@ -3,11 +3,11 @@
 // Hits `https://developer.mozilla.org/api/v1/search?q=…&locale=…`. Returns a
 // row per matched doc with title, slug-derived id, summary preview, and the
 // canonical MDN URL.
-import { cli, Strategy } from '@jackwener/opencli/registry';
-import { ArgumentError, CommandExecutionError, EmptyResultError } from '@jackwener/opencli/errors';
+import { cli, Strategy } from '@jyjyxt/cloudl/registry';
+import { ArgumentError, CommandExecutionError, EmptyResultError } from '@jyjyxt/cloudl/errors';
 
 const MDN_BASE = 'https://developer.mozilla.org';
-const UA = 'opencli-mdn-adapter (+https://github.com/jyjyxt/cloudownloader)';
+const UA = 'cloudl-mdn-adapter (+https://github.com/jyjyxt/cloudownloader)';
 const ALLOWED_LOCALES = new Set(['en-US', 'de', 'es', 'fr', 'ja', 'ko', 'pt-BR', 'ru', 'zh-CN', 'zh-TW']);
 
 function requireString(value, label) {

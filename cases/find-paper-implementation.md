@@ -49,7 +49,7 @@ I dump all four JSON outputs into a single LLM call with the prompt: *"Build a o
 
 ## Why this is worth a CLI chain
 
-- Each adapter alone is just "search a website". The value is the chain. Four `opencli` calls feed into one LLM call. No browser, no copy-paste.
+- Each adapter alone is just "search a website". The value is the chain. Four `cloudl` calls feed into one LLM call. No browser, no copy-paste.
 - Output is identifier-rich (arxiv id, dblp key, venue id, HF paper id). I can re-feed any of those into the next call, e.g. once I find a follow-up arxiv id from HF Daily Papers I run `cloudl arxiv paper <new-id>` immediately.
 - Survives use inside an agent loop. Same chain runs unattended for a batch of 20 papers from a reading list.
 - Zero token cost for the discovery half. Only the final summary step pays for inference.

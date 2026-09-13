@@ -1,6 +1,6 @@
 # Trae SOLO
 
-Control **Trae SOLO** from OpenCLI through the Electron debug port and read its local VSCode-style state files.
+Control **Trae SOLO** from Cloudl through the Electron debug port and read its local VSCode-style state files.
 
 **Mode**: Desktop app / local filesystem · **App**: `TRAE SOLO`
 
@@ -55,7 +55,7 @@ cloudl trae-solo task-fs-list --limit 20
 
 ## Notes
 
-- Electron UI commands require Trae SOLO to be running with the configured CDP port. OpenCLI launches registered Electron apps with the app-specific debug port when needed.
+- Electron UI commands require Trae SOLO to be running with the configured CDP port. Cloudl launches registered Electron apps with the app-specific debug port when needed.
 - Renderer storage reads come from the current Electron renderer and may be empty if the app has not loaded the relevant workspace.
 - Filesystem reads are local-only and read Trae SOLO state under `~/.trae` and `~/Library/Application Support/TRAE SOLO`.
 - `model` and `mode` verify the visible post-action state before returning success.

@@ -142,7 +142,7 @@ async function startFakeBridge(): Promise<FakeBridge | null> {
 
 async function startTestSite(): Promise<TestSite> {
   const server = createServer((req: IncomingMessage, res: ServerResponse) => {
-    const url = new URL(req.url ?? '/', 'http://a.opencli.test');
+    const url = new URL(req.url ?? '/', 'http://a.cloudl.test');
     res.setHeader('Content-Type', 'text/html; charset=utf-8');
     if (url.pathname === '/same-frame') {
       res.end('<!doctype html><button>Same Frame Button</button>');
@@ -156,7 +156,7 @@ async function startTestSite(): Promise<TestSite> {
       <main>
         <button>Parent Button</button>
         <iframe title="same frame" src="/same-frame"></iframe>
-        <iframe title="cross frame" src="http://b.opencli.test:${addressPort(server)}/cross-frame"></iframe>
+        <iframe title="cross frame" src="http://b.cloudl.test:${addressPort(server)}/cross-frame"></iframe>
       </main>`);
   });
 
@@ -165,7 +165,7 @@ async function startTestSite(): Promise<TestSite> {
   });
   const port = addressPort(server);
   return {
-    url: `http://a.opencli.test:${port}/`,
+    url: `http://a.cloudl.test:${port}/`,
     close: async () => {
       await new Promise<void>((resolve, reject) => {
         server.close((err) => err ? reject(err) : resolve());
@@ -209,9 +209,9 @@ function launchChrome(chromePath: string, userDataDir: string, startUrl: string)
     // Headed by default under a real/virtual display (CI Linux runs this under
     // xvfb). New-headless is convenient locally — no display needed — but on
     // hosted runners it does not reliably start the MV3 extension service
-    // worker, so CI forces headed via OPENCLI_E2E_HEADED=1. Set OPENCLI_E2E_
+    // worker, so CI forces headed via CLOUDL_E2E_HEADED=1. Set CLOUDL_E2E_
     // HEADLESS=1 to opt into headless locally.
-    ...(process.env.OPENCLI_E2E_HEADLESS === '1' && process.env.OPENCLI_E2E_HEADED !== '1'
+    ...(process.env.CLOUDL_E2E_HEADLESS === '1' && process.env.CLOUDL_E2E_HEADED !== '1'
       ? ['--headless=new']
       : []),
     `--user-data-dir=${userDataDir}`,
@@ -219,7 +219,7 @@ function launchChrome(chromePath: string, userDataDir: string, startUrl: string)
     `--load-extension=${EXTENSION_DIR}`,
     '--disable-features=DisableLoadExtensionCommandLineSwitch',
     '--enable-unsafe-extension-debugging',
-    '--host-resolver-rules=MAP a.opencli.test 127.0.0.1,MAP b.opencli.test 127.0.0.1',
+    '--host-resolver-rules=MAP a.cloudl.test 127.0.0.1,MAP b.cloudl.test 127.0.0.1',
     '--site-per-process',
     '--no-first-run',
     '--no-default-browser-check',
@@ -310,7 +310,7 @@ describe('Browser Bridge AX real Chrome smoke', () => {
     }
 
     site = await startTestSite();
-    userDataDir = fs.mkdtempSync(path.join(os.tmpdir(), 'opencli-ax-chrome-'));
+    userDataDir = fs.mkdtempSync(path.join(os.tmpdir(), 'cloudl-ax-chrome-'));
     chrome = launchChrome(chromePath, userDataDir, 'about:blank');
     chrome.stderr?.on('data', (chunk) => {
       chromeStderr += chunk.toString();

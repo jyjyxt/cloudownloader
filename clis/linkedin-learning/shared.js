@@ -1,4 +1,4 @@
-import { ArgumentError, AuthRequiredError } from '@jackwener/opencli/errors';
+import { ArgumentError, AuthRequiredError } from '@jyjyxt/cloudl/errors';
 
 export const DOMAIN = 'www.linkedin.com';
 export const MAX_LIMIT = 50;

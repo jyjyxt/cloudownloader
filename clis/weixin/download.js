@@ -1,13 +1,13 @@
 /**
  * WeChat article download — export WeChat Official Account articles to Markdown.
  *
- * Ported from jackwener/wechat-article-to-markdown (JS version) to OpenCLI adapter.
+ * Ported from jackwener/wechat-article-to-markdown (JS version) to Cloudl adapter.
  *
  * Usage:
  *   cloudl weixin download --url "https://mp.weixin.qq.com/s/xxx" --output ./weixin
  */
-import { cli, Strategy } from '@jackwener/opencli/registry';
-import { downloadArticle } from '@jackwener/opencli/download/article-download';
+import { cli, Strategy } from '@jyjyxt/cloudl/registry';
+import { downloadArticle } from '@jyjyxt/cloudl/download/article-download';
 // ============================================================
 // URL Normalization
 // ============================================================

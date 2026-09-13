@@ -1,5 +1,5 @@
 /**
- * Unified error types for opencli.
+ * Unified error types for cloudl.
  *
  * All errors thrown by the framework should extend CliError so that
  * the top-level handler in commanderAdapter.ts can render consistent,
@@ -56,7 +56,7 @@ export class CliError extends Error {
   }
 }
 
-const TRACE_RECEIPT_SYMBOL = Symbol.for('opencli.traceReceipt');
+const TRACE_RECEIPT_SYMBOL = Symbol.for('cloudl.traceReceipt');
 
 export function attachTraceReceipt(err: unknown, receipt: ObservationTraceReceipt): void {
   if (!err || (typeof err !== 'object' && typeof err !== 'function')) return;
@@ -119,7 +119,7 @@ export class TimeoutError extends CliError {
     super(
       'TIMEOUT',
       `${label} timed out after ${seconds}s`,
-      hint ?? 'Try again, or increase timeout with --timeout <seconds> (or OPENCLI_BROWSER_COMMAND_TIMEOUT for the global default)',
+      hint ?? 'Try again, or increase timeout with --timeout <seconds> (or CLOUDL_BROWSER_COMMAND_TIMEOUT for the global default)',
       EXIT_CODES.TEMPFAIL,
     );
   }
@@ -259,7 +259,7 @@ export function toEnvelope(err: unknown): ErrorEnvelope {
   } : undefined;
   // Duck typing: accept own CliError instances AND cross-package copies that
   // carry the same shape. `instanceof` fails when the throwing module resolves
-  // a different copy of @jackwener/opencli (e.g. a plugin with its own
+  // a different copy of cloudl (e.g. a plugin with its own
   // node_modules) — those errors used to degrade to UNKNOWN and lose `hint`.
   //
   // `exitCode` is the discriminator: CliError's constructor always assigns it

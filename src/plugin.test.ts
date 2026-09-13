@@ -25,7 +25,7 @@ const {
   _readLockFile,
   _readLockFileWithWriter,
   _resolveEsbuildBin,
-  _resolveHostOpencliRoot,
+  _resolveHostCloudlRoot,
   uninstallPlugin,
   updatePlugin,
   _parseSource,
@@ -47,25 +47,25 @@ const {
 
 describe('parseSource', () => {
   it('parses github:user/repo format', () => {
-    const result = _parseSource('github:ByteYue/opencli-plugin-github-trending');
+    const result = _parseSource('github:ByteYue/cloudl-plugin-github-trending');
     expect(result).toEqual({
       type: 'git',
-      cloneUrl: 'https://github.com/ByteYue/opencli-plugin-github-trending.git',
+      cloneUrl: 'https://github.com/ByteYue/cloudl-plugin-github-trending.git',
       name: 'github-trending',
     });
   });
 
   it('parses https URL format', () => {
-    const result = _parseSource('https://github.com/ByteYue/opencli-plugin-hot-digest');
+    const result = _parseSource('https://github.com/ByteYue/cloudl-plugin-hot-digest');
     expect(result).toEqual({
       type: 'git',
-      cloneUrl: 'https://github.com/ByteYue/opencli-plugin-hot-digest.git',
+      cloneUrl: 'https://github.com/ByteYue/cloudl-plugin-hot-digest.git',
       name: 'hot-digest',
     });
   });
 
-  it('strips opencli-plugin- prefix from name', () => {
-    const result = _parseSource('github:user/opencli-plugin-my-tool');
+  it('strips cloudl-plugin- prefix from name', () => {
+    const result = _parseSource('github:user/cloudl-plugin-my-tool');
     expect(result!.name).toBe('my-tool');
   });
 
@@ -80,7 +80,7 @@ describe('parseSource', () => {
   });
 
   it('parses file:// local plugin directories', () => {
-    const localDir = path.join(os.tmpdir(), 'opencli-plugin-test');
+    const localDir = path.join(os.tmpdir(), 'cloudl-plugin-test');
     const fileUrl = pathToFileURL(localDir).href;
     const result = _parseSource(fileUrl);
     expect(result).toEqual({
@@ -100,18 +100,18 @@ describe('parseSource', () => {
     });
   });
 
-  it('strips opencli-plugin- prefix for local paths', () => {
-    const localDir = path.join(os.tmpdir(), 'opencli-plugin-foo');
+  it('strips cloudl-plugin- prefix for local paths', () => {
+    const localDir = path.join(os.tmpdir(), 'cloudl-plugin-foo');
     const result = _parseSource(localDir);
     expect(result!.name).toBe('foo');
   });
 
   // ── Generic git URL support ──
   it('parses ssh:// URLs', () => {
-    const result = _parseSource('ssh://git@gitlab.com/team/opencli-plugin-tools.git');
+    const result = _parseSource('ssh://git@gitlab.com/team/cloudl-plugin-tools.git');
     expect(result).toEqual({
       type: 'git',
-      cloneUrl: 'ssh://git@gitlab.com/team/opencli-plugin-tools.git',
+      cloneUrl: 'ssh://git@gitlab.com/team/cloudl-plugin-tools.git',
       name: 'tools',
     });
   });
@@ -134,21 +134,21 @@ describe('parseSource', () => {
     });
   });
 
-  it('parses git@ SCP-style URLs and strips opencli-plugin- prefix', () => {
-    const result = _parseSource('git@github.com:user/opencli-plugin-awesome.git');
+  it('parses git@ SCP-style URLs and strips cloudl-plugin- prefix', () => {
+    const result = _parseSource('git@github.com:user/cloudl-plugin-awesome.git');
     expect(result).toEqual({
       type: 'git',
-      cloneUrl: 'git@github.com:user/opencli-plugin-awesome.git',
+      cloneUrl: 'git@github.com:user/cloudl-plugin-awesome.git',
       name: 'awesome',
     });
   });
 
   it('parses generic HTTPS git URLs (non-GitHub)', () => {
-    const result = _parseSource('https://codehub.example.com/Team/App/opencli-plugins-app.git');
+    const result = _parseSource('https://codehub.example.com/Team/App/cloudl-plugins-app.git');
     expect(result).toEqual({
       type: 'git',
-      cloneUrl: 'https://codehub.example.com/Team/App/opencli-plugins-app.git',
-      name: 'opencli-plugins-app',
+      cloneUrl: 'https://codehub.example.com/Team/App/cloudl-plugins-app.git',
+      name: 'cloudl-plugins-app',
     });
   });
 
@@ -317,14 +317,14 @@ describe('lock file', () => {
   });
 
   it('migrates legacy string sources to structured sources on read', () => {
-    const legacyLocalPath = path.resolve(path.join(os.tmpdir(), 'opencli-legacy-local-plugin'));
+    const legacyLocalPath = path.resolve(path.join(os.tmpdir(), 'cloudl-legacy-local-plugin'));
     fs.mkdirSync(path.dirname(getLockFilePath()), { recursive: true });
     fs.writeFileSync(getLockFilePath(), JSON.stringify({
       alpha: {
-        source: 'https://github.com/user/opencli-plugins.git',
+        source: 'https://github.com/user/cloudl-plugins.git',
         commitHash: 'abc1234567890def',
         installedAt: '2025-01-01T00:00:00.000Z',
-        monorepo: { name: 'opencli-plugins', subPath: 'packages/alpha' },
+        monorepo: { name: 'cloudl-plugins', subPath: 'packages/alpha' },
       },
       beta: {
         source: `local:${legacyLocalPath}`,
@@ -337,8 +337,8 @@ describe('lock file', () => {
       alpha: {
         source: {
           kind: 'monorepo',
-          url: 'https://github.com/user/opencli-plugins.git',
-          repoName: 'opencli-plugins',
+          url: 'https://github.com/user/cloudl-plugins.git',
+          repoName: 'cloudl-plugins',
           subPath: 'packages/alpha',
         },
         commitHash: 'abc1234567890def',
@@ -356,10 +356,10 @@ describe('lock file', () => {
     fs.mkdirSync(path.dirname(getLockFilePath()), { recursive: true });
     fs.writeFileSync(getLockFilePath(), JSON.stringify({
       alpha: {
-        source: 'https://github.com/user/opencli-plugins.git',
+        source: 'https://github.com/user/cloudl-plugins.git',
         commitHash: 'abc1234567890def',
         installedAt: '2025-01-01T00:00:00.000Z',
-        monorepo: { name: 'opencli-plugins', subPath: 'packages/alpha' },
+        monorepo: { name: 'cloudl-plugins', subPath: 'packages/alpha' },
       },
     }, null, 2));
 
@@ -369,8 +369,8 @@ describe('lock file', () => {
       alpha: {
         source: {
           kind: 'monorepo',
-          url: 'https://github.com/user/opencli-plugins.git',
-          repoName: 'opencli-plugins',
+          url: 'https://github.com/user/cloudl-plugins.git',
+          repoName: 'cloudl-plugins',
           subPath: 'packages/alpha',
         },
         commitHash: 'abc1234567890def',
@@ -402,11 +402,11 @@ describe('resolveEsbuildBin', () => {
   });
 });
 
-describe('resolveHostOpencliRoot', () => {
+describe('resolveHostCloudlRoot', () => {
   let tmpDir: string;
 
   beforeEach(() => {
-    tmpDir = fs.mkdtempSync(path.join(os.tmpdir(), 'opencli-host-root-test-'));
+    tmpDir = fs.mkdtempSync(path.join(os.tmpdir(), 'cloudl-host-root-test-'));
   });
 
   afterEach(() => {
@@ -416,12 +416,12 @@ describe('resolveHostOpencliRoot', () => {
   it('walks up from compiled dist/src files to the package root', () => {
     fs.writeFileSync(
       path.join(tmpDir, 'package.json'),
-      JSON.stringify({ name: '@jackwener/opencli' }),
+      JSON.stringify({ name: '@jyjyxt/cloudl' }),
     );
     const distSrcDir = path.join(tmpDir, 'dist', 'src');
     fs.mkdirSync(distSrcDir, { recursive: true });
 
-    expect(_resolveHostOpencliRoot(path.join(distSrcDir, 'plugin.js'))).toBe(tmpDir);
+    expect(_resolveHostCloudlRoot(path.join(distSrcDir, 'plugin.js'))).toBe(tmpDir);
   });
 });
 
@@ -470,7 +470,7 @@ describe('listPlugins', () => {
   });
 
   it('prefers lockfile source for local symlink plugins', () => {
-    const localTarget = fs.mkdtempSync(path.join(os.tmpdir(), 'opencli-local-list-'));
+    const localTarget = fs.mkdtempSync(path.join(os.tmpdir(), 'cloudl-local-list-'));
     const linkPath = path.join(PLUGINS_DIR, '__test-list-plugin__');
 
     fs.mkdirSync(PLUGINS_DIR, { recursive: true });
@@ -540,7 +540,7 @@ describe('updatePlugin', () => {
   });
 
   it('refreshes local plugins without running git pull', () => {
-    const localTarget = fs.mkdtempSync(path.join(os.tmpdir(), 'opencli-local-update-'));
+    const localTarget = fs.mkdtempSync(path.join(os.tmpdir(), 'cloudl-local-update-'));
     const linkPath = path.join(PLUGINS_DIR, '__test-local-update__');
 
     fs.mkdirSync(PLUGINS_DIR, { recursive: true });
@@ -604,7 +604,7 @@ describe('installDependencies', () => {
   });
 
   it('throws when npm install fails', () => {
-    const tmpDir = fs.mkdtempSync(path.join(os.tmpdir(), 'opencli-plugin-b-'));
+    const tmpDir = fs.mkdtempSync(path.join(os.tmpdir(), 'cloudl-plugin-b-'));
     const failingDir = path.join(tmpDir, 'plugin-b');
     fs.mkdirSync(failingDir, { recursive: true });
     fs.writeFileSync(path.join(failingDir, 'package.json'), JSON.stringify({ name: 'plugin-b' }));
@@ -615,7 +615,7 @@ describe('installDependencies', () => {
   });
 
   it('runs npm install with --ignore-scripts so untrusted lifecycle scripts cannot execute (#1753)', () => {
-    const tmpDir = fs.mkdtempSync(path.join(os.tmpdir(), 'opencli-plugin-scripts-'));
+    const tmpDir = fs.mkdtempSync(path.join(os.tmpdir(), 'cloudl-plugin-scripts-'));
     const pluginDir = path.join(tmpDir, 'plugin-c');
     fs.mkdirSync(pluginDir, { recursive: true });
     fs.writeFileSync(path.join(pluginDir, 'package.json'), JSON.stringify({ name: 'plugin-c' }));
@@ -639,11 +639,11 @@ describe('postInstallMonorepoLifecycle', () => {
   beforeEach(() => {
     mockExecFileSync.mockClear();
     mockExecSync.mockClear();
-    repoDir = fs.mkdtempSync(path.join(os.tmpdir(), 'opencli-monorepo-'));
+    repoDir = fs.mkdtempSync(path.join(os.tmpdir(), 'cloudl-monorepo-'));
     subDir = path.join(repoDir, 'packages', 'alpha');
     fs.mkdirSync(subDir, { recursive: true });
     fs.writeFileSync(path.join(repoDir, 'package.json'), JSON.stringify({
-      name: 'opencli-plugins',
+      name: 'cloudl-plugins',
       private: true,
       workspaces: ['packages/*'],
     }));
@@ -669,7 +669,7 @@ describe('postInstallMonorepoLifecycle', () => {
   it('also installs dependencies in sub-plugins that declare their own production dependencies', () => {
     // Give the sub-plugin its own production dependencies
     fs.writeFileSync(path.join(subDir, 'package.json'), JSON.stringify({
-      name: 'opencli-plugin-alpha',
+      name: 'cloudl-plugin-alpha',
       version: '1.0.0',
       type: 'module',
       dependencies: { undici: '^8.0.0' },
@@ -774,17 +774,17 @@ describe('updateAllPlugins', () => {
 
 describe('parseSource with monorepo subplugin', () => {
   it('parses github:user/repo/subplugin format', () => {
-    const result = _parseSource('github:ByteYue/opencli-plugins/polymarket');
+    const result = _parseSource('github:ByteYue/cloudl-plugins/polymarket');
     expect(result).toEqual({
       type: 'git',
-      cloneUrl: 'https://github.com/ByteYue/opencli-plugins.git',
-      name: 'opencli-plugins',
+      cloneUrl: 'https://github.com/ByteYue/cloudl-plugins.git',
+      name: 'cloudl-plugins',
       subPlugin: 'polymarket',
     });
   });
 
-  it('strips opencli-plugin- prefix from repo name in subplugin format', () => {
-    const result = _parseSource('github:user/opencli-plugin-collection/defi');
+  it('strips cloudl-plugin- prefix from repo name in subplugin format', () => {
+    const result = _parseSource('github:user/cloudl-plugin-collection/defi');
     expect(result!.name).toBe('collection');
     expect(result!.subPlugin).toBe('defi');
   });
@@ -804,7 +804,7 @@ describe('isSymlinkSync', () => {
   let tmpDir: string;
 
   beforeEach(() => {
-    tmpDir = fs.mkdtempSync(path.join(os.tmpdir(), 'opencli-symlink-test-'));
+    tmpDir = fs.mkdtempSync(path.join(os.tmpdir(), 'cloudl-symlink-test-'));
   });
 
   afterEach(() => {
@@ -836,7 +836,7 @@ describe('monorepo uninstall with symlink', () => {
   let monoDir: string;
 
   beforeEach(() => {
-    tmpDir = fs.mkdtempSync(path.join(os.tmpdir(), 'opencli-mono-uninstall-'));
+    tmpDir = fs.mkdtempSync(path.join(os.tmpdir(), 'cloudl-mono-uninstall-'));
     pluginDir = path.join(PLUGINS_DIR, '__test-mono-sub__');
     monoDir = path.join(_getMonoreposDir(), '__test-mono__');
 
@@ -906,7 +906,7 @@ describe('monorepo uninstall with symlink', () => {
 });
 
 describe('listPlugins with monorepo metadata', () => {
-  const testSymlinkTarget = path.join(os.tmpdir(), 'opencli-list-mono-target');
+  const testSymlinkTarget = path.join(os.tmpdir(), 'cloudl-list-mono-target');
   const testLink = path.join(PLUGINS_DIR, '__test-mono-list__');
 
   beforeEach(() => {
@@ -954,7 +954,7 @@ describe('installLocalPlugin', () => {
   const pluginName = '__test-local-plugin__';
 
   beforeEach(() => {
-    tmpDir = fs.mkdtempSync(path.join(os.tmpdir(), 'opencli-local-install-'));
+    tmpDir = fs.mkdtempSync(path.join(os.tmpdir(), 'cloudl-local-install-'));
     fs.writeFileSync(path.join(tmpDir, 'hello.js'), 'cli({ site: "test", name: "hello", access: "read" })');
   });
 
@@ -1005,18 +1005,18 @@ describe('isLocalPluginSource', () => {
 
 describe('plugin source helpers', () => {
   it('formats local plugin sources consistently', () => {
-    const dir = path.join(os.tmpdir(), 'opencli-plugin-source');
+    const dir = path.join(os.tmpdir(), 'cloudl-plugin-source');
     expect(_toLocalPluginSource(dir)).toBe(`local:${path.resolve(dir)}`);
   });
 
   it('serializes structured local sources consistently', () => {
-    const dir = path.join(os.tmpdir(), 'opencli-plugin-source');
+    const dir = path.join(os.tmpdir(), 'cloudl-plugin-source');
     expect(_toStoredPluginSource({ kind: 'local', path: dir })).toBe(`local:${path.resolve(dir)}`);
   });
 
   it('prefers lockfile source over git remote lookup', () => {
-    const dir = path.join(os.tmpdir(), 'opencli-plugin-source');
-    const localPath = path.resolve(path.join(os.tmpdir(), 'opencli-plugin-source-local'));
+    const dir = path.join(os.tmpdir(), 'cloudl-plugin-source');
+    const localPath = path.resolve(path.join(os.tmpdir(), 'cloudl-plugin-source-local'));
     const source = _resolveStoredPluginSource({
       source: { kind: 'local', path: localPath },
       commitHash: 'local',
@@ -1026,12 +1026,12 @@ describe('plugin source helpers', () => {
   });
 
   it('returns structured monorepo sources unchanged', () => {
-    const dir = path.join(os.tmpdir(), 'opencli-plugin-source');
+    const dir = path.join(os.tmpdir(), 'cloudl-plugin-source');
     const source = _resolvePluginSource({
       source: {
         kind: 'monorepo',
-        url: 'https://github.com/user/opencli-plugins.git',
-        repoName: 'opencli-plugins',
+        url: 'https://github.com/user/cloudl-plugins.git',
+        repoName: 'cloudl-plugins',
         subPath: 'packages/alpha',
       },
       commitHash: 'abcdef1234567890abcdef1234567890abcdef12',
@@ -1039,8 +1039,8 @@ describe('plugin source helpers', () => {
     }, dir);
     expect(source).toEqual({
       kind: 'monorepo',
-      url: 'https://github.com/user/opencli-plugins.git',
-      repoName: 'opencli-plugins',
+      url: 'https://github.com/user/cloudl-plugins.git',
+      repoName: 'cloudl-plugins',
       subPath: 'packages/alpha',
     });
   });
@@ -1048,8 +1048,8 @@ describe('plugin source helpers', () => {
 
 describe('moveDir', () => {
   it('cleans up destination when EXDEV fallback copy fails', () => {
-    const src = path.join(os.tmpdir(), 'opencli-move-src');
-    const dest = path.join(os.tmpdir(), 'opencli-move-dest');
+    const src = path.join(os.tmpdir(), 'cloudl-move-src');
+    const dest = path.join(os.tmpdir(), 'cloudl-move-dest');
     const renameErr = Object.assign(new Error('cross-device link not permitted'), { code: 'EXDEV' });
     const copyErr = new Error('copy failed');
     const renameSync = vi.fn(() => { throw renameErr; });
@@ -1064,11 +1064,11 @@ describe('moveDir', () => {
 });
 
 describe('installPlugin transactional staging', () => {
-  const standaloneSource = 'github:user/opencli-plugin-__test-transactional-standalone__';
+  const standaloneSource = 'github:user/cloudl-plugin-__test-transactional-standalone__';
   const standaloneName = '__test-transactional-standalone__';
   const standaloneDir = path.join(PLUGINS_DIR, standaloneName);
-  const monorepoSource = 'github:user/opencli-plugins-__test-transactional__';
-  const monorepoRepoDir = path.join(_getMonoreposDir(), 'opencli-plugins-__test-transactional__');
+  const monorepoSource = 'github:user/cloudl-plugins-__test-transactional__';
+  const monorepoRepoDir = path.join(_getMonoreposDir(), 'cloudl-plugins-__test-transactional__');
   const monorepoLink = path.join(PLUGINS_DIR, 'alpha');
 
   beforeEach(() => {
@@ -1118,10 +1118,10 @@ describe('installPlugin transactional staging', () => {
         const alphaDir = path.join(cloneDir, 'packages', 'alpha');
         fs.mkdirSync(alphaDir, { recursive: true });
         fs.writeFileSync(path.join(cloneDir, 'package.json'), JSON.stringify({
-          name: 'opencli-plugins-__test-transactional__',
+          name: 'cloudl-plugins-__test-transactional__',
           private: true,
         }));
-        fs.writeFileSync(path.join(cloneDir, 'opencli-plugin.json'), JSON.stringify({
+        fs.writeFileSync(path.join(cloneDir, 'cloudl-plugin.json'), JSON.stringify({
           plugins: {
             alpha: { path: 'packages/alpha' },
           },
@@ -1174,7 +1174,7 @@ describe('installPlugin with existing monorepo', () => {
       private: true,
       workspaces: ['packages/*'],
     }));
-    fs.writeFileSync(path.join(repoDir, 'opencli-plugin.json'), JSON.stringify({
+    fs.writeFileSync(path.join(repoDir, 'cloudl-plugin.json'), JSON.stringify({
       plugins: {
         [pluginName]: { path: `packages/${pluginName}` },
       },
@@ -1185,7 +1185,7 @@ describe('installPlugin with existing monorepo', () => {
       if (cmd === 'git' && Array.isArray(args) && args[0] === 'clone') {
         const cloneDir = String(args[4]);
         fs.mkdirSync(cloneDir, { recursive: true });
-        fs.writeFileSync(path.join(cloneDir, 'opencli-plugin.json'), JSON.stringify({
+        fs.writeFileSync(path.join(cloneDir, 'cloudl-plugin.json'), JSON.stringify({
           plugins: {
             [pluginName]: { path: `packages/${pluginName}` },
           },
@@ -1241,7 +1241,7 @@ describe('updatePlugin transactional staging', () => {
     lock[standaloneName] = {
       source: {
         kind: 'git',
-        url: 'https://github.com/user/opencli-plugin-__test-transactional-update__.git',
+        url: 'https://github.com/user/cloudl-plugin-__test-transactional-update__.git',
       },
       commitHash: 'oldhasholdhasholdhasholdhasholdhasholdh',
       installedAt: '2025-01-01T00:00:00.000Z',
@@ -1282,7 +1282,7 @@ describe('updatePlugin transactional staging', () => {
     lock[monorepoPluginName] = {
       source: {
         kind: 'monorepo',
-        url: 'https://github.com/user/opencli-plugins-__test-transactional-mono-update__.git',
+        url: 'https://github.com/user/cloudl-plugins-__test-transactional-mono-update__.git',
         repoName: monorepoName,
         subPath: `packages/${monorepoPluginName}`,
       },
@@ -1297,10 +1297,10 @@ describe('updatePlugin transactional staging', () => {
         const alphaDir = path.join(cloneDir, 'packages', monorepoPluginName);
         fs.mkdirSync(alphaDir, { recursive: true });
         fs.writeFileSync(path.join(cloneDir, 'package.json'), JSON.stringify({
-          name: 'opencli-plugins-__test-transactional-mono-update__',
+          name: 'cloudl-plugins-__test-transactional-mono-update__',
           private: true,
         }));
-        fs.writeFileSync(path.join(cloneDir, 'opencli-plugin.json'), JSON.stringify({
+        fs.writeFileSync(path.join(cloneDir, 'cloudl-plugin.json'), JSON.stringify({
           plugins: {
             [monorepoPluginName]: { path: `packages/${monorepoPluginName}` },
           },
@@ -1335,7 +1335,7 @@ describe('updatePlugin transactional staging', () => {
     lock[monorepoPluginName] = {
       source: {
         kind: 'monorepo',
-        url: 'https://github.com/user/opencli-plugins-__test-transactional-mono-update__.git',
+        url: 'https://github.com/user/cloudl-plugins-__test-transactional-mono-update__.git',
         repoName: monorepoName,
         subPath: 'packages/old-alpha',
       },
@@ -1349,7 +1349,7 @@ describe('updatePlugin transactional staging', () => {
         const cloneDir = String(args[4]);
         const movedDir = path.join(cloneDir, 'packages', 'moved-alpha');
         fs.mkdirSync(movedDir, { recursive: true });
-        fs.writeFileSync(path.join(cloneDir, 'opencli-plugin.json'), JSON.stringify({
+        fs.writeFileSync(path.join(cloneDir, 'cloudl-plugin.json'), JSON.stringify({
           plugins: {
             [monorepoPluginName]: { path: 'packages/moved-alpha' },
           },
@@ -1384,7 +1384,7 @@ describe('updatePlugin transactional staging', () => {
     lock[monorepoPluginName] = {
       source: {
         kind: 'monorepo',
-        url: 'https://github.com/user/opencli-plugins-__test-transactional-mono-update__.git',
+        url: 'https://github.com/user/cloudl-plugins-__test-transactional-mono-update__.git',
         repoName: monorepoName,
         subPath: 'packages/old-alpha',
       },
@@ -1397,7 +1397,7 @@ describe('updatePlugin transactional staging', () => {
       if (cmd === 'git' && Array.isArray(args) && args[0] === 'clone') {
         const cloneDir = String(args[4]);
         fs.mkdirSync(cloneDir, { recursive: true });
-        fs.writeFileSync(path.join(cloneDir, 'opencli-plugin.json'), JSON.stringify({
+        fs.writeFileSync(path.join(cloneDir, 'cloudl-plugin.json'), JSON.stringify({
           plugins: {
             [monorepoPluginName]: { path: '../outside-alpha' },
           },
@@ -1429,7 +1429,7 @@ describe('updatePlugin transactional staging', () => {
     lock[monorepoPluginName] = {
       source: {
         kind: 'monorepo',
-        url: 'https://github.com/user/opencli-plugins-__test-transactional-mono-update__.git',
+        url: 'https://github.com/user/cloudl-plugins-__test-transactional-mono-update__.git',
         repoName: monorepoName,
         subPath: 'packages/old-alpha',
       },
@@ -1443,7 +1443,7 @@ describe('updatePlugin transactional staging', () => {
         const cloneDir = String(args[4]);
         const movedDir = path.join(cloneDir, 'packages', 'moved-alpha');
         fs.mkdirSync(movedDir, { recursive: true });
-        fs.writeFileSync(path.join(cloneDir, 'opencli-plugin.json'), JSON.stringify({
+        fs.writeFileSync(path.join(cloneDir, 'cloudl-plugin.json'), JSON.stringify({
           plugins: {
             [monorepoPluginName]: { path: 'packages/moved-alpha' },
           },

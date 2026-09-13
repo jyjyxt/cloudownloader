@@ -1,4 +1,4 @@
-import { ArgumentError, AuthRequiredError, CliError } from '@jackwener/opencli/errors';
+import { ArgumentError, AuthRequiredError, CliError } from '@jyjyxt/cloudl/errors';
 const SITE_DOMAIN = 'wx.zsxq.com';
 const SITE_URL = 'https://wx.zsxq.com';
 function asRecord(value) {

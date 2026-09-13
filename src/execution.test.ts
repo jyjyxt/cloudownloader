@@ -275,7 +275,7 @@ describe('executeCommand — non-browser timeout', () => {
       return fn(mockPage);
     });
 
-    vi.stubEnv('OPENCLI_SITE_SESSION', env);
+    vi.stubEnv('CLOUDL_SITE_SESSION', env);
     const cmd = cli({
       site: 'test-execution',
       name: 'site-session-precedence', access: 'read',
@@ -299,14 +299,14 @@ describe('executeCommand — non-browser timeout', () => {
     }
   });
 
-  it.each(['', ' ', 'Persistent'])('rejects invalid OPENCLI_SITE_SESSION=%j before hooks or browser setup', async (env) => {
+  it.each(['', ' ', 'Persistent'])('rejects invalid CLOUDL_SITE_SESSION=%j before hooks or browser setup', async (env) => {
     const beforeHook = vi.fn();
     const adapter = vi.fn(async () => [{ ok: true }]);
     onBeforeExecute(beforeHook);
     vi.spyOn(capRouting, 'shouldUseBrowserSession').mockReturnValue(true);
     const browserSessionSpy = vi.spyOn(runtime, 'browserSession');
 
-    vi.stubEnv('OPENCLI_SITE_SESSION', env);
+    vi.stubEnv('CLOUDL_SITE_SESSION', env);
     const cmd = cli({
       site: 'test-execution',
       name: 'site-session-invalid-env', access: 'read',
@@ -323,8 +323,8 @@ describe('executeCommand — non-browser timeout', () => {
     expect(adapter).not.toHaveBeenCalled();
   });
 
-  it('does not apply OPENCLI_SITE_SESSION to non-browser commands', async () => {
-    vi.stubEnv('OPENCLI_SITE_SESSION', 'invalid');
+  it('does not apply CLOUDL_SITE_SESSION to non-browser commands', async () => {
+    vi.stubEnv('CLOUDL_SITE_SESSION', 'invalid');
     const cmd = cli({
       site: 'test-execution',
       name: 'site-session-node-only', access: 'read',
@@ -506,7 +506,7 @@ describe('executeCommand — non-browser timeout', () => {
       func: async () => { throw new Error('adapter failure'); },
     });
 
-    vi.stubEnv('OPENCLI_SITE_SESSION', 'ephemeral');
+    vi.stubEnv('CLOUDL_SITE_SESSION', 'ephemeral');
     await expect(executeCommand(cmd, {})).rejects.toThrow('adapter failure');
     expect(closeWindow).toHaveBeenCalledTimes(1);
   });
@@ -636,9 +636,9 @@ describe('executeCommand — non-browser timeout', () => {
   });
 
   it('exports a profile-scoped trace artifact on browser command failure when requested', async () => {
-    const baseDir = fs.mkdtempSync(path.join(os.tmpdir(), 'opencli-exec-trace-'));
-    const prevConfigDir = process.env.OPENCLI_CONFIG_DIR;
-    process.env.OPENCLI_CONFIG_DIR = baseDir;
+    const baseDir = fs.mkdtempSync(path.join(os.tmpdir(), 'cloudl-exec-trace-'));
+    const prevConfigDir = process.env.CLOUDL_CONFIG_DIR;
+    process.env.CLOUDL_CONFIG_DIR = baseDir;
     const stderrSpy = vi.spyOn(process.stderr, 'write').mockImplementation(() => true);
     const closeWindow = vi.fn().mockResolvedValue(undefined);
     const mockPage = {
@@ -688,7 +688,7 @@ describe('executeCommand — non-browser timeout', () => {
       expect(trace).toContain('token=[REDACTED]');
       expect(trace).toContain('"authorization":"[REDACTED]"');
       expect(trace).not.toContain('password=secret');
-      expect(stderrSpy.mock.calls.flat().join('\n')).not.toContain('___OPENCLI_TRACE___');
+      expect(stderrSpy.mock.calls.flat().join('\n')).not.toContain('___CLOUDL_TRACE___');
 
       expect(toEnvelope(thrown).trace).toMatchObject({
         traceId,
@@ -699,8 +699,8 @@ describe('executeCommand — non-browser timeout', () => {
       });
       expect(closeWindow).toHaveBeenCalledTimes(1);
     } finally {
-      if (prevConfigDir === undefined) delete process.env.OPENCLI_CONFIG_DIR;
-      else process.env.OPENCLI_CONFIG_DIR = prevConfigDir;
+      if (prevConfigDir === undefined) delete process.env.CLOUDL_CONFIG_DIR;
+      else process.env.CLOUDL_CONFIG_DIR = prevConfigDir;
       stderrSpy.mockRestore();
       fs.rmSync(baseDir, { recursive: true, force: true });
       vi.restoreAllMocks();
@@ -708,9 +708,9 @@ describe('executeCommand — non-browser timeout', () => {
   });
 
   it('exports a trace receipt on browser command success when trace is on', async () => {
-    const baseDir = fs.mkdtempSync(path.join(os.tmpdir(), 'opencli-exec-trace-success-'));
-    const prevConfigDir = process.env.OPENCLI_CONFIG_DIR;
-    process.env.OPENCLI_CONFIG_DIR = baseDir;
+    const baseDir = fs.mkdtempSync(path.join(os.tmpdir(), 'cloudl-exec-trace-success-'));
+    const prevConfigDir = process.env.CLOUDL_CONFIG_DIR;
+    process.env.CLOUDL_CONFIG_DIR = baseDir;
     const stderrSpy = vi.spyOn(process.stderr, 'write').mockImplementation(() => true);
     const onTraceExport = vi.fn();
     const closeWindow = vi.fn().mockResolvedValue(undefined);
@@ -741,7 +741,7 @@ describe('executeCommand — non-browser timeout', () => {
       await expect(executeCommand(cmd, {}, false, { trace: 'on', onTraceExport })).resolves.toEqual([{ ok: true }]);
 
       const stderr = stderrSpy.mock.calls.flat().join('\n');
-      expect(stderr).toContain('OpenCLI trace artifact:');
+      expect(stderr).toContain('Cloudl trace artifact:');
       const tracesRoot = path.join(baseDir, 'profiles', 'default', 'traces');
       const traceId = fs.readdirSync(tracesRoot)[0];
       const receipt = JSON.parse(fs.readFileSync(path.join(tracesRoot, traceId, 'receipt.json'), 'utf-8'));
@@ -758,8 +758,8 @@ describe('executeCommand — non-browser timeout', () => {
       }));
       expect(closeWindow).toHaveBeenCalledTimes(1);
     } finally {
-      if (prevConfigDir === undefined) delete process.env.OPENCLI_CONFIG_DIR;
-      else process.env.OPENCLI_CONFIG_DIR = prevConfigDir;
+      if (prevConfigDir === undefined) delete process.env.CLOUDL_CONFIG_DIR;
+      else process.env.CLOUDL_CONFIG_DIR = prevConfigDir;
       stderrSpy.mockRestore();
       fs.rmSync(baseDir, { recursive: true, force: true });
       vi.restoreAllMocks();
@@ -767,11 +767,11 @@ describe('executeCommand — non-browser timeout', () => {
   });
 
   it('keeps the original adapter error when trace export fails', async () => {
-    const baseDir = fs.mkdtempSync(path.join(os.tmpdir(), 'opencli-exec-trace-fail-'));
+    const baseDir = fs.mkdtempSync(path.join(os.tmpdir(), 'cloudl-exec-trace-fail-'));
     const blockedPath = path.join(baseDir, 'not-a-dir');
     fs.writeFileSync(blockedPath, 'file');
-    const prevConfigDir = process.env.OPENCLI_CONFIG_DIR;
-    process.env.OPENCLI_CONFIG_DIR = blockedPath;
+    const prevConfigDir = process.env.CLOUDL_CONFIG_DIR;
+    process.env.CLOUDL_CONFIG_DIR = blockedPath;
     const stderrSpy = vi.spyOn(process.stderr, 'write').mockImplementation(() => true);
     const mockPage = {
       closeWindow: vi.fn().mockResolvedValue(undefined),
@@ -800,8 +800,8 @@ describe('executeCommand — non-browser timeout', () => {
       await expect(executeCommand(cmd, {}, false, { trace: 'retain-on-failure' })).rejects.toThrow('adapter failure');
       expect(stderrSpy.mock.calls.flat().join('\n')).toContain('[trace] Failed to export trace artifact');
     } finally {
-      if (prevConfigDir === undefined) delete process.env.OPENCLI_CONFIG_DIR;
-      else process.env.OPENCLI_CONFIG_DIR = prevConfigDir;
+      if (prevConfigDir === undefined) delete process.env.CLOUDL_CONFIG_DIR;
+      else process.env.CLOUDL_CONFIG_DIR = prevConfigDir;
       stderrSpy.mockRestore();
       fs.rmSync(baseDir, { recursive: true, force: true });
       vi.restoreAllMocks();

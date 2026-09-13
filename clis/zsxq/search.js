@@ -1,4 +1,4 @@
-import { cli, Strategy } from '@jackwener/opencli/registry';
+import { cli, Strategy } from '@jyjyxt/cloudl/registry';
 import { getActiveGroupId, ensureZsxqAuth, ensureZsxqPage, fetchFirstJson, getGroupsFromResponse, getTopicsFromResponse, toTopicRow, } from './utils.js';
 cli({
     site: 'zsxq',

@@ -3,7 +3,7 @@ import { buildClaudeModifyInvocation } from '../autoresearch/commands/run.js';
 
 describe('autoresearch Claude invocation', () => {
   it('passes repository-derived prompts through stdin instead of shell arguments', () => {
-    const prompt = 'try $(touch /tmp/opencli-pwned) and `id` and "quotes"';
+    const prompt = 'try $(touch /tmp/cloudl-pwned) and `id` and "quotes"';
     const invocation = buildClaudeModifyInvocation(prompt);
 
     expect(invocation.command).toBe('claude');

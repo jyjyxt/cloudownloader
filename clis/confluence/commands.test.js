@@ -2,8 +2,8 @@ import { mkdtemp, rm, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import { tmpdir } from 'node:os';
 import { describe, expect, it, afterEach, vi } from 'vitest';
-import { getRegistry } from '@jackwener/opencli/registry';
-import { CommandExecutionError, EmptyResultError } from '@jackwener/opencli/errors';
+import { getRegistry } from '@jyjyxt/cloudl/registry';
+import { CommandExecutionError, EmptyResultError } from '@jyjyxt/cloudl/errors';
 import './page.js';
 import './search.js';
 import './create.js';
@@ -36,7 +36,7 @@ function jsonResponse(body) {
 }
 
 async function withTempMarkdown(markdown, fn) {
-    const dir = await mkdtemp(join(tmpdir(), 'opencli-confluence-'));
+    const dir = await mkdtemp(join(tmpdir(), 'cloudl-confluence-'));
     const file = join(dir, 'doc.md');
     await writeFile(file, markdown);
     try {

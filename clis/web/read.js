@@ -13,8 +13,8 @@
  *   cloudl web read --url "https://www.anthropic.com/research/..." --output ./articles
  *   cloudl web read --url "https://..." --download-images false
  */
-import { cli, Strategy } from '@jackwener/opencli/registry';
-import { downloadArticle } from '@jackwener/opencli/download/article-download';
+import { cli, Strategy } from '@jyjyxt/cloudl/registry';
+import { downloadArticle } from '@jyjyxt/cloudl/download/article-download';
 
 const NETWORK_IDLE_QUIET_MS = 1000;
 const NETWORK_IDLE_POLL_MS = 500;
@@ -190,7 +190,7 @@ function buildRenderAwareExtractorJs(options) {
         const collectEmptyContainers = (root, scope, baseUrl) => {
           const likely = 'table, tbody, ul[id], ol[id], div[id], section[id], [class*="grid"], [class*="data"], [class*="list"], [id*="grid"], [id*="data"], [id*="list"]';
           root.querySelectorAll?.(likely).forEach((el) => {
-            if (scope === 'main' && el.closest?.('[data-opencli-iframe-source]')) return;
+            if (scope === 'main' && el.closest?.('[data-cloudl-iframe-source]')) return;
             const id = el.getAttribute('id') || '';
             const cls = el.getAttribute('class') || '';
             const name = [id, cls].join(' ').toLowerCase();
@@ -221,7 +221,7 @@ function buildRenderAwareExtractorJs(options) {
           absolutizeTree(frameBody, desc.src || window.location.href);
           collectEmptyContainers(frameBody, 'iframe', desc.src);
           const section = document.createElement('section');
-          section.setAttribute('data-opencli-iframe-source', desc.src);
+          section.setAttribute('data-cloudl-iframe-source', desc.src);
           const heading = document.createElement('h2');
           heading.textContent = '来自 iframe: ' + (desc.src || fallbackLabel);
           section.appendChild(heading);
@@ -416,7 +416,7 @@ const command = cli({
         const waitSeconds = kwargs.wait ?? 3;
         const waitUntil = normalizeWaitUntil(kwargs['wait-until']);
         const frameMode = normalizeFrameMode(kwargs.frames);
-        const shouldDiagnose = boolish(kwargs.diagnose) || debug || !!process.env.OPENCLI_VERBOSE;
+        const shouldDiagnose = boolish(kwargs.diagnose) || debug || !!process.env.CLOUDL_VERBOSE;
         const networkEntries = [];
         const captureSupported = (waitUntil === 'networkidle' || shouldDiagnose)
             ? await maybeStartNetworkCapture(page)

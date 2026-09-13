@@ -13,8 +13,8 @@
  * id, which surfaces as `CommandExecutionError` ("check the city id") rather than a
  * genuine-empty result.
  */
-import { AuthRequiredError, CommandExecutionError } from '@jackwener/opencli/errors';
-import { cli, Strategy } from '@jackwener/opencli/registry';
+import { AuthRequiredError, CommandExecutionError } from '@jyjyxt/cloudl/errors';
+import { cli, Strategy } from '@jyjyxt/cloudl/registry';
 import {
     buildAttractionExtractJs,
     buildAttractionPlaceUrl,

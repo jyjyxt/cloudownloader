@@ -1,6 +1,6 @@
 import { describe, expect, it, vi } from 'vitest';
-import { getRegistry } from '@jackwener/opencli/registry';
-import { ArgumentError, AuthRequiredError, CommandExecutionError } from '@jackwener/opencli/errors';
+import { getRegistry } from '@jyjyxt/cloudl/registry';
+import { ArgumentError, AuthRequiredError, CommandExecutionError } from '@jyjyxt/cloudl/errors';
 import { normalizeRedditCommentFullname, requireReplyText } from './reply.js';
 import './reply.js';
 
@@ -17,8 +17,8 @@ describe('reddit reply command', () => {
     it('normalizes bare ids, fullnames, and exact reddit comment URLs', () => {
         expect(normalizeRedditCommentFullname('okf3s7u')).toBe('t1_okf3s7u');
         expect(normalizeRedditCommentFullname('T1_OKF3S7U')).toBe('t1_okf3s7u');
-        expect(normalizeRedditCommentFullname('https://www.reddit.com/r/opencli/comments/1abc23/title_slug/okf3s7u/?context=3')).toBe('t1_okf3s7u');
-        expect(normalizeRedditCommentFullname('https://old.reddit.com/r/opencli/comments/1abc23/title_slug/okf3s7u/')).toBe('t1_okf3s7u');
+        expect(normalizeRedditCommentFullname('https://www.reddit.com/r/cloudl/comments/1abc23/title_slug/okf3s7u/?context=3')).toBe('t1_okf3s7u');
+        expect(normalizeRedditCommentFullname('https://old.reddit.com/r/cloudl/comments/1abc23/title_slug/okf3s7u/')).toBe('t1_okf3s7u');
     });
 
     it('rejects invalid or ambiguous comment identities before navigation', async () => {
@@ -28,10 +28,10 @@ describe('reddit reply command', () => {
             '',
             't3_1abc23',
             'abc/def',
-            'https://reddit.com.evil.com/r/opencli/comments/1abc23/title_slug/okf3s7u/',
-            'http://www.reddit.com/r/opencli/comments/1abc23/title_slug/okf3s7u/',
-            'https://www.reddit.com/r/opencli/comments/1abc23/title_slug/',
-            'https://www.reddit.com/r/opencli/comments/1abc23/title_slug/okf3s7u/evil',
+            'https://reddit.com.evil.com/r/cloudl/comments/1abc23/title_slug/okf3s7u/',
+            'http://www.reddit.com/r/cloudl/comments/1abc23/title_slug/okf3s7u/',
+            'https://www.reddit.com/r/cloudl/comments/1abc23/title_slug/',
+            'https://www.reddit.com/r/cloudl/comments/1abc23/title_slug/okf3s7u/evil',
         ]) {
             await expect(command.func(page, { 'comment-id': value, text: 'hello' })).rejects.toBeInstanceOf(ArgumentError);
         }
@@ -54,7 +54,7 @@ describe('reddit reply command', () => {
         const page = makePage();
 
         const rows = await command.func(page, {
-            'comment-id': 'https://www.reddit.com/r/opencli/comments/1abc23/title_slug/okf3s7u/',
+            'comment-id': 'https://www.reddit.com/r/cloudl/comments/1abc23/title_slug/okf3s7u/',
             text: 'hello',
         });
 

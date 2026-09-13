@@ -1,4 +1,4 @@
-import { ArgumentError, CommandExecutionError } from '@jackwener/opencli/errors';
+import { ArgumentError, CommandExecutionError } from '@jyjyxt/cloudl/errors';
 
 export const MODEL_CHOICES = ['auto', 'v8.2', 'v8.1', 'v7', 'v6.1', 'v6', 'niji7', 'niji6'];
 export const RESOLUTION_CHOICES = ['auto', 'sd', 'hd'];

@@ -1,12 +1,12 @@
 /**
- * Unified logging for opencli.
+ * Unified logging for cloudl.
  *
  * All framework output (warnings, debug info, errors) should go through
  * this module so that verbosity levels are respected consistently.
  */
 
 function isVerbose(): boolean {
-  return !!process.env.OPENCLI_VERBOSE;
+  return !!process.env.CLOUDL_VERBOSE;
 }
 
 export const log = {
@@ -35,7 +35,7 @@ export const log = {
     process.stderr.write(`✖  ${msg}\n`);
   },
 
-  /** Verbose output (shown when -v flag or OPENCLI_VERBOSE is set) */
+  /** Verbose output (shown when -v flag or CLOUDL_VERBOSE is set) */
   verbose(msg: string): void {
     if (isVerbose()) {
       process.stderr.write(`[verbose] ${msg}\n`);

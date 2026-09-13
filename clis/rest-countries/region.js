@@ -3,8 +3,8 @@
 // Region values: africa / americas / asia / europe / oceania / antarctic.
 // Subregions ("eastern asia") are not supported by this command — they go
 // through the v3.1 `subregion/` endpoint which behaves identically.
-import { cli, Strategy } from '@jackwener/opencli/registry';
-import { EmptyResultError } from '@jackwener/opencli/errors';
+import { cli, Strategy } from '@jyjyxt/cloudl/registry';
+import { EmptyResultError } from '@jyjyxt/cloudl/errors';
 import {
     COUNTRY_FIELDS,
     REST_COUNTRIES_BASE,

@@ -1,15 +1,15 @@
-# Using OpenCLI with Android Chrome
+# Using Cloudl with Android Chrome
 
-OpenCLI can control Chrome on a connected Android device via **ADB port forwarding** and **CDPBridge** — no extra tools or custom builds required. The same adapters that run on desktop Chrome work identically on Android, reusing whatever cookies are already in the mobile browser.
+Cloudl can control Chrome on a connected Android device via **ADB port forwarding** and **CDPBridge** — no extra tools or custom builds required. The same adapters that run on desktop Chrome work identically on Android, reusing whatever cookies are already in the mobile browser.
 
 ---
 
 ## How It Works
 
-Android Chrome supports [remote debugging via CDP](https://developer.chrome.com/docs/devtools/remote-debugging/). The device exposes a local Unix socket that ADB can forward to a TCP port on your machine. OpenCLI's `CDPBridge` then connects to that port exactly as it would to any other CDP endpoint.
+Android Chrome supports [remote debugging via CDP](https://developer.chrome.com/docs/devtools/remote-debugging/). The device exposes a local Unix socket that ADB can forward to a TCP port on your machine. Cloudl's `CDPBridge` then connects to that port exactly as it would to any other CDP endpoint.
 
 ```
-OpenCLI (CDPBridge)
+Cloudl (CDPBridge)
     │  WebSocket (CDP)
     ▼
 localhost:9222                ← ADB forward
@@ -77,10 +77,10 @@ A successful response lists the open tabs:
 ]
 ```
 
-### 4. Run any OpenCLI command
+### 4. Run any Cloudl command
 
 ```bash
-export OPENCLI_CDP_ENDPOINT=http://localhost:9222
+export CLOUDL_CDP_ENDPOINT=http://localhost:9222
 cloudl hackernews top --limit 5
 ```
 
@@ -88,23 +88,23 @@ cloudl hackernews top --limit 5
 
 ## Targeting a Specific Tab
 
-When multiple tabs are open, `CDPBridge` picks the best one automatically using a scoring algorithm (prefer `type=page`, real URLs over `about:blank`, etc.). To override this, set `OPENCLI_CDP_TARGET` to a substring of the tab's title or URL:
+When multiple tabs are open, `CDPBridge` picks the best one automatically using a scoring algorithm (prefer `type=page`, real URLs over `about:blank`, etc.). To override this, set `CLOUDL_CDP_TARGET` to a substring of the tab's title or URL:
 
 ```bash
-OPENCLI_CDP_TARGET="twitter" cloudl twitter trending
+CLOUDL_CDP_TARGET="twitter" cloudl twitter trending
 ```
 
 You can also connect directly to a specific tab's WebSocket URL (from `/json`):
 
 ```bash
-OPENCLI_CDP_ENDPOINT=ws://localhost:9222/devtools/page/3941 opencli ...
+CLOUDL_CDP_ENDPOINT=ws://localhost:9222/devtools/page/3941 cloudl ...
 ```
 
 ---
 
 ## Using Login-Required Adapters
 
-Adapters that use the `cookie` strategy (most social/content sites) need you to be logged in on the Android device. The cookies are already in Android Chrome — OpenCLI reads them automatically over CDP.
+Adapters that use the `cookie` strategy (most social/content sites) need you to be logged in on the Android device. The cookies are already in Android Chrome — Cloudl reads them automatically over CDP.
 
 To check whether an adapter requires login:
 
@@ -154,8 +154,8 @@ adb -s <device1-serial> forward tcp:9222 localabstract:chrome_devtools_remote
 adb -s <device2-serial> forward tcp:9223 localabstract:chrome_devtools_remote
 
 # Run commands targeting each device
-OPENCLI_CDP_ENDPOINT=http://localhost:9222 cloudl twitter trending
-OPENCLI_CDP_ENDPOINT=http://localhost:9223 cloudl twitter trending
+CLOUDL_CDP_ENDPOINT=http://localhost:9222 cloudl twitter trending
+CLOUDL_CDP_ENDPOINT=http://localhost:9223 cloudl twitter trending
 ```
 
 ---

@@ -1,5 +1,5 @@
-import { cli, Strategy } from '@jackwener/opencli/registry';
-import { EmptyResultError } from '@jackwener/opencli/errors';
+import { cli, Strategy } from '@jyjyxt/cloudl/registry';
+import { EmptyResultError } from '@jyjyxt/cloudl/errors';
 import {
     CHATGPT_DOMAIN,
     CHATGPT_URL,
@@ -73,7 +73,7 @@ export const deepResearchResultCommand = cli({
         await page.readNetworkCapture?.().catch(() => []);
         const currentUrl = await currentChatGPTUrl(page).catch(() => '');
         if (currentUrl.startsWith(targetUrl)) {
-            await page.goto(`${CHATGPT_URL}/?opencli_dr_result=${Date.now()}`, { waitUntil: 'none' });
+            await page.goto(`${CHATGPT_URL}/?cloudl_dr_result=${Date.now()}`, { waitUntil: 'none' });
             await page.wait(1);
         }
         await page.startNetworkCapture?.('/backend-api/conversation/').catch(() => false);

@@ -1,14 +1,14 @@
 /**
  * YouTube search via initial page state and authenticated InnerTube continuations.
  */
-import { cli, Strategy } from '@jackwener/opencli/registry';
+import { cli, Strategy } from '@jyjyxt/cloudl/registry';
 import {
     ArgumentError,
     AuthRequiredError,
     CommandExecutionError,
     EmptyResultError,
     TimeoutError,
-} from '@jackwener/opencli/errors';
+} from '@jyjyxt/cloudl/errors';
 import { readYoutubeSapisid, SAPISID_HASH_FN } from './utils.js';
 
 const DEFAULT_LIMIT = 20;

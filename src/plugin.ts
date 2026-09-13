@@ -1,8 +1,8 @@
 /**
  * Plugin management: install, uninstall, and list plugins.
  *
- * Plugins live in ~/.opencli/plugins/<name>/.
- * Monorepo clones live in ~/.opencli/monorepos/<repo-name>/.
+ * Plugins live in ~/.cloudl/plugins/<name>/.
+ * Monorepo clones live in ~/.cloudl/monorepos/<repo-name>/.
  * Install source format: "github:user/repo", "github:user/repo/subplugin",
  * "https://github.com/user/repo", "file:///local/plugin", or a local directory path.
  */
@@ -34,12 +34,12 @@ function getHomeDir(): string {
 
 /** Path to the lock file that tracks installed plugin versions. */
 export function getLockFilePath(): string {
-  return path.join(getHomeDir(), '.opencli', 'plugins.lock.json');
+  return path.join(getHomeDir(), '.cloudl', 'plugins.lock.json');
 }
 
-/** Monorepo clones directory: ~/.opencli/monorepos/ */
+/** Monorepo clones directory: ~/.cloudl/monorepos/ */
 export function getMonoreposDir(): string {
-  return path.join(getHomeDir(), '.opencli', 'monorepos');
+  return path.join(getHomeDir(), '.cloudl', 'monorepos');
 }
 
 export type PluginSourceRecord =
@@ -63,7 +63,7 @@ export interface PluginInfo {
   installedAt?: string;
   /** If from a monorepo, the monorepo name. */
   monorepoName?: string;
-  /** Description from opencli-plugin.json. */
+  /** Description from cloudl-plugin.json. */
   description?: string;
 }
 
@@ -195,7 +195,7 @@ function resolveStoredPluginSource(lockEntry: LockEntry | undefined, pluginDir: 
 /**
  * Move a directory, with EXDEV fallback.
  * fs.renameSync fails when source and destination are on different
- * filesystems (e.g. /tmp → ~/.opencli). In that case we copy then remove.
+ * filesystems (e.g. /tmp → ~/.cloudl). In that case we copy then remove.
  */
 type MoveDirFsOps = Pick<typeof fs, 'renameSync' | 'cpSync' | 'rmSync'>;
 
@@ -227,7 +227,7 @@ function createSiblingTempPath(dest: string, kind: 'tmp' | 'bak'): string {
 function cloneRepoToTemp(cloneUrl: string): string {
   const tmpCloneDir = path.join(
     os.tmpdir(),
-    `opencli-clone-${process.pid}-${Date.now()}-${Math.random().toString(16).slice(2)}`,
+    `cloudl-clone-${process.pid}-${Date.now()}-${Math.random().toString(16).slice(2)}`,
   );
 
   try {
@@ -531,7 +531,7 @@ export function validatePluginStructure(pluginDir: string): ValidationResult {
   if (hasTs) {
     const pkgJsonPath = path.join(pluginDir, 'package.json');
     if (!fs.existsSync(pkgJsonPath)) {
-      errors.push('Plugin contains .ts files but no package.json. A package.json with "type": "module" and "@jackwener/opencli" peer dependency is required for TS plugins.');
+      errors.push('Plugin contains .ts files but no package.json. A package.json with "type": "module" and "@jyjyxt/cloudl" peer dependency is required for TS plugins.');
     } else {
       try {
         const pkg = JSON.parse(fs.readFileSync(pkgJsonPath, 'utf-8'));
@@ -583,9 +583,9 @@ function installDependencies(dir: string): void {
 }
 
 function finalizePluginRuntime(pluginDir: string): void {
-  // Symlink host cloudl so TS plugins resolve '@jackwener/opencli/registry'
+  // Symlink host cloudl so TS plugins resolve '@jyjyxt/cloudl/registry'
   // against the running host, not a stale npm-published version.
-  linkHostOpencli(pluginDir);
+  linkHostCloudl(pluginDir);
 
   // Transpile .ts → .js via esbuild (production node can't load .ts directly).
   transpilePluginTs(pluginDir);
@@ -718,9 +718,9 @@ export function installPlugin(source: string): string | string[] {
     const manifest = readPluginManifest(tmpCloneDir);
 
     // Check top-level compatibility
-    if (manifest?.opencli && !checkCompatibility(manifest.opencli)) {
+    if (manifest?.cloudl && !checkCompatibility(manifest.cloudl)) {
       throw new Error(
-        `Plugin requires cloudl ${manifest.opencli}, but current version is incompatible.`
+        `Plugin requires cloudl ${manifest.cloudl}, but current version is incompatible.`
       );
     }
 
@@ -779,9 +779,9 @@ function installLocalPlugin(localPath: string, name: string): string {
 
   const manifest = readPluginManifest(localPath);
 
-  if (manifest?.opencli && !checkCompatibility(manifest.opencli)) {
+  if (manifest?.cloudl && !checkCompatibility(manifest.cloudl)) {
     throw new PluginError(
-      `Plugin requires cloudl ${manifest.opencli}, but current version is incompatible.`,
+      `Plugin requires cloudl ${manifest.cloudl}, but current version is incompatible.`,
       'Upgrade cloudl to a compatible version.',
     );
   }
@@ -885,8 +885,8 @@ function installMonorepo(
 
   for (const { name, entry } of pluginsToInstall) {
     // Check sub-plugin level compatibility (overrides top-level)
-    if (entry.opencli && !checkCompatibility(entry.opencli)) {
-      log.warn(`Skipping "${name}": requires cloudl ${entry.opencli}`);
+    if (entry.cloudl && !checkCompatibility(entry.cloudl)) {
+      log.warn(`Skipping "${name}": requires cloudl ${entry.cloudl}`);
       continue;
     }
 
@@ -985,8 +985,8 @@ function collectUpdatedMonorepoPlugins(
     if (!manifestEntry || manifestEntry.disabled) {
       throw new Error(`Installed sub-plugin "${pluginName}" no longer exists in ${cloneUrl}`);
     }
-    if (manifestEntry.opencli && !checkCompatibility(manifestEntry.opencli)) {
-      throw new Error(`Sub-plugin "${pluginName}" requires cloudl ${manifestEntry.opencli}`);
+    if (manifestEntry.cloudl && !checkCompatibility(manifestEntry.cloudl)) {
+      throw new Error(`Sub-plugin "${pluginName}" requires cloudl ${manifestEntry.cloudl}`);
     }
 
     const subDir = resolveRepoContainedPath(tmpCloneDir, manifestEntry.path);
@@ -1125,9 +1125,9 @@ export function updatePlugin(name: string): void {
         throw new Error(`Updated source is no longer a monorepo: ${cloneUrl}`);
       }
 
-      if (manifest.opencli && !checkCompatibility(manifest.opencli)) {
+      if (manifest.cloudl && !checkCompatibility(manifest.cloudl)) {
         throw new Error(
-          `Plugin requires cloudl ${manifest.opencli}, but current version is incompatible.`
+          `Plugin requires cloudl ${manifest.cloudl}, but current version is incompatible.`
         );
       }
 
@@ -1167,9 +1167,9 @@ export function updatePlugin(name: string): void {
       throw new Error(`Updated source is now a monorepo: ${cloneUrl}`);
     }
 
-    if (manifest?.opencli && !checkCompatibility(manifest.opencli)) {
+    if (manifest?.cloudl && !checkCompatibility(manifest.cloudl)) {
       throw new Error(
-        `Plugin requires cloudl ${manifest.opencli}, but current version is incompatible.`
+        `Plugin requires cloudl ${manifest.cloudl}, but current version is incompatible.`
       );
     }
 
@@ -1210,7 +1210,7 @@ export function updateAllPlugins(): UpdateResult[] {
 
 /**
  * List all installed plugins.
- * Reads opencli-plugin.json for description/version when available.
+ * Reads cloudl-plugin.json for description/version when available.
  */
 export function listPlugins(): PluginInfo[] {
   if (!fs.existsSync(PLUGINS_DIR)) return [];
@@ -1301,7 +1301,7 @@ function parseSource(
       return {
         type: 'local',
         localPath,
-        name: path.basename(localPath).replace(/^opencli-plugin-/, ''),
+        name: path.basename(localPath).replace(/^cloudl-plugin-/, ''),
       };
     } catch {
       return null;
@@ -1313,7 +1313,7 @@ function parseSource(
     return {
       type: 'local',
       localPath,
-      name: path.basename(localPath).replace(/^opencli-plugin-/, ''),
+      name: path.basename(localPath).replace(/^cloudl-plugin-/, ''),
     };
   }
 
@@ -1323,7 +1323,7 @@ function parseSource(
   );
   if (githubSubMatch) {
     const [, user, repo, sub] = githubSubMatch;
-    const name = repo.replace(/^opencli-plugin-/, '');
+    const name = repo.replace(/^cloudl-plugin-/, '');
     return {
       type: 'git',
       cloneUrl: `https://github.com/${user}/${repo}.git`,
@@ -1336,7 +1336,7 @@ function parseSource(
   const githubMatch = source.match(/^github:([\w.-]+)\/([\w.-]+)$/);
   if (githubMatch) {
     const [, user, repo] = githubMatch;
-    const name = repo.replace(/^opencli-plugin-/, '');
+    const name = repo.replace(/^cloudl-plugin-/, '');
     return {
       type: 'git',
       cloneUrl: `https://github.com/${user}/${repo}.git`,
@@ -1350,7 +1350,7 @@ function parseSource(
   );
   if (urlMatch) {
     const [, user, repo] = urlMatch;
-    const name = repo.replace(/^opencli-plugin-/, '');
+    const name = repo.replace(/^cloudl-plugin-/, '');
     return {
       type: 'git',
       cloneUrl: `https://github.com/${user}/${repo}.git`,
@@ -1366,7 +1366,7 @@ function parseSource(
     const pathPart = sshUrlMatch[1];
     const segments = pathPart.split('/');
     const repoSegment = segments.pop()!;
-    const name = repoSegment.replace(/^opencli-plugin-/, '');
+    const name = repoSegment.replace(/^cloudl-plugin-/, '');
     return { type: 'git', cloneUrl: source, name };
   }
 
@@ -1376,7 +1376,7 @@ function parseSource(
     const pathPart = scpMatch[1];
     const segments = pathPart.split('/');
     const repoSegment = segments.pop()!;
-    const name = repoSegment.replace(/^opencli-plugin-/, '');
+    const name = repoSegment.replace(/^cloudl-plugin-/, '');
     return { type: 'git', cloneUrl: source, name };
   }
 
@@ -1388,7 +1388,7 @@ function parseSource(
     const pathPart = genericHttpMatch[1];
     const segments = pathPart.split('/');
     const repoSegment = segments.pop()!;
-    const name = repoSegment.replace(/^opencli-plugin-/, '');
+    const name = repoSegment.replace(/^cloudl-plugin-/, '');
     // Ensure clone URL ends with .git
     const cloneUrl = source.endsWith('.git') ? source : `${source}.git`;
     return { type: 'git', cloneUrl, name };
@@ -1399,14 +1399,14 @@ function parseSource(
 
 /**
  * Symlink the host cloudl package into a plugin's node_modules.
- * This ensures TS plugins resolve '@jackwener/opencli/registry' against
+ * This ensures TS plugins resolve '@jyjyxt/cloudl/registry' against
  * the running host installation rather than a stale npm-published version.
  */
-function linkHostOpencli(pluginDir: string): void {
+function linkHostCloudl(pluginDir: string): void {
   try {
-    const hostRoot = resolveHostOpencliRoot();
+    const hostRoot = resolveHostCloudlRoot();
 
-    const targetLink = path.join(pluginDir, 'node_modules', '@jackwener', 'opencli');
+    const targetLink = path.join(pluginDir, 'node_modules', '@jyjyxt', 'cloudl');
 
     // Remove existing (npm-installed copy or stale symlink)
     if (fs.existsSync(targetLink)) {
@@ -1430,7 +1430,7 @@ function linkHostOpencli(pluginDir: string): void {
  * Resolve the path to the esbuild CLI executable with fallback strategies.
  */
 export function resolveEsbuildBin(): string | null {
-  const hostRoot = resolveHostOpencliRoot();
+  const hostRoot = resolveHostCloudlRoot();
 
   // Strategy 1 (Windows): prefer the .cmd wrapper which is executable via shell
   if (isWindows) {
@@ -1484,7 +1484,7 @@ export function resolveEsbuildBin(): string | null {
   return null;
 }
 
-function resolveHostOpencliRoot(startFile = fileURLToPath(import.meta.url)): string {
+function resolveHostCloudlRoot(startFile = fileURLToPath(import.meta.url)): string {
   let dir = path.dirname(startFile);
 
   while (true) {
@@ -1492,7 +1492,7 @@ function resolveHostOpencliRoot(startFile = fileURLToPath(import.meta.url)): str
     if (fs.existsSync(pkgPath)) {
       try {
         const pkg = JSON.parse(fs.readFileSync(pkgPath, 'utf-8'));
-        if (pkg?.name === '@jackwener/opencli') {
+        if (pkg?.name === '@jyjyxt/cloudl') {
           return dir;
         }
       } catch {
@@ -1510,7 +1510,7 @@ function resolveHostOpencliRoot(startFile = fileURLToPath(import.meta.url)): str
 
 /**
  * Transpile TS plugin files to JS so they work in production mode.
- * Uses esbuild from the host opencli's node_modules for fast single-file transpilation.
+ * Uses esbuild from the host cloudl's node_modules for fast single-file transpilation.
  */
 function transpilePluginTs(pluginDir: string): void {
   try {
@@ -1554,7 +1554,7 @@ function transpilePluginTs(pluginDir: string): void {
 }
 
 export {
-  resolveHostOpencliRoot as _resolveHostOpencliRoot,
+  resolveHostCloudlRoot as _resolveHostCloudlRoot,
   resolveEsbuildBin as _resolveEsbuildBin,
   getCommitHash as _getCommitHash,
   installDependencies as _installDependencies,

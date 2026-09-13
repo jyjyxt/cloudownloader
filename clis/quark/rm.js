@@ -1,5 +1,5 @@
-import { ArgumentError } from '@jackwener/opencli/errors';
-import { cli, Strategy } from '@jackwener/opencli/registry';
+import { ArgumentError } from '@jyjyxt/cloudl/errors';
+import { cli, Strategy } from '@jyjyxt/cloudl/registry';
 import { DRIVE_API, apiPost } from './utils.js';
 cli({
     site: 'quark',

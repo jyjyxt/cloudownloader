@@ -2,8 +2,8 @@
  * Rednote comments — international mirror of xiaohongshu/comments.
  * Reuses the DOM-extraction IIFE from `../xiaohongshu/comments.js`.
  */
-import { cli, Strategy } from '@jackwener/opencli/registry';
-import { ArgumentError, AuthRequiredError, CommandExecutionError, EmptyResultError } from '@jackwener/opencli/errors';
+import { cli, Strategy } from '@jyjyxt/cloudl/registry';
+import { ArgumentError, AuthRequiredError, CommandExecutionError, EmptyResultError } from '@jyjyxt/cloudl/errors';
 import { buildCommentsExtractJs, normalizeCommentRows } from '../xiaohongshu/comments.js';
 import { buildNoteUrl, parseNoteId } from '../xiaohongshu/note-helpers.js';
 

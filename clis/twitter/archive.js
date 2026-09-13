@@ -1,6 +1,6 @@
 import fs from 'node:fs';
 import path from 'node:path';
-import { ArgumentError, CommandExecutionError } from '@jackwener/opencli/errors';
+import { ArgumentError, CommandExecutionError } from '@jyjyxt/cloudl/errors';
 
 // Safety cap only. Full-archive runs can set a higher page budget via --max-pages.
 export const DEFAULT_MAX_PAGINATION_PAGES = 100;

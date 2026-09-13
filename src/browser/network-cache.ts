@@ -45,7 +45,7 @@ export interface NetworkCacheFile {
 }
 
 function getDefaultCacheDir(): string {
-    return process.env.OPENCLI_CACHE_DIR || path.join(os.homedir(), '.opencli', 'cache');
+    return process.env.CLOUDL_CACHE_DIR || path.join(os.homedir(), '.cloudl', 'cache');
 }
 
 export function getCachePath(session: string, baseDir: string = getDefaultCacheDir()): string {

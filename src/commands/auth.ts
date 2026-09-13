@@ -85,7 +85,7 @@ function parseSiteFilter(raw: string | undefined): Set<string> | null {
 }
 
 function defaultAuthRefreshStatePath(): string {
-  return join(homedir(), '.opencli', 'auth-refresh.json');
+  return join(homedir(), '.cloudl', 'auth-refresh.json');
 }
 
 function emptyAuthRefreshState(): AuthRefreshState {
@@ -482,7 +482,7 @@ export function registerAuthCommands(program: Command): Command {
         fmt,
         fmtExplicit: status.getOptionValueSource('format') === 'cli',
         columns: ['site', 'status', 'identity', 'checked', 'error'],
-        title: 'opencli/auth status',
+        title: 'cloudl/auth status',
         source: opts.full ? 'full whoami probe' : 'quick auth check',
       });
     });
@@ -509,7 +509,7 @@ export function registerAuthCommands(program: Command): Command {
         fmt,
         fmtExplicit: refresh.getOptionValueSource('format') === 'cli',
         columns: ['site', 'status', 'last_touched_at', 'next_refresh_at', 'error'],
-        title: 'opencli/auth refresh',
+        title: 'cloudl/auth refresh',
         source: opts.all ? 'forced persistent touch' : 'persistent touch with 24h throttle',
       });
     });

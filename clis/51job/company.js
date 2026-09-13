@@ -6,8 +6,8 @@
  * salary, area, year, degree — so parsing is just JSON, not DOM-text fragile.
  */
 
-import { cli, Strategy } from '@jackwener/opencli/registry';
-import { CliError } from '@jackwener/opencli/errors';
+import { cli, Strategy } from '@jyjyxt/cloudl/registry';
+import { CliError } from '@jyjyxt/cloudl/errors';
 import { JOBS_ORIGIN, requirePage, navigateTo, parseCompanyJobCard } from './utils.js';
 
 cli({

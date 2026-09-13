@@ -1,6 +1,6 @@
-import { ArgumentError, AuthRequiredError, CommandExecutionError, EmptyResultError } from '@jackwener/opencli/errors';
-import { cli, Strategy } from '@jackwener/opencli/registry';
-import { BROWSER_JSON_SNIFF_FN, throwIfLoginWall } from '@jackwener/opencli/utils';
+import { ArgumentError, AuthRequiredError, CommandExecutionError, EmptyResultError } from '@jyjyxt/cloudl/errors';
+import { cli, Strategy } from '@jyjyxt/cloudl/registry';
+import { BROWSER_JSON_SNIFF_FN, throwIfLoginWall } from '@jyjyxt/cloudl/utils';
 
 export const REDDIT_SUBSCRIBED_MAX_LIMIT = 1000;
 

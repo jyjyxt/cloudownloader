@@ -12,8 +12,8 @@
 import * as fs from 'node:fs';
 import * as os from 'node:os';
 import * as path from 'node:path';
-import { ArgumentError, AuthRequiredError, CommandExecutionError } from '@jackwener/opencli/errors';
-import { cli, Strategy } from '@jackwener/opencli/registry';
+import { ArgumentError, AuthRequiredError, CommandExecutionError } from '@jyjyxt/cloudl/errors';
+import { cli, Strategy } from '@jyjyxt/cloudl/registry';
 import { toLocalTime } from './format.js';
 const LINUX_DO_HOME = 'https://linux.do';
 const LINUX_DO_METADATA_TTL_MS = 24 * 60 * 60 * 1000;
@@ -32,7 +32,7 @@ function getHomeDir() {
     return process.env.HOME || process.env.USERPROFILE || os.homedir();
 }
 function getLinuxDoCacheDir() {
-    return testCacheDirOverride ?? path.join(getHomeDir(), '.opencli', 'cache', 'linux-do');
+    return testCacheDirOverride ?? path.join(getHomeDir(), '.cloudl', 'cache', 'linux-do');
 }
 function getMetadataCachePath(name) {
     return path.join(getLinuxDoCacheDir(), `${name}.json`);

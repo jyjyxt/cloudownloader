@@ -1,9 +1,9 @@
 /**
  * Zhihu download — export column articles or answers to Markdown.
  */
-import { cli, Strategy } from '@jackwener/opencli/registry';
-import { downloadArticle } from '@jackwener/opencli/download/article-download';
-import { ArgumentError } from '@jackwener/opencli/errors';
+import { cli, Strategy } from '@jyjyxt/cloudl/registry';
+import { downloadArticle } from '@jyjyxt/cloudl/download/article-download';
+import { ArgumentError } from '@jyjyxt/cloudl/errors';
 import {
     extractAnswer,
     extractColumnArticle,

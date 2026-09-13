@@ -1,4 +1,4 @@
-import { AuthRequiredError, CommandExecutionError } from '@jackwener/opencli/errors';
+import { AuthRequiredError, CommandExecutionError } from '@jyjyxt/cloudl/errors';
 import { registerSiteAuthCommands } from '../_shared/site-auth.js';
 import { NOTEBOOKLM_DOMAIN, NOTEBOOKLM_HOME_URL } from './shared.js';
 import { unwrapNotebooklmEvaluateResult } from './rpc.js';

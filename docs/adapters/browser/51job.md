@@ -6,28 +6,28 @@
 
 | Command | Description |
 |---------|-------------|
-| `opencli 51job search <keyword>` | Keyword search with city / salary / experience / degree / company filters |
-| `opencli 51job hot` | Recommended jobs feed for a city |
-| `opencli 51job detail <jobId>` | Full job detail page by `jobId` |
-| `opencli 51job company <encCoId>` | Company profile plus active jobs by encrypted company ID |
+| `cloudl 51job search <keyword>` | Keyword search with city / salary / experience / degree / company filters |
+| `cloudl 51job hot` | Recommended jobs feed for a city |
+| `cloudl 51job detail <jobId>` | Full job detail page by `jobId` |
+| `cloudl 51job company <encCoId>` | Company profile plus active jobs by encrypted company ID |
 
 ## Usage Examples
 
 ```bash
 # Search Beijing Python jobs
-opencli 51job search python --area 北京 --limit 5
+cloudl 51job search python --area 北京 --limit 5
 
 # Recommended jobs in Shanghai
-opencli 51job hot --area 上海 --limit 5
+cloudl 51job hot --area 上海 --limit 5
 
 # Detail by jobId from search/hot output
-opencli 51job detail 171699769
+cloudl 51job detail 171699769
 
 # Company jobs by encCoId from search output
-opencli 51job company MjYxMjgxMA== --limit 3
+cloudl 51job company MjYxMjgxMA== --limit 3
 
 # JSON output for agent workflows
-opencli 51job search Golang --area 杭州 -f json
+cloudl 51job search Golang --area 杭州 -f json
 ```
 
 ## Notes

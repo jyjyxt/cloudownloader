@@ -2,7 +2,7 @@ import { mkdtempSync, rmSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { afterEach, describe, expect, it } from 'vitest';
-import { ArgumentError, CommandExecutionError, EmptyResultError } from '@jackwener/opencli/errors';
+import { ArgumentError, CommandExecutionError, EmptyResultError } from '@jyjyxt/cloudl/errors';
 import { __test__ as exportTest, grokExportCommand } from './export.js';
 import { __test__ as exportAllTest, grokExportAllCommand } from './export-all.js';
 import {
@@ -102,7 +102,7 @@ describe('grok export-all command', () => {
     });
 
     function writeManifest(rows) {
-        tempDir = mkdtempSync(join(tmpdir(), 'opencli-grok-export-test-'));
+        tempDir = mkdtempSync(join(tmpdir(), 'cloudl-grok-export-test-'));
         const path = join(tempDir, 'manifest.json');
         writeFileSync(path, JSON.stringify(rows), 'utf8');
         return path;

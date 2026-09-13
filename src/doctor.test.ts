@@ -189,12 +189,12 @@ describe('doctor report rendering', () => {
     const fs = await import('node:fs');
     const os = await import('node:os');
     const path = await import('node:path');
-    const configDir = fs.mkdtempSync(path.join(os.tmpdir(), 'opencli-doctor-profile-'));
+    const configDir = fs.mkdtempSync(path.join(os.tmpdir(), 'cloudl-doctor-profile-'));
     fs.writeFileSync(
       path.join(configDir, 'browser-profiles.json'),
       JSON.stringify({ version: 1, aliases: { work: 'zvypsyje' }, defaultContextId: 'zvypsyje' }),
     );
-    vi.stubEnv('OPENCLI_CONFIG_DIR', configDir);
+    vi.stubEnv('CLOUDL_CONFIG_DIR', configDir);
     try {
       mockGetDaemonHealth.mockResolvedValueOnce({
         state: 'ready',
@@ -221,13 +221,13 @@ describe('doctor report rendering', () => {
     const fs = await import('node:fs');
     const os = await import('node:os');
     const path = await import('node:path');
-    const configDir = fs.mkdtempSync(path.join(os.tmpdir(), 'opencli-doctor-profile-'));
+    const configDir = fs.mkdtempSync(path.join(os.tmpdir(), 'cloudl-doctor-profile-'));
     fs.writeFileSync(
       path.join(configDir, 'browser-profiles.json'),
       JSON.stringify({ version: 1, aliases: {}, defaultContextId: 'zvypsyje' }),
     );
-    vi.stubEnv('OPENCLI_CONFIG_DIR', configDir);
-    vi.stubEnv('OPENCLI_PROFILE', '');
+    vi.stubEnv('CLOUDL_CONFIG_DIR', configDir);
+    vi.stubEnv('CLOUDL_PROFILE', '');
     try {
       mockGetDaemonHealth.mockResolvedValueOnce({
         state: 'ready',
@@ -276,7 +276,7 @@ describe('doctor report rendering', () => {
 
     expect(mockSetDaemonCommandTimeoutSeconds.mock.calls).toEqual([[8], [null]]);
     expect(mockSendCommand).toHaveBeenCalledWith('cookies', {
-      domain: 'opencli-probe.invalid',
+      domain: 'cloudl-probe.invalid',
       session: '__doctor__',
       surface: 'browser',
     });
@@ -331,7 +331,7 @@ describe('doctor report rendering', () => {
     mockFindShadowedUserAdapters.mockReturnValueOnce([
       {
         name: 'instagram/saved',
-        userPath: '/home/me/.opencli/clis/instagram/saved.js',
+        userPath: '/home/me/.cloudl/clis/instagram/saved.js',
         builtinPath: '/pkg/clis/instagram/saved.js',
       },
     ]);

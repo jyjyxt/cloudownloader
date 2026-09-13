@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { ArgumentError, CommandExecutionError, EmptyResultError } from '@jackwener/opencli/errors';
+import { ArgumentError, CommandExecutionError, EmptyResultError } from '@jyjyxt/cloudl/errors';
 import { parseBvidOrVideoUrl, parsePageArg, resolveBvid, resolveUid, selectVideoPart } from './utils.js';
 
 describe('parseBvidOrVideoUrl', () => {

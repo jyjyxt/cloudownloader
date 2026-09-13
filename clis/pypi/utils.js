@@ -1,10 +1,10 @@
 // Shared helpers for the pypi adapters that hit the PyPI public JSON API
 // (pypi.org/pypi/<pkg>/json) and pypistats.org for download stats.
-import { ArgumentError, CommandExecutionError, EmptyResultError } from '@jackwener/opencli/errors';
+import { ArgumentError, CommandExecutionError, EmptyResultError } from '@jyjyxt/cloudl/errors';
 
 export const PYPI_BASE = 'https://pypi.org';
 export const PYPISTATS_BASE = 'https://pypistats.org';
-const UA = 'opencli-pypi-adapter (+https://github.com/jyjyxt/cloudownloader)';
+const UA = 'cloudl-pypi-adapter (+https://github.com/jyjyxt/cloudownloader)';
 
 // PEP 508 / PEP 426 normalized name: letters, digits, "._-", with leading-letter rule relaxed by PyPI.
 const PKG_NAME = /^[A-Za-z0-9]([A-Za-z0-9._-]*[A-Za-z0-9])?$/;

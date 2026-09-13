@@ -2,8 +2,8 @@
 //
 // Hits the registration index `api.nuget.org/v3/registration5-semver1/<id>/index.json`.
 // The id path segment must be lowercase per NuGet's CDN routing.
-import { cli, Strategy } from '@jackwener/opencli/registry';
-import { CommandExecutionError, EmptyResultError } from '@jackwener/opencli/errors';
+import { cli, Strategy } from '@jyjyxt/cloudl/registry';
+import { CommandExecutionError, EmptyResultError } from '@jyjyxt/cloudl/errors';
 import { NUGET_REGISTRATION_BASE, joinAuthors, joinTags, nugetFetch, requirePackageId } from './utils.js';
 
 cli({

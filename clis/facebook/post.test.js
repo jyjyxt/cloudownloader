@@ -1,6 +1,6 @@
 import { describe, expect, it, vi } from 'vitest';
-import { ArgumentError, AuthRequiredError, CommandExecutionError } from '@jackwener/opencli/errors';
-import { getRegistry } from '@jackwener/opencli/registry';
+import { ArgumentError, AuthRequiredError, CommandExecutionError } from '@jyjyxt/cloudl/errors';
+import { getRegistry } from '@jyjyxt/cloudl/registry';
 import { __test__, command } from './post.js';
 
 vi.mock('node:fs', async (importOriginal) => {
@@ -75,7 +75,7 @@ describe('facebook post command', () => {
     const page = makePage([
       { ok: true, opened: true },
       { ok: true }, // prepare image control
-      { ok: true, selector: '[data-opencli-facebook-upload-target="true"]' },
+      { ok: true, selector: '[data-cloudl-facebook-upload-target="true"]' },
       { ok: true }, // image preview
       { ok: true }, // focus
       { ok: true }, // verify typed text
@@ -90,7 +90,7 @@ describe('facebook post command', () => {
     }]);
     expect(page.setFileInput).toHaveBeenCalledWith(
       ['/abs/photo.png'],
-      '[data-opencli-facebook-upload-target="true"]',
+      '[data-cloudl-facebook-upload-target="true"]',
     );
     expect(page.setFileInput.mock.invocationCallOrder[0]).toBeLessThan(page.nativeType.mock.invocationCallOrder[0]);
   });
@@ -117,7 +117,7 @@ describe('facebook post command', () => {
 
   it('builds scripts that target the composer and avoid stale success toasts', () => {
     expect(__test__.buildOpenComposerScript()).toContain('what are you thinking');
-    expect(__test__.buildSubmitClickScript('hello')).toContain('data-opencli-facebook-before-submit-toast');
+    expect(__test__.buildSubmitClickScript('hello')).toContain('data-cloudl-facebook-before-submit-toast');
     expect(__test__.buildSubmitStatusScript('hello')).toContain('composer_closed');
   });
 });

@@ -7,8 +7,8 @@
  * is heavily obfuscated and changes shape per A/B bucket).
  */
 
-import { cli, Strategy } from '@jackwener/opencli/registry';
-import { EmptyResultError, CommandExecutionError } from '@jackwener/opencli/errors';
+import { cli, Strategy } from '@jyjyxt/cloudl/registry';
+import { EmptyResultError, CommandExecutionError } from '@jyjyxt/cloudl/errors';
 import {
     SEARCH_COLUMNS,
     requireQuery,

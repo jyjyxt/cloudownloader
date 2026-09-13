@@ -1,12 +1,12 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
-import { getRegistry } from '@jackwener/opencli/registry';
+import { getRegistry } from '@jyjyxt/cloudl/registry';
 import {
     ArgumentError,
     AuthRequiredError,
     CommandExecutionError,
     EmptyResultError,
     TimeoutError,
-} from '@jackwener/opencli/errors';
+} from '@jyjyxt/cloudl/errors';
 import './history.js';
 
 function response(payload, { status = 200, jsonError } = {}) {

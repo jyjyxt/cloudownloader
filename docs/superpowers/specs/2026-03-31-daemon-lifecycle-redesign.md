@@ -2,7 +2,7 @@
 
 ## Problem
 
-OpenCLI's daemon auto-exits after 5 minutes of idle time. During typical development
+Cloudl's daemon auto-exits after 5 minutes of idle time. During typical development
 cycles (write code → test → modify → test again), coding intervals frequently exceed
 5 minutes. Each restart incurs 2-4 seconds of overhead (process spawn + Extension
 WebSocket reconnection), creating a noticeable and frustrating delay.
@@ -145,7 +145,7 @@ into a bad state.
   request time, memory usage
 - `POST /shutdown` — initiates graceful shutdown
 
-Both endpoints require the same `X-OpenCLI` header as existing endpoints for CSRF
+Both endpoints require the same `X-Cloudl` header as existing endpoints for CSRF
 protection.
 
 ### CLI Connection Experience
@@ -157,7 +157,7 @@ silently polls every 300ms and eventually times out with a generic error.
 
 ```
 ⏳ Waiting for Chrome extension to connect...
-   Make sure Chrome is open and the OpenCLI extension is enabled.
+   Make sure Chrome is open and the Cloudl extension is enabled.
 ```
 
 Poll interval reduced from 300ms to 200ms for slightly faster detection.

@@ -39,4 +39,4 @@ evidence: live result row opened by data-legacy-thread-id
 
 ## Linked APIs
 
-API details are in `skills/opencli-adapter-author/references/site-memory/gmail.md`; no endpoint ids are duplicated here.
+API details are in `skills/cloudl-adapter-author/references/site-memory/gmail.md`; no endpoint ids are duplicated here.

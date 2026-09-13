@@ -1,4 +1,4 @@
-import { ArgumentError, CommandExecutionError, EmptyResultError, selectorError } from '@jackwener/opencli/errors';
+import { ArgumentError, CommandExecutionError, EmptyResultError, selectorError } from '@jyjyxt/cloudl/errors';
 
 export const TRAE_CN_COMPOSER_SELECTOR = '.chat-input-v2-input-box-editable[data-lexical-editor="true"], .chat-input-v2-input-box-editable[contenteditable="true"]';
 export const TRAE_CN_SEND_BUTTON_SELECTOR = '.chat-input-v2-send-button';
@@ -362,9 +362,9 @@ function approvalPromptRowsExpression(kinds = TRAE_CN_APPROVAL_DEFAULT_KINDS, op
         const shouldClick = click && clicked < limit;
         let selector = candidate.selector;
         if (markCandidates) {
-          const marker = 'opencli-approval-' + rows.length + '-' + Math.random().toString(36).slice(2);
-          candidate.button.setAttribute('data-opencli-approval-id', marker);
-          selector = '[data-opencli-approval-id="' + marker + '"]';
+          const marker = 'cloudl-approval-' + rows.length + '-' + Math.random().toString(36).slice(2);
+          candidate.button.setAttribute('data-cloudl-approval-id', marker);
+          selector = '[data-cloudl-approval-id="' + marker + '"]';
         }
         const row = {
           Status: shouldClick ? 'Approved' : 'Detected',

@@ -20,7 +20,7 @@
 - Retry on a real item page, refresh the page in Chrome, and if needed narrow the target, for example:
 
 ```bash
-OPENCLI_CDP_TARGET=detail.1688.com cloudl 1688 item 841141931191 -f json
+CLOUDL_CDP_TARGET=detail.1688.com cloudl 1688 item 841141931191 -f json
 ```
 
 ### Node API errors
@@ -49,7 +49,7 @@ cloudl doctor
 For Electron/CDP-based adapters (Cursor, Codex, etc.):
 
 1. Make sure the app is launched with `--remote-debugging-port=XXXX`
-2. Verify the endpoint is set: `echo $OPENCLI_CDP_ENDPOINT`
+2. Verify the endpoint is set: `echo $CLOUDL_CDP_ENDPOINT`
 3. Test the endpoint: `curl http://127.0.0.1:XXXX/json/version`
 
 ### Build errors

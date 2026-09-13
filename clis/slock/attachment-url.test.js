@@ -1,6 +1,6 @@
 import { describe, it, expect, vi } from 'vitest';
-import { CommandExecutionError } from '@jackwener/opencli/errors';
-import { getRegistry } from '@jackwener/opencli/registry';
+import { CommandExecutionError } from '@jyjyxt/cloudl/errors';
+import { getRegistry } from '@jyjyxt/cloudl/registry';
 import './attachment-url.js';
 
 function makePage(envelope) {

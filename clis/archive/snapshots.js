@@ -1,10 +1,10 @@
 // archive snapshots: Wayback Machine CDX history for a URL.
-import { cli, Strategy } from '@jackwener/opencli/registry';
+import { cli, Strategy } from '@jyjyxt/cloudl/registry';
 import {
     ArgumentError,
     CommandExecutionError,
     EmptyResultError,
-} from '@jackwener/opencli/errors';
+} from '@jyjyxt/cloudl/errors';
 
 function buildWaybackUrl(timestamp, original) {
     if (!timestamp || !original) return '';
@@ -69,7 +69,7 @@ cli({
             resp = await fetch(apiUrl, {
                 headers: {
                     'Accept': 'application/json',
-                    'User-Agent': 'opencli/1.0 (+https://github.com/jyjyxt/cloudownloader)',
+                    'User-Agent': 'cloudl/1.0 (+https://github.com/jyjyxt/cloudownloader)',
                 },
             });
         } catch (error) {

@@ -1,4 +1,4 @@
-import { cli, Strategy } from '@jackwener/opencli/registry';
+import { cli, Strategy } from '@jyjyxt/cloudl/registry';
 import { inspectTraeShellScript } from './utils.js';
 
 export const modelCommand = cli({
@@ -6,7 +6,7 @@ export const modelCommand = cli({
   name: 'model',
   access: 'read',
   description: 'Read the model label currently shown in the Trae CN chat input',
-  example: 'OPENCLI_CDP_ENDPOINT=http://127.0.0.1:39240 OPENCLI_CDP_TARGET=talk cloudl trae-cn model -f json',
+  example: 'CLOUDL_CDP_ENDPOINT=http://127.0.0.1:39240 CLOUDL_CDP_TARGET=talk cloudl trae-cn model -f json',
   domain: 'localhost',
   strategy: Strategy.UI,
   browser: true,

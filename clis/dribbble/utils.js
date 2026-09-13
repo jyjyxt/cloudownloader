@@ -1,4 +1,4 @@
-import { ArgumentError, CommandExecutionError, EmptyResultError } from '@jackwener/opencli/errors';
+import { ArgumentError, CommandExecutionError, EmptyResultError } from '@jyjyxt/cloudl/errors';
 
 export const DRIBBBLE_ORIGIN = 'https://dribbble.com';
 export const DRIBBBLE_HOST = 'dribbble.com';

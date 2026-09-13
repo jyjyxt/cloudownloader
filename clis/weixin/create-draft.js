@@ -1,5 +1,5 @@
-import { cli, Strategy } from '@jackwener/opencli/registry';
-import { CommandExecutionError } from '@jackwener/opencli/errors';
+import { cli, Strategy } from '@jyjyxt/cloudl/registry';
+import { CommandExecutionError } from '@jyjyxt/cloudl/errors';
 
 const WEIXIN_DOMAIN = 'mp.weixin.qq.com';
 const WEIXIN_HOME = 'https://mp.weixin.qq.com/';
@@ -267,7 +267,7 @@ async function waitForSetting(page, label, js, attempts = 10) {
 }
 
 async function clickVisibleDialogButton(page, dialogText, buttonText) {
-    const marker = `opencli-target-${Date.now()}-${Math.random().toString(16).slice(2)}`;
+    const marker = `cloudl-target-${Date.now()}-${Math.random().toString(16).slice(2)}`;
     const marked = await page.evaluate(`(() => {
         var dialogText = ${JSON.stringify(dialogText)};
         var buttonText = ${JSON.stringify(buttonText)};
@@ -286,7 +286,7 @@ async function clickVisibleDialogButton(page, dialogText, buttonText) {
             .find(function(el) { return text(el) === buttonText; });
         if (!button) return { ok: false, reason: 'button not found: ' + buttonText, dialog: text(dialog).slice(0, 300) };
         button = button.closest('button, a, div[role="button"]') || button;
-        button.setAttribute('data-opencli-target', marker);
+        button.setAttribute('data-cloudl-target', marker);
         button.scrollIntoView({ block: 'center', inline: 'center' });
         return { ok: true, marker: marker };
     })()`);
@@ -294,7 +294,7 @@ async function clickVisibleDialogButton(page, dialogText, buttonText) {
     try {
         await page.wait(1);
         const point = await page.evaluate(`(() => {
-            var el = document.querySelector('[data-opencli-target="${marker}"]');
+            var el = document.querySelector('[data-cloudl-target="${marker}"]');
             if (!el) return null;
             var rect = el.getBoundingClientRect();
             return { x: rect.left + rect.width / 2, y: rect.top + rect.height / 2 };
@@ -302,18 +302,18 @@ async function clickVisibleDialogButton(page, dialogText, buttonText) {
         if (typeof page.nativeClick === 'function' && point && Number.isFinite(point.x) && Number.isFinite(point.y)) {
             await page.nativeClick(Math.round(point.x), Math.round(point.y));
         } else {
-            await page.click(`[data-opencli-target="${marker}"]`);
+            await page.click(`[data-cloudl-target="${marker}"]`);
         }
     } finally {
         await page.evaluate(`(() => {
-            var el = document.querySelector('[data-opencli-target="${marker}"]');
-            if (el) el.removeAttribute('data-opencli-target');
+            var el = document.querySelector('[data-cloudl-target="${marker}"]');
+            if (el) el.removeAttribute('data-cloudl-target');
         })()`).catch(() => undefined);
     }
 }
 
 async function clickVisibleDialogText(page, dialogText, targetText) {
-    const marker = `opencli-target-${Date.now()}-${Math.random().toString(16).slice(2)}`;
+    const marker = `cloudl-target-${Date.now()}-${Math.random().toString(16).slice(2)}`;
     const marked = await page.evaluate(`(() => {
         var dialogText = ${JSON.stringify(dialogText)};
         var targetText = ${JSON.stringify(targetText)};
@@ -331,16 +331,16 @@ async function clickVisibleDialogText(page, dialogText, targetText) {
             .filter(function(el) { return visible(el); })
             .find(function(el) { return text(el).includes(targetText); });
         if (!target) return { ok: false, reason: 'target text not found: ' + targetText, dialog: text(dialog).slice(0, 300) };
-        target.setAttribute('data-opencli-target', marker);
+        target.setAttribute('data-cloudl-target', marker);
         return { ok: true, marker: marker };
     })()`);
     assertSettingResult(marked, `${dialogText} dialog`);
     try {
-        await page.click(`[data-opencli-target="${marker}"]`);
+        await page.click(`[data-cloudl-target="${marker}"]`);
     } finally {
         await page.evaluate(`(() => {
-            var el = document.querySelector('[data-opencli-target="${marker}"]');
-            if (el) el.removeAttribute('data-opencli-target');
+            var el = document.querySelector('[data-cloudl-target="${marker}"]');
+            if (el) el.removeAttribute('data-cloudl-target');
         })()`).catch(() => undefined);
     }
 }
@@ -532,16 +532,16 @@ async function installCoverRequestFallback(page) {
         var cdnUrl = image.getAttribute('data-src') || image.getAttribute('src') || '';
         if (!fileId || !cdnUrl) return { ok: false, reason: 'uploaded article image metadata is incomplete' };
 
-        if (!window.__opencliWeixinCoverPatch) {
+        if (!window.__cloudlWeixinCoverPatch) {
             var originalOpen = XMLHttpRequest.prototype.open;
             var originalSend = XMLHttpRequest.prototype.send;
             XMLHttpRequest.prototype.open = function(method, url) {
-                this.__opencliRequestUrl = String(url || '');
+                this.__cloudlRequestUrl = String(url || '');
                 return originalOpen.apply(this, arguments);
             };
             XMLHttpRequest.prototype.send = function(body) {
-                var patch = window.__opencliWeixinCoverPatch;
-                if (patch && this.__opencliRequestUrl.includes('operate_appmsg') && this.__opencliRequestUrl.includes('sub=create') && typeof body === 'string') {
+                var patch = window.__cloudlWeixinCoverPatch;
+                if (patch && this.__cloudlRequestUrl.includes('operate_appmsg') && this.__cloudlRequestUrl.includes('sub=create') && typeof body === 'string') {
                     var params = new URLSearchParams(body);
                     params.set('fileid0', patch.fileId);
                     params.set('cdn_url0', patch.cdnUrl);
@@ -557,7 +557,7 @@ async function installCoverRequestFallback(page) {
                 return originalSend.call(this, body);
             };
         }
-        window.__opencliWeixinCoverPatch = { fileId: fileId, cdnUrl: cdnUrl, applied: false };
+        window.__cloudlWeixinCoverPatch = { fileId: fileId, cdnUrl: cdnUrl, applied: false };
         return { ok: true, fileId: fileId, cdnUrl: cdnUrl };
     })()`);
     if (!result?.ok) {
@@ -627,7 +627,7 @@ export const createDraftCommand = cli({
         await page.wait(1);
         const success = await clickSaveDraft(page);
         if (usedCoverRequestFallback) {
-            const patchApplied = await page.evaluate('!!window.__opencliWeixinCoverPatch?.applied');
+            const patchApplied = await page.evaluate('!!window.__cloudlWeixinCoverPatch?.applied');
             if (!patchApplied) {
                 throw new CommandExecutionError('The draft save request did not include the uploaded cover image');
             }

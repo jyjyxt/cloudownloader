@@ -1,5 +1,5 @@
-import { AuthRequiredError } from '@jackwener/opencli/errors';
-import { cli, Strategy } from '@jackwener/opencli/registry';
+import { AuthRequiredError } from '@jyjyxt/cloudl/errors';
+import { cli, Strategy } from '@jyjyxt/cloudl/registry';
 import { clampInt, normalizeNumericId } from '../_shared/common.js';
 cli({
     site: 'jd',

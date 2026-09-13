@@ -1,6 +1,6 @@
 import path from 'node:path';
 import { beforeAll, beforeEach, describe, expect, it, vi } from 'vitest';
-import { getRegistry } from '@jackwener/opencli/registry';
+import { getRegistry } from '@jyjyxt/cloudl/registry';
 
 const { mockRequestJson, mockLoadCredentials, mockHttpDownload, mockMkdirSync } = vi.hoisted(() => ({
     mockRequestJson: vi.fn(),
@@ -18,12 +18,12 @@ vi.mock('./auth.js', async () => {
     };
 });
 
-vi.mock('@jackwener/opencli/download', () => ({
+vi.mock('@jyjyxt/cloudl/download', () => ({
     httpDownload: mockHttpDownload,
     sanitizeFilename: vi.fn((value) => value.replace(/\s+/g, '_')),
 }));
 
-vi.mock('@jackwener/opencli/download/progress', () => ({
+vi.mock('@jyjyxt/cloudl/download/progress', () => ({
     formatBytes: vi.fn((size) => `${size} B`),
 }));
 
@@ -58,7 +58,7 @@ describe('xiaoyuzhou download', () => {
             credentials: {},
             data: {
                 title: 'Hello World',
-                podcast: { title: 'OpenCLI FM' },
+                podcast: { title: 'Cloudl FM' },
                 media: {
                     source: {
                         url: 'https://media.xyzcdn.net/audio/hello-world.mp3?sign=abc',
@@ -84,7 +84,7 @@ describe('xiaoyuzhou download', () => {
         });
         expect(result).toEqual([{
                 title: 'Hello World',
-                podcast: 'OpenCLI FM',
+                podcast: 'Cloudl FM',
                 status: 'success',
                 size: '1234 B',
                 file: '/tmp/xiaoyuzhou-test/ep123/ep123_Hello_World.mp3',
@@ -96,7 +96,7 @@ describe('xiaoyuzhou download', () => {
             credentials: {},
             data: {
                 title: 'Lossless Episode',
-                podcast: { title: 'OpenCLI FM' },
+                podcast: { title: 'Cloudl FM' },
                 media: {
                     source: {
                         url: 'https://media.xyzcdn.net/audio/lossless.m4a',
@@ -120,7 +120,7 @@ describe('xiaoyuzhou download', () => {
             credentials: {},
             data: {
                 title: 'No Audio',
-                podcast: { title: 'OpenCLI FM' },
+                podcast: { title: 'Cloudl FM' },
                 media: {},
             },
         });

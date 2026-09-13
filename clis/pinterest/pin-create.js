@@ -1,6 +1,6 @@
 // Pinterest pin-create — create a pin from a remote image URL onto a board (PinResource/create).
-import { cli, Strategy } from '@jackwener/opencli/registry';
-import { ArgumentError, CommandExecutionError } from '@jackwener/opencli/errors';
+import { cli, Strategy } from '@jyjyxt/cloudl/registry';
+import { ArgumentError, CommandExecutionError } from '@jyjyxt/cloudl/errors';
 import { PINTEREST_BASE, movePinToSection, pinterestResourceCreate, resolveBoardId, resolveBoardTarget, resolveSection } from './utils.js';
 
 function requireImageUrl(raw) {

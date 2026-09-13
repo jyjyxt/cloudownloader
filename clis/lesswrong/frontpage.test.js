@@ -1,5 +1,5 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
-import { getRegistry } from '@jackwener/opencli/registry';
+import { getRegistry } from '@jyjyxt/cloudl/registry';
 
 const { gqlRequestMock } = vi.hoisted(() => ({ gqlRequestMock: vi.fn() }));
 vi.mock('./_helpers.js', async () => {

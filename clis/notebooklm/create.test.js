@@ -1,6 +1,6 @@
 import { describe, expect, it, vi } from 'vitest';
-import { ArgumentError } from '@jackwener/opencli/errors';
-import { getRegistry } from '@jackwener/opencli/registry';
+import { ArgumentError } from '@jyjyxt/cloudl/errors';
+import { getRegistry } from '@jyjyxt/cloudl/registry';
 import { __test__ } from './create.js';
 
 const { parseCreateTitle, parseCreateEmoji, parseCreateProjectResult } = __test__;
@@ -31,7 +31,7 @@ describe('notebooklm create', () => {
     });
 
     it('parseCreateProjectResult extracts the notebook id from the singleton-wrapped RPC result', () => {
-        const result = [[ ['notebook-payload-prefix', null, 'ec806f5b-fe74-4588-8f77-f073b91e9b1e', 'opencli-test', '🧪'] ]];
+        const result = [[ ['notebook-payload-prefix', null, 'ec806f5b-fe74-4588-8f77-f073b91e9b1e', 'cloudl-test', '🧪'] ]];
         expect(parseCreateProjectResult(result)).toBe('ec806f5b-fe74-4588-8f77-f073b91e9b1e');
     });
 

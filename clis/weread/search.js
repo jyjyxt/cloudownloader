@@ -1,5 +1,5 @@
-import { cli, Strategy } from '@jackwener/opencli/registry';
-import { CommandExecutionError, EmptyResultError } from '@jackwener/opencli/errors';
+import { cli, Strategy } from '@jyjyxt/cloudl/registry';
+import { CommandExecutionError, EmptyResultError } from '@jyjyxt/cloudl/errors';
 import { fetchWebApi, WEREAD_UA, WEREAD_WEB_ORIGIN } from './utils.js';
 function decodeNumericHtmlEntity(raw, radix) {
     const codePoint = parseInt(raw, radix);

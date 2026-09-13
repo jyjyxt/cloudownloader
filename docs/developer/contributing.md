@@ -1,13 +1,13 @@
 # Contributing
 
-Thanks for your interest in contributing to OpenCLI.
+Thanks for your interest in contributing to Cloudl.
 
 ## Quick Start
 
 ```bash
 # 1. Fork & clone
-git clone git@github.com:<your-username>/opencli.git
-cd opencli
+git clone git@github.com:<your-username>/cloudl.git
+cd cloudl
 
 # 2. Install dependencies
 npm install
@@ -19,7 +19,7 @@ npm run build
 npx tsc --noEmit
 npm run build
 
-# 5. Link globally (optional, for testing `opencli` command)
+# 5. Link globally (optional, for testing `cloudl` command)
 npm link
 ```
 
@@ -38,8 +38,8 @@ Before you start:
 Built-in adapters are authored in JavaScript. Create a file like `clis/<site>/<command>.js`:
 
 ```javascript
-import { cli, Strategy } from '@jackwener/opencli/registry';
-import { CommandExecutionError, EmptyResultError } from '@jackwener/opencli/errors';
+import { cli, Strategy } from '@jyjyxt/cloudl/registry';
+import { CommandExecutionError, EmptyResultError } from '@jyjyxt/cloudl/errors';
 
 cli({
   site: 'mysite',

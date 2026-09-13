@@ -1,5 +1,5 @@
-import { cli, Strategy } from '@jackwener/opencli/registry';
-import { ArgumentError, AuthRequiredError, EmptyResultError, TimeoutError } from '@jackwener/opencli/errors';
+import { cli, Strategy } from '@jyjyxt/cloudl/registry';
+import { ArgumentError, AuthRequiredError, EmptyResultError, TimeoutError } from '@jyjyxt/cloudl/errors';
 import fs from 'node:fs';
 import {
   normalizeConversationRows,

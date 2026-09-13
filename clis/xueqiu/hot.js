@@ -1,4 +1,4 @@
-import { cli } from '@jackwener/opencli/registry';
+import { cli } from '@jyjyxt/cloudl/registry';
 import { fetchXueqiuJson, stripHtml as strip } from './utils.js';
 cli({
     site: 'xueqiu',

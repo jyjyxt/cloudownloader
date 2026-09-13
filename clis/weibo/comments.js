@@ -1,7 +1,7 @@
 /**
  * Weibo comments — get comments on a post.
  */
-import { cli, Strategy } from '@jackwener/opencli/registry';
+import { cli, Strategy } from '@jyjyxt/cloudl/registry';
 import { requireArrayEvaluateResult, unwrapEvaluateResult } from './utils.js';
 cli({
     site: 'weibo',

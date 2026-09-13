@@ -1,9 +1,9 @@
 import * as fs from 'node:fs';
 import * as path from 'node:path';
-import { formatBytes } from '@jackwener/opencli/download/progress';
-import { httpDownload, sanitizeFilename } from '@jackwener/opencli/download';
-import { EmptyResultError } from '@jackwener/opencli/errors';
-import { cli, Strategy } from '@jackwener/opencli/registry';
+import { formatBytes } from '@jyjyxt/cloudl/download/progress';
+import { httpDownload, sanitizeFilename } from '@jyjyxt/cloudl/download';
+import { EmptyResultError } from '@jyjyxt/cloudl/errors';
+import { cli, Strategy } from '@jyjyxt/cloudl/registry';
 import { getDoubanPhotoExtension, loadDoubanSubjectPhotos, normalizeDoubanSubjectId } from './utils.js';
 function buildDoubanPhotoFilename(subjectId, photo) {
     const index = String(photo.index).padStart(3, '0');

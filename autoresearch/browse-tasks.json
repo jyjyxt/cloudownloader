@@ -208,7 +208,7 @@
   {
     "name": "search-google",
     "steps": [
-      "cloudl browser open https://www.google.com/search?q=opencli+github",
+      "cloudl browser open https://www.google.com/search?q=cloudl+github",
       "cloudl browser wait time 3",
       "cloudl browser eval \"JSON.stringify([...document.querySelectorAll('h3')].slice(0,3).map(h=>h.textContent))\""
     ],
@@ -430,11 +430,11 @@
     "name": "form-simple-name",
     "steps": [
       "cloudl browser open https://httpbin.org/forms/post",
-      "cloudl browser eval \"var el=document.querySelector('[name=custname]');el.value='OpenCLI Test';el.dispatchEvent(new Event('input',{bubbles:true}));el.value\""
+      "cloudl browser eval \"var el=document.querySelector('[name=custname]');el.value='Cloudl Test';el.dispatchEvent(new Event('input',{bubbles:true}));el.value\""
     ],
     "judge": {
       "type": "contains",
-      "value": "OpenCLI"
+      "value": "Cloudl"
     },
     "note": "index may vary"
   },

@@ -3,8 +3,8 @@
  * discover clip ids without needing to remember them, and feed them to
  * `cloudl suno download`.
  */
-import { cli, Strategy } from '@jackwener/opencli/registry';
-import { CommandExecutionError, EmptyResultError } from '@jackwener/opencli/errors';
+import { cli, Strategy } from '@jyjyxt/cloudl/registry';
+import { CommandExecutionError, EmptyResultError } from '@jyjyxt/cloudl/errors';
 import {
     STUDIO_API,
     SUNO_DOMAIN,

@@ -12,7 +12,7 @@ describe('extractLatestExtensionVersionFromReleases', () => {
         {
           tag_name: 'v1.7.3',
           assets: [
-            { name: 'opencli-extension.zip' },
+            { name: 'cloudl-extension.zip' },
             { name: 'cloudownloader-extension-v1.0.2.zip' },
           ],
         },
@@ -25,7 +25,7 @@ describe('extractLatestExtensionVersionFromReleases', () => {
       extractLatestExtensionVersionFromReleases([
         {
           tag_name: 'ext-v1.1.0',
-          assets: [{ name: 'opencli-extension.zip' }],
+          assets: [{ name: 'cloudl-extension.zip' }],
         },
       ]),
     ).toBe('1.1.0');
@@ -36,7 +36,7 @@ describe('extractLatestExtensionVersionFromReleases', () => {
       extractLatestExtensionVersionFromReleases([
         {
           tag_name: 'v1.7.3',
-          assets: [{ name: 'opencli-extension.zip' }],
+          assets: [{ name: 'cloudl-extension.zip' }],
         },
       ]),
     ).toBeUndefined();

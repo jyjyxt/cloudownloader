@@ -1,5 +1,5 @@
-import { cli, Strategy } from '@jackwener/opencli/registry';
-import { EmptyResultError } from '@jackwener/opencli/errors';
+import { cli, Strategy } from '@jyjyxt/cloudl/registry';
+import { EmptyResultError } from '@jyjyxt/cloudl/errors';
 import { DOMAIN, SITE, gqlEscape, gqlRequest, parsePostId, stripHtml, } from './_helpers.js';
 cli({
     site: SITE,

@@ -20,8 +20,8 @@ import {
     ArgumentError,
     CommandExecutionError,
     EmptyResultError,
-} from '@jackwener/opencli/errors';
-import { getRegistry } from '@jackwener/opencli/registry';
+} from '@jyjyxt/cloudl/errors';
+import { getRegistry } from '@jyjyxt/cloudl/registry';
 import {
     CONTENT_SELECTORS,
     contentCommand,

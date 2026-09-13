@@ -1,4 +1,4 @@
-import { cli, Strategy } from '@jackwener/opencli/registry';
+import { cli, Strategy } from '@jyjyxt/cloudl/registry';
 import { YUANBAO_DOMAIN, YUANBAO_URL, IS_VISIBLE_JS, authRequired, ensureYuanbaoPage, hasLoginGate } from './shared.js';
 async function getCurrentUrl(page) {
     const result = await page.evaluate('window.location.href').catch(() => '');

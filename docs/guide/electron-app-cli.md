@@ -1,10 +1,10 @@
 ---
-description: How to turn a new Electron desktop app into an OpenCLI adapter
+description: How to turn a new Electron desktop app into an Cloudl adapter
 ---
 
 # Add a New Electron App CLI
 
-This guide is the **fast entry point** for turning a new Electron desktop application into an OpenCLI adapter.
+This guide is the **fast entry point** for turning a new Electron desktop application into an Cloudl adapter.
 
 If you want the full background and deeper SOP, read:
 - [CLI-ifying Electron Applications](/advanced/electron)
@@ -38,10 +38,10 @@ If Electron is present, the next step is usually to launch the app with a debugg
 /Applications/AppName.app/Contents/MacOS/AppName --remote-debugging-port=<unique-port>
 ```
 
-Then point OpenCLI at that CDP endpoint:
+Then point Cloudl at that CDP endpoint:
 
 ```bash
-export OPENCLI_CDP_ENDPOINT="http://127.0.0.1:<unique-port>"
+export CLOUDL_CDP_ENDPOINT="http://127.0.0.1:<unique-port>"
 ```
 
 ### 3. Start with the 5-command pattern

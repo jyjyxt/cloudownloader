@@ -4,10 +4,10 @@
 // auth required for read-only metadata; the API is friendly to anonymous CLI
 // traffic. Gem names follow the RubyGems convention: lowercase ASCII +
 // `-_.`, 1-100 chars, must start with a letter or digit.
-import { ArgumentError, CommandExecutionError, EmptyResultError } from '@jackwener/opencli/errors';
+import { ArgumentError, CommandExecutionError, EmptyResultError } from '@jyjyxt/cloudl/errors';
 
 export const GEMS_BASE = 'https://rubygems.org/api/v1';
-const UA = 'opencli-rubygems-adapter (+https://github.com/jyjyxt/cloudownloader)';
+const UA = 'cloudl-rubygems-adapter (+https://github.com/jyjyxt/cloudownloader)';
 
 // RubyGems gem name pattern (mirrors the rubygems-server validation).
 const GEM_NAME = /^[A-Za-z0-9][A-Za-z0-9._-]*$/;

@@ -43,14 +43,14 @@ describe('buildFindJs', () => {
     const js = buildFindJs('.btn');
     // On the just-annotated branch we must flip the attribute on the element
     // so downstream `browser click <ref>` works off the find output.
-    expect(js).toContain("el.setAttribute('data-opencli-ref'");
+    expect(js).toContain("el.setAttribute('data-cloudl-ref'");
     // The fingerprint must also land in the shared identity map so the
     // target resolver's stale-ref check has data to verify against.
-    expect(js).toContain('__opencli_ref_identity');
+    expect(js).toContain('__cloudl_ref_identity');
     expect(js).toContain("identity['' + refNum] = fingerprintOf(el)");
-    // Allocation walks both the identity map and any existing data-opencli-ref
+    // Allocation walks both the identity map and any existing data-cloudl-ref
     // annotations — guards against collisions after a soft nav.
-    expect(js).toContain("document.querySelectorAll('[data-opencli-ref]')");
+    expect(js).toContain("document.querySelectorAll('[data-cloudl-ref]')");
   });
 
   it('fingerprint shape matches the snapshot / resolver contract', () => {
@@ -169,10 +169,10 @@ describe('buildSemanticFindJs', () => {
 
   it('allocates refs exactly like CSS find so downstream actions can click them', () => {
     const js = buildSemanticFindJs({ role: 'button', name: 'Save' });
-    expect(js).toContain("el.setAttribute('data-opencli-ref'");
-    expect(js).toContain('__opencli_ref_identity');
+    expect(js).toContain("el.setAttribute('data-cloudl-ref'");
+    expect(js).toContain('__cloudl_ref_identity');
     expect(js).toContain("identity['' + refNum] = fingerprintOf(el)");
-    expect(js).toContain("document.querySelectorAll('[data-opencli-ref]')");
+    expect(js).toContain("document.querySelectorAll('[data-cloudl-ref]')");
   });
 
   it('executes semantic role/name/testid matching and allocates a clickable ref', () => {
@@ -187,8 +187,8 @@ describe('buildSemanticFindJs', () => {
       ],
     });
     const button = dom.window.document.querySelector('button')!;
-    expect(button.getAttribute('data-opencli-ref')).toBe('1');
-    expect((dom.window as any).__opencli_ref_identity['1']).toMatchObject({ tag: 'button', ariaLabel: 'Save expense' });
+    expect(button.getAttribute('data-cloudl-ref')).toBe('1');
+    expect((dom.window as any).__cloudl_ref_identity['1']).toMatchObject({ tag: 'button', ariaLabel: 'Save expense' });
   });
 
   it('matches associated labels and placeholders for form controls', () => {

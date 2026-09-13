@@ -762,7 +762,7 @@ describe('createProgram root help descriptions', () => {
 });
 
 describe('resolveBrowserVerifyInvocation', () => {
-  it('prefers the cloudl entry declared in package metadata over legacy entries', () => {
+  it('prefers the cloudl entry declared in package metadata over unrelated entries', () => {
     const projectRoot = path.join('repo-root');
     const exists = new Set([
       path.join(projectRoot, 'bin', 'cloudl.js'),
@@ -771,7 +771,7 @@ describe('resolveBrowserVerifyInvocation', () => {
 
     expect(resolveBrowserVerifyInvocation({
       projectRoot,
-      readFile: () => JSON.stringify({ bin: { cloudl: 'bin/cloudl.js', opencli: 'dist/src/main.js' } }),
+      readFile: () => JSON.stringify({ bin: { cloudl: 'bin/cloudl.js', unrelated: 'dist/src/main.js' } }),
       fileExists: (candidate) => exists.has(candidate),
     })).toEqual({
       binary: process.execPath,
@@ -866,9 +866,9 @@ describe('resolveSitemapAvailabilityForUrl', () => {
   }
 
   it('detects local sitemap overlays using adapter registry domain matches', () => {
-    const homeDir = path.join(os.tmpdir(), 'opencli-sitemap-home');
-    const packageRoot = path.join(os.tmpdir(), 'opencli-sitemap-package');
-    const localSitemap = path.join(homeDir, '.opencli', 'sites', 'hackernews', 'sitemap');
+    const homeDir = path.join(os.tmpdir(), 'cloudl-sitemap-home');
+    const packageRoot = path.join(os.tmpdir(), 'cloudl-sitemap-package');
+    const localSitemap = path.join(homeDir, '.cloudl', 'sites', 'hackernews', 'sitemap');
     const exists = new Set([localSitemap]);
 
     const report = resolveSitemapAvailabilityForUrl('https://news.ycombinator.com/item?id=1', {
@@ -884,17 +884,17 @@ describe('resolveSitemapAvailabilityForUrl', () => {
       source: 'local',
       paths: { local: localSitemap },
     });
-    expect(report?.hint).toContain('opencli-browser-sitemap');
+    expect(report?.hint).toContain('cloudl-browser-sitemap');
   });
 
   it('reports global+local when both sitemap layers exist', () => {
-    const homeDir = path.join(os.tmpdir(), 'opencli-sitemap-home');
-    const packageRoot = path.join(os.tmpdir(), 'opencli-sitemap-package');
-    const localSitemap = path.join(homeDir, '.opencli', 'sites', 'twitter', 'sitemap.md');
+    const homeDir = path.join(os.tmpdir(), 'cloudl-sitemap-home');
+    const packageRoot = path.join(os.tmpdir(), 'cloudl-sitemap-package');
+    const localSitemap = path.join(homeDir, '.cloudl', 'sites', 'twitter', 'sitemap.md');
     const globalSitemap = path.join(packageRoot, 'sitemaps', 'twitter');
     const exists = new Set([localSitemap, globalSitemap]);
 
-    const report = resolveSitemapAvailabilityForUrl('https://x.com/opencli', {
+    const report = resolveSitemapAvailabilityForUrl('https://x.com/cloudl', {
       homeDir,
       packageRoot,
       registry: registryFor('twitter', 'x.com'),
@@ -910,8 +910,8 @@ describe('resolveSitemapAvailabilityForUrl', () => {
 
   it('returns null when no sitemap layer exists', () => {
     const report = resolveSitemapAvailabilityForUrl('https://example.com/', {
-      homeDir: path.join(os.tmpdir(), 'opencli-sitemap-home'),
-      packageRoot: path.join(os.tmpdir(), 'opencli-sitemap-package'),
+      homeDir: path.join(os.tmpdir(), 'cloudl-sitemap-home'),
+      packageRoot: path.join(os.tmpdir(), 'cloudl-sitemap-package'),
       registry: new Map(),
       fileExists: () => false,
     });
@@ -929,12 +929,12 @@ describe('browser verify', () => {
   it('passes --trace through to the adapter subprocess', async () => {
     const originalHome = process.env.HOME;
     const originalUserProfile = process.env.USERPROFILE;
-    const fakeHome = fs.mkdtempSync(path.join(os.tmpdir(), 'opencli-browser-verify-trace-'));
+    const fakeHome = fs.mkdtempSync(path.join(os.tmpdir(), 'cloudl-browser-verify-trace-'));
     process.env.HOME = fakeHome;
     process.env.USERPROFILE = fakeHome;
 
     try {
-      const adapterDir = path.join(fakeHome, '.opencli', 'clis', 'hn');
+      const adapterDir = path.join(fakeHome, '.cloudl', 'clis', 'hn');
       fs.mkdirSync(adapterDir, { recursive: true });
       fs.writeFileSync(path.join(adapterDir, 'top.js'), 'export default {};\n', 'utf-8');
 
@@ -956,21 +956,21 @@ describe('browser verify', () => {
   it('uses --seed-args when no fixture args exist', async () => {
     const originalHome = process.env.HOME;
     const originalUserProfile = process.env.USERPROFILE;
-    const fakeHome = fs.mkdtempSync(path.join(os.tmpdir(), 'opencli-browser-verify-seed-'));
+    const fakeHome = fs.mkdtempSync(path.join(os.tmpdir(), 'cloudl-browser-verify-seed-'));
     process.env.HOME = fakeHome;
     process.env.USERPROFILE = fakeHome;
 
     try {
-      const adapterDir = path.join(fakeHome, '.opencli', 'clis', 'hn');
+      const adapterDir = path.join(fakeHome, '.cloudl', 'clis', 'hn');
       fs.mkdirSync(adapterDir, { recursive: true });
       fs.writeFileSync(path.join(adapterDir, 'top.js'), 'export default {};\n', 'utf-8');
 
       const program = createProgram('', '');
-      await program.parseAsync(['node', 'cloudl', 'browser', '--session', 'test', 'verify', 'hn/top', '--no-fixture', '--seed-args', 'opencli-verify']);
+      await program.parseAsync(['node', 'cloudl', 'browser', '--session', 'test', 'verify', 'hn/top', '--no-fixture', '--seed-args', 'cloudl-verify']);
 
       expect(mockExecFileSync).toHaveBeenCalledTimes(1);
       const [, execArgs] = mockExecFileSync.mock.calls[0] as [string, string[]];
-      expect(execArgs.slice(-5)).toEqual(['hn', 'top', 'opencli-verify', '--format', 'json']);
+      expect(execArgs.slice(-5)).toEqual(['hn', 'top', 'cloudl-verify', '--format', 'json']);
     } finally {
       if (originalHome === undefined) delete process.env.HOME;
       else process.env.HOME = originalHome;
@@ -983,22 +983,22 @@ describe('browser verify', () => {
   it('writes --seed-args into a starter fixture', async () => {
     const originalHome = process.env.HOME;
     const originalUserProfile = process.env.USERPROFILE;
-    const fakeHome = fs.mkdtempSync(path.join(os.tmpdir(), 'opencli-browser-verify-write-seed-'));
+    const fakeHome = fs.mkdtempSync(path.join(os.tmpdir(), 'cloudl-browser-verify-write-seed-'));
     process.env.HOME = fakeHome;
     process.env.USERPROFILE = fakeHome;
     mockExecFileSync.mockReturnValue(JSON.stringify([{ title: 'ok' }]));
 
     try {
-      const adapterDir = path.join(fakeHome, '.opencli', 'clis', 'hn');
+      const adapterDir = path.join(fakeHome, '.cloudl', 'clis', 'hn');
       fs.mkdirSync(adapterDir, { recursive: true });
       fs.writeFileSync(path.join(adapterDir, 'top.js'), 'export default {};\n', 'utf-8');
 
       const program = createProgram('', '');
-      await program.parseAsync(['node', 'cloudl', 'browser', '--session', 'test', 'verify', 'hn/top', '--write-fixture', '--seed-args', 'opencli-verify']);
+      await program.parseAsync(['node', 'cloudl', 'browser', '--session', 'test', 'verify', 'hn/top', '--write-fixture', '--seed-args', 'cloudl-verify']);
 
-      const fixtureFile = path.join(fakeHome, '.opencli', 'sites', 'hn', 'verify', 'top.json');
+      const fixtureFile = path.join(fakeHome, '.cloudl', 'sites', 'hn', 'verify', 'top.json');
       const fixture = JSON.parse(fs.readFileSync(fixtureFile, 'utf-8'));
-      expect(fixture.args).toEqual(['opencli-verify']);
+      expect(fixture.args).toEqual(['cloudl-verify']);
       expect(fixture.expect.columns).toEqual(['title']);
     } finally {
       if (originalHome === undefined) delete process.env.HOME;
@@ -1012,7 +1012,7 @@ describe('browser verify', () => {
   it('fails before fixture handling when output row shape is not agent-native', async () => {
     const originalHome = process.env.HOME;
     const originalUserProfile = process.env.USERPROFILE;
-    const fakeHome = fs.mkdtempSync(path.join(os.tmpdir(), 'opencli-browser-verify-shape-'));
+    const fakeHome = fs.mkdtempSync(path.join(os.tmpdir(), 'cloudl-browser-verify-shape-'));
     process.env.HOME = fakeHome;
     process.env.USERPROFILE = fakeHome;
     mockExecFileSync.mockReturnValue(JSON.stringify([{ title: 'ok', author: { user_id: 'u1' } }]));
@@ -1020,7 +1020,7 @@ describe('browser verify', () => {
     consoleLogSpy.mockClear();
 
     try {
-      const adapterDir = path.join(fakeHome, '.opencli', 'clis', 'hn');
+      const adapterDir = path.join(fakeHome, '.cloudl', 'clis', 'hn');
       fs.mkdirSync(adapterDir, { recursive: true });
       fs.writeFileSync(path.join(adapterDir, 'top.js'), 'export default {};\n', 'utf-8');
 
@@ -1046,10 +1046,10 @@ describe('adapter eject', () => {
   it('copies repo-level shared imports so an ejected adapter can load', async () => {
     const originalHome = process.env.HOME;
     const originalUserProfile = process.env.USERPROFILE;
-    const fakeHome = fs.mkdtempSync(path.join(os.tmpdir(), 'opencli-adapter-eject-home-'));
-    const fakePackage = fs.mkdtempSync(path.join(os.tmpdir(), 'opencli-adapter-eject-package-'));
+    const fakeHome = fs.mkdtempSync(path.join(os.tmpdir(), 'cloudl-adapter-eject-home-'));
+    const fakePackage = fs.mkdtempSync(path.join(os.tmpdir(), 'cloudl-adapter-eject-package-'));
     const builtinClis = path.join(fakePackage, 'clis');
-    const userClis = path.join(fakeHome, '.opencli', 'clis');
+    const userClis = path.join(fakeHome, '.cloudl', 'clis');
     vi.mocked(console.log).mockClear();
     process.env.HOME = fakeHome;
     process.env.USERPROFILE = fakeHome;
@@ -1167,14 +1167,14 @@ describe('browser tab targeting commands', () => {
 
   beforeEach(() => {
     process.exitCode = undefined;
-    process.env.OPENCLI_CACHE_DIR = fs.mkdtempSync(path.join(os.tmpdir(), 'opencli-browser-tab-state-'));
-    process.env.OPENCLI_CONFIG_DIR = fs.mkdtempSync(path.join(os.tmpdir(), 'opencli-browser-profile-'));
-    delete process.env.OPENCLI_PROFILE;
+    process.env.CLOUDL_CACHE_DIR = fs.mkdtempSync(path.join(os.tmpdir(), 'cloudl-browser-tab-state-'));
+    process.env.CLOUDL_CONFIG_DIR = fs.mkdtempSync(path.join(os.tmpdir(), 'cloudl-browser-profile-'));
+    delete process.env.CLOUDL_PROFILE;
     consoleLogSpy.mockClear();
     stderrSpy.mockClear();
     mockBrowserConnect.mockClear();
     mockBrowserClose.mockReset().mockResolvedValue(undefined);
-    delete process.env.OPENCLI_WINDOW;
+    delete process.env.CLOUDL_WINDOW;
     mockBindTab.mockReset().mockResolvedValue({
       session: 'test',
       page: 'tab-2',
@@ -1511,7 +1511,7 @@ describe('browser tab targeting commands', () => {
   });
 
   it('clears a saved default target when it is no longer present in the current session', async () => {
-    const cacheDir = String(process.env.OPENCLI_CACHE_DIR);
+    const cacheDir = String(process.env.CLOUDL_CACHE_DIR);
     const program = createProgram('', '');
 
     await program.parseAsync(['node', 'cloudl', 'browser', '--session', 'test', 'tab', 'select', 'tab-2']);
@@ -1648,7 +1648,7 @@ describe('browser tab targeting commands', () => {
             finalUrl: 'https://target.example/',
           };
         }
-        if (typeof arg === 'string' && arg.includes('window.__opencli_net = []')) {
+        if (typeof arg === 'string' && arg.includes('window.__cloudl_net = []')) {
           bufferReads += 1;
           if (bufferReads === 1) {
             return JSON.stringify([
@@ -1726,7 +1726,7 @@ describe('browser tab targeting commands', () => {
 
     const out = lastJsonLog();
     expect(browserState.page?.startNetworkCapture).toHaveBeenCalledTimes(1);
-    expect(browserState.page?.evaluate).toHaveBeenCalledWith(expect.stringContaining('window.__opencli_net'));
+    expect(browserState.page?.evaluate).toHaveBeenCalledWith(expect.stringContaining('window.__cloudl_net'));
     expect(browserState.page?.readNetworkCapture).toHaveBeenCalledTimes(2);
     expect(out.matched.url).toBe('https://target.example/api/target');
   });
@@ -1741,7 +1741,7 @@ describe('browser tab targeting commands', () => {
       getCurrentUrl: vi.fn().mockResolvedValue('https://target.example'),
       startNetworkCapture: vi.fn().mockResolvedValue(false),
       evaluate: vi.fn().mockImplementation(async (arg: string) => {
-        if (typeof arg === 'string' && arg.includes('window.__opencli_net = []')) {
+        if (typeof arg === 'string' && arg.includes('window.__cloudl_net = []')) {
           bufferReads += 1;
           if (bufferReads === 1) {
             return JSON.stringify([
@@ -1859,7 +1859,7 @@ describe('browser network command', () => {
 
   beforeEach(() => {
     process.exitCode = undefined;
-    process.env.OPENCLI_CACHE_DIR = fs.mkdtempSync(path.join(os.tmpdir(), 'opencli-browser-net-'));
+    process.env.CLOUDL_CACHE_DIR = fs.mkdtempSync(path.join(os.tmpdir(), 'cloudl-browser-net-'));
     consoleLogSpy.mockClear();
     mockBrowserConnect.mockClear();
     mockBrowserClose.mockReset().mockResolvedValue(undefined);
@@ -1891,7 +1891,7 @@ describe('browser network command', () => {
   });
 
   it('emits JSON with shape previews and persists the capture to disk', async () => {
-    const cacheDir = String(process.env.OPENCLI_CACHE_DIR);
+    const cacheDir = String(process.env.CLOUDL_CACHE_DIR);
     const program = createProgram('', '');
 
     await program.parseAsync(['node', 'cloudl', 'browser', '--session', 'test', 'network']);
@@ -1906,7 +1906,7 @@ describe('browser network command', () => {
   });
 
   it('uses the selected browser session for network cache scope', async () => {
-    const cacheDir = String(process.env.OPENCLI_CACHE_DIR);
+    const cacheDir = String(process.env.CLOUDL_CACHE_DIR);
     browserState.page = {
       ...browserState.page,
       session: 'custom',
@@ -2165,7 +2165,7 @@ describe('browser network command', () => {
   });
 
   it('surfaces cache_warning in the envelope when persistence fails', async () => {
-    const cacheDir = String(process.env.OPENCLI_CACHE_DIR);
+    const cacheDir = String(process.env.CLOUDL_CACHE_DIR);
     // Pre-create the target path as a file where a directory is expected,
     // forcing the mkdir inside saveNetworkCache to throw.
     const clashDir = path.join(cacheDir, 'browser-network');
@@ -2520,7 +2520,7 @@ describe('browser get html command', () => {
 
   beforeEach(() => {
     process.exitCode = undefined;
-    process.env.OPENCLI_CACHE_DIR = fs.mkdtempSync(path.join(os.tmpdir(), 'opencli-html-'));
+    process.env.CLOUDL_CACHE_DIR = fs.mkdtempSync(path.join(os.tmpdir(), 'cloudl-html-'));
     consoleLogSpy.mockClear();
     mockBrowserConnect.mockClear();
     mockBrowserClose.mockReset().mockResolvedValue(undefined);
@@ -2551,7 +2551,7 @@ describe('browser get html command', () => {
     await program.parseAsync(['node', 'cloudl', 'browser', '--session', 'test', 'get', 'html', '--max', '100']);
 
     const out = String(lastLogArg());
-    expect(out.startsWith('<!-- opencli: truncated 100 of')).toBe(true);
+    expect(out.startsWith('<!-- cloudl: truncated 100 of')).toBe(true);
     expect(out.length).toBeGreaterThan(100);
     expect(out.length).toBeLessThan(big.length);
   });
@@ -2684,7 +2684,7 @@ function installSelectorFirstTestHarness(label: string, pageOverrides: () => Par
 
   beforeEach(() => {
     process.exitCode = undefined;
-    process.env.OPENCLI_CACHE_DIR = fs.mkdtempSync(path.join(os.tmpdir(), `opencli-${label}-`));
+    process.env.CLOUDL_CACHE_DIR = fs.mkdtempSync(path.join(os.tmpdir(), `cloudl-${label}-`));
     consoleLogSpy.mockClear();
     mockBrowserConnect.mockClear();
     mockBrowserClose.mockReset().mockResolvedValue(undefined);
@@ -2709,7 +2709,7 @@ describe('browser find command', () => {
   it('returns a {matches_n, entries} envelope for a matching selector', async () => {
     // `find` always returns numeric refs (existing on snapshot-tagged elements,
     // allocated on the spot for fresh matches) — see reviewer contract in
-    // #opencli-browser msg 52c51eb6.
+    // #cloudl-browser msg 52c51eb6.
     (browserState.page!.evaluate as any).mockResolvedValueOnce({
       matches_n: 2,
       entries: [
@@ -3048,7 +3048,7 @@ describe('browser click/type commands', () => {
   });
 
   it('upload: treats the first positional as a file when using semantic locator flags', async () => {
-    const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'opencli-upload-semantic-'));
+    const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'cloudl-upload-semantic-'));
     const file = path.join(dir, 'receipt.pdf');
     fs.writeFileSync(file, 'pdf');
     (browserState.page!.evaluate as any).mockResolvedValueOnce({
@@ -3288,7 +3288,7 @@ describe('browser click/type commands', () => {
   });
 
   it('upload: validates local files and delegates to page.uploadFiles', async () => {
-    const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'opencli-upload-'));
+    const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'cloudl-upload-'));
     const file = path.join(dir, 'receipt.pdf');
     fs.writeFileSync(file, 'pdf');
     (browserState.page!.uploadFiles as any).mockResolvedValueOnce({
@@ -3319,7 +3319,7 @@ describe('browser click/type commands', () => {
   it('upload: rejects missing files before touching the page', async () => {
     const program = createProgram('', '');
 
-    await program.parseAsync(['node', 'cloudl', 'browser', '--session', 'test', 'upload', '#file', '/tmp/opencli-missing-file']);
+    await program.parseAsync(['node', 'cloudl', 'browser', '--session', 'test', 'upload', '#file', '/tmp/cloudl-missing-file']);
 
     expect(lastJsonLog().error.code).toBe('file_not_found');
     expect(browserState.page!.uploadFiles).not.toHaveBeenCalled();

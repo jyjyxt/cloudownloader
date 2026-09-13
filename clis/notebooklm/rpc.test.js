@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from 'vitest';
-import { AuthRequiredError, CommandExecutionError, TimeoutError } from '@jackwener/opencli/errors';
+import { AuthRequiredError, CommandExecutionError, TimeoutError } from '@jyjyxt/cloudl/errors';
 import { callNotebooklmRpc, extractNotebooklmRpcResult, getNotebooklmPageAuth } from './rpc.js';
 
 function rpcBody(rpcId = 'wXbhsf', payload = []) {

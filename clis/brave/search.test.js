@@ -46,20 +46,20 @@ describe('brave search', () => {
   it('rejects empty query, invalid limit, and invalid offset before navigation', async () => {
     const page = createPageMock();
     await expect(command.func(page, { keyword: '', limit: 5 })).rejects.toMatchObject({ code: 'ARGUMENT' });
-    await expect(command.func(page, { keyword: 'opencli', limit: 19 })).rejects.toMatchObject({ code: 'ARGUMENT' });
-    await expect(command.func(page, { keyword: 'opencli', limit: 5, offset: -1 })).rejects.toMatchObject({ code: 'ARGUMENT' });
+    await expect(command.func(page, { keyword: 'cloudl', limit: 19 })).rejects.toMatchObject({ code: 'ARGUMENT' });
+    await expect(command.func(page, { keyword: 'cloudl', limit: 5, offset: -1 })).rejects.toMatchObject({ code: 'ARGUMENT' });
     expect(page.goto).not.toHaveBeenCalled();
   });
 
   it('unwraps browser envelopes and returns ranked HTTPS rows', async () => {
     const page = createPageMock({
       session: 'site:brave',
-      data: [['OpenCLI', 'https://github.com/jyjyxt/cloudownloader', 'CLI browser tooling']],
+      data: [['Cloudl', 'https://github.com/jyjyxt/cloudownloader', 'CLI browser tooling']],
     });
 
-    await expect(command.func(page, { keyword: 'opencli', limit: 1, offset: 1 })).resolves.toEqual([{
+    await expect(command.func(page, { keyword: 'cloudl', limit: 1, offset: 1 })).resolves.toEqual([{
       rank: 19,
-      title: 'OpenCLI',
+      title: 'Cloudl',
       url: 'https://github.com/jyjyxt/cloudownloader',
       snippet: 'CLI browser tooling',
     }]);
@@ -68,7 +68,7 @@ describe('brave search', () => {
   it('fails typed instead of silently returning [] for malformed extraction payloads', async () => {
     const page = createPageMock({ rows: [] });
 
-    await expect(command.func(page, { keyword: 'opencli', limit: 1 })).rejects.toMatchObject({
+    await expect(command.func(page, { keyword: 'cloudl', limit: 1 })).rejects.toMatchObject({
       code: 'COMMAND_EXEC',
       message: expect.stringContaining('payload shape'),
     });

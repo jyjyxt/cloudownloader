@@ -1,14 +1,14 @@
 import { readFile, stat } from 'node:fs/promises';
-import { htmlToMarkdown as coreHtmlToMarkdown } from '@jackwener/opencli/utils';
+import { htmlToMarkdown as coreHtmlToMarkdown } from '@jyjyxt/cloudl/utils';
 import {
     ArgumentError,
     AuthRequiredError,
     CommandExecutionError,
     ConfigError,
     EmptyResultError,
-} from '@jackwener/opencli/errors';
+} from '@jyjyxt/cloudl/errors';
 
-const USER_AGENT = 'opencli-atlassian-adapter (+https://github.com/jyjyxt/cloudownloader)';
+const USER_AGENT = 'cloudl-atlassian-adapter (+https://github.com/jyjyxt/cloudownloader)';
 const DEPLOYMENTS = new Set(['cloud', 'datacenter', 'auto']);
 
 function firstEnv(names) {

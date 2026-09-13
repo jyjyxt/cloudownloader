@@ -128,7 +128,7 @@ export function waitForDomStableJs(maxMs: number, quietMs: number): string {
 }
 
 /**
- * Generate JS to wait until window.__opencli_xhr has ≥1 captured response.
+ * Generate JS to wait until window.__cloudl_xhr has ≥1 captured response.
  * Polls every 100ms. Resolves 'captured' on success; rejects after maxMs.
  * Used after installInterceptor() + goto() instead of a fixed sleep.
  */
@@ -137,7 +137,7 @@ export function waitForCaptureJs(maxMs: number): string {
     new Promise((resolve, reject) => {
       const deadline = Date.now() + ${maxMs};
       const check = () => {
-        if ((window.__opencli_xhr || []).length > 0) return resolve('captured');
+        if ((window.__cloudl_xhr || []).length > 0) return resolve('captured');
         if (Date.now() > deadline) return reject(new Error('No network capture within ${maxMs / 1000}s'));
         setTimeout(check, 100);
       };

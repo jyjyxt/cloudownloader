@@ -1,4 +1,4 @@
-import { ArgumentError, CommandExecutionError, EmptyResultError, TimeoutError } from '@jackwener/opencli/errors';
+import { ArgumentError, CommandExecutionError, EmptyResultError, TimeoutError } from '@jyjyxt/cloudl/errors';
 
 export const BASE = 'https://www.hltv.org';
 

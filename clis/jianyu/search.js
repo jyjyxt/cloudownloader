@@ -1,8 +1,8 @@
 /**
  * Jianyu search — browser DOM extraction from Jianyu bid search page.
  */
-import { cli, Strategy } from '@jackwener/opencli/registry';
-import { AuthRequiredError } from '@jackwener/opencli/errors';
+import { cli, Strategy } from '@jyjyxt/cloudl/registry';
+import { AuthRequiredError } from '@jyjyxt/cloudl/errors';
 import { buildSearchCandidates, cleanText, dedupeCandidates, detectAuthPrompt, normalizeDate, searchRowsFromEntries, } from './shared/china-bid-search.js';
 import { toProcurementSearchRecords } from './shared/procurement-contract.js';
 const SITE = 'jianyu';
@@ -380,7 +380,7 @@ async function fetchDuckDuckGoIndexRows(query, limit) {
             const response = await fetch(url, {
                 headers: {
                     Accept: 'text/plain, text/markdown, */*',
-                    'User-Agent': 'opencli-jianyu-search/1.0',
+                    'User-Agent': 'cloudl-jianyu-search/1.0',
                 },
             });
             if (!response.ok)

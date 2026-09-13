@@ -4,8 +4,8 @@ import {
   CommandExecutionError,
   EmptyResultError,
   TimeoutError,
-} from '@jackwener/opencli/errors';
-import { log } from '@jackwener/opencli/logger';
+} from '@jyjyxt/cloudl/errors';
+import { log } from '@jyjyxt/cloudl/logger';
 
 import * as fs from 'node:fs/promises';
 import * as os from 'node:os';
@@ -17,7 +17,7 @@ export const MIDJOURNEY_IMAGINE_URL = `${MIDJOURNEY_URL}/imagine`;
 export const MIDJOURNEY_CDN = 'https://cdn.midjourney.com';
 export const COMPOSER_SELECTOR = '#desktop_input_bar';
 export const CREDITS_PER_FAST_MINUTE = 60_000;
-export const MIDJOURNEY_SITE_DIR = path.join(os.homedir(), '.opencli', 'sites', 'midjourney');
+export const MIDJOURNEY_SITE_DIR = path.join(os.homedir(), '.cloudl', 'sites', 'midjourney');
 export const USAGE_SNAPSHOT_PATH = path.join(MIDJOURNEY_SITE_DIR, 'usage-snapshots.jsonl');
 export const IMAGE_EXTENSIONS = new Map([
   ['.png', 'image/png'],
@@ -337,7 +337,7 @@ export async function fetchJobStatuses(page, jobIds) {
   const payload = await midjourneyJson(page, '/api/job-status', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: { jobIds, _frontend_source: 'opencli_adapter' },
+    body: { jobIds, _frontend_source: 'cloudl_adapter' },
   });
   if (!Array.isArray(payload)) {
     throw new CommandExecutionError('Midjourney job-status endpoint returned a malformed payload');
@@ -531,7 +531,7 @@ export async function waitForCompletedJob(page, jobId, timeoutSeconds) {
 }
 
 async function fetchMediaThroughPage(page, url, expectedMimePrefix) {
-  const transferKey = `opencli_media_${Date.now()}_${Math.random().toString(36).slice(2)}`;
+  const transferKey = `cloudl_media_${Date.now()}_${Math.random().toString(36).slice(2)}`;
   try {
     let payload;
     try {
@@ -743,15 +743,15 @@ export async function downloadRenderedVideo(page, jobId, index, kind, outputDir,
   await page.click('button[title="Options"]');
   await page.wait(0.3);
   const marked = unwrapEvaluateResult(await page.evaluate((label) => {
-    document.querySelectorAll('[data-opencli-video-download]').forEach((node) => node.removeAttribute('data-opencli-video-download'));
+    document.querySelectorAll('[data-cloudl-video-download]').forEach((node) => node.removeAttribute('data-cloudl-video-download'));
     const button = [...document.querySelectorAll('button[role="menuitem"],button')]
       .find((node) => node.textContent?.trim() === label && node.getBoundingClientRect().width > 0);
     if (!button) return false;
-    button.setAttribute('data-opencli-video-download', '1');
+    button.setAttribute('data-cloudl-video-download', '1');
     return true;
   }, config.label));
   if (!marked) throw new CommandExecutionError(`Midjourney did not expose "${config.label}" for video ${jobId}`);
-  await page.click('[data-opencli-video-download="1"]');
+  await page.click('[data-cloudl-video-download="1"]');
   if (typeof page.waitForDownload !== 'function') {
     throw new CommandExecutionError('Browser Bridge download lifecycle support is required for social video/GIF export');
   }
@@ -931,7 +931,7 @@ async function visibleImageSources(page) {
 
 export async function openImagePanel(page) {
   const markInput = async () => unwrapEvaluateResult(await page.evaluate(() => {
-    document.querySelectorAll('[data-opencli-image-input]').forEach((node) => node.removeAttribute('data-opencli-image-input'));
+    document.querySelectorAll('[data-cloudl-image-input]').forEach((node) => node.removeAttribute('data-cloudl-image-input'));
     const inputs = [...document.querySelectorAll('input[type="file"][accept*="image"]')];
     const active = inputs.find((input) => {
       let root = input.parentElement;
@@ -942,7 +942,7 @@ export async function openImagePanel(page) {
       return false;
     });
     if (!active) return false;
-    active.setAttribute('data-opencli-image-input', '1');
+    active.setAttribute('data-cloudl-image-input', '1');
     return true;
   }));
   if (!await markInput()) {
@@ -983,7 +983,7 @@ async function injectImagesFallback(page, localPaths) {
   // Older Browser Bridge builds do not expose CDP set-file-input. Keep each
   // evaluate payload small so high-resolution references do not exceed the
   // daemon message limit, then reconstruct the File objects in page context.
-  const uploadKey = `opencli_${Date.now()}_${Math.random().toString(36).slice(2)}`;
+  const uploadKey = `cloudl_${Date.now()}_${Math.random().toString(36).slice(2)}`;
   await page.evaluate((key) => {
     window[key] = [];
     return true;
@@ -1017,7 +1017,7 @@ async function injectImagesFallback(page, localPaths) {
       }
     }
     const result = unwrapEvaluateResult(await page.evaluate((key) => {
-    const input = document.querySelector('[data-opencli-image-input="1"]');
+    const input = document.querySelector('[data-cloudl-image-input="1"]');
     if (!(input instanceof HTMLInputElement)) return { ok: false, reason: 'image file input not found' };
     const transfer = new DataTransfer();
     for (const item of window[key] || []) {
@@ -1048,9 +1048,9 @@ async function injectImagesFallback(page, localPaths) {
 
 async function markReferenceTarget(page, sourceUrl, slotLabel) {
   const result = unwrapEvaluateResult(await page.evaluate((url, label) => {
-    document.querySelectorAll('[data-opencli-ref-source],[data-opencli-ref-target]').forEach((el) => {
-      el.removeAttribute('data-opencli-ref-source');
-      el.removeAttribute('data-opencli-ref-target');
+    document.querySelectorAll('[data-cloudl-ref-source],[data-cloudl-ref-target]').forEach((el) => {
+      el.removeAttribute('data-cloudl-ref-source');
+      el.removeAttribute('data-cloudl-ref-target');
     });
     const source = [...document.querySelectorAll('img[src]')].find((img) => img.src === url);
     const labelNode = [...document.querySelectorAll('div,span')].find((node) => node.children.length === 0 && node.textContent?.trim() === label);
@@ -1062,8 +1062,8 @@ async function markReferenceTarget(page, sourceUrl, slotLabel) {
       target = target.parentElement;
     }
     if (!target) return { ok: false, source: true, target: false };
-    source.setAttribute('data-opencli-ref-source', '1');
-    target.setAttribute('data-opencli-ref-target', '1');
+    source.setAttribute('data-cloudl-ref-source', '1');
+    target.setAttribute('data-cloudl-ref-target', '1');
     return { ok: true };
   }, sourceUrl, slotLabel));
   if (!result?.ok) throw new CommandExecutionError(`Could not locate Midjourney ${slotLabel} slot after upload`);
@@ -1107,7 +1107,7 @@ export async function uploadReferenceLibrary(page, localPaths) {
   let uploaded = false;
   if (typeof page.setFileInput === 'function') {
     try {
-      await page.setFileInput(localPaths, '[data-opencli-image-input="1"]');
+      await page.setFileInput(localPaths, '[data-cloudl-image-input="1"]');
       uploaded = true;
     } catch (error) {
       const message = errorMessage(error);
@@ -1142,22 +1142,22 @@ export async function uploadReferenceLibrary(page, localPaths) {
 
 async function openEndFramePicker(page) {
   const marked = unwrapEvaluateResult(await page.evaluate(() => {
-    document.querySelectorAll('[data-opencli-end-frame-picker]').forEach((node) => {
-      node.removeAttribute('data-opencli-end-frame-picker');
+    document.querySelectorAll('[data-cloudl-end-frame-picker]').forEach((node) => {
+      node.removeAttribute('data-cloudl-end-frame-picker');
     });
     const label = [...document.querySelectorAll('div')]
       .find((node) => node.children.length === 0 && node.textContent?.trim() === 'End Frame');
     let target = label;
     for (let depth = 0; depth < 7 && target; depth += 1, target = target.parentElement) {
       if (String(target.className).includes('cursor-pointer')) {
-        target.setAttribute('data-opencli-end-frame-picker', '1');
+        target.setAttribute('data-cloudl-end-frame-picker', '1');
         return true;
       }
     }
     return false;
   }));
   if (!marked) throw new CommandExecutionError('Midjourney manual video composer did not expose the End Frame picker');
-  await page.click('[data-opencli-end-frame-picker="1"]');
+  await page.click('[data-cloudl-end-frame-picker="1"]');
   await page.wait({ selector: 'input[type="file"][accept*="image"]', timeout: 10 });
 }
 
@@ -1186,7 +1186,7 @@ export async function uploadReferencesToSlot(page, localPaths, slot) {
   if (typeof page.drag !== 'function') throw new CommandExecutionError('Browser Bridge does not support Reference drag-and-drop');
   for (const url of selected) {
     await markReferenceTarget(page, url, label);
-    await page.drag('[data-opencli-ref-source="1"]', '[data-opencli-ref-target="1"]');
+    await page.drag('[data-cloudl-ref-source="1"]', '[data-cloudl-ref-target="1"]');
     await page.wait(0.8);
     await verifyReferenceTarget(page, label);
   }
@@ -1244,8 +1244,8 @@ export async function clickVisibleControl(page, label) {
 
 export async function clickComposerSubmit(page) {
   const marked = unwrapEvaluateResult(await page.evaluate(() => {
-    document.querySelectorAll('[data-opencli-composer-submit]').forEach((node) => {
-      node.removeAttribute('data-opencli-composer-submit');
+    document.querySelectorAll('[data-cloudl-composer-submit]').forEach((node) => {
+      node.removeAttribute('data-cloudl-composer-submit');
     });
     const visible = (element) => {
       const rect = element.getBoundingClientRect();
@@ -1265,11 +1265,11 @@ export async function clickComposerSubmit(page) {
     // ambiguous, so fail closed instead of risking a click on Settings.
     const button = textSubmit || (following.length >= 2 ? following[0] : null);
     if (!button || button.disabled) return false;
-    button.setAttribute('data-opencli-composer-submit', '1');
+    button.setAttribute('data-cloudl-composer-submit', '1');
     return true;
   }));
   if (!marked) throw new CommandExecutionError('Midjourney composer submit control was not found');
-  await page.click('[data-opencli-composer-submit="1"]');
+  await page.click('[data-cloudl-composer-submit="1"]');
 }
 
 export async function toggleSettingsPanel(page) {
@@ -1404,7 +1404,7 @@ export async function selectSiteSetting(page, anchorText, candidates, targetText
       const rect = element.getBoundingClientRect();
       return rect.width > 0 && rect.height > 0 && getComputedStyle(element).display !== 'none';
     };
-    document.querySelectorAll('[data-opencli-setting-target]').forEach((node) => node.removeAttribute('data-opencli-setting-target'));
+    document.querySelectorAll('[data-cloudl-setting-target]').forEach((node) => node.removeAttribute('data-cloudl-setting-target'));
     const anchors = [...document.querySelectorAll('h2,a,div,span')]
       .filter((node) => node.textContent?.trim() === anchorLabel && visible(node))
       .sort((left, right) => left.children.length - right.children.length);
@@ -1421,7 +1421,7 @@ export async function selectSiteSetting(page, anchorText, candidates, targetText
           || ['active', 'checked', 'on'].includes(button.getAttribute('data-state'))
           || String(button.className).includes('text-splash');
         if (selected) return { ok: true, changed: false };
-        button.setAttribute('data-opencli-setting-target', '1');
+        button.setAttribute('data-cloudl-setting-target', '1');
         return { ok: true, changed: true };
       }
     }
@@ -1429,7 +1429,7 @@ export async function selectSiteSetting(page, anchorText, candidates, targetText
   }, anchorText, candidates, targetText));
   if (!target?.ok) throw new CommandExecutionError(`Could not set Midjourney ${anchorText}: ${target?.reason || targetText}`);
   if (target.changed) {
-    await page.click('[data-opencli-setting-target="1"]');
+    await page.click('[data-cloudl-setting-target="1"]');
     await page.wait(0.4);
     const verified = await readSiteSettings(page);
     const selected = anchorText === 'Video Resolution'

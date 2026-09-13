@@ -1,6 +1,6 @@
 import { describe, expect, it, vi } from 'vitest';
-import { getRegistry } from '@jackwener/opencli/registry';
-import { ArgumentError, TimeoutError } from '@jackwener/opencli/errors';
+import { getRegistry } from '@jyjyxt/cloudl/registry';
+import { ArgumentError, TimeoutError } from '@jyjyxt/cloudl/errors';
 import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
@@ -44,21 +44,21 @@ describe('medium draft-create command', () => {
     });
 
     it('uploads each requested inline image before confirming the draft save', async () => {
-        const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'opencli-medium-draft-'));
+        const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'cloudl-medium-draft-'));
         const imagePath = path.join(dir, 'story.png');
         fs.writeFileSync(imagePath, 'not-a-real-png');
         const setFileInput = vi.fn().mockResolvedValue(undefined);
         const page = makePage([
             { hasEditor: true, url: 'https://medium.com/new-story' },
             { ok: true, actualTitle: 'Title', actualBody: 'Body' },
-            { ok: true, selector: '[data-opencli-medium-image-upload="draft-image"]', imageCount: 0 },
+            { ok: true, selector: '[data-cloudl-medium-image-upload="draft-image"]', imageCount: 0 },
             { ok: true, count: 1 },
             { ok: true, url: 'https://medium.com/p/draft-id/edit' },
         ], { setFileInput });
 
         const result = await getCommand().func(page, { title: 'Title', content: 'Body', image: imagePath });
 
-        expect(setFileInput).toHaveBeenCalledWith([imagePath], '[data-opencli-medium-image-upload="draft-image"]');
+        expect(setFileInput).toHaveBeenCalledWith([imagePath], '[data-cloudl-medium-image-upload="draft-image"]');
         expect(result[0]).toMatchObject({ status: 'draft_created', images: 1 });
     });
 

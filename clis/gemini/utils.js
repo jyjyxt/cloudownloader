@@ -1,4 +1,4 @@
-import { CommandExecutionError, TimeoutError } from '@jackwener/opencli/errors';
+import { CommandExecutionError, TimeoutError } from '@jyjyxt/cloudl/errors';
 export const GEMINI_DOMAIN = 'gemini.google.com';
 export const GEMINI_APP_URL = 'https://gemini.google.com/app';
 export const GEMINI_DEEP_RESEARCH_DEFAULT_TOOL_LABELS = ['Deep Research', 'Deep research', '\u6df1\u5ea6\u7814\u7a76'];
@@ -32,7 +32,7 @@ const GEMINI_COMPOSER_SELECTORS = [
     '[aria-label="Enter a prompt for Gemini"]',
     '[aria-label*="prompt for Gemini"]',
 ];
-const GEMINI_COMPOSER_MARKER_ATTR = 'data-opencli-gemini-composer';
+const GEMINI_COMPOSER_MARKER_ATTR = 'data-cloudl-gemini-composer';
 const GEMINI_COMPOSER_PREPARE_ATTEMPTS = 4;
 const GEMINI_COMPOSER_PREPARE_WAIT_SECONDS = 1;
 function isObjectRecord(value) {
@@ -1451,8 +1451,8 @@ function exportGeminiDeepResearchReportScript(maxWaitMs) {
         exportDocs: ['export to docs', 'export to google docs', 'export to doc', '导出到 docs', '导出到文档', '导出到 google docs'],
       };
 
-      const recorderKey = '__opencliGeminiExportUrls';
-      const patchedKey = '__opencliGeminiExportPatched';
+      const recorderKey = '__cloudlGeminiExportUrls';
+      const patchedKey = '__cloudlGeminiExportPatched';
       const trace = [];
       const tracePush = (step, detail = '') => {
         const entry = detail ? step + ':' + detail : step;
@@ -1655,7 +1655,7 @@ function exportGeminiDeepResearchReportScript(maxWaitMs) {
         const originalXhrOpen = XMLHttpRequest.prototype.open;
         XMLHttpRequest.prototype.open = function(method, url, ...rest) {
           try { push('xhr', url); } catch {}
-          try { this.__opencliReqUrl = String(url || ''); } catch {}
+          try { this.__cloudlReqUrl = String(url || ''); } catch {}
           return originalXhrOpen.call(this, method, url, ...rest);
         };
         const originalXhrSend = XMLHttpRequest.prototype.send;
@@ -1665,7 +1665,7 @@ function exportGeminiDeepResearchReportScript(maxWaitMs) {
               try {
                 const embeddedUrls = extractUrlsFromText(this.responseText || '');
                 for (const embeddedUrl of embeddedUrls) push('xhr-body', embeddedUrl);
-                const reqUrl = String(this.__opencliReqUrl || '');
+                const reqUrl = String(this.__cloudlReqUrl || '');
                 if (isDriveDocCreateRequest(reqUrl)) {
                   const docIds = extractDocsIdsFromText(this.responseText || '');
                   for (const docId of docIds) {

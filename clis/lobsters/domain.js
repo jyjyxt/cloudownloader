@@ -4,8 +4,8 @@
 // (returns the same per-story shape used by `lobsters tag` / `lobsters
 // hot`). Lets agents ask "what did Lobsters surface from github.com /
 // blog.cloudflare.com / arxiv.org lately?".
-import { cli, Strategy } from '@jackwener/opencli/registry';
-import { ArgumentError, CommandExecutionError, EmptyResultError } from '@jackwener/opencli/errors';
+import { cli, Strategy } from '@jyjyxt/cloudl/registry';
+import { ArgumentError, CommandExecutionError, EmptyResultError } from '@jyjyxt/cloudl/errors';
 
 const DOMAIN_PATTERN = /^[a-z0-9]([a-z0-9-]{0,61}[a-z0-9])?(\.[a-z0-9]([a-z0-9-]{0,61}[a-z0-9])?)+$/i;
 
@@ -51,7 +51,7 @@ cli({
         const url = `https://lobste.rs/domains/${encodeURIComponent(domain)}.json`;
         let resp;
         try {
-            resp = await fetch(url, { headers: { 'user-agent': 'opencli-lobsters-adapter (+https://github.com/jyjyxt/cloudownloader)' } });
+            resp = await fetch(url, { headers: { 'user-agent': 'cloudl-lobsters-adapter (+https://github.com/jyjyxt/cloudownloader)' } });
         }
         catch (err) {
             throw new CommandExecutionError(

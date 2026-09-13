@@ -1,7 +1,7 @@
 // Shared helpers for Pinterest adapters.
 // Resources are POST /resource/<Name>Resource/{get,create}/ with a form-urlencoded body
 // and the X-CSRFToken + X-Pinterest-PWS-Handler headers; feeds paginate via `bookmark`.
-import { ArgumentError, AuthRequiredError, CommandExecutionError } from '@jackwener/opencli/errors';
+import { ArgumentError, AuthRequiredError, CommandExecutionError } from '@jyjyxt/cloudl/errors';
 
 export const PINTEREST_DOMAIN = 'www.pinterest.com';
 export const PINTEREST_BASE = 'https://www.pinterest.com';

@@ -14,7 +14,7 @@ describe('convention audit', () => {
   });
 
   function makeProject(manifest: unknown[], files: Record<string, string>): string {
-    const root = fs.mkdtempSync(path.join(os.tmpdir(), 'opencli-convention-audit-'));
+    const root = fs.mkdtempSync(path.join(os.tmpdir(), 'cloudl-convention-audit-'));
     tempDirs.push(root);
     fs.mkdirSync(path.join(root, 'clis'), { recursive: true });
     fs.writeFileSync(path.join(root, 'cli-manifest.json'), JSON.stringify(manifest, null, 2));

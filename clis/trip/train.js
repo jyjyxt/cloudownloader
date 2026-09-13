@@ -8,8 +8,8 @@
  * class fields (see `buildTrainExtractJs` in utils); per-journey fares sit behind
  * the booking step and are out of scope here.
  */
-import { AuthRequiredError, CommandExecutionError, EmptyResultError } from '@jackwener/opencli/errors';
-import { cli, Strategy } from '@jackwener/opencli/registry';
+import { AuthRequiredError, CommandExecutionError, EmptyResultError } from '@jyjyxt/cloudl/errors';
+import { cli, Strategy } from '@jyjyxt/cloudl/registry';
 import {
     WAIT_FOR_TRAINS_JS,
     buildTrainExtractJs,

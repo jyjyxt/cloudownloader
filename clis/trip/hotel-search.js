@@ -6,8 +6,8 @@
  * utils) rather than positional innerText. Cards without a hotel name are
  * dropped rather than surfaced with blanks.
  */
-import { ArgumentError, AuthRequiredError, CommandExecutionError, EmptyResultError } from '@jackwener/opencli/errors';
-import { cli, Strategy } from '@jackwener/opencli/registry';
+import { ArgumentError, AuthRequiredError, CommandExecutionError, EmptyResultError } from '@jyjyxt/cloudl/errors';
+import { cli, Strategy } from '@jyjyxt/cloudl/registry';
 import {
     WAIT_FOR_HOTELS_JS,
     buildHotelExtractJs,

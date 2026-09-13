@@ -2,7 +2,7 @@
  * Bilibili shared helpers: WBI signing, authenticated fetch, nav data, UID resolution.
  */
 import https from 'node:https';
-import { ArgumentError, AuthRequiredError, CommandExecutionError, EmptyResultError } from '@jackwener/opencli/errors';
+import { ArgumentError, AuthRequiredError, CommandExecutionError, EmptyResultError } from '@jyjyxt/cloudl/errors';
 
 const EXACT_BVID_RE = /^BV[0-9A-Za-z]{10}$/;
 const VIDEO_HOSTS = new Set(['bilibili.com', 'www.bilibili.com', 'm.bilibili.com']);

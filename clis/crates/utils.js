@@ -1,8 +1,8 @@
 // Shared helpers for the crates.io adapters.
-import { ArgumentError, CommandExecutionError, EmptyResultError } from '@jackwener/opencli/errors';
+import { ArgumentError, CommandExecutionError, EmptyResultError } from '@jyjyxt/cloudl/errors';
 
 export const CRATES_BASE = 'https://crates.io';
-const UA = 'opencli-crates-adapter (+https://github.com/jyjyxt/cloudownloader)';
+const UA = 'cloudl-crates-adapter (+https://github.com/jyjyxt/cloudownloader)';
 
 // crates.io crate names: 1-64 chars, ascii letters/digits/-_, must start with a letter.
 const CRATE_NAME = /^[A-Za-z][A-Za-z0-9_-]{0,63}$/;

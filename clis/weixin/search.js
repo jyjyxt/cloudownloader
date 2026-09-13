@@ -1,5 +1,5 @@
-import { ArgumentError, CommandExecutionError, EmptyResultError } from '@jackwener/opencli/errors';
-import { cli, Strategy } from '@jackwener/opencli/registry';
+import { ArgumentError, CommandExecutionError, EmptyResultError } from '@jyjyxt/cloudl/errors';
+import { cli, Strategy } from '@jyjyxt/cloudl/registry';
 
 const SOGOU_WEIXIN_DOMAIN = 'weixin.sogou.com';
 const DEFAULT_PAGE = 1;

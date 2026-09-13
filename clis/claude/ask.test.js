@@ -1,5 +1,5 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
-import { ArgumentError, CommandExecutionError, EmptyResultError } from '@jackwener/opencli/errors';
+import { ArgumentError, CommandExecutionError, EmptyResultError } from '@jyjyxt/cloudl/errors';
 
 const {
     mockEnsureOnClaude,
@@ -148,7 +148,7 @@ describe('claude ask --model handling', () => {
             new: false,
             model: 'opus',
             think: false,
-            __opencliOptionSources: { model: 'cli' },
+            __cloudlOptionSources: { model: 'cli' },
         })).rejects.toMatchObject(new ArgumentError(
             'opus model requires a paid Claude plan.',
             'Pick --model sonnet or --model haiku, or upgrade your account.',
@@ -192,7 +192,7 @@ describe('claude ask --model handling', () => {
             new: false,
             model: 'opus',
             think: false,
-            __opencliOptionSources: { model: 'cli' },
+            __cloudlOptionSources: { model: 'cli' },
         })).rejects.toMatchObject(new ArgumentError(
             'Cannot switch to opus model inside an existing conversation.',
             'Re-run with --new to start a fresh chat before selecting a model.',

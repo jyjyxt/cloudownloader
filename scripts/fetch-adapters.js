@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 /**
- * Sparse adapter sync: keeps ~/.opencli/clis/ clean by removing stale overrides.
+ * Sparse adapter sync: keeps ~/.cloudl/clis/ clean by removing stale overrides.
  *
  * Strategy (hash-based, site-level granularity):
  * - When an official site has upstream changes: DELETE the local override
@@ -10,10 +10,10 @@
  * - User-created custom sites (not in package): always preserved
  * - Skips entirely if already synced at the same version
  *
- * ~/.opencli/clis/ is a sparse override layer, not a full copy.
+ * ~/.cloudl/clis/ is a sparse override layer, not a full copy.
  * Only eject-ed or user-modified sites appear here.
  *
- * Only runs on global install (npm install -g) or explicit OPENCLI_FETCH=1.
+ * Only runs on global install (npm install -g) or explicit CLOUDL_FETCH=1.
  * No network calls — reads hashes from clis/ in the installed package.
  *
  * This is an ESM script (package.json type: module). No TypeScript, no src/ imports.
@@ -24,14 +24,14 @@ import { createHash } from 'node:crypto';
 import { join, resolve, dirname, relative } from 'node:path';
 import { homedir } from 'node:os';
 
-const OPENCLI_DIR = join(homedir(), '.opencli');
-const USER_CLIS_DIR = join(OPENCLI_DIR, 'clis');
-const MANIFEST_PATH = join(OPENCLI_DIR, 'adapter-manifest.json');
+const CLOUDL_DIR = join(homedir(), '.cloudl');
+const USER_CLIS_DIR = join(CLOUDL_DIR, 'clis');
+const MANIFEST_PATH = join(CLOUDL_DIR, 'adapter-manifest.json');
 const PACKAGE_ROOT = resolve(import.meta.dirname, '..');
 const BUILTIN_CLIS = join(PACKAGE_ROOT, 'clis');
 
 function log(msg) {
-  console.log(`[opencli] ${msg}`);
+  console.log(`[cloudl] ${msg}`);
 }
 
 function getPackageVersion() {
@@ -102,8 +102,8 @@ export function fetchAdapters() {
   const currentVersion = getPackageVersion();
   const oldManifest = readManifest();
 
-  // Skip if already installed at the same version (unless forced via OPENCLI_FETCH=1)
-  const isForced = process.env.OPENCLI_FETCH === '1';
+  // Skip if already installed at the same version (unless forced via CLOUDL_FETCH=1)
+  const isForced = process.env.CLOUDL_FETCH === '1';
   if (!isForced && currentVersion !== 'unknown' && oldManifest?.version === currentVersion) {
     log(`Adapters already up to date (v${currentVersion})`);
     return;
@@ -159,7 +159,7 @@ export function fetchAdapters() {
 
   // 2. Sparse cleanup: for changed/removed official sites, delete local overrides.
   //    Do NOT copy new versions — runtime falls back to package baseline.
-  //    Only eject-ed sites live in ~/.opencli/clis/.
+  //    Only eject-ed sites live in ~/.cloudl/clis/.
   let cleared = 0;
   for (const site of changedSites) {
     const siteDir = join(USER_CLIS_DIR, site);
@@ -204,10 +204,10 @@ export function fetchAdapters() {
   }
   if (yamlCleaned > 0) log(`Cleaned up ${yamlCleaned} stale .yaml adapter files`);
 
-  // 4. Clean up legacy compat shim files from ~/.opencli/
+  // 4. Clean up legacy compat shim files from ~/.cloudl/
   // These were created by an older approach that placed re-export shims directly
-  // in ~/.opencli/ (e.g., registry.js, errors.js, browser/). The current approach
-  // uses a node_modules/@jackwener/opencli symlink instead.
+  // in ~/.cloudl/ (e.g., registry.js, errors.js, browser/). The current approach
+  // uses a node_modules/@jyjyxt/cloudl symlink instead.
   const LEGACY_SHIM_FILES = [
     'registry.js', 'errors.js', 'utils.js', 'launcher.js', 'logger.js', 'types.js',
   ];
@@ -216,7 +216,7 @@ export function fetchAdapters() {
   ];
   let legacyCleaned = 0;
   for (const file of LEGACY_SHIM_FILES) {
-    const p = join(OPENCLI_DIR, file);
+    const p = join(CLOUDL_DIR, file);
     try {
       const content = readFileSync(p, 'utf-8');
       // Only delete if it's a re-export shim, not a user-created file
@@ -227,7 +227,7 @@ export function fetchAdapters() {
     } catch { /* doesn't exist */ }
   }
   for (const dir of LEGACY_SHIM_DIRS) {
-    const p = join(OPENCLI_DIR, dir);
+    const p = join(CLOUDL_DIR, dir);
     try {
       // Delete individual shim files, then prune empty directory
       for (const entry of readdirSync(p)) {
@@ -251,10 +251,10 @@ export function fetchAdapters() {
   // 5. Clean up stale .plugins.lock.json.tmp-* files
   let tmpCleaned = 0;
   try {
-    for (const entry of readdirSync(OPENCLI_DIR)) {
+    for (const entry of readdirSync(CLOUDL_DIR)) {
       if (entry.startsWith('.plugins.lock.json.tmp-')) {
         try {
-          unlinkSync(join(OPENCLI_DIR, entry));
+          unlinkSync(join(CLOUDL_DIR, entry));
           tmpCleaned++;
         } catch { /* ignore */ }
       }
@@ -283,8 +283,8 @@ function main() {
   if (process.env.CI || process.env.CONTINUOUS_INTEGRATION) return;
   // Only run on global install, explicit trigger, or first-run fallback
   const isGlobal = process.env.npm_config_global === 'true';
-  const isExplicit = process.env.OPENCLI_FETCH === '1';
-  const isFirstRun = process.env._OPENCLI_FIRST_RUN === '1';
+  const isExplicit = process.env.CLOUDL_FETCH === '1';
+  const isFirstRun = process.env._CLOUDL_FIRST_RUN === '1';
   if (!isGlobal && !isExplicit && !isFirstRun) return;
 
   fetchAdapters();

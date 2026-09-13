@@ -416,7 +416,7 @@ export async function locatePreviewElement(page, html) {
 export function getDefaultOutputPath({ username, slug, suffix, extension }) {
   const safeUsername = trimPathSegment(username).replace(/[^a-zA-Z0-9-_]/g, '-');
   const safeSlug = trimPathSegment(slug).replace(/[^a-zA-Z0-9-_]/g, '-');
-  return path.join(os.tmpdir(), `opencli-uiverse-${safeUsername}-${safeSlug}-${suffix}.${extension}`);
+  return path.join(os.tmpdir(), `cloudl-uiverse-${safeUsername}-${safeSlug}-${suffix}.${extension}`);
 }
 
 export async function saveBase64File(base64, outputPath) {

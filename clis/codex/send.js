@@ -1,5 +1,5 @@
-import { cli, Strategy } from '@jackwener/opencli/registry';
-import { ArgumentError, CommandExecutionError, selectorError } from '@jackwener/opencli/errors';
+import { cli, Strategy } from '@jyjyxt/cloudl/registry';
+import { ArgumentError, CommandExecutionError, selectorError } from '@jyjyxt/cloudl/errors';
 import { unwrapEvaluateResult } from './_actions.js';
 import { conversationSelectionArgs, openCodexConversation } from './sidebar.js';
 

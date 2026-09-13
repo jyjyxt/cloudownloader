@@ -36,9 +36,9 @@ Adapter availability depends on the target website, login state and local depend
 ## AI skills and compatibility
 
 Install bundled skills with `npx skills add jyjyxt/cloudownloader`.
-The executable is `cloudl`. This project derives from OpenCLI and retains the
-actual `opencli-*` skill identifiers, `~/.opencli` configuration directory,
-`OPENCLI_*` environment variables and `@jackwener/opencli` package imports.
+The executable is `cloudl`. This project derives from Cloudl and retains the
+actual `cloudl-*` skill identifiers, `~/.cloudl` configuration directory,
+`CLOUDL_*` environment variables and `cloudl` package imports.
 
 ## Documentation
 

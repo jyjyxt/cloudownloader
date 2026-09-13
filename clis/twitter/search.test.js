@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from 'vitest';
-import { getRegistry } from '@jackwener/opencli/registry';
+import { getRegistry } from '@jyjyxt/cloudl/registry';
 import { __test__ } from './search.js';
 
 const { buildSearchQuery, resolveSearchFParam, resolveSearchProduct, buildSearchTimelineRequest, parseSearchTimeline, HAS_CHOICES, EXCLUDE_CHOICES, PRODUCT_CHOICES, EXCLUDE_TO_OPERATOR, PRODUCT_TO_F_PARAM, FROM_USER_PATTERN } = __test__;
@@ -165,7 +165,7 @@ describe('twitter search command', () => {
                 };
             }),
         };
-        const result = await command.func(page, { query: 'opencli', limit: 7 });
+        const result = await command.func(page, { query: 'cloudl', limit: 7 });
         expect(result).toHaveLength(7);
         expect(result.map((row) => row.id)).toEqual(['1', '2', '3', '4', '5', '6', '7']);
         expect(page.evaluate).toHaveBeenCalledTimes(8);

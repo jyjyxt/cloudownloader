@@ -1,4 +1,4 @@
-import { ArgumentError, AuthRequiredError, CommandExecutionError, EmptyResultError } from '@jackwener/opencli/errors';
+import { ArgumentError, AuthRequiredError, CommandExecutionError, EmptyResultError } from '@jyjyxt/cloudl/errors';
 
 // ── Constants ───────────────────────────────────────────────────────────────
 const BOSS_DOMAIN = 'www.zhipin.com';
@@ -287,11 +287,11 @@ export async function typeAndSendMessage(page, text) {
     return true;
 }
 /**
- * Verbose log helper — prints when OPENCLI_VERBOSE is set.
+ * Verbose log helper — prints when CLOUDL_VERBOSE is set.
  */
 export function verbose(msg) {
-    if (process.env.OPENCLI_VERBOSE) {
-        console.error(`[opencli:boss] ${msg}`);
+    if (process.env.CLOUDL_VERBOSE) {
+        console.error(`[cloudl:boss] ${msg}`);
     }
 }
 // ── Geek-side helpers ────────────────────────────────────────────────────────

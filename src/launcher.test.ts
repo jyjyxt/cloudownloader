@@ -246,7 +246,7 @@ describe.skipIf(process.platform === 'win32')('app-scoped process detection', ()
   });
 
   it('detects Codex when the app path is a symlink but ps reports the resolved executable path', () => {
-    const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'opencli-launcher-'));
+    const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'cloudl-launcher-'));
     const realAppPath = path.join(tmp, 'ChatGPT.app');
     const linkAppPath = path.join(tmp, 'Codex.app');
     fs.mkdirSync(path.join(realAppPath, 'Contents', 'MacOS'), { recursive: true });

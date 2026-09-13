@@ -1,9 +1,9 @@
 import * as fs from 'node:fs';
 import * as path from 'node:path';
-import { cli, Strategy } from '@jackwener/opencli/registry';
-import { CliError } from '@jackwener/opencli/errors';
-import { httpDownload, sanitizeFilename } from '@jackwener/opencli/download';
-import { formatBytes } from '@jackwener/opencli/download/progress';
+import { cli, Strategy } from '@jyjyxt/cloudl/registry';
+import { CliError } from '@jyjyxt/cloudl/errors';
+import { httpDownload, sanitizeFilename } from '@jyjyxt/cloudl/download';
+import { formatBytes } from '@jyjyxt/cloudl/download/progress';
 import { loadXiaoyuzhouCredentials, requestXiaoyuzhouJson } from './auth.js';
 
 cli({

@@ -2,13 +2,13 @@ import * as fs from 'node:fs';
 import * as os from 'node:os';
 import * as path from 'node:path';
 import { afterEach, beforeAll, beforeEach, describe, expect, it, vi } from 'vitest';
-import { getRegistry } from '@jackwener/opencli/registry';
-import { ArgumentError, CommandExecutionError, EmptyResultError } from '@jackwener/opencli/errors';
+import { getRegistry } from '@jyjyxt/cloudl/registry';
+import { ArgumentError, CommandExecutionError, EmptyResultError } from '@jyjyxt/cloudl/errors';
 import { createPageMock } from '../test-utils.js';
 
 const { mockHttpDownload } = vi.hoisted(() => ({ mockHttpDownload: vi.fn() }));
 
-vi.mock('@jackwener/opencli/download', async (importOriginal) => {
+vi.mock('@jyjyxt/cloudl/download', async (importOriginal) => {
   const original = await importOriginal();
   return { ...original, httpDownload: mockHttpDownload };
 });
@@ -24,7 +24,7 @@ beforeAll(() => {
 });
 
 beforeEach(() => {
-  tempRoot = fs.mkdtempSync(path.join(os.tmpdir(), 'opencli-pixiv-bookmarks-'));
+  tempRoot = fs.mkdtempSync(path.join(os.tmpdir(), 'cloudl-pixiv-bookmarks-'));
   mockHttpDownload.mockReset();
   mockHttpDownload.mockImplementation(async (url, destination) => {
     fs.mkdirSync(path.dirname(destination), { recursive: true });

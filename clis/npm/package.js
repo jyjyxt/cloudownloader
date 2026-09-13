@@ -5,8 +5,8 @@
 // repository, bug tracker, maintainers, last-modified time. Download stats
 // are intentionally separate (see `npm downloads`) so failure modes don't get
 // silently folded into a registry-metadata response.
-import { cli, Strategy } from '@jackwener/opencli/registry';
-import { EmptyResultError } from '@jackwener/opencli/errors';
+import { cli, Strategy } from '@jyjyxt/cloudl/registry';
+import { EmptyResultError } from '@jyjyxt/cloudl/errors';
 import { NPM_REGISTRY, npmFetch, requirePackageName } from './utils.js';
 
 function repoUrl(repo) {

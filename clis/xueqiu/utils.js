@@ -1,4 +1,4 @@
-import { AuthRequiredError, CommandExecutionError } from '@jackwener/opencli/errors';
+import { AuthRequiredError, CommandExecutionError } from '@jyjyxt/cloudl/errors';
 
 const CHINA_DATE_FORMATTER = new Intl.DateTimeFormat('en-US', {
     timeZone: 'Asia/Shanghai',

@@ -1,5 +1,5 @@
-import { CommandExecutionError, TimeoutError } from '@jackwener/opencli/errors';
-import { cli, Strategy } from '@jackwener/opencli/registry';
+import { CommandExecutionError, TimeoutError } from '@jyjyxt/cloudl/errors';
+import { cli, Strategy } from '@jyjyxt/cloudl/registry';
 import { parseTweetUrl, buildTwitterArticleScopeSource } from './shared.js';
 
 cli({

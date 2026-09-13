@@ -2,7 +2,7 @@
 layout: home
 
 hero:
-  name: OpenCLI
+  name: Cloudl
   text: Make any website or Electron App your CLI
   tagline: Zero risk · Reuse Chrome login · AI-powered discovery · Browser + Desktop automation
   actions:

@@ -19,7 +19,7 @@ import {
     ArgumentError,
     CommandExecutionError,
     EmptyResultError,
-} from '@jackwener/opencli/errors';
+} from '@jyjyxt/cloudl/errors';
 
 export const DCD_BASE = 'https://www.dongchedi.com';
 

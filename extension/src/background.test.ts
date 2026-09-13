@@ -829,7 +829,7 @@ describe('background tab isolation', () => {
 
   it('returns the persisted profile contextId from popup status', async () => {
     const { chrome } = createChromeMock();
-    await chrome.storage.local.set({ opencli_context_id_v1: 'abc123xy' });
+    await chrome.storage.local.set({ cloudl_context_id_v1: 'abc123xy' });
     vi.stubGlobal('chrome', chrome);
 
     await import('./background');
@@ -1148,7 +1148,7 @@ describe('background tab isolation', () => {
     const { chrome, tabs, groups } = createChromeMock();
     vi.stubGlobal('chrome', chrome);
     await chrome.storage.session.set({
-      opencli_target_lease_registry_v2: {
+      cloudl_target_lease_registry_v2: {
         version: 2,
         contextId: 'user-default',
         ownedContainers: { interactive: { windowId: null }, automation: { windowId: 1 } },
@@ -1179,7 +1179,7 @@ describe('background tab isolation', () => {
     const deadline = Date.now() + 30_000;
     vi.stubGlobal('chrome', chrome);
     await chrome.storage.session.set({
-      opencli_target_lease_registry_v2: {
+      cloudl_target_lease_registry_v2: {
         version: 2,
         contextId: 'user-default',
         ownedContainers: { interactive: { windowId: null }, automation: { windowId: 1 } },
@@ -1230,7 +1230,7 @@ describe('background tab isolation', () => {
       idleDeadlineAt: 0,
     }));
     expect(chrome.alarms.create).toHaveBeenCalledWith(
-      `opencli:lease-idle:${encodeURIComponent(adapterKey('twitter'))}`,
+      `cloudl:lease-idle:${encodeURIComponent(adapterKey('twitter'))}`,
       expect.objectContaining({ when: expect.any(Number) }),
     );
     expect(chrome.windows.remove).not.toHaveBeenCalled();
@@ -1243,7 +1243,7 @@ describe('background tab isolation', () => {
     const deadline = now + 5_000;
     vi.stubGlobal('chrome', chrome);
     await chrome.storage.session.set({
-      opencli_target_lease_registry_v2: {
+      cloudl_target_lease_registry_v2: {
         version: 2,
         contextId: 'user-default',
         ownedContainers: { interactive: { windowId: null }, automation: { windowId: 1 } },
@@ -1266,7 +1266,7 @@ describe('background tab isolation', () => {
     const mod = await import('./background');
     await mod.__test__.reconcileTargetLeaseRegistry();
 
-    const alarmName = `opencli:lease-idle:${encodeURIComponent(adapterKey('twitter'))}`;
+    const alarmName = `cloudl:lease-idle:${encodeURIComponent(adapterKey('twitter'))}`;
     const createCalls = chrome.alarms.create.mock.calls.filter((c: unknown[]) => c[0] === alarmName);
     expect(createCalls.length).toBeGreaterThan(0);
     const scheduledWhen = (createCalls.at(-1)![1] as { when: number }).when;
@@ -1287,7 +1287,7 @@ describe('background tab isolation', () => {
     await mod.__test__.resolveTabId(undefined, adapterKey('alarm'));
 
     const onAlarmListener = chrome.alarms.onAlarm.addListener.mock.calls[0][0];
-    await onAlarmListener({ name: `opencli:lease-idle:${encodeURIComponent(adapterKey('alarm'))}` });
+    await onAlarmListener({ name: `cloudl:lease-idle:${encodeURIComponent(adapterKey('alarm'))}` });
 
     expect(chrome.tabs.update).toHaveBeenCalledWith(1, { url: 'about:blank' });
     expect(chrome.windows.remove).not.toHaveBeenCalled();
@@ -1302,7 +1302,7 @@ describe('background tab isolation', () => {
     await mod.__test__.resolveTabId(undefined, adapterKey('first'));
 
     const onAlarmListener = chrome.alarms.onAlarm.addListener.mock.calls[0][0];
-    await onAlarmListener({ name: `opencli:lease-idle:${encodeURIComponent(adapterKey('first'))}` });
+    await onAlarmListener({ name: `cloudl:lease-idle:${encodeURIComponent(adapterKey('first'))}` });
 
     expect(tabs[0].url).toBe('about:blank');
     expect(chrome.windows.remove).not.toHaveBeenCalled();
@@ -1380,7 +1380,7 @@ describe('background tab isolation', () => {
     expect(chrome.windows.create).toHaveBeenNthCalledWith(1, expect.objectContaining({ focused: true }));
     expect(chrome.windows.create).toHaveBeenNthCalledWith(2, expect.objectContaining({ focused: false }));
     expect(groups).toEqual([
-      expect.objectContaining({ windowId: 20, title: 'OpenCLI Browser' }),
+      expect.objectContaining({ windowId: 20, title: 'Cloudl Browser' }),
     ]);
     expect(tabs.find((tab) => tab.id === adapterTabId)?.groupId).toBe(-1);
   });
@@ -1438,7 +1438,7 @@ describe('background tab isolation', () => {
     const { chrome, tabs, groups } = createChromeMock();
     vi.stubGlobal('chrome', chrome);
     await chrome.storage.session.set({
-      opencli_target_lease_registry_v2: {
+      cloudl_target_lease_registry_v2: {
         version: 2,
         contextId: 'user-default',
         ownedContainers: {
@@ -1466,7 +1466,7 @@ describe('background tab isolation', () => {
     const deadline = Date.now() + 30_000;
     vi.stubGlobal('chrome', chrome);
     await chrome.storage.session.set({
-      opencli_target_lease_registry_v2: {
+      cloudl_target_lease_registry_v2: {
         version: 2,
         contextId: 'user-default',
         ownedContainers: { interactive: { windowId: null }, automation: { windowId: 1, groupId: 99 } },
@@ -1500,7 +1500,7 @@ describe('background tab isolation', () => {
     expect(chrome.tabGroups.update).not.toHaveBeenCalled();
   });
 
-  it('ignores legacy OpenCLI Adapter groups when choosing an adapter container', async () => {
+  it('ignores legacy Cloudl Adapter groups when choosing an adapter container', async () => {
     const { chrome, tabs, groups } = createChromeMock();
     tabs.push({
       id: 77,
@@ -1514,7 +1514,7 @@ describe('background tab isolation', () => {
     groups.push({
       id: 99,
       windowId: 7,
-      title: 'OpenCLI Adapter',
+      title: 'Cloudl Adapter',
       color: 'orange',
       collapsed: true,
     });
@@ -1535,7 +1535,7 @@ describe('background tab isolation', () => {
     const { chrome, tabs } = createChromeMock();
     vi.stubGlobal('chrome', chrome);
     await chrome.storage.session.set({
-      opencli_target_lease_registry_v2: {
+      cloudl_target_lease_registry_v2: {
         version: 2,
         contextId: 'user-default',
         ownedContainers: { interactive: { windowId: null }, automation: { windowId: 1, groupId: 99 } },
@@ -2017,7 +2017,7 @@ describe('background tab isolation', () => {
     expect(chrome.tabs.create).not.toHaveBeenCalled();
   });
 
-  const REGISTRY_KEY = 'opencli_target_lease_registry_v2';
+  const REGISTRY_KEY = 'cloudl_target_lease_registry_v2';
 
   // Gate the registry read (in storage.session) so the startup recovery
   // chain (workerReady) stays pending on demand. Every other storage read
@@ -2039,7 +2039,7 @@ describe('background tab isolation', () => {
   it('does not wipe the persisted registry when a lease idle alarm fires before recovery', async () => {
     const { chrome, groups } = createChromeMock();
     const deadline = Date.now() + 30_000;
-    groups.push({ id: 200, windowId: 5, title: 'OpenCLI Browser', color: 'orange', collapsed: false });
+    groups.push({ id: 200, windowId: 5, title: 'Cloudl Browser', color: 'orange', collapsed: false });
     vi.stubGlobal('chrome', chrome);
     await chrome.storage.session.set({
       [REGISTRY_KEY]: {
@@ -2070,7 +2070,7 @@ describe('background tab isolation', () => {
 
     // Wake the worker via the idle alarm before recovery has restored state.
     const onAlarmListener = chrome.alarms.onAlarm.addListener.mock.calls[0][0];
-    const alarmDone = onAlarmListener({ name: `opencli:lease-idle:${encodeURIComponent(adapterKey('twitter'))}` });
+    const alarmDone = onAlarmListener({ name: `cloudl:lease-idle:${encodeURIComponent(adapterKey('twitter'))}` });
 
     // Drain runnable tasks while recovery stays gated. A pre-fix worker would
     // have persisted its empty snapshot by now, wiping the registry; the gated
@@ -2096,7 +2096,7 @@ describe('background tab isolation', () => {
   it('does not wipe the persisted registry when tabs.onRemoved fires before recovery', async () => {
     const { chrome, groups } = createChromeMock();
     const deadline = Date.now() + 30_000;
-    groups.push({ id: 200, windowId: 5, title: 'OpenCLI Browser', color: 'orange', collapsed: false });
+    groups.push({ id: 200, windowId: 5, title: 'Cloudl Browser', color: 'orange', collapsed: false });
     vi.stubGlobal('chrome', chrome);
     await chrome.storage.session.set({
       [REGISTRY_KEY]: {
@@ -2165,9 +2165,9 @@ describe('background tab isolation', () => {
     const mod = await import('./background');
     await mod.__test__.reconcileTargetLeaseRegistry();
 
-    // The orphan was adopted and titled — no second "OpenCLI Browser" spawned.
+    // The orphan was adopted and titled — no second "Cloudl Browser" spawned.
     expect(groups).toHaveLength(1);
-    expect(groups[0].title).toBe('OpenCLI Browser');
+    expect(groups[0].title).toBe('Cloudl Browser');
     const createGroupCalls = chrome.tabs.group.mock.calls.filter((call: any[]) => call[0]?.createProperties);
     expect(createGroupCalls).toHaveLength(0);
     const container = mod.__test__.getInteractiveContainer();
@@ -2205,7 +2205,7 @@ describe('background tab isolation', () => {
   it('ignores legacy groupIds persisted in the local registry so a recycled id cannot hijack a user group', async () => {
     const { chrome, tabs, groups } = createChromeMock();
     // A user-created group from THIS browser session whose id happens to match
-    // a ledger entry a previous OpenCLI version persisted across restarts.
+    // a ledger entry a previous Cloudl version persisted across restarts.
     tabs.push({ id: 70, windowId: 7, url: 'https://vacation.example', title: 'trip', active: true, status: 'complete', groupId: 400 });
     groups.push({ id: 400, windowId: 7, title: 'Vacation', color: 'blue', collapsed: false });
     vi.stubGlobal('chrome', chrome);
@@ -2268,7 +2268,7 @@ describe('background tab isolation', () => {
   it('ignores legacy container windowIds persisted in the local registry so recycled ids cannot claim user windows', async () => {
     const { chrome, tabs } = createChromeMock();
     // Window 7 belongs to the user in THIS browser session; a registry left in
-    // storage.local by a previous browser session claims it as both OpenCLI
+    // storage.local by a previous browser session claims it as both Cloudl
     // containers (window ids are browser-session scoped, just like group ids).
     tabs.push({ id: 70, windowId: 7, url: 'https://vacation.example', title: 'trip', active: true, status: 'complete', groupId: -1 });
     vi.stubGlobal('chrome', chrome);

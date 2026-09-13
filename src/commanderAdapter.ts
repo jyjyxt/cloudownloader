@@ -104,14 +104,14 @@ export function registerCommandToProgram(siteCmd: Command, cmd: CliCommand): voi
         if (source === 'cli') optionSources[arg.name] = source;
       }
       if (Object.keys(optionSources).length > 0) {
-        rawKwargs.__opencliOptionSources = optionSources;
+        rawKwargs.__cloudlOptionSources = optionSources;
       }
       const kwargs = prepareCommandArgs(cmd, rawKwargs);
 
       const verbose = optionsRecord.verbose === true;
       let format = typeof optionsRecord.format === 'string' ? optionsRecord.format : 'table';
       const formatExplicit = subCmd.getOptionValueSource('format') === 'cli';
-      if (verbose) process.env.OPENCLI_VERBOSE = '1';
+      if (verbose) process.env.CLOUDL_VERBOSE = '1';
       const globals = typeof subCmd.optsWithGlobals === 'function' ? subCmd.optsWithGlobals() as Record<string, unknown> : {};
       const result = await executeCommand(cmd, kwargs, verbose, {
         prepared: true,

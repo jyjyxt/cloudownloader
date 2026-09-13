@@ -1,5 +1,5 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
-import { CliError, CommandExecutionError, EXIT_CODES, TimeoutError } from '@jackwener/opencli/errors';
+import { CliError, CommandExecutionError, EXIT_CODES, TimeoutError } from '@jyjyxt/cloudl/errors';
 
 const {
   mockEnsureOnDeepSeek,
@@ -235,7 +235,7 @@ describe('deepseek ask conversation resume', () => {
       model: 'expert',
       think: false,
       search: false,
-      __opencliOptionSources: { model: 'cli' },
+      __cloudlOptionSources: { model: 'cli' },
     })).rejects.toMatchObject(new CliError(
       'ARGUMENT',
       'Cannot switch to expert model inside an existing conversation.',

@@ -19,7 +19,7 @@ import { homedir } from 'node:os';
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const TASKS_FILE = join(__dirname, 'save-tasks.json');
 const RESULTS_DIR = join(__dirname, 'results');
-const USER_CLIS_DIR = join(homedir(), '.opencli', 'clis');
+const USER_CLIS_DIR = join(homedir(), '.cloudl', 'clis');
 
 interface SaveTask {
   name: string;
@@ -83,7 +83,7 @@ const PROJECT_ROOT = join(__dirname, '..');
 /** Run a command, using the local built entrypoint instead of global cloudl for consistency */
 function runCommand(cmd: string, timeout = 30000): string {
   // Use local build so tests always run against the current source
-  const localCmd = cmd.replace(/^opencli /, `node dist/src/main.js `);
+  const localCmd = cmd.replace(/^cloudl /, `node dist/src/main.js `);
   try {
     return execSync(localCmd, {
       cwd: PROJECT_ROOT,

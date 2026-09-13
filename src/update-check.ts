@@ -19,7 +19,7 @@ import * as path from 'node:path';
 import * as os from 'node:os';
 import { PKG_VERSION } from './version.js';
 
-const CACHE_DIR = path.join(os.homedir(), '.opencli');
+const CACHE_DIR = path.join(os.homedir(), '.cloudl');
 const CACHE_FILE = path.join(CACHE_DIR, 'update-check.json');
 const CHECK_INTERVAL_MS = 24 * 60 * 60 * 1000; // 24h
 const EXTENSION_STALE_MS = 7 * 24 * 60 * 60 * 1000; // 7d
@@ -161,7 +161,7 @@ async function fetchLatestExtensionVersion(): Promise<string | undefined> {
     const timer = setTimeout(() => controller.abort(), 3000);
     const res = await fetch(GITHUB_RELEASES_URL, {
       signal: controller.signal,
-      headers: { 'User-Agent': `opencli/${PKG_VERSION}`, Accept: 'application/vnd.github+json' },
+      headers: { 'User-Agent': `cloudl/${PKG_VERSION}`, Accept: 'application/vnd.github+json' },
     });
     clearTimeout(timer);
     if (!res.ok) return undefined;

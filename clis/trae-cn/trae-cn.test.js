@@ -1,6 +1,6 @@
 import { describe, expect, it, vi } from 'vitest';
 import { JSDOM } from 'jsdom';
-import { ArgumentError, CommandExecutionError, TimeoutError } from '@jackwener/opencli/errors';
+import { ArgumentError, CommandExecutionError, TimeoutError } from '@jyjyxt/cloudl/errors';
 import { activityCommand } from './activity.js';
 import { approveCommand } from './approve.js';
 import { askCommand } from './ask.js';
@@ -48,14 +48,14 @@ describe('trae-cn utils', () => {
       </section>
       <section class="chat-turn assistant task" data-role="assistant" data-turn-index="2" data-message-id="a1">
         <div class="chat-turn-heading assistant">Trae Agent</div>
-        <div class="chat-markdown"><p class="chat-markdown-p">TRAE_OPENCLI_SMOKE_OK</p></div>
+        <div class="chat-markdown"><p class="chat-markdown-p">TRAE_CLOUDL_SMOKE_OK</p></div>
         <div class="assistant-action-bar">copy</div>
       </section>
     `, readMessagesScript(10));
 
     expect(rows).toEqual([
       { Role: 'User', Text: 'hello\nworld', TextChars: 11, Truncated: 'no', TurnIndex: '1', MessageId: 'u1' },
-      { Role: 'Assistant', Text: 'TRAE_OPENCLI_SMOKE_OK', TextChars: 21, Truncated: 'no', TurnIndex: '2', MessageId: 'a1' },
+      { Role: 'Assistant', Text: 'TRAE_CLOUDL_SMOKE_OK', TextChars: 20, Truncated: 'no', TurnIndex: '2', MessageId: 'a1' },
     ]);
   });
 
@@ -120,7 +120,7 @@ describe('trae-cn utils', () => {
   it('detects and clicks terminal approval prompts', () => {
     const dom = new JSDOM(`
       <div role="dialog">
-        <p>Trae 请求运行终端命令：printf OPENCLI_APPROVE</p>
+        <p>Trae 请求运行终端命令：printf CLOUDL_APPROVE</p>
         <button id="cancel">取消</button>
         <button id="approve">同意运行</button>
       </div>
@@ -208,7 +208,7 @@ describe('trae-cn utils', () => {
   it('distinguishes delete approval from keep approval', () => {
     const dom = new JSDOM(`
       <div class="file-delete-confirm-card">
-        <p>是否删除 opencli.tmp？删除后文件无法恢复。</p>
+        <p>是否删除 cloudl.tmp？删除后文件无法恢复。</p>
         <button id="keep">保留文档</button>
         <button id="delete">删除</button>
       </div>
@@ -264,17 +264,17 @@ describe('trae-cn commands', () => {
     const setupRows = await setupCommand.func();
     const setupText = setupRows.map(row => `${row.Command}\n${row.Purpose}`).join('\n');
     expect(setupText).toContain('open -a "Trae CN" --args --remote-debugging-port=39240');
-    expect(setupText).toContain('export OPENCLI_CDP_TARGET="talk"');
+    expect(setupText).toContain('export CLOUDL_CDP_TARGET="talk"');
     expect(setupText).toContain('cloudl trae-cn approve --approve-kinds terminal,delete -f json');
     expect(setupText).toContain('cloudl trae-cn watch --stream true --duration 120 --auto-approve true');
   });
 
   it('documents endpoint/target examples for browser commands', () => {
     for (const command of [activityCommand, approveCommand, askCommand, modelCommand, newCommand, readCommand, selectModelCommand, sendCommand, statusCommand, watchCommand]) {
-      expect(command.example).toContain('OPENCLI_CDP_ENDPOINT=http://127.0.0.1:39240');
-      expect(command.example).toContain('OPENCLI_CDP_TARGET=');
+      expect(command.example).toContain('CLOUDL_CDP_ENDPOINT=http://127.0.0.1:39240');
+      expect(command.example).toContain('CLOUDL_CDP_TARGET=');
     }
-    expect(targetsCommand.example).toContain('OPENCLI_CDP_ENDPOINT=http://127.0.0.1:39240');
+    expect(targetsCommand.example).toContain('CLOUDL_CDP_ENDPOINT=http://127.0.0.1:39240');
   });
 
   it('keeps approval clicks opt-in and marks any approval-capable command as write', () => {
@@ -312,7 +312,7 @@ describe('trae-cn commands', () => {
   it('approve fails closed when the native approval click fails', async () => {
     const page = {
       evaluate: vi.fn().mockResolvedValueOnce([
-        { Status: 'Detected', Kind: 'terminal', Button: '运行', Prompt: '运行终端命令', Selector: '[data-opencli-approval-id="x"]', Action: 'detected' },
+        { Status: 'Detected', Kind: 'terminal', Button: '运行', Prompt: '运行终端命令', Selector: '[data-cloudl-approval-id="x"]', Action: 'detected' },
       ]),
       click: vi.fn().mockRejectedValueOnce(new Error('stale element')),
     };

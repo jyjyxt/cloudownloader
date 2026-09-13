@@ -6,7 +6,7 @@ body:
   - type: markdown
     attributes:
       value: |
-        Want OpenCLI to support a new site? Tell us about it!
+        Want Cloudl to support a new site? Tell us about it!
 
   - type: input
     id: site-name

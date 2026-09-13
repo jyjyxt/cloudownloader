@@ -3,17 +3,14 @@
 > **Make any website or Electron App your CLI.**
 > Zero risk · Reuse Chrome login · AI-powered discovery · Browser + Desktop automation
 
-[![npm](https://img.shields.io/npm/v/@jackwener/opencli?style=flat-square)](https://www.npmjs.com/package/@jackwener/opencli)
-[![Node.js Version](https://img.shields.io/node/v/@jackwener/opencli?style=flat-square)](https://nodejs.org)
-[![License](https://img.shields.io/npm/l/@jackwener/opencli?style=flat-square)](https://github.com/jyjyxt/cloudownloader/blob/main/LICENSE)
 
-OpenCLI turns **any website** or **Electron app** into a command-line interface — Bilibili, Zhihu, 小红书, Twitter/X, Reddit, YouTube, Antigravity, and [many more](/adapters/) — powered by browser session reuse and AI-native discovery.
+Cloudl turns **any website** or **Electron app** into a command-line interface — Bilibili, Zhihu, 小红书, Twitter/X, Reddit, YouTube, Antigravity, and [many more](/adapters/) — powered by browser session reuse and AI-native discovery.
 
 ## Highlights
 
 - **Desktop App Control** — Drive Electron apps (Cursor, Codex, ChatGPT, etc.) directly from the terminal via CDP.
 - **Browser Automation** — `browser` gives AI agents direct browser control: click, type/fill, extract, screenshot — fully scriptable.
-- **Website → CLI** — Turn any website into a deterministic CLI: 100+ site surfaces are already registered, or author your own with the `opencli-adapter-author` skill.
+- **Website → CLI** — Turn any website into a deterministic CLI: 100+ site surfaces are already registered, or author your own with the `cloudl-adapter-author` skill.
 - **Account-safe** — Reuses Chrome's logged-in state; your credentials never leave the browser.
 - **AI Agent ready** — `cloudl browser *` primitives (`open` / `network` / `state` / `eval` / `init` / `verify`) drive the adapter-authoring loop.
 - **Zero LLM cost** — No tokens consumed at runtime. Run 10,000 times and pay nothing.
@@ -54,7 +51,7 @@ cloudl bilibili hot -v         # Verbose: show pipeline debug
 
 ### Tab Completion
 
-OpenCLI supports intelligent tab completion to speed up command input:
+Cloudl supports intelligent tab completion to speed up command input:
 
 ```bash
 # Add shell completion to your startup config
@@ -77,7 +74,7 @@ The completion includes:
 
 - [Installation details](/guide/installation)
 - [Browser Bridge setup](/guide/browser-bridge)
-- [Extending OpenCLI — custom commands, plugins, and external CLIs](/guide/extending-opencli)
+- [Extending Cloudl — custom commands, plugins, and external CLIs](/guide/extending-cloudl)
 - [Plugins — extend with community adapters](/guide/plugins)
 - [All available adapters](/adapters/)
 - [For developers / AI agents](/developer/contributing)

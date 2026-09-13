@@ -1,4 +1,4 @@
-import { cli, Strategy } from '@jackwener/opencli/registry';
+import { cli, Strategy } from '@jyjyxt/cloudl/registry';
 import { midjourneyIdentity, midjourneyQuickCheck } from './auth-utils.js';
 import { MIDJOURNEY_DOMAIN, MIDJOURNEY_IMAGINE_URL } from './utils.js';
 

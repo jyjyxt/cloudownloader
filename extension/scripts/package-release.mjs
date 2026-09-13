@@ -159,6 +159,11 @@ async function main() {
   await fs.rm(outDir, { recursive: true, force: true });
   await fs.mkdir(outDir, { recursive: true });
 
+  // Include the license and attribution with redistributed extension bundles.
+  for (const file of ['LICENSE', 'NOTICE']) {
+    await fs.copyFile(path.join(repoRoot, file), path.join(outDir, file));
+  }
+
   for (const relativePath of requiredEntries) {
     await copyEntry(relativePath, outDir);
   }

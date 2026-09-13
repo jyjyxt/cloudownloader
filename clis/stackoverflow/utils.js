@@ -8,12 +8,12 @@ import {
     ArgumentError,
     CommandExecutionError,
     EmptyResultError,
-} from '@jackwener/opencli/errors';
+} from '@jyjyxt/cloudl/errors';
 
 export const SE_API = 'https://api.stackexchange.com/2.3';
 export const SE_SITE = 'stackoverflow';
 
-const UA = 'opencli-stackoverflow (+https://github.com/jyjyxt/cloudownloader)';
+const UA = 'cloudl-stackoverflow (+https://github.com/jyjyxt/cloudownloader)';
 
 /** Validate `limit` per typed-fail-fast convention (no silent clamp). */
 export function normalizeLimit(value, defaultValue, maxValue, label = 'limit') {

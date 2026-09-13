@@ -1,6 +1,6 @@
 # Qoder
 
-Control the **Qoder IDE** desktop app from OpenCLI through Chrome DevTools Protocol (CDP). Qoder is an Electron / VS Code-derived AI IDE; these commands operate the currently connected Qoder renderer, so open Qoder with remote debugging enabled before use.
+Control the **Qoder IDE** desktop app from Cloudl through Chrome DevTools Protocol (CDP). Qoder is an Electron / VS Code-derived AI IDE; these commands operate the currently connected Qoder renderer, so open Qoder with remote debugging enabled before use.
 
 ## Prerequisites
 
@@ -16,7 +16,7 @@ Control the **Qoder IDE** desktop app from OpenCLI through Chrome DevTools Proto
 ## Setup
 
 ```bash
-export OPENCLI_CDP_ENDPOINT="http://127.0.0.1:9237"
+export CLOUDL_CDP_ENDPOINT="http://127.0.0.1:9237"
 ```
 
 ## Commands

@@ -1,7 +1,7 @@
 /**
  * Sinafinance stock rank
  */
-import { cli, Strategy } from '@jackwener/opencli/registry';
+import { cli, Strategy } from '@jyjyxt/cloudl/registry';
 cli({
     site: 'sinafinance',
     name: 'stock-rank',

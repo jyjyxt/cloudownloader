@@ -1,5 +1,5 @@
-import { cli, Strategy } from '@jackwener/opencli/registry';
-import { TimeoutError } from '@jackwener/opencli/errors';
+import { cli, Strategy } from '@jyjyxt/cloudl/registry';
+import { TimeoutError } from '@jyjyxt/cloudl/errors';
 import {
   activityScript,
   approveTraePrompts,
@@ -21,7 +21,7 @@ export const askCommand = cli({
   name: 'ask',
   access: 'write',
   description: 'Send a prompt to Trae CN, wait for the assistant result without treating approval cards as final, and return it',
-  example: 'OPENCLI_CDP_ENDPOINT=http://127.0.0.1:39240 OPENCLI_CDP_TARGET=talk cloudl trae-cn ask "请只回复 OK" --timeout 120 -f json',
+  example: 'CLOUDL_CDP_ENDPOINT=http://127.0.0.1:39240 CLOUDL_CDP_TARGET=talk cloudl trae-cn ask "请只回复 OK" --timeout 120 -f json',
   domain: 'localhost',
   strategy: Strategy.UI,
   browser: true,
@@ -89,7 +89,7 @@ export const askCommand = cli({
         throw new TimeoutError(
           'trae-cn ask',
           timeout,
-          `Current status=${latestActivity?.Status ?? ''}, approvalPending=${latestActivity?.ApprovalPending ?? ''}, approvalKind=${latestActivity?.ApprovalKind ?? ''}, approvalButton=${latestActivity?.ApprovalButton ?? ''}. Use "cloudl trae-cn targets -f json" to find the waiting target, then run "OPENCLI_CDP_TARGET=<target> cloudl trae-cn watch --stream true --duration 300" or "cloudl trae-cn approve".`,
+          `Current status=${latestActivity?.Status ?? ''}, approvalPending=${latestActivity?.ApprovalPending ?? ''}, approvalKind=${latestActivity?.ApprovalKind ?? ''}, approvalButton=${latestActivity?.ApprovalButton ?? ''}. Use "cloudl trae-cn targets -f json" to find the waiting target, then run "CLOUDL_CDP_TARGET=<target> cloudl trae-cn watch --stream true --duration 300" or "cloudl trae-cn approve".`,
         );
       }
       return [latest];

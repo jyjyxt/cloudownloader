@@ -7,8 +7,8 @@
  * venue / year / type, DOI, and the open-access landing page when one
  * exists.
  */
-import { cli, Strategy } from '@jackwener/opencli/registry';
-import { EmptyResultError } from '@jackwener/opencli/errors';
+import { cli, Strategy } from '@jyjyxt/cloudl/registry';
+import { EmptyResultError } from '@jyjyxt/cloudl/errors';
 import {
     SEARCH_COLUMNS,
     dblpFetchJson,

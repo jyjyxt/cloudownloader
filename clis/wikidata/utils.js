@@ -4,10 +4,10 @@
 //   • `wbsearchentities` on `www.wikidata.org/w/api.php` for keyword → Q-IDs
 //   • `Special:EntityData/<qid>.json` for the canonical entity dump
 // No API key. Anonymous traffic is rate-limited but generous; we set a polite UA.
-import { ArgumentError, CommandExecutionError, EmptyResultError } from '@jackwener/opencli/errors';
+import { ArgumentError, CommandExecutionError, EmptyResultError } from '@jyjyxt/cloudl/errors';
 
 export const WIKIDATA_BASE = 'https://www.wikidata.org';
-const UA = 'opencli-wikidata-adapter/1.0 (+https://github.com/jyjyxt/cloudownloader; mailto:opencli@example.com)';
+const UA = 'cloudl-wikidata-adapter/1.0 (+https://github.com/jyjyxt/cloudownloader; mailto:cloudl@example.com)';
 
 // Q-ID = an item; P-ID = a property; L-ID = a lexeme. We accept all three so the
 // adapter can be reused for properties / lexemes without a separate command, but

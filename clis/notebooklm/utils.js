@@ -1,4 +1,4 @@
-import { ArgumentError, AuthRequiredError, CliError, CommandExecutionError } from '@jackwener/opencli/errors';
+import { ArgumentError, AuthRequiredError, CliError, CommandExecutionError } from '@jyjyxt/cloudl/errors';
 import { isNotebooklmHost, NOTEBOOKLM_DOMAIN, NOTEBOOKLM_HOME_URL, parseTrustedNotebooklmUrl, } from './shared.js';
 import { callNotebooklmRpc, getNotebooklmPageAuth, unwrapNotebooklmEvaluateResult, } from './rpc.js';
 export { buildNotebooklmRpcBody, extractNotebooklmRpcResult, fetchNotebooklmInPage, getNotebooklmPageAuth, parseNotebooklmChunkedResponse, stripNotebooklmAntiXssi, } from './rpc.js';
@@ -72,7 +72,7 @@ export function parseNotebooklmNotebookTarget(value) {
     return ensureNotebookUuid(normalized);
 }
 export function getNotebooklmAuthuser() {
-    const v = process.env.OPENCLI_NOTEBOOKLM_AUTHUSER;
+    const v = process.env.CLOUDL_NOTEBOOKLM_AUTHUSER;
     return typeof v === 'string' && /^\d+$/.test(v) ? v : '';
 }
 export function requireNotebooklmExecute(value, action) {

@@ -5,10 +5,10 @@
 // (faster). Work IDs are `W` followed by digits (`W2741809807`) and
 // round-trip via `https://api.openalex.org/works/<id>` or
 // `https://openalex.org/W…`.
-import { ArgumentError, CommandExecutionError, EmptyResultError } from '@jackwener/opencli/errors';
+import { ArgumentError, CommandExecutionError, EmptyResultError } from '@jyjyxt/cloudl/errors';
 
 export const OPENALEX_BASE = 'https://api.openalex.org';
-const UA = 'opencli-openalex-adapter (+https://github.com/jyjyxt/cloudownloader)';
+const UA = 'cloudl-openalex-adapter (+https://github.com/jyjyxt/cloudownloader)';
 
 // OpenAlex stable IDs: a single-letter prefix (`W` works, `A` authors, `S`
 // sources, `I` institutions…) + at least 4 digits. We accept just `W` here.

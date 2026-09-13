@@ -2,7 +2,7 @@
 
 > **⚠️ Important**: Browser commands reuse your Chrome login session. You must be logged into the target website in Chrome before running commands.
 
-OpenCLI connects to your browser through a lightweight **Browser Bridge** Chrome Extension + micro-daemon (zero config, auto-start).
+Cloudl connects to your browser through a lightweight **Browser Bridge** Chrome Extension + micro-daemon (zero config, auto-start).
 
 ## Extension Installation
 
@@ -64,9 +64,9 @@ Owned browser sessions use an interactive tab lease with a 10-minute idle timeou
 cloudl browser my-session close
 ```
 
-Use `cloudl browser <session> bind` when you want to attach OpenCLI to a Chrome tab you already opened manually. Bound sessions do not have the owned-session idle close timer; they stay attached until `unbind`, tab close, window close, or daemon restart. For owned sessions, use `--window foreground` to watch OpenCLI work in a visible automation window, or `--window background` to keep that automation window out of the way.
+Use `cloudl browser <session> bind` when you want to attach Cloudl to a Chrome tab you already opened manually. Bound sessions do not have the owned-session idle close timer; they stay attached until `unbind`, tab close, window close, or daemon restart. For owned sessions, use `--window foreground` to watch Cloudl work in a visible automation window, or `--window background` to keep that automation window out of the way.
 
-The `OpenCLI Browser` and `OpenCLI Adapter` tab groups are extension-managed automation containers; avoid putting your own long-lived tabs in them or renaming them.
+The `Cloudl Browser` and `Cloudl Adapter` tab groups are extension-managed automation containers; avoid putting your own long-lived tabs in them or renaming them.
 
 ## How It Works
 
@@ -89,6 +89,6 @@ cloudl daemon stop      # Graceful shutdown
 
 The daemon is persistent — it stays alive until you explicitly stop it (`cloudl daemon stop`) or uninstall the package.
 
-## Running OpenCLI from a remote machine
+## Running Cloudl from a remote machine
 
 If you need to run `cloudl` on a remote server (CI runner, agent host) but keep the browser session on your local machine, see [Remote Orchestration](/guide/remote-orchestration). It walks through the SSH reverse-tunnel pattern so the daemon never leaves localhost.

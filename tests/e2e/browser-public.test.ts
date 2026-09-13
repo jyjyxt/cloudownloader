@@ -9,7 +9,7 @@
 import { describe, it, expect } from 'vitest';
 import { runCli, parseJsonOutput, type CliResult } from './helpers.js';
 
-const BROWSER_UNAVAILABLE_ENV = { OPENCLI_BROWSER_CONNECT_TIMEOUT: '5' };
+const BROWSER_UNAVAILABLE_ENV = { CLOUDL_BROWSER_CONNECT_TIMEOUT: '5' };
 
 async function tryBrowserCommand(args: string[]): Promise<any[] | null> {
   const { stdout, code } = await runCli(args, { timeout: 60_000, env: BROWSER_UNAVAILABLE_ENV });

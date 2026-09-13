@@ -16,8 +16,8 @@
  * Creative knobs (--weirdness / --style-weight) map directly to the
  * `metadata.control_sliders` the web UI exposes.
  */
-import { cli, Strategy } from '@jackwener/opencli/registry';
-import { ArgumentError, CommandExecutionError } from '@jackwener/opencli/errors';
+import { cli, Strategy } from '@jyjyxt/cloudl/registry';
+import { ArgumentError, CommandExecutionError } from '@jyjyxt/cloudl/errors';
 import {
     DEFAULT_SUNO_MODEL,
     SUNO_DOMAIN,

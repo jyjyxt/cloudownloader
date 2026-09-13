@@ -10,7 +10,7 @@ Control the **Doubao AI Desktop App** via Chrome DevTools Protocol (CDP).
    ```
 2. Set the CDP endpoint:
    ```bash
-   export OPENCLI_CDP_ENDPOINT="http://127.0.0.1:9225"
+   export CLOUDL_CDP_ENDPOINT="http://127.0.0.1:9225"
    ```
 
 ## Commands

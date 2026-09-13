@@ -2,14 +2,14 @@ import * as fs from 'node:fs';
 import * as os from 'node:os';
 import * as path from 'node:path';
 import { afterAll, afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
-import { ArgumentError } from '@jackwener/opencli/errors';
-import { getRegistry } from '@jackwener/opencli/registry';
+import { ArgumentError } from '@jyjyxt/cloudl/errors';
+import { getRegistry } from '@jyjyxt/cloudl/registry';
 import * as privatePublish from './_shared/private-publish.js';
 import './story.js';
 import { createPageMock } from '../test-utils.js';
 const tempDirs = [];
 function createTempFile(name, bytes = Buffer.from('story-media')) {
-    const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'opencli-instagram-story-'));
+    const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'cloudl-instagram-story-'));
     tempDirs.push(dir);
     const filePath = path.join(dir, name);
     fs.writeFileSync(filePath, bytes);

@@ -1,4 +1,4 @@
-import { AuthRequiredError, CliError, CommandExecutionError } from '@jackwener/opencli/errors';
+import { AuthRequiredError, CliError, CommandExecutionError } from '@jyjyxt/cloudl/errors';
 import { NOTEBOOKLM_DOMAIN, parseTrustedNotebooklmUrl } from './shared.js';
 
 const NOTEBOOKLM_RPC_PATH = '/_/LabsTailwindUi/data/batchexecute';

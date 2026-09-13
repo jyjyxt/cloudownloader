@@ -1,4 +1,4 @@
-import { ArgumentError, AuthRequiredError, CommandExecutionError } from '@jackwener/opencli/errors';
+import { ArgumentError, AuthRequiredError, CommandExecutionError } from '@jyjyxt/cloudl/errors';
 import { resolveTwitterOperationMetadata, normalizeTwitterGraphqlPayload, unwrapBrowserResult, normalizeTwitterScreenName } from './shared.js';
 import { TWITTER_BEARER_TOKEN } from './utils.js';
 

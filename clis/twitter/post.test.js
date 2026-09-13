@@ -1,7 +1,7 @@
 import { describe, expect, it, vi } from 'vitest';
 import { JSDOM } from 'jsdom';
-import { CommandExecutionError } from '@jackwener/opencli/errors';
-import { getRegistry } from '@jackwener/opencli/registry';
+import { CommandExecutionError } from '@jyjyxt/cloudl/errors';
+import { getRegistry } from '@jyjyxt/cloudl/registry';
 import './post.js';
 
 vi.mock('node:fs', async (importOriginal) => {
@@ -407,7 +407,7 @@ describe('twitter post command', () => {
         const submitScript = page.evaluate.mock.calls[3][0];
         expect(submitScript).not.toContain("[data-testid=\"attachments\"], [data-testid=\"tweetPhoto\"]");
         expect(submitScript).not.toContain("document.querySelectorAll('[data-testid=\"tweetPhoto\"]");
-        expect(submitScript).toContain('data-opencli-before-submit-toast');
+        expect(submitScript).toContain('data-cloudl-before-submit-toast');
     });
 
     it('typed-fails when image upload times out', async () => {

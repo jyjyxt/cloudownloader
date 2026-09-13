@@ -3,12 +3,12 @@
 // Juejin is a Chinese developer community (similar to Dev.to). The public
 // REST API is unauthenticated; all read endpoints are reachable without a
 // browser session. Article URLs round-trip as `https://juejin.cn/post/<id>`.
-import { ArgumentError, CommandExecutionError, EmptyResultError } from '@jackwener/opencli/errors';
+import { ArgumentError, CommandExecutionError, EmptyResultError } from '@jyjyxt/cloudl/errors';
 
 export const JUEJIN_API_BASE = 'https://api.juejin.cn';
 export const JUEJIN_POST_URL = 'https://juejin.cn/post';
 export const JUEJIN_USER_URL = 'https://juejin.cn/user';
-const UA = 'opencli-juejin-adapter (+https://github.com/jyjyxt/cloudownloader)';
+const UA = 'cloudl-juejin-adapter (+https://github.com/jyjyxt/cloudownloader)';
 
 // Juejin content / article IDs are 19-digit numeric strings.
 const JUEJIN_ID = /^\d{16,20}$/;

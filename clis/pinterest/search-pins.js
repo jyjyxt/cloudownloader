@@ -1,6 +1,6 @@
 // Pinterest search-pins — search pins by keyword (BaseSearchResource scope=pins).
-import { cli, Strategy } from '@jackwener/opencli/registry';
-import { ArgumentError, EmptyResultError } from '@jackwener/opencli/errors';
+import { cli, Strategy } from '@jyjyxt/cloudl/registry';
+import { ArgumentError, EmptyResultError } from '@jyjyxt/cloudl/errors';
 import { DEFAULT_PAGE_SIZE, PINTEREST_BASE, collectPins, requireLimit } from './utils.js';
 
 const DEFAULT_LIMIT = 25;

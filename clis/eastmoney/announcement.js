@@ -3,8 +3,8 @@
 //   cloudl eastmoney announcement
 //   cloudl eastmoney announcement --market SHA --limit 30
 
-import { cli, Strategy } from '@jackwener/opencli/registry';
-import { CliError } from '@jackwener/opencli/errors';
+import { cli, Strategy } from '@jyjyxt/cloudl/registry';
+import { CliError } from '@jyjyxt/cloudl/errors';
 
 cli({
   site: 'eastmoney',

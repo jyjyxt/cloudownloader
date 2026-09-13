@@ -9,7 +9,7 @@
  * by a JSDOM-against-frozen-fixture unit test (see gov-policy.test.js).
  */
 
-import { cli, Strategy } from '@jackwener/opencli/registry';
+import { cli, Strategy } from '@jyjyxt/cloudl/registry';
 import { requireNonEmptyQuery } from '../_shared/common.js';
 import {
     classifyExtractorFailure,

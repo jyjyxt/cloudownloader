@@ -1,6 +1,6 @@
 // Pinterest user — a user's public profile stats (UserResource, single row).
-import { cli, Strategy } from '@jackwener/opencli/registry';
-import { EmptyResultError } from '@jackwener/opencli/errors';
+import { cli, Strategy } from '@jyjyxt/cloudl/registry';
+import { EmptyResultError } from '@jyjyxt/cloudl/errors';
 import { PINTEREST_BASE, parseUsername, pinterestResourceFetch } from './utils.js';
 
 cli({

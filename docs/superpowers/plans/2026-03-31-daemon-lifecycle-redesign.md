@@ -444,7 +444,7 @@ async function fetchStatus(): Promise<DaemonStatus | null> {
     const controller = new AbortController();
     const timer = setTimeout(() => controller.abort(), 2000);
     const res = await fetch(`${DAEMON_URL}/status`, {
-      headers: { 'X-OpenCLI': '1' },
+      headers: { 'X-Cloudl': '1' },
       signal: controller.signal,
     });
     clearTimeout(timer);
@@ -461,7 +461,7 @@ async function requestShutdown(): Promise<boolean> {
     const timer = setTimeout(() => controller.abort(), 5000);
     const res = await fetch(`${DAEMON_URL}/shutdown`, {
       method: 'POST',
-      headers: { 'X-OpenCLI': '1' },
+      headers: { 'X-Cloudl': '1' },
       signal: controller.signal,
     });
     clearTimeout(timer);
@@ -738,9 +738,9 @@ private async _ensureDaemon(timeoutSeconds?: number): Promise<void> {
 
   // Daemon running but no extension — wait for extension with progress
   if (await isDaemonRunning()) {
-    if (process.env.OPENCLI_VERBOSE || process.stderr.isTTY) {
+    if (process.env.CLOUDL_VERBOSE || process.stderr.isTTY) {
       process.stderr.write('⏳ Waiting for Chrome extension to connect...\n');
-      process.stderr.write('   Make sure Chrome is open and the OpenCLI extension is enabled.\n');
+      process.stderr.write('   Make sure Chrome is open and the Cloudl extension is enabled.\n');
     }
     const deadline = Date.now() + timeoutMs;
     while (Date.now() < deadline) {
@@ -749,7 +749,7 @@ private async _ensureDaemon(timeoutSeconds?: number): Promise<void> {
     }
     throw new Error(
       'Daemon is running but the Browser Extension is not connected.\n' +
-      'Please install and enable the opencli Browser Bridge extension in Chrome.',
+      'Please install and enable the cloudl Browser Bridge extension in Chrome.',
     );
   }
 
@@ -761,7 +761,7 @@ private async _ensureDaemon(timeoutSeconds?: number): Promise<void> {
   const isTs = fs.existsSync(daemonTs);
   const daemonPath = isTs ? daemonTs : daemonJs;
 
-  if (process.env.OPENCLI_VERBOSE || process.stderr.isTTY) {
+  if (process.env.CLOUDL_VERBOSE || process.stderr.isTTY) {
     process.stderr.write('⏳ Starting daemon...\n');
   }
 
@@ -786,7 +786,7 @@ private async _ensureDaemon(timeoutSeconds?: number): Promise<void> {
   if (await isDaemonRunning()) {
     throw new Error(
       'Daemon is running but the Browser Extension is not connected.\n' +
-      'Please install and enable the opencli Browser Bridge extension in Chrome.',
+      'Please install and enable the cloudl Browser Bridge extension in Chrome.',
     );
   }
 

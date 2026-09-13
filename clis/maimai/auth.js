@@ -1,4 +1,4 @@
-import { AuthRequiredError, CommandExecutionError } from '@jackwener/opencli/errors';
+import { AuthRequiredError, CommandExecutionError } from '@jyjyxt/cloudl/errors';
 import { registerSiteAuthCommands } from '../_shared/site-auth.js';
 
 // Maimai server-renders the logged-in member into an inline script as

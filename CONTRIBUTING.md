@@ -1,13 +1,13 @@
-# Contributing to OpenCLI
+# Contributing to Cloudl
 
-Thanks for your interest in contributing to OpenCLI.
+Thanks for your interest in contributing to Cloudl.
 
 ## Quick Start
 
 ```bash
 # 1. Fork & clone
-git clone git@github.com:<your-username>/opencli.git
-cd opencli
+git clone git@github.com:<your-username>/cloudl.git
+cd cloudl
 
 # 2. Install dependencies
 npm install
@@ -19,7 +19,7 @@ npm run build
 npx tsc --noEmit
 npm test
 
-# 5. Link globally (optional, for testing `opencli` command)
+# 5. Link globally (optional, for testing `cloudl` command)
 npm link
 ```
 
@@ -32,7 +32,7 @@ All adapters use TypeScript. Use the pipeline API for data-fetching commands, an
 Create a file like `clis/<site>/<command>.js`:
 
 ```typescript
-import { cli, Strategy } from '@jackwener/opencli/registry';
+import { cli, Strategy } from '@jyjyxt/cloudl/registry';
 
 cli({
   site: 'mysite',
@@ -67,7 +67,7 @@ See [`hackernews/top.js`](clis/hackernews/top.js) for a real example.
 Create a file like `clis/<site>/<command>.js`:
 
 ```typescript
-import { cli, Strategy } from '@jackwener/opencli/registry';
+import { cli, Strategy } from '@jyjyxt/cloudl/registry';
 
 cli({
   site: 'mysite',
@@ -101,7 +101,7 @@ cli({
 });
 ```
 
-Install the [`opencli-adapter-author` skill](./skills/opencli-adapter-author/SKILL.md) if you need the full adapter workflow — recon → API discovery → field decoding → `cloudl browser verify`.
+Install the [`cloudl-adapter-author` skill](./skills/cloudl-adapter-author/SKILL.md) if you need the full adapter workflow — recon → API discovery → field decoding → `cloudl browser verify`.
 
 ### Validate Your Adapter
 

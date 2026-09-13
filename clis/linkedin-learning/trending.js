@@ -4,8 +4,8 @@
  * returns a small set of carousels (e.g. "Top picks for you"); this
  * command flattens the cards across them into a ranked list.
  */
-import { cli, Strategy } from '@jackwener/opencli/registry';
-import { CommandExecutionError, EmptyResultError } from '@jackwener/opencli/errors';
+import { cli, Strategy } from '@jyjyxt/cloudl/registry';
+import { CommandExecutionError, EmptyResultError } from '@jyjyxt/cloudl/errors';
 import { DOMAIN, MAX_LIMIT, fetchLinkedInLearningApi, parseLimit } from './shared.js';
 
 const MAX_PER_CAROUSEL = 25;

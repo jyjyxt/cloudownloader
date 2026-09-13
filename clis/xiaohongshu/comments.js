@@ -5,8 +5,8 @@
  * Supports both top-level comments and nested replies (楼中楼) via
  * the --with-replies flag.
  */
-import { cli, Strategy } from '@jackwener/opencli/registry';
-import { AuthRequiredError, CommandExecutionError, EmptyResultError } from '@jackwener/opencli/errors';
+import { cli, Strategy } from '@jyjyxt/cloudl/registry';
+import { AuthRequiredError, CommandExecutionError, EmptyResultError } from '@jyjyxt/cloudl/errors';
 import { parseNoteId, buildNoteUrl } from './note-helpers.js';
 import { readXhsDetailPage } from './risk-control.js';
 

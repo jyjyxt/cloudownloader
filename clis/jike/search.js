@@ -1,5 +1,5 @@
-import { ArgumentError, CommandExecutionError, EmptyResultError } from '@jackwener/opencli/errors';
-import { cli, Strategy } from '@jackwener/opencli/registry';
+import { ArgumentError, CommandExecutionError, EmptyResultError } from '@jyjyxt/cloudl/errors';
+import { cli, Strategy } from '@jyjyxt/cloudl/registry';
 import { normalizeJikeLimit, postJikeApi, requireJikeIdentity } from './utils.js';
 
 const API_PATH = '/1.0/search/integrate';

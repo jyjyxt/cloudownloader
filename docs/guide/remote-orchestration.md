@@ -1,6 +1,6 @@
 # Remote Orchestration
 
-Run an OpenCLI command from a remote machine (a CI runner, an agent server, a sandbox) while the **browser session stays on your local laptop**. The remote command sees `localhost:19825` like usual; behind the scenes, traffic is tunneled back to the daemon and Chrome on your machine.
+Run an Cloudl command from a remote machine (a CI runner, an agent server, a sandbox) while the **browser session stays on your local laptop**. The remote command sees `localhost:19825` like usual; behind the scenes, traffic is tunneled back to the daemon and Chrome on your machine.
 
 ## When you need this
 
@@ -24,7 +24,7 @@ Keep Chrome, the extension, and the daemon **all on your local machine**. Use a 
 
 ```
 ┌─ Local ─────────────────────────────────┐    ┌─ Remote ──────────┐
-│  Chrome ↔ Extension ↔ Daemon (127.0.0.1) │ ←┐ │  opencli-cli      │
+│  Chrome ↔ Extension ↔ Daemon (127.0.0.1) │ ←┐ │  cloudl-cli      │
 └──────────────────────────────────────────┘  │ │  (talks to        │
                                               │ │   localhost:19825)│
                        reverse tunnel ────────┘ └───────────────────┘
@@ -82,7 +82,7 @@ If SSH from your local machine to the remote isn't an option (NAT, firewalls), u
    auth.token  = "<long-random-token>"
 
    [[proxies]]
-   name = "opencli-daemon"
+   name = "cloudl-daemon"
    type = "tcp"
    localIP = "127.0.0.1"
    localPort = 19825

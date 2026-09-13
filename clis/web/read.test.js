@@ -5,7 +5,7 @@ const { mockDownloadArticle } = vi.hoisted(() => ({
     mockDownloadArticle: vi.fn(),
 }));
 
-vi.mock('@jackwener/opencli/download/article-download', () => ({
+vi.mock('@jyjyxt/cloudl/download/article-download', () => ({
     downloadArticle: mockDownloadArticle,
 }));
 
@@ -235,7 +235,7 @@ describe('web/read render-aware helpers', () => {
         const result = dom.window.eval(__test__.buildRenderAwareExtractorJs({ frames: 'same-origin' }));
 
         expect(result.diagnostics.includedFrameCount).toBe(1);
-        expect(result.contentHtml).toContain('data-opencli-iframe-source="https://example.com/frame.html"');
+        expect(result.contentHtml).toContain('data-cloudl-iframe-source="https://example.com/frame.html"');
         expect(result.contentHtml).toContain('来自 iframe: https://example.com/frame.html');
         expect(result.contentHtml).toContain('Station A 42');
         expect(result.diagnostics.emptyContainers).toEqual(expect.arrayContaining([
@@ -262,7 +262,7 @@ describe('web/read render-aware helpers', () => {
         const result = dom.window.eval(__test__.buildRenderAwareExtractorJs({ frames: 'same-origin' }));
 
         expect(result.diagnostics.includedFrameCount).toBe(1);
-        expect(result.contentHtml).toContain('data-opencli-iframe-source="https://example.com/outside.html"');
+        expect(result.contentHtml).toContain('data-cloudl-iframe-source="https://example.com/outside.html"');
         expect(result.contentHtml).toContain('Outside Frame');
         expect(result.contentHtml).toContain('Frame data');
     });

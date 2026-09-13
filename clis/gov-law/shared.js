@@ -1,4 +1,4 @@
-import { CliError } from '@jackwener/opencli/errors';
+import { CliError } from '@jyjyxt/cloudl/errors';
 
 export async function navigateViaVueRouter(page, query) {
     await page.goto('https://flk.npc.gov.cn/index.html');

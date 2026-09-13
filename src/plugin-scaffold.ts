@@ -5,7 +5,7 @@
  *
  * Creates:
  *   <name>/
- *     opencli-plugin.json   — manifest with name, version, description
+ *     cloudl-plugin.json   — manifest with name, version, description
  *     package.json          — ESM package with cloudl peer dependency
  *     hello.ts              — sample pipeline command
  *     greet.ts              — sample TS command using func()
@@ -53,24 +53,24 @@ export function createPluginScaffold(name: string, opts: ScaffoldOptions = {}): 
 
   const files: string[] = [];
 
-  // opencli-plugin.json
+  // cloudl-plugin.json
   const manifest = {
     name,
     version: '0.1.0',
-    description: opts.description ?? `An cloudl plugin: ${name}`,
-    opencli: `>=${PKG_VERSION}`,
+    description: opts.description ?? `A cloudl plugin: ${name}`,
+    cloudl: `>=${PKG_VERSION}`,
   };
-  writeFile(targetDir, 'opencli-plugin.json', JSON.stringify(manifest, null, 2) + '\n');
-  files.push('opencli-plugin.json');
+  writeFile(targetDir, 'cloudl-plugin.json', JSON.stringify(manifest, null, 2) + '\n');
+  files.push('cloudl-plugin.json');
 
   // package.json
   const pkg = {
-    name: `opencli-plugin-${name}`,
+    name: `cloudl-plugin-${name}`,
     version: '0.1.0',
     type: 'module',
-    description: opts.description ?? `An cloudl plugin: ${name}`,
+    description: opts.description ?? `A cloudl plugin: ${name}`,
     peerDependencies: {
-      '@jackwener/opencli': `>=${PKG_VERSION}`,
+      '@jyjyxt/cloudl': `>=${PKG_VERSION}`,
     },
   };
   writeFile(targetDir, 'package.json', JSON.stringify(pkg, null, 2) + '\n');
@@ -82,7 +82,7 @@ export function createPluginScaffold(name: string, opts: ScaffoldOptions = {}): 
  * Demonstrates the declarative pipeline API.
  */
 
-import { cli, Strategy } from '@jackwener/opencli/registry';
+import { cli, Strategy } from '@jyjyxt/cloudl/registry';
 
 cli({
   site: '${name}',
@@ -106,7 +106,7 @@ cli({
  * Demonstrates the programmatic cli() registration API.
  */
 
-import { cli, Strategy } from '@jackwener/opencli/registry';
+import { cli, Strategy } from '@jyjyxt/cloudl/registry';
 
 cli({
   site: '${name}',
@@ -125,9 +125,9 @@ cli({
   files.push('greet.ts');
 
   // README.md
-  const readme = `# opencli-plugin-${name}
+  const readme = `# cloudl-plugin-${name}
 
-${opts.description ?? `An cloudl plugin: ${name}`}
+${opts.description ?? `A cloudl plugin: ${name}`}
 
 ## Install
 
@@ -136,7 +136,7 @@ ${opts.description ?? `An cloudl plugin: ${name}`}
 cloudl plugin install file://${targetDir}
 
 # From GitHub (after publishing)
-cloudl plugin install github:<user>/opencli-plugin-${name}
+cloudl plugin install github:<user>/cloudl-plugin-${name}
 \`\`\`
 
 ## Commands

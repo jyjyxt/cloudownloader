@@ -1,8 +1,8 @@
 {
-  "name": "opencli-extension",
+  "name": "cloudl-extension",
   "version": "1.0.24",
   "private": true,
-  "opencli": {
+  "cloudl": {
     "compatRange": ">=1.7.0"
   },
   "type": "module",

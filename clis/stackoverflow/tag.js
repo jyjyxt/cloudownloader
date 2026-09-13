@@ -1,6 +1,6 @@
 // stackoverflow tag — list questions tagged with a given tag (most active first).
-import { cli, Strategy } from '@jackwener/opencli/registry';
-import { ArgumentError } from '@jackwener/opencli/errors';
+import { cli, Strategy } from '@jyjyxt/cloudl/registry';
+import { ArgumentError } from '@jyjyxt/cloudl/errors';
 import {
     seFetch,
     normalizeLimit,

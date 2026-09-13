@@ -7,8 +7,8 @@
 //   cloudl eastmoney quote 600000 --fields all
 //   cloudl eastmoney quote "sh600000,sz000001,00700.HK"
 
-import { cli, Strategy } from '@jackwener/opencli/registry';
-import { CliError } from '@jackwener/opencli/errors';
+import { cli, Strategy } from '@jyjyxt/cloudl/registry';
+import { CliError } from '@jyjyxt/cloudl/errors';
 import { resolveSecid, splitSymbols } from './_secid.js';
 
 const FIELDS = [

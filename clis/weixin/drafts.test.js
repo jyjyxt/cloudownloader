@@ -1,6 +1,6 @@
 import { describe, expect, it, vi } from 'vitest';
-import { AuthRequiredError, EmptyResultError } from '@jackwener/opencli/errors';
-import { getRegistry } from '@jackwener/opencli/registry';
+import { AuthRequiredError, EmptyResultError } from '@jyjyxt/cloudl/errors';
+import { getRegistry } from '@jyjyxt/cloudl/registry';
 import './create-draft.js';
 import './drafts.js';
 import './search.js';
@@ -86,8 +86,8 @@ describe('weixin create-draft command', () => {
             if (script.includes('var imageSelector =') && script.includes('errorText')) return { ok: true, cdnCount: 1 };
             if (script.includes('return { ok: images.length > 0')) return { ok: true, count: 1 };
             if (script.includes('return { count: editor ?')) return { count: 1 };
-            if (script.includes('!!window.__opencliWeixinCoverPatch?.applied')) return true;
-            if (script.includes('window.__opencliWeixinCoverPatch')) return { ok: true, fileId: '110000001', cdnUrl: 'https://mmbiz.qpic.cn/test.jpg' };
+            if (script.includes('!!window.__cloudlWeixinCoverPatch?.applied')) return true;
+            if (script.includes('window.__cloudlWeixinCoverPatch')) return { ok: true, fileId: '110000001', cdnUrl: 'https://mmbiz.qpic.cn/test.jpg' };
             if (script.includes("=== '保存为草稿'")) return { ok: true };
             if (script.includes("document.querySelector('#js_save_success')")) return true;
             if (script.includes('var el = document.querySelector')) return { ok: true };
@@ -118,8 +118,8 @@ describe('weixin create-draft command', () => {
             if (script.includes('var imageSelector =') && script.includes('errorText')) return { ok: true, cdnCount: 1 };
             if (script.includes('return { ok: images.length > 0')) return { ok: true, count: 1 };
             if (script.includes('return { count: editor ?')) return { count: 1 };
-            if (script.includes('!!window.__opencliWeixinCoverPatch?.applied')) return true;
-            if (script.includes('window.__opencliWeixinCoverPatch')) return { ok: true, fileId: '110000002', cdnUrl: 'https://mmbiz.qpic.cn/test-2.jpg' };
+            if (script.includes('!!window.__cloudlWeixinCoverPatch?.applied')) return true;
+            if (script.includes('window.__cloudlWeixinCoverPatch')) return { ok: true, fileId: '110000002', cdnUrl: 'https://mmbiz.qpic.cn/test-2.jpg' };
             if (script.includes("=== '保存为草稿'")) return { ok: true };
             if (script.includes("document.querySelector('#js_save_success')")) return true;
             if (script.includes('var el = document.querySelector')) return { ok: true };

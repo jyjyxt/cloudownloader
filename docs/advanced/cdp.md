@@ -1,13 +1,13 @@
-# Connecting OpenCLI via CDP (Remote/Headless Servers)
+# Connecting Cloudl via CDP (Remote/Headless Servers)
 
-If you cannot use the opencli Browser Bridge extension (e.g., in a remote headless server environment without a UI), OpenCLI provides an alternative: connecting directly to Chrome via **CDP (Chrome DevTools Protocol)**.
+If you cannot use the cloudl Browser Bridge extension (e.g., in a remote headless server environment without a UI), Cloudl provides an alternative: connecting directly to Chrome via **CDP (Chrome DevTools Protocol)**.
 
 Because CDP binds to `localhost` by default for security reasons, accessing it from a remote server requires an additional networking tunnel.
 
 This guide is broken down into three phases:
 1. **Preparation**: Start Chrome with CDP enabled locally.
 2. **Network Tunnels**: Expose that CDP port to your remote server using either **SSH Tunnels** or **Reverse Proxies**.
-3. **Execution**: Run OpenCLI on your server.
+3. **Execution**: Run Cloudl on your server.
 
 ---
 
@@ -77,14 +77,14 @@ This will print a forwarding URL, such as `https://abcdef.ngrok.app`. **Copy thi
 
 ## Phase 3: Execution (Remote Server)
 
-Now switch to your **Remote Server** where OpenCLI is installed. 
+Now switch to your **Remote Server** where Cloudl is installed.
 
-Depending on the network tunnel method you chose in Phase 2, set the `OPENCLI_CDP_ENDPOINT` environment variable and run your commands.
+Depending on the network tunnel method you chose in Phase 2, set the `CLOUDL_CDP_ENDPOINT` environment variable and run your commands.
 
 ### If you used Method A (SSH Tunnel):
 
 ```bash
-export OPENCLI_CDP_ENDPOINT="http://localhost:9222"
+export CLOUDL_CDP_ENDPOINT="http://localhost:9222"
 cloudl doctor                    # Verify connection
 cloudl bilibili hot --limit 5    # Test a command
 ```
@@ -93,11 +93,11 @@ cloudl bilibili hot --limit 5    # Test a command
 
 ```bash
 # Use the URL you copied from ngrok earlier
-export OPENCLI_CDP_ENDPOINT="https://abcdef.ngrok.app"
+export CLOUDL_CDP_ENDPOINT="https://abcdef.ngrok.app"
 cloudl doctor                    # Verify connection
 cloudl bilibili hot --limit 5    # Test a command
 ```
 
-> *Tip: If you provide a standard HTTP/HTTPS CDP endpoint, OpenCLI requests the `/json` target list and picks the most likely inspectable app/page target automatically. If multiple app targets exist, you can further narrow selection with `OPENCLI_CDP_TARGET` (for example `antigravity` or `codex`).*
+> *Tip: If you provide a standard HTTP/HTTPS CDP endpoint, Cloudl requests the `/json` target list and picks the most likely inspectable app/page target automatically. If multiple app targets exist, you can further narrow selection with `CLOUDL_CDP_TARGET` (for example `antigravity` or `codex`).*
 
 If you plan to use this setup frequently, you can persist the environment variable by adding the `export` line to your `~/.bashrc` or `~/.zshrc` on the server.

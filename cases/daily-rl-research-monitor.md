@@ -48,9 +48,9 @@ The LLM compresses ~120 entries into a 10-line shortlist in seconds. I then open
 
 ## Why CLI beats the browser version
 
-- Four pages of clicking and scrolling collapses into four `opencli` calls.
+- Four pages of clicking and scrolling collapses into four `cloudl` calls.
 - The output is structured JSON, so the digest prompt can reason about it deterministically. No copy-paste, no "I missed paper 14".
 - Works inside any agent loop. A scheduled task can run the four commands, push them to an LLM, and message the digest somewhere. No browser kept open.
-- Zero token cost on the OpenCLI side. The only paid step is the digest call at the end.
+- Zero token cost on the Cloudl side. The only paid step is the digest call at the end.
 
 The arxiv adapter's `recent <category>` (added in #1289) is the lever here. Without it I would have to fall back to the arxiv listings page, which means scraping HTML in agent code instead of consuming a structured listing.

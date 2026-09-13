@@ -9,7 +9,7 @@
  * Response shape is identical; we surface every field the endpoint emits as a
  * stable column so callers do not silently lose geo / English / id metadata.
  */
-import { ArgumentError, CliError } from '@jackwener/opencli/errors';
+import { ArgumentError, CliError } from '@jyjyxt/cloudl/errors';
 
 const ENDPOINT = 'https://m.ctrip.com/restapi/soa2/21881/json/gaHotelSearchEngine';
 const MIN_LIMIT = 1;
@@ -61,7 +61,7 @@ export async function fetchSuggest(query, searchType) {
                     LocaleController: 'zh_cn',
                     Currency: 'CNY',
                     PageId: '102001',
-                    clientID: 'opencli-ctrip',
+                    clientID: 'cloudl-ctrip',
                     group: 'ctrip',
                     Frontend: { sessionID: 1, pvid: 1 },
                     HotelExtension: { group: 'CTRIP', WebpSupport: false },

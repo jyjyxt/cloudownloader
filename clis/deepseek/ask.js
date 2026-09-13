@@ -1,5 +1,5 @@
-import { cli, Strategy } from '@jackwener/opencli/registry';
-import { CliError, CommandExecutionError, EXIT_CODES, TimeoutError } from '@jackwener/opencli/errors';
+import { cli, Strategy } from '@jyjyxt/cloudl/registry';
+import { CliError, CommandExecutionError, EXIT_CODES, TimeoutError } from '@jyjyxt/cloudl/errors';
 import {
     DEEPSEEK_DOMAIN, DEEPSEEK_URL, ensureOnDeepSeek, selectModel, setFeature,
     sendMessage, sendWithFile, getBubbleCount, waitForResponse, parseBoolFlag, withRetry,
@@ -78,7 +78,7 @@ export const askCommand = cli({
         // an existing conversation. Skip it when we resumed a prior thread.
         const currentUrl = await page.evaluate('window.location.href') || '';
         const inConversation = currentUrl.includes('/a/chat/s/');
-        const modelExplicit = kwargs.__opencliOptionSources?.model === 'cli';
+        const modelExplicit = kwargs.__cloudlOptionSources?.model === 'cli';
 
         if (inConversation && modelExplicit) {
             throw new CliError(

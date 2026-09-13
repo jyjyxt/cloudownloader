@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from 'vitest';
-import { CliError } from '@jackwener/opencli/errors';
+import { CliError } from '@jyjyxt/cloudl/errors';
 import { __test__ } from './risk-control.js';
 
 const { jitterSeconds, isSecurityBlock, readXhsDetailPage } = __test__;

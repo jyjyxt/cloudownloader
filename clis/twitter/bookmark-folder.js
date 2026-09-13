@@ -1,5 +1,5 @@
-import { cli, Strategy } from '@jackwener/opencli/registry';
-import { ArgumentError, AuthRequiredError, CommandExecutionError } from '@jackwener/opencli/errors';
+import { cli, Strategy } from '@jyjyxt/cloudl/registry';
+import { ArgumentError, AuthRequiredError, CommandExecutionError } from '@jyjyxt/cloudl/errors';
 import { TWITTER_BEARER_TOKEN, applyTopByEngagement } from './utils.js';
 import { extractMedia, resolveTwitterQueryId, describeTwitterApiError } from './shared.js';
 

@@ -3,13 +3,13 @@
  * endpoint. Strategy.COOKIE carries the browser session; the data contract is
  * PAGE_FETCH/internal-unstable and therefore intentionally whitelist-based.
  */
-import { cli, Strategy } from '@jackwener/opencli/registry';
+import { cli, Strategy } from '@jyjyxt/cloudl/registry';
 import {
     AuthRequiredError,
     CommandExecutionError,
     EmptyResultError,
     TimeoutError,
-} from '@jackwener/opencli/errors';
+} from '@jyjyxt/cloudl/errors';
 import { parseBvidOrVideoUrl } from './utils.js';
 
 const MEMBER_ORIGIN = 'https://member.bilibili.com';

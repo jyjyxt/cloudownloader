@@ -1,6 +1,6 @@
 # Browser Agent Runtime
 
-OpenCLI browser should become reliable for unknown SaaS workflows without
+Cloudl browser should become reliable for unknown SaaS workflows without
 becoming a Playwright clone. The target is an agent-native runtime:
 
 - compact observation that gives an agent the right refs in one call,
@@ -10,12 +10,12 @@ becoming a Playwright clone. The target is an agent-native runtime:
   proven.
 
 This design was triggered by a customer report: Mercury expense category
-dropdowns worked with `agent-browser + Claude Code`, but OpenCLI often failed
+dropdowns worked with `agent-browser + Claude Code`, but Cloudl often failed
 to select the category.
 
 ## Source Findings
 
-We compared OpenCLI against `vercel-labs/agent-browser` at source level, not
+We compared Cloudl against `vercel-labs/agent-browser` at source level, not
 only from documentation.
 
 ### What agent-browser Actually Does
@@ -48,7 +48,7 @@ Implication: for Mercury-style custom dropdowns, the minimum necessary fix is
 real CDP input plus better refs/observation. A one-shot `choose` command is a
 later optimization, not the root cause fix.
 
-### Current OpenCLI Gaps
+### Current Cloudl Gaps
 
 - `src/browser/base-page.ts` and `src/browser/target-resolver.ts`: generic
   `browser click` currently resolves an element and calls DOM `el.click()`
@@ -56,17 +56,17 @@ later optimization, not the root cause fix.
   shadcn controls often open/select on `pointerdown`, `mousedown`, `mouseup`,
   or `pointerup`, so `el.click()` can report success while the UI did not
   change.
-- `src/browser/dom-snapshot.ts`: OpenCLI observation is DOM-based. It emits
+- `src/browser/dom-snapshot.ts`: Cloudl observation is DOM-based. It emits
   useful compact refs, but refs do not have AX role/name/nth fallback semantics
   and are weaker across re-rendered portals.
-- OpenCLI already has the right low-level plumbing: `IPage.cdp`,
+- Cloudl already has the right low-level plumbing: `IPage.cdp`,
   `nativeClick`, `nativeType`, `nativeKeyPress`, `setFileInput`, and extension
   CDP passthrough including `Accessibility.getFullAXTree`.
 - Extension CDP passthrough already allows `Input.dispatchMouseEvent`,
   `Accessibility.getFullAXTree`, and `DOM.getBoxModel`. It does not currently
   allow `DOM.describeNode`; AX subtree/iframe work must add that allowlist entry
   before depending on it.
-- OpenCLI exposes fewer general browser primitives than agent-browser:
+- Cloudl exposes fewer general browser primitives than agent-browser:
   `hover`, `focus`, `check`, `uncheck`, `dblclick`, `drag`, `upload`, and
   `wait download` are not a consistent first-class CLI surface.
 - `browser find` is currently CSS-oriented; role/name/label/text locators are
@@ -74,7 +74,7 @@ later optimization, not the root cause fix.
 
 ## Product Position
 
-OpenCLI has two browser jobs:
+Cloudl has two browser jobs:
 
 1. deterministic adapters for known sites,
 2. a reliable browser toolbelt for unknown pages and adapter authors.
@@ -152,7 +152,7 @@ DOM `el.click()` only as fallback.
 
 This does not change `browser select`. Native `<select>` remains a separate
 operation that sets selected options and dispatches `change`, matching both
-OpenCLI's current behavior and agent-browser's `select_option` behavior.
+Cloudl's current behavior and agent-browser's `select_option` behavior.
 
 ### AX Observation And Refs
 
@@ -396,7 +396,7 @@ Track both reliability and call count.
 
 Mercury-like custom select:
 
-- current OpenCLI baseline: often fails because click is DOM `el.click()`;
+- current Cloudl baseline: often fails because click is DOM `el.click()`;
 - Phase 0 target: reliable 4-step snapshot/action loop, with fixture pass rate
   at least `N-1/N` after recording baseline;
 - Phase 3 target, only if warranted: deterministic 1-step `choose` after
@@ -439,11 +439,11 @@ Manual SaaS matrix:
 | GitHub | labels | combobox, portal |
 
 Manual matrix is not a CI gate at first. It is the calibration set for deciding
-whether OpenCLI is approaching agent-browser reliability.
+whether Cloudl is approaching agent-browser reliability.
 
 Execution process:
 
-- Phase 0 completion: @opencli-质量官 runs Mercury, Brex, and Linear when access
+- Phase 0 completion: @cloudl-质量官 runs Mercury, Brex, and Linear when access
   is available.
 - On each form page, collect `cloudl browser state --compare-sources` so the AX
   default decision has DOM-vs-AX metrics: refs, frame sections, approximate
@@ -482,12 +482,12 @@ on the branch and compare failures.
 
 Update after Phase 0:
 
-- `skills/opencli-browser/SKILL.md`: recommend snapshot/click/snapshot/click for
+- `skills/cloudl-browser/SKILL.md`: recommend snapshot/click/snapshot/click for
   custom dropdowns until `choose` exists.
 - Browser command help: explain that `select` is native `<select>` only.
 - Troubleshooting: explain `zero_rect`, `not_visible`, `disabled`,
   `frame_unreachable`, `stale_ref_unresolved`, and `native_backend_unavailable`.
-- Comparison guide: OpenCLI's goal is not "Playwright in CLI form"; it is an
+- Comparison guide: Cloudl's goal is not "Playwright in CLI form"; it is an
   adapter-first CLI with reliable agent browser primitives.
 
 ## Open Questions

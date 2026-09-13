@@ -24,19 +24,19 @@ git pull --ff-only
 npm install
 npm link
 
-# 如果你在用打包发布的 OpenCLI skills，也一起刷新
+# 如果你在用打包发布的 Cloudl skills，也一起刷新
 npx skills add jyjyxt/cloudownloader
 ```
 
 如果你只装了部分 skill，也可以只刷新自己在用的：
 
 ```bash
-npx skills add jyjyxt/cloudownloader --skill opencli-adapter-author
-npx skills add jyjyxt/cloudownloader --skill opencli-autofix
-npx skills add jyjyxt/cloudownloader --skill opencli-browser
-npx skills add jyjyxt/cloudownloader --skill opencli-browser-sitemap
-npx skills add jyjyxt/cloudownloader --skill opencli-sitemap-author
-npx skills add jyjyxt/cloudownloader --skill opencli-usage
+npx skills add jyjyxt/cloudownloader --skill cloudl-adapter-author
+npx skills add jyjyxt/cloudownloader --skill cloudl-autofix
+npx skills add jyjyxt/cloudownloader --skill cloudl-browser
+npx skills add jyjyxt/cloudownloader --skill cloudl-browser-sitemap
+npx skills add jyjyxt/cloudownloader --skill cloudl-sitemap-author
+npx skills add jyjyxt/cloudownloader --skill cloudl-usage
 npx skills add jyjyxt/cloudownloader --skill smart-search
 ```
 

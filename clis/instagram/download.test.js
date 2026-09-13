@@ -1,15 +1,15 @@
 import * as os from 'node:os';
 import * as path from 'node:path';
 import { beforeAll, beforeEach, describe, expect, it, vi } from 'vitest';
-import { getRegistry } from '@jackwener/opencli/registry';
-import { ArgumentError, AuthRequiredError, CommandExecutionError } from '@jackwener/opencli/errors';
+import { getRegistry } from '@jyjyxt/cloudl/registry';
+import { ArgumentError, AuthRequiredError, CommandExecutionError } from '@jyjyxt/cloudl/errors';
 const { mockHttpDownload, mockMkdirSync, logSpy } = vi.hoisted(() => ({
     mockHttpDownload: vi.fn(),
     mockMkdirSync: vi.fn(),
     logSpy: vi.spyOn(console, 'log').mockImplementation(() => undefined),
 }));
-vi.mock('@jackwener/opencli/download', async () => {
-    const actual = await vi.importActual('@jackwener/opencli/download');
+vi.mock('@jyjyxt/cloudl/download', async () => {
+    const actual = await vi.importActual('@jyjyxt/cloudl/download');
     return { ...actual, httpDownload: mockHttpDownload };
 });
 vi.mock('node:fs', () => ({

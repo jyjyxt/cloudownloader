@@ -50,7 +50,7 @@ async function renderMarkdown(
   url: string,
   options: { cleanSelectors?: string[] } = {},
 ): Promise<string> {
-  const tempDir = await fs.promises.mkdtemp(path.join(os.tmpdir(), 'opencli-article-e2e-'));
+  const tempDir = await fs.promises.mkdtemp(path.join(os.tmpdir(), 'cloudl-article-e2e-'));
   tempDirs.push(tempDir);
   const result = await downloadArticle({
     title: article.title || 'untitled',

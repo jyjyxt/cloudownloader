@@ -42,7 +42,7 @@ cloudl dribbble whoami -f json
 
 `shot-detail` accepts either a numeric shot id or a full `dribbble.com/shots/...` URL. Designer arguments are Dribbble usernames or profile slugs. List limits must be positive integers and cannot exceed 30.
 
-For `portfolio --type likes`, `designer` identifies each shot's author, not the profile that liked it. It remains empty when Dribbble omits the author label; OpenCLI does not guess ownership.
+For `portfolio --type likes`, `designer` identifies each shot's author, not the profile that liked it. It remains empty when Dribbble omits the author label; Cloudl does not guess ownership.
 
 ## Output
 

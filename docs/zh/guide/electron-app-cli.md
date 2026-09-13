@@ -1,6 +1,6 @@
 # 给新 Electron 应用生成 CLI
 
-这篇文档是把一个新的 Electron 桌面应用接入 OpenCLI 的**中文入口指南**。
+这篇文档是把一个新的 Electron 桌面应用接入 Cloudl 的**中文入口指南**。
 
 如果你需要更完整的背景和标准流程，继续看：
 - [Chrome DevTools Protocol（中文）](/zh/advanced/cdp)
@@ -34,10 +34,10 @@ ls /Applications/AppName.app/Contents/Frameworks/Electron\ Framework.framework
 /Applications/AppName.app/Contents/MacOS/AppName --remote-debugging-port=<unique-port>
 ```
 
-然后把 OpenCLI 指到这个端口：
+然后把 Cloudl 指到这个端口：
 
 ```bash
-export OPENCLI_CDP_ENDPOINT="http://127.0.0.1:<unique-port>"
+export CLOUDL_CDP_ENDPOINT="http://127.0.0.1:<unique-port>"
 ```
 
 ### 3. 先做 5 个基础命令

@@ -1,4 +1,4 @@
-import { AuthRequiredError, CommandExecutionError, EmptyResultError } from '@jackwener/opencli/errors';
+import { AuthRequiredError, CommandExecutionError, EmptyResultError } from '@jyjyxt/cloudl/errors';
 import { normalizeCount, normalizeUnixSeconds, stripHtml } from './answer-normalize.js';
 import { unwrapEvaluateResult } from './paginate.js';
 

@@ -26,8 +26,8 @@
 //     live IIFE embeds the same function via `${fn.toString()}` (mirrors
 //     dianping #1313 pattern).
 
-import { cli, Strategy } from '@jackwener/opencli/registry';
-import { ArgumentError, CommandExecutionError, EmptyResultError } from '@jackwener/opencli/errors';
+import { cli, Strategy } from '@jyjyxt/cloudl/registry';
+import { ArgumentError, CommandExecutionError, EmptyResultError } from '@jyjyxt/cloudl/errors';
 
 export const HUPU_HOST = 'https://bbs.hupu.com';
 export const HOT_LIMIT_DEFAULT = 20;

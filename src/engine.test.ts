@@ -24,11 +24,11 @@ async function captureStderr<T>(fn: () => Promise<T>): Promise<{ result: T; writ
 describe('discoverClis', () => {
   it('handles non-existent directories gracefully', async () => {
     // Should not throw for missing directories
-    await expect(discoverClis(path.join(os.tmpdir(), 'nonexistent-opencli-test-dir'))).resolves.not.toThrow();
+    await expect(discoverClis(path.join(os.tmpdir(), 'nonexistent-cloudl-test-dir'))).resolves.not.toThrow();
   });
 
   it('imports only CLI command modules during filesystem discovery', async () => {
-    const tempRoot = await fs.promises.mkdtemp(path.join(os.tmpdir(), 'opencli-discovery-'));
+    const tempRoot = await fs.promises.mkdtemp(path.join(os.tmpdir(), 'cloudl-discovery-'));
     const siteDir = path.join(tempRoot, 'temp-site');
     const helperPath = path.join(siteDir, 'helper.js');
     const commandPath = path.join(siteDir, 'hello.js');
@@ -36,7 +36,7 @@ describe('discoverClis', () => {
     try {
       await fs.promises.mkdir(siteDir, { recursive: true });
       await fs.promises.writeFile(helperPath, `
-globalThis.__opencli_helper_loaded__ = true;
+globalThis.__cloudl_helper_loaded__ = true;
 export const helper = true;
 `);
       await fs.promises.writeFile(commandPath, `
@@ -51,19 +51,19 @@ cli({
 });
 `);
 
-      delete (globalThis as { __opencli_helper_loaded__?: unknown }).__opencli_helper_loaded__;
+      delete (globalThis as { __cloudl_helper_loaded__?: unknown }).__cloudl_helper_loaded__;
       await discoverClis(tempRoot);
 
-      expect((globalThis as { __opencli_helper_loaded__?: unknown }).__opencli_helper_loaded__).toBeUndefined();
+      expect((globalThis as { __cloudl_helper_loaded__?: unknown }).__cloudl_helper_loaded__).toBeUndefined();
       expect(getRegistry().get('temp-site/hello')).toBeDefined();
     } finally {
-      delete (globalThis as { __opencli_helper_loaded__?: unknown }).__opencli_helper_loaded__;
+      delete (globalThis as { __cloudl_helper_loaded__?: unknown }).__cloudl_helper_loaded__;
       await fs.promises.rm(tempRoot, { recursive: true, force: true });
     }
   });
 
   it('warns once per site directory that holds skipped yaml adapters', async () => {
-    const tempRoot = await fs.promises.mkdtemp(path.join(os.tmpdir(), 'opencli-yaml-skip-'));
+    const tempRoot = await fs.promises.mkdtemp(path.join(os.tmpdir(), 'cloudl-yaml-skip-'));
     const siteDir = path.join(tempRoot, 'yaml-site');
 
     try {
@@ -85,7 +85,7 @@ cli({
   });
 
   it('stays silent for a yaml adapter that already has a .js replacement beside it', async () => {
-    const tempRoot = await fs.promises.mkdtemp(path.join(os.tmpdir(), 'opencli-yaml-migrated-'));
+    const tempRoot = await fs.promises.mkdtemp(path.join(os.tmpdir(), 'cloudl-yaml-migrated-'));
     const siteDir = path.join(tempRoot, 'migrated-site');
 
     try {
@@ -117,7 +117,7 @@ cli({
   });
 
   it('warns when the same-basename js replacement is not a CLI module', async () => {
-    const tempRoot = await fs.promises.mkdtemp(path.join(os.tmpdir(), 'opencli-yaml-bad-js-'));
+    const tempRoot = await fs.promises.mkdtemp(path.join(os.tmpdir(), 'cloudl-yaml-bad-js-'));
     const siteDir = path.join(tempRoot, 'bad-replacement-site');
 
     try {
@@ -136,7 +136,7 @@ cli({
   });
 
   it('warns when the same-basename js replacement is not loadable', async () => {
-    const tempRoot = await fs.promises.mkdtemp(path.join(os.tmpdir(), 'opencli-yaml-broken-js-'));
+    const tempRoot = await fs.promises.mkdtemp(path.join(os.tmpdir(), 'cloudl-yaml-broken-js-'));
     const siteDir = path.join(tempRoot, 'broken-replacement-site');
 
     try {
@@ -158,7 +158,7 @@ cli({
   });
 
   it('warns during valid-manifest fast path when yaml adapters are skipped', async () => {
-    const tempBuildRoot = await fs.promises.mkdtemp(path.join(os.tmpdir(), 'opencli-yaml-manifest-'));
+    const tempBuildRoot = await fs.promises.mkdtemp(path.join(os.tmpdir(), 'cloudl-yaml-manifest-'));
     const distDir = path.join(tempBuildRoot, 'dist');
     const siteDir = path.join(distDir, 'manifest-site');
     const manifestPath = path.join(tempBuildRoot, 'cli-manifest.json');
@@ -180,7 +180,7 @@ cli({
   });
 
   it('trusts a same-basename js replacement only when it is present in the valid manifest', async () => {
-    const tempBuildRoot = await fs.promises.mkdtemp(path.join(os.tmpdir(), 'opencli-yaml-manifest-replacement-'));
+    const tempBuildRoot = await fs.promises.mkdtemp(path.join(os.tmpdir(), 'cloudl-yaml-manifest-replacement-'));
     const distDir = path.join(tempBuildRoot, 'dist');
     const siteDir = path.join(distDir, 'manifest-replacement-site');
     const manifestPath = path.join(tempBuildRoot, 'cli-manifest.json');
@@ -212,7 +212,7 @@ cli({
   });
 
   it('does not repeat the same yaml warning across repeated discovery calls', async () => {
-    const tempRoot = await fs.promises.mkdtemp(path.join(os.tmpdir(), 'opencli-yaml-repeat-'));
+    const tempRoot = await fs.promises.mkdtemp(path.join(os.tmpdir(), 'cloudl-yaml-repeat-'));
     const siteDir = path.join(tempRoot, 'repeat-site');
 
     try {
@@ -231,7 +231,7 @@ cli({
   });
 
   it('still warns for a newly added skipped yaml adapter after an earlier discovery call', async () => {
-    const tempRoot = await fs.promises.mkdtemp(path.join(os.tmpdir(), 'opencli-yaml-repeat-new-'));
+    const tempRoot = await fs.promises.mkdtemp(path.join(os.tmpdir(), 'cloudl-yaml-repeat-new-'));
     const siteDir = path.join(tempRoot, 'repeat-new-site');
 
     try {
@@ -253,7 +253,7 @@ cli({
   });
 
   it('stays silent for a site directory with no yaml adapters', async () => {
-    const tempRoot = await fs.promises.mkdtemp(path.join(os.tmpdir(), 'opencli-yaml-none-'));
+    const tempRoot = await fs.promises.mkdtemp(path.join(os.tmpdir(), 'cloudl-yaml-none-'));
     const siteDir = path.join(tempRoot, 'js-only-site');
 
     try {
@@ -269,7 +269,7 @@ cli({
   });
 
   it('falls back to filesystem discovery when the manifest is invalid', async () => {
-    const tempBuildRoot = await fs.promises.mkdtemp(path.join(os.tmpdir(), 'opencli-manifest-fallback-'));
+    const tempBuildRoot = await fs.promises.mkdtemp(path.join(os.tmpdir(), 'cloudl-manifest-fallback-'));
     const distDir = path.join(tempBuildRoot, 'dist');
     const siteDir = path.join(distDir, 'fallback-site');
     const commandPath = path.join(siteDir, 'hello.js');
@@ -299,18 +299,18 @@ cli({
   });
 
   it('loads user CLI modules via package exports symlink', async () => {
-    const tempOpencliRoot = await fs.promises.mkdtemp(path.join(os.tmpdir(), 'opencli-user-clis-'));
-    const userClisDir = path.join(tempOpencliRoot, 'clis');
+    const tempCloudlRoot = await fs.promises.mkdtemp(path.join(os.tmpdir(), 'cloudl-user-clis-'));
+    const userClisDir = path.join(tempCloudlRoot, 'clis');
     const siteDir = path.join(userClisDir, 'legacy-site');
     const commandPath = path.join(siteDir, 'hello.js');
 
     try {
-      await ensureUserCliCompatShims(tempOpencliRoot);
+      await ensureUserCliCompatShims(tempCloudlRoot);
       await fs.promises.mkdir(siteDir, { recursive: true });
       await fs.promises.writeFile(commandPath, `
-import { cli, Strategy } from '@jackwener/opencli/registry';
-import { CommandExecutionError } from '@jackwener/opencli/errors';
-import { htmlToMarkdown } from '@jackwener/opencli/utils';
+import { cli, Strategy } from '@jyjyxt/cloudl/registry';
+import { CommandExecutionError } from '@jyjyxt/cloudl/errors';
+import { htmlToMarkdown } from '@jyjyxt/cloudl/utils';
 
 cli({
   site: 'legacy-site',
@@ -328,14 +328,14 @@ cli({
       expect(cmd).toBeDefined();
       await expect(executeCommand(cmd!, {})).resolves.toEqual([{ ok: true, errorName: 'CommandExecutionError', markdown: 'hello' }]);
     } finally {
-      await fs.promises.rm(tempOpencliRoot, { recursive: true, force: true });
+      await fs.promises.rm(tempCloudlRoot, { recursive: true, force: true });
     }
   });
 });
 
 describe('ensureUserAdapters', () => {
   it('creates user clis directory without triggering full copy', async () => {
-    const tempDir = await fs.promises.mkdtemp(path.join(os.tmpdir(), 'opencli-ensure-'));
+    const tempDir = await fs.promises.mkdtemp(path.join(os.tmpdir(), 'cloudl-ensure-'));
     const clisDir = path.join(tempDir, 'clis');
     try {
       // Patch USER_CLIS_DIR is not easy, so we test the function behavior indirectly:
@@ -351,7 +351,7 @@ describe('ensureUserAdapters', () => {
   });
 
   it('discoverClis handles empty user directory gracefully', async () => {
-    const emptyDir = await fs.promises.mkdtemp(path.join(os.tmpdir(), 'opencli-empty-'));
+    const emptyDir = await fs.promises.mkdtemp(path.join(os.tmpdir(), 'cloudl-empty-'));
     try {
       // Should not throw for an empty directory (no adapters to discover)
       await expect(discoverClis(emptyDir)).resolves.not.toThrow();
@@ -407,7 +407,7 @@ version: 1
   });
 
   it('handles non-existent plugins directory gracefully', async () => {
-    // discoverPlugins should not throw if ~/.opencli/plugins/ does not exist
+    // discoverPlugins should not throw if ~/.cloudl/plugins/ does not exist
     await expect(discoverPlugins()).resolves.not.toThrow();
   });
 

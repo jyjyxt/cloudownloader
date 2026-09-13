@@ -6,8 +6,8 @@
 //
 // CoinGecko sorts the response by 24h volume desc, so `rank` mirrors the
 // listing order with no client-side reshuffling.
-import { cli, Strategy } from '@jackwener/opencli/registry';
-import { ArgumentError, CommandExecutionError, EmptyResultError } from '@jackwener/opencli/errors';
+import { cli, Strategy } from '@jyjyxt/cloudl/registry';
+import { ArgumentError, CommandExecutionError, EmptyResultError } from '@jyjyxt/cloudl/errors';
 
 const ENDPOINT = 'https://api.coingecko.com/api/v3/derivatives';
 

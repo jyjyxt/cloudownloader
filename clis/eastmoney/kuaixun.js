@@ -3,8 +3,8 @@
 //   cloudl eastmoney kuaixun
 //   cloudl eastmoney kuaixun --column 102 --limit 30
 
-import { cli, Strategy } from '@jackwener/opencli/registry';
-import { CliError } from '@jackwener/opencli/errors';
+import { cli, Strategy } from '@jyjyxt/cloudl/registry';
+import { CliError } from '@jyjyxt/cloudl/errors';
 
 // Known columns on eastmoney 7x24:
 //   102 = 重要 (default)

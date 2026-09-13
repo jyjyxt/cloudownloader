@@ -1,8 +1,8 @@
 /**
  * V2EX Notifications adapter.
  */
-import { CommandExecutionError } from '@jackwener/opencli/errors';
-import { cli, Strategy } from '@jackwener/opencli/registry';
+import { CommandExecutionError } from '@jyjyxt/cloudl/errors';
+import { cli, Strategy } from '@jyjyxt/cloudl/registry';
 cli({
     site: 'v2ex',
     name: 'notifications',
@@ -18,8 +18,8 @@ cli({
     func: async (page, kwargs) => {
         if (!page)
             throw new CommandExecutionError('Browser page required');
-        if (process.env.OPENCLI_VERBOSE) {
-            console.error('[opencli:v2ex] Navigating to /notifications');
+        if (process.env.CLOUDL_VERBOSE) {
+            console.error('[cloudl:v2ex] Navigating to /notifications');
         }
         await page.goto('https://www.v2ex.com/notifications');
         await new Promise(r => setTimeout(r, 1500)); // waitForLoadState doesn't always work robustly

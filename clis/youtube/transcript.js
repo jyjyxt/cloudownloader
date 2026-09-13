@@ -9,10 +9,10 @@
  *   --mode grouped (default): sentences merged, speaker detection, chapters
  *   --mode raw: every caption segment as-is with precise timestamps
  */
-import { cli, Strategy } from '@jackwener/opencli/registry';
+import { cli, Strategy } from '@jyjyxt/cloudl/registry';
 import { extractJsonAssignmentFromHtml, parseVideoId, prepareYoutubeApiPage } from './utils.js';
 import { groupTranscriptSegments, formatGroupedTranscript, } from './transcript-group.js';
-import { CommandExecutionError, EmptyResultError } from '@jackwener/opencli/errors';
+import { CommandExecutionError, EmptyResultError } from '@jyjyxt/cloudl/errors';
 
 function unwrapBrowserResult(value) {
     if (value && typeof value === 'object' && 'session' in value && 'data' in value) {
@@ -323,13 +323,13 @@ cli({
           if (OriginalXHR) {
             globalThis.XMLHttpRequest = class TimedtextCaptureXHR extends OriginalXHR {
               open(method, url, ...rest) {
-                this.__opencliTimedtextUrl = typeof url === 'string' ? url : '';
+                this.__cloudlTimedtextUrl = typeof url === 'string' ? url : '';
                 return super.open(method, url, ...rest);
               }
               send(...args) {
                 this.addEventListener('load', () => {
                   try {
-                    const url = this.__opencliTimedtextUrl || this.responseURL || '';
+                    const url = this.__cloudlTimedtextUrl || this.responseURL || '';
                     if (!isJson3TimedtextUrl(url, track)) return;
                     if (this.status < 200 || this.status >= 300) return;
                     const text = typeof this.responseText === 'string' ? this.responseText : '';

@@ -3,17 +3,17 @@ import * as os from 'node:os';
 import * as path from 'node:path';
 import { describe, expect, it } from 'vitest';
 import { ArgumentError } from './errors.js';
-import { listOpenCliSkills, readOpenCliSkill } from './skills.js';
+import { listCloudlSkills, readCloudlSkill } from './skills.js';
 
 function makePackageRoot(): string {
-  const root = fs.mkdtempSync(path.join(os.tmpdir(), 'opencli-skills-'));
-  fs.mkdirSync(path.join(root, 'skills', 'opencli-browser', 'references'), { recursive: true });
-  fs.mkdirSync(path.join(root, 'skills', 'opencli-autofix'), { recursive: true });
+  const root = fs.mkdtempSync(path.join(os.tmpdir(), 'cloudl-skills-'));
+  fs.mkdirSync(path.join(root, 'skills', 'cloudl-browser', 'references'), { recursive: true });
+  fs.mkdirSync(path.join(root, 'skills', 'cloudl-autofix'), { recursive: true });
   fs.mkdirSync(path.join(root, 'skills', 'smart-search'), { recursive: true });
-  fs.writeFileSync(path.join(root, 'package.json'), '{"name":"@jackwener/opencli"}\n');
-  fs.writeFileSync(path.join(root, 'skills', 'opencli-browser', 'SKILL.md'), [
+  fs.writeFileSync(path.join(root, 'package.json'), '{"name":"@jyjyxt/cloudl"}\n');
+  fs.writeFileSync(path.join(root, 'skills', 'cloudl-browser', 'SKILL.md'), [
     '---',
-    'name: opencli-browser',
+    'name: cloudl-browser',
     'description: Browser control skill',
     'version: 1.2.3',
     '---',
@@ -23,10 +23,10 @@ function makePackageRoot(): string {
     'Body.',
     '',
   ].join('\n'));
-  fs.writeFileSync(path.join(root, 'skills', 'opencli-browser', 'references', 'targets.md'), '# Targets\n');
-  fs.writeFileSync(path.join(root, 'skills', 'opencli-autofix', 'SKILL.md'), [
+  fs.writeFileSync(path.join(root, 'skills', 'cloudl-browser', 'references', 'targets.md'), '# Targets\n');
+  fs.writeFileSync(path.join(root, 'skills', 'cloudl-autofix', 'SKILL.md'), [
     '---',
-    'name: opencli-autofix',
+    'name: cloudl-autofix',
     'description: Fix adapters: keep scope narrow',
     '---',
     '',
@@ -42,37 +42,37 @@ function makePackageRoot(): string {
 }
 
 describe('cloudl skills content', () => {
-  it('lists only opencli-prefixed skills', () => {
+  it('lists only cloudl-prefixed skills', () => {
     const root = makePackageRoot();
 
-    expect(listOpenCliSkills(root).map((skill) => skill.name)).toEqual([
-      'opencli-autofix',
-      'opencli-browser',
+    expect(listCloudlSkills(root).map((skill) => skill.name)).toEqual([
+      'cloudl-autofix',
+      'cloudl-browser',
     ]);
-    expect(listOpenCliSkills(root).find((skill) => skill.name === 'opencli-autofix')?.description)
+    expect(listCloudlSkills(root).find((skill) => skill.name === 'cloudl-autofix')?.description)
       .toBe('Fix adapters: keep scope narrow');
   });
 
   it('reads a skill SKILL.md and reference file', () => {
     const root = makePackageRoot();
 
-    expect(readOpenCliSkill('opencli-browser', '', root)).toMatchObject({
-      skill: 'opencli-browser',
+    expect(readCloudlSkill('cloudl-browser', '', root)).toMatchObject({
+      skill: 'cloudl-browser',
       path: 'SKILL.md',
     });
-    expect(readOpenCliSkill('opencli-browser/references/targets.md', '', root)).toMatchObject({
-      skill: 'opencli-browser',
+    expect(readCloudlSkill('cloudl-browser/references/targets.md', '', root)).toMatchObject({
+      skill: 'cloudl-browser',
       path: 'references/targets.md',
       content: '# Targets\n',
     });
-    expect(readOpenCliSkill('opencli-browser', 'references/targets.md', root).content).toBe('# Targets\n');
+    expect(readCloudlSkill('cloudl-browser', 'references/targets.md', root).content).toBe('# Targets\n');
   });
 
-  it('rejects non-opencli skills and path traversal', () => {
+  it('rejects non-cloudl skills and path traversal', () => {
     const root = makePackageRoot();
 
-    expect(() => readOpenCliSkill('smart-search', '', root)).toThrow(ArgumentError);
-    expect(() => readOpenCliSkill('opencli-browser/../smart-search/SKILL.md', '', root)).toThrow(ArgumentError);
-    expect(() => readOpenCliSkill('opencli-browser', '../../package.json', root)).toThrow(ArgumentError);
+    expect(() => readCloudlSkill('smart-search', '', root)).toThrow(ArgumentError);
+    expect(() => readCloudlSkill('cloudl-browser/../smart-search/SKILL.md', '', root)).toThrow(ArgumentError);
+    expect(() => readCloudlSkill('cloudl-browser', '../../package.json', root)).toThrow(ArgumentError);
   });
 });

@@ -271,7 +271,7 @@ describe('expandFixtureArgs', () => {
 
 describe('parseSeedArgs', () => {
     it('treats plain text as one positional arg', () => {
-        expect(parseSeedArgs('opencli-verify')).toEqual(['opencli-verify']);
+        expect(parseSeedArgs('cloudl-verify')).toEqual(['cloudl-verify']);
     });
 
     it('accepts JSON array seed args', () => {

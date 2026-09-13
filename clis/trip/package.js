@@ -10,8 +10,8 @@
  * `fetchPackageSearch` in utils). Per-person package fares only; the return leg
  * rides on the hotel checkout date.
  */
-import { ArgumentError, CommandExecutionError, EmptyResultError } from '@jackwener/opencli/errors';
-import { cli, Strategy } from '@jackwener/opencli/registry';
+import { ArgumentError, CommandExecutionError, EmptyResultError } from '@jyjyxt/cloudl/errors';
+import { cli, Strategy } from '@jyjyxt/cloudl/registry';
 import { fetchPackageSearch, mapPackageRow, parseIsoDate, parseKeyword, parseListLimit, resolvePackageCity } from './utils.js';
 
 function parseAdults(raw) {

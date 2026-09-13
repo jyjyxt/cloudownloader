@@ -1,4 +1,4 @@
-import { cli, Strategy } from '@jackwener/opencli/registry';
+import { cli, Strategy } from '@jyjyxt/cloudl/registry';
 import { assertAuthenticatedState, buildDetailUrl, buildProvenance, cleanText, extractOfferId, gotoAndReadState, uniqueMediaSources, } from './shared.js';
 // 1688 商品详情区位于自定义元素 v-detail-e 的 shadow DOM 内（懒渲染），
 // 普通 CSS selector 无法穿透 shadowRoot，需沿 shadow host 链判断归属。

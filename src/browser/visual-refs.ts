@@ -2,11 +2,11 @@
  * Visual ref overlay for annotated screenshots.
  *
  * The overlay is intentionally DOM-side and temporary. It reuses the same
- * `data-opencli-ref` attributes produced by the DOM snapshot path so the
+ * `data-cloudl-ref` attributes produced by the DOM snapshot path so the
  * screenshot labels map back to normal `browser click <ref>` targets.
  */
 
-const OVERLAY_ID = '__opencli_visual_ref_overlay';
+const OVERLAY_ID = '__cloudl_visual_ref_overlay';
 
 export function installVisualRefOverlayJs(opts: { maxRefs?: number } = {}): string {
   const maxRefs = Math.max(1, Math.min(opts.maxRefs ?? 120, 500));
@@ -27,9 +27,9 @@ export function installVisualRefOverlayJs(opts: { maxRefs?: number } = {}): stri
         fontFamily: 'ui-monospace, SFMono-Regular, Menlo, Consolas, monospace',
       });
 
-      const refs = Array.from(document.querySelectorAll('[data-opencli-ref]'))
+      const refs = Array.from(document.querySelectorAll('[data-cloudl-ref]'))
         .map((el) => {
-          const rawRef = el.getAttribute('data-opencli-ref') || '';
+          const rawRef = el.getAttribute('data-cloudl-ref') || '';
           const ref = Number(rawRef);
           const rect = el.getBoundingClientRect();
           const visible = Number.isFinite(ref)

@@ -4,10 +4,10 @@
 // pulls are throttled but search / metadata reads are friendly enough for
 // ad-hoc CLI use. Image names follow `[<owner>/]<name>` with `library` as the
 // implicit owner for Docker official images.
-import { ArgumentError, CommandExecutionError, EmptyResultError } from '@jackwener/opencli/errors';
+import { ArgumentError, CommandExecutionError, EmptyResultError } from '@jyjyxt/cloudl/errors';
 
 export const HUB_BASE = 'https://hub.docker.com/v2';
-const UA = 'opencli-dockerhub-adapter (+https://github.com/jyjyxt/cloudownloader)';
+const UA = 'cloudl-dockerhub-adapter (+https://github.com/jyjyxt/cloudownloader)';
 
 // Docker Hub repository slugs are 2-255 chars, lowercase alphanumerics + `_.-`,
 // optionally prefixed with a Docker Hub user/org of the same charset.

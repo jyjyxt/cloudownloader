@@ -39,7 +39,7 @@ describe('media downloads', { retry: process.platform === 'win32' ? 2 : 0 }, () 
       res.statusCode = 200;
       res.end('image');
     });
-    const parentDir = await fs.promises.mkdtemp(path.join(os.tmpdir(), 'opencli-media-parent-'));
+    const parentDir = await fs.promises.mkdtemp(path.join(os.tmpdir(), 'cloudl-media-parent-'));
     tempDirs.push(parentDir);
     const outputDir = path.join(parentDir, 'downloads');
 
@@ -62,7 +62,7 @@ describe('media downloads', { retry: process.platform === 'win32' ? 2 : 0 }, () 
       res.statusCode = 200;
       res.end('image');
     });
-    const parentDir = await fs.promises.mkdtemp(path.join(os.tmpdir(), 'opencli-media-parent-'));
+    const parentDir = await fs.promises.mkdtemp(path.join(os.tmpdir(), 'cloudl-media-parent-'));
     tempDirs.push(parentDir);
     const outputDir = path.join(parentDir, 'downloads');
 
@@ -95,7 +95,7 @@ describe('media downloads', { retry: process.platform === 'win32' ? 2 : 0 }, () 
       res.statusCode = 200;
       res.end('image');
     });
-    const parentDir = await fs.promises.mkdtemp(path.join(os.tmpdir(), 'opencli-media-parent-'));
+    const parentDir = await fs.promises.mkdtemp(path.join(os.tmpdir(), 'cloudl-media-parent-'));
     tempDirs.push(parentDir);
     const outputDir = path.join(parentDir, 'downloads');
 

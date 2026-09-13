@@ -3,8 +3,8 @@
  * breakdown, captcha readiness. Lets agents pre-flight before spending
  * generate credits.
  */
-import { cli, Strategy } from '@jackwener/opencli/registry';
-import { AuthRequiredError, CommandExecutionError } from '@jackwener/opencli/errors';
+import { cli, Strategy } from '@jyjyxt/cloudl/registry';
+import { AuthRequiredError, CommandExecutionError } from '@jyjyxt/cloudl/errors';
 import {
     SUNO_DOMAIN,
     checkSunoCaptcha,

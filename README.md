@@ -282,4 +282,4 @@ See **[TESTING.md](./TESTING.md)** for how to run and write tests.
 
 ## License
 
-[Apache-2.0](./LICENSE)
+[Apache-2.0](./LICENSE) · [NOTICE](./NOTICE)

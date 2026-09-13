@@ -11,8 +11,8 @@ and option are not native `<select>` elements. Libraries such as Radix UI,
 Material UI, and shadcn commonly open or commit selection on pointer/mouse down
 or up events.
 
-OpenCLI's generic `browser click` currently calls DOM `el.click()` first. That
-only dispatches a click event, so OpenCLI can return success while the dropdown
+Cloudl's generic `browser click` currently calls DOM `el.click()` first. That
+only dispatches a click event, so Cloudl can return success while the dropdown
 never opened or the option never committed.
 
 `agent-browser` succeeds in this class mainly because its click path sends real
@@ -33,7 +33,7 @@ It does not have a general one-shot custom-dropdown `choose` command.
 ### 0. Extension CDP Capability Check
 
 The MVP depends on Chrome debugger CDP passthrough. Unlike agent-browser,
-OpenCLI usually reaches Chrome through the extension, so command availability
+Cloudl usually reaches Chrome through the extension, so command availability
 must be explicit.
 
 Current status:
@@ -92,7 +92,7 @@ Pass condition:
   case must fail on the DOM `el.click()` path.
 - After PR 1, custom fixture pass rate must be at least `N-1/N`, where `N` is
   the number of custom dropdown cases in the fixture.
-- OpenCLI verifies the selected text/value changed.
+- Cloudl verifies the selected text/value changed.
 
 ### 3. AX Snapshot Prototype
 
@@ -203,7 +203,7 @@ Status after implementation:
 - add iframe fixture.
 
 - decide whether AX becomes default observation or an explicit `--source ax`,
-- update `skills/opencli-browser/SKILL.md`,
+- update `skills/cloudl-browser/SKILL.md`,
 - add troubleshooting docs and fixture examples,
 - record manual Mercury or Mercury-equivalent validation.
 
@@ -211,7 +211,7 @@ Status after implementation:
 
 | Change | Compatibility risk | Mitigation |
 |---|---|---|
-| CDP click primary | Event order changes from synthetic click to real mouse sequence. | This is desired for dropdowns. PR 1 must run full adapter tests; all new failures must be listed and fixed before merge. Keep `OPENCLI_BROWSER_CLICK=js` as emergency plan B for one release, not as a substitute for fixing tests. |
+| CDP click primary | Event order changes from synthetic click to real mouse sequence. | This is desired for dropdowns. PR 1 must run full adapter tests; all new failures must be listed and fixed before merge. Keep `CLOUDL_BROWSER_CLICK=js` as emergency plan B for one release, not as a substitute for fixing tests. |
 | AX refs | Ref internals change; text output should not. | Add AX map internally first; preserve visible state format. |
 | Stale-ref recovery | A stale ref may now resolve to a new node with same role/name/nth. | Only use fallback for refs, not arbitrary CSS selectors; include diagnostic field when recovery happens. |
 | Frame routing | Actions may reach iframe elements that previously failed. | Phase 1 only. Add typed errors for unsupported frames instead of silent fallback. |
@@ -238,7 +238,7 @@ Quantitative gates:
 
 Manual SaaS check:
 
-- After Phase 0, @opencli-质量官 runs Mercury, Brex, and Linear manually when
+- After Phase 0, @cloudl-质量官 runs Mercury, Brex, and Linear manually when
   credentials/access are available.
 - Pass means the workflow can select the relevant category/field and save or
   commit the form state.

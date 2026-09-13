@@ -20,7 +20,7 @@ describe('network-cache', () => {
     let baseDir: string;
 
     beforeEach(() => {
-        baseDir = fs.mkdtempSync(path.join(os.tmpdir(), 'opencli-netcache-'));
+        baseDir = fs.mkdtempSync(path.join(os.tmpdir(), 'cloudl-netcache-'));
     });
     afterEach(() => {
         fs.rmSync(baseDir, { recursive: true, force: true });

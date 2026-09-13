@@ -8,7 +8,7 @@
  *    browser parser decide what's valid. No frontend regex whitelist — the
  *    goal is that any selector accepted by `browser find --css` is accepted
  *    by the same selector on `get/click/type/select`.
- * 2. Ref path: cascading match levels (see below), using data-opencli-ref
+ * 2. Ref path: cascading match levels (see below), using data-cloudl-ref
  *    plus the fingerprint map populated by snapshot + find.
  * 3. CSS path: querySelectorAll + match-count policy (see ResolveOptions)
  * 4. Structured errors:
@@ -79,7 +79,7 @@ export function resolveTargetJs(ref: string, opts: ResolveOptions = {}): string 
       const ref = ${safeRef};
       const nth = ${nthJs};
       const firstOnMulti = ${firstOnMulti};
-      const identity = window.__opencli_ref_identity || {};
+      const identity = window.__cloudl_ref_identity || {};
 
       // ── Classify input ──
       // Numeric = snapshot ref. Everything else is handed to querySelectorAll
@@ -92,7 +92,7 @@ export function resolveTargetJs(ref: string, opts: ResolveOptions = {}): string 
         // ── Ref path (cascading match levels) ──
 
         // Shared helper: compute a fingerprint off a live element, same shape
-        // snapshot + find populate into \`__opencli_ref_identity\`. Kept inline
+        // snapshot + find populate into \`__cloudl_ref_identity\`. Kept inline
         // (not imported) because this source string is compiled standalone.
         function fingerprintOf(node) {
           return {
@@ -169,7 +169,7 @@ export function resolveTargetJs(ref: string, opts: ResolveOptions = {}): string 
         }
 
         const fp = identity[ref];
-        let el = document.querySelector('[data-opencli-ref="' + ref + '"]');
+        let el = document.querySelector('[data-cloudl-ref="' + ref + '"]');
         if (!el) el = document.querySelector('[data-ref="' + ref + '"]');
 
         // If the ref tag is gone from the DOM, last-chance reidentify.
@@ -177,7 +177,7 @@ export function resolveTargetJs(ref: string, opts: ResolveOptions = {}): string 
           const recovered = reidentify(fp);
           if (recovered) {
             try {
-              recovered.setAttribute('data-opencli-ref', ref);
+              recovered.setAttribute('data-cloudl-ref', ref);
               identity[ref] = fingerprintOf(recovered);
             } catch (_) {}
             window.__resolved = recovered;
@@ -207,12 +207,12 @@ export function resolveTargetJs(ref: string, opts: ResolveOptions = {}): string 
 
         // Tag / strong-id mismatch — try to find the real element elsewhere
         // before giving up. Covers e.g. a modal re-mount that discarded the
-        // data-opencli-ref attribute on the surviving node.
+        // data-cloudl-ref attribute on the surviving node.
         const recovered = reidentify(fp);
         if (recovered && recovered !== el) {
           try {
-            el.removeAttribute('data-opencli-ref');
-            recovered.setAttribute('data-opencli-ref', ref);
+            el.removeAttribute('data-cloudl-ref');
+            recovered.setAttribute('data-cloudl-ref', ref);
             identity[ref] = fingerprintOf(recovered);
           } catch (_) {}
           window.__resolved = recovered;

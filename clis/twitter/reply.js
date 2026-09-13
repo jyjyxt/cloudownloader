@@ -1,7 +1,7 @@
 import * as fs from 'node:fs';
 import * as path from 'node:path';
-import { CommandExecutionError, TimeoutError } from '@jackwener/opencli/errors';
-import { cli, Strategy } from '@jackwener/opencli/registry';
+import { CommandExecutionError, TimeoutError } from '@jyjyxt/cloudl/errors';
+import { cli, Strategy } from '@jyjyxt/cloudl/registry';
 import { parseTweetUrl, unwrapBrowserResult } from './shared.js';
 import {
     COMPOSER_FILE_INPUT_SELECTOR,
@@ -130,7 +130,7 @@ async function clickReplyButton(page) {
               const btn = buttons.find((el) => visible(el) && !el.disabled && el.getAttribute('aria-disabled') !== 'true');
               if (btn) {
                   for (const toast of Array.from(document.querySelectorAll('[role="alert"], [data-testid="toast"]'))) {
-                      if (visible(toast)) toast.setAttribute('data-opencli-before-reply-toast', 'true');
+                      if (visible(toast)) toast.setAttribute('data-cloudl-before-reply-toast', 'true');
                   }
                   btn.click();
                   return { ok: true };
@@ -163,7 +163,7 @@ async function detectReplySent(page) {
             return undefined;
         };
         const toasts = Array.from(document.querySelectorAll('[role="alert"], [data-testid="toast"]'))
-            .filter((el) => visible(el) && !el.hasAttribute('data-opencli-before-reply-toast'));
+            .filter((el) => visible(el) && !el.hasAttribute('data-cloudl-before-reply-toast'));
         const successToast = toasts.find((el) => /sent|posted|your post was sent|your tweet was sent/i.test(el.textContent || ''));
         if (!successToast) return { ok: false };
         return {
@@ -199,7 +199,7 @@ async function waitForReplySent(page, text) {
             for (let i = 0; i < ${JSON.stringify(iterations)}; i++) {
                 await new Promise(r => setTimeout(r, ${JSON.stringify(SUBMIT_POLL_MS)}));
                 const toasts = Array.from(document.querySelectorAll('[role="alert"], [data-testid="toast"]'))
-                    .filter((el) => visible(el) && !el.hasAttribute('data-opencli-before-reply-toast'));
+                    .filter((el) => visible(el) && !el.hasAttribute('data-cloudl-before-reply-toast'));
                 const successToast = toasts.find((el) => /sent|posted|your post was sent|your tweet was sent/i.test(el.textContent || ''));
                 if (successToast) {
                     return {

@@ -1,12 +1,12 @@
 ---
-name: opencli-sitemap-author
-description: "Use when creating or maintaining OpenCLI site sitemaps: agent-facing navigation, page-state, action, workflow, API-reference, pitfall, and fallback knowledge for a website. Use after browser exploration discovers durable site context, when a sitemap is stale, or when promoting local site knowledge into the repo."
-allowed-tools: Bash(opencli:*), Read, Edit, Write, Grep
+name: cloudl-sitemap-author
+description: "Use when creating or maintaining Cloudl site sitemaps: agent-facing navigation, page-state, action, workflow, API-reference, pitfall, and fallback knowledge for a website. Use after browser exploration discovers durable site context, when a sitemap is stale, or when promoting local site knowledge into the repo."
+allowed-tools: Bash(cloudl:*), Read, Edit, Write, Grep
 ---
 
-# opencli-sitemap-author
+# cloudl-sitemap-author
 
-You are authoring a **task execution graph for agents**, not an SEO sitemap. The artifact should help an agent using `cloudl browser` decide where it is, what path to take next, which OpenCLI adapter to prefer, and how to recover when the page disagrees with memory.
+You are authoring a **task execution graph for agents**, not an SEO sitemap. The artifact should help an agent using `cloudl browser` decide where it is, what path to take next, which Cloudl adapter to prefer, and how to recover when the page disagrees with memory.
 
 Keep the sitemap small and verified. Do not crawl a whole site. Capture only task-relevant paths that you actually observed.
 
@@ -17,7 +17,7 @@ Keep the sitemap small and verified. Do not crawl a whole site. Capture only tas
 Two layers:
 
 - **Global seed**: `sitemaps/<site>/` (top-level)
-- **Local overlay**: `~/.opencli/sites/<site>/sitemap/`
+- **Local overlay**: `~/.cloudl/sites/<site>/sitemap/`
 
 Local overlay wins by stable id. Write new discoveries to local first. Promote to global only after review.
 
@@ -51,10 +51,10 @@ Phase 2 cron audit 按 token count 不按 byte count（CJK 中文 token-per-char
 ## Authoring Loop
 
 1. **Load existing memory**: read local overlay first, then global seed if present.
-2. **Verify reality**: use `cloudl browser <session> state`, `find`, `network`, and `analyze`; browser state is truth. If you just completed an `opencli-adapter-author` session for this site, start from the retained browse trace under `~/.opencli/sites/<site>/traces/` as seed evidence instead of re-discovering the path from zero.
+2. **Verify reality**: use `cloudl browser <session> state`, `find`, `network`, and `analyze`; browser state is truth. If you just completed an `cloudl-adapter-author` session for this site, start from the retained browse trace under `~/.cloudl/sites/<site>/traces/` as seed evidence instead of re-discovering the path from zero.
 3. **Record only durable structure**: page purpose, stable anchors, state signature, actions, workflows, API references, pitfalls.
 4. **Use stable ids**: page/action/workflow ids should survive URL params, locale text drift, and minor layout changes.
-5. **Write local draft**: update `~/.opencli/sites/<site>/sitemap/...` unless explicitly promoting to repo.
+5. **Write local draft**: update `~/.cloudl/sites/<site>/sitemap/...` unless explicitly promoting to repo.
 6. **Mark stale on conflict**: if existing sitemap disagrees with current browser state, trust browser state and mark the item stale rather than forcing the old path.
 
 ---
@@ -152,7 +152,7 @@ on_adapter_fail:
 - Do not document bypasses for CAPTCHA, WAF, access control, rate limits, or paid gates.
 - Do not store brittle snapshot indices like `[17]` as durable targets. Store semantic anchors and recovery instructions.
 - Do not describe unverified paths as facts. Use `draft` or `stale` labels.
-- Drafts go inside `sitemap/draft-<topic>.md`, not `~/.opencli/sites/<site>/sitemap.draft.md` at the parent level — the latter is invisible to `cloudl browser` sitemap availability detection.
+- Drafts go inside `sitemap/draft-<topic>.md`, not `~/.cloudl/sites/<site>/sitemap.draft.md` at the parent level — the latter is invisible to `cloudl browser` sitemap availability detection.
 
 ---
 

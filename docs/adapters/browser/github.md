@@ -30,5 +30,5 @@ cloudl github whoami -f json
 ## Notes
 
 - `whoami` verifies the current browser cookie session and does not open the login page.
-- `login` opens `https://github.com/login` in a foreground browser window and waits until OpenCLI can verify the account.
-- OpenCLI never fills credentials, CAPTCHA, 2FA, or passkeys. The user completes authentication in the browser; OpenCLI only verifies the resulting session.
+- `login` opens `https://github.com/login` in a foreground browser window and waits until Cloudl can verify the account.
+- Cloudl never fills credentials, CAPTCHA, 2FA, or passkeys. The user completes authentication in the browser; Cloudl only verifies the resulting session.

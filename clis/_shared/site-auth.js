@@ -1,5 +1,5 @@
-import { AuthRequiredError, TimeoutError, getErrorMessage } from '@jackwener/opencli/errors';
-import { cli, Strategy } from '@jackwener/opencli/registry';
+import { AuthRequiredError, TimeoutError, getErrorMessage } from '@jyjyxt/cloudl/errors';
+import { cli, Strategy } from '@jyjyxt/cloudl/registry';
 
 const DEFAULT_TIMEOUT_SECONDS = 300;
 const POLL_INTERVAL_MS = 2000;
@@ -21,7 +21,7 @@ async function tryProbe(config, page, phase) {
 }
 
 function authHint(config) {
-  return `Run \`opencli ${config.site} login\` to open the login page, then retry.`;
+  return `Run \`cloudl ${config.site} login\` to open the login page, then retry.`;
 }
 
 function commandColumns(config) {

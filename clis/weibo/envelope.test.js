@@ -1,6 +1,6 @@
 import { describe, expect, it, vi } from 'vitest';
-import { CommandExecutionError } from '@jackwener/opencli/errors';
-import { getRegistry } from '@jackwener/opencli/registry';
+import { CommandExecutionError } from '@jyjyxt/cloudl/errors';
+import { getRegistry } from '@jyjyxt/cloudl/registry';
 import './comments.js';
 import './favorites.js';
 import './feed.js';
@@ -39,14 +39,14 @@ describe('weibo read adapters Browser Bridge envelopes', () => {
     )).resolves.toHaveLength(1);
 
     await expect(getRegistry().get('weibo/hot').func(
-      makePage([envelope([{ rank: 1, word: 'opencli', hot_value: 1, category: '', label: '', url: 'https://s.weibo.com/weibo?q=opencli' }])]),
+      makePage([envelope([{ rank: 1, word: 'cloudl', hot_value: 1, category: '', label: '', url: 'https://s.weibo.com/weibo?q=cloudl' }])]),
       { limit: 1 },
     )).resolves.toHaveLength(1);
 
     await expect(getRegistry().get('weibo/search').func(
-      makePage([envelope([{ id: 'm1', title: 'OpenCLI', author: 'a', time: '', url: 'https://weibo.com/1/m1' }])]),
-      { keyword: 'opencli', limit: 1 },
-    )).resolves.toEqual([{ rank: 1, id: 'm1', title: 'OpenCLI', author: 'a', time: '', url: 'https://weibo.com/1/m1' }]);
+      makePage([envelope([{ id: 'm1', title: 'Cloudl', author: 'a', time: '', url: 'https://weibo.com/1/m1' }])]),
+      { keyword: 'cloudl', limit: 1 },
+    )).resolves.toEqual([{ rank: 1, id: 'm1', title: 'Cloudl', author: 'a', time: '', url: 'https://weibo.com/1/m1' }]);
 
     await expect(getRegistry().get('weibo/favorites').func(
       makePage([envelope('123456'), envelope([{ text: '作者A\n这是一条收藏微博', url: 'https://weibo.com/123/AbCd1' }])]),

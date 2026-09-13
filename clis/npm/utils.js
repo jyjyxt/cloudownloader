@@ -1,10 +1,10 @@
 // Shared helpers for the npm adapters that hit the public npm registry
 // (registry.npmjs.org) and download stats API (api.npmjs.org).
-import { ArgumentError, CommandExecutionError, EmptyResultError } from '@jackwener/opencli/errors';
+import { ArgumentError, CommandExecutionError, EmptyResultError } from '@jyjyxt/cloudl/errors';
 
 export const NPM_REGISTRY = 'https://registry.npmjs.org';
 export const NPM_API = 'https://api.npmjs.org';
-const UA = 'opencli-npm-adapter (+https://github.com/jyjyxt/cloudownloader)';
+const UA = 'cloudl-npm-adapter (+https://github.com/jyjyxt/cloudownloader)';
 
 // npm package names: 1-214 chars, lowercase letters/numbers/-._ , scoped form `@scope/name`.
 const PKG_NAME = /^(?:@[a-z0-9][a-z0-9._-]*\/)?[a-z0-9][a-z0-9._-]*$/i;

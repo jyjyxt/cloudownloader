@@ -1,5 +1,5 @@
-import { cli, Strategy } from '@jackwener/opencli/registry';
-import { CommandExecutionError, selectorError } from '@jackwener/opencli/errors';
+import { cli, Strategy } from '@jyjyxt/cloudl/registry';
+import { CommandExecutionError, selectorError } from '@jyjyxt/cloudl/errors';
 import { clickNewTaskScript, currentTaskStateScript, ensurePrompt, normalizeTimeout, sendTraePrompt } from './utils.js';
 
 export const newCommand = cli({
@@ -7,7 +7,7 @@ export const newCommand = cli({
   name: 'new',
   access: 'write',
   description: 'Start a new Trae CN task in the current workspace, optionally sending the first prompt',
-  example: 'OPENCLI_CDP_ENDPOINT=http://127.0.0.1:39240 OPENCLI_CDP_TARGET=talk cloudl trae-cn new "请执行你的任务" -f json',
+  example: 'CLOUDL_CDP_ENDPOINT=http://127.0.0.1:39240 CLOUDL_CDP_TARGET=talk cloudl trae-cn new "请执行你的任务" -f json',
   domain: 'localhost',
   strategy: Strategy.UI,
   browser: true,

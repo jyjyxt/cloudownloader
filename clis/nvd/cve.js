@@ -4,11 +4,11 @@
 // Returns the agent-useful projection: id, published / last-modified dates,
 // vuln status, English description, CVSS v3.1 base score / severity / vector,
 // CWE id(s), CISA KEV flag.
-import { cli, Strategy } from '@jackwener/opencli/registry';
-import { ArgumentError, CommandExecutionError, EmptyResultError } from '@jackwener/opencli/errors';
+import { cli, Strategy } from '@jyjyxt/cloudl/registry';
+import { ArgumentError, CommandExecutionError, EmptyResultError } from '@jyjyxt/cloudl/errors';
 
 const NVD_BASE = 'https://services.nvd.nist.gov/rest/json/cves/2.0';
-const UA = 'opencli-nvd-adapter (+https://github.com/jyjyxt/cloudownloader)';
+const UA = 'cloudl-nvd-adapter (+https://github.com/jyjyxt/cloudownloader)';
 const CVE_ID = /^CVE-\d{4}-\d{4,}$/i;
 
 function requireCveId(value) {

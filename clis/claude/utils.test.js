@@ -2,7 +2,7 @@ import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
 import { afterEach, describe, expect, it, vi } from 'vitest';
-import { ArgumentError } from '@jackwener/opencli/errors';
+import { ArgumentError } from '@jyjyxt/cloudl/errors';
 import { parseBoolFlag, sendWithFile, selectModel, requireConversationId, requireNonEmptyPrompt, requirePositiveInt } from './utils.js';
 
 describe('claude parseBoolFlag', () => {
@@ -48,7 +48,7 @@ describe('claude sendWithFile', () => {
     });
 
     it('prefers page.setFileInput, then sends after preview appears', async () => {
-        const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'opencli-claude-'));
+        const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'cloudl-claude-'));
         tempDirs.push(dir);
         const filePath = path.join(dir, 'cat.png');
         fs.writeFileSync(filePath, 'fake');
@@ -79,7 +79,7 @@ describe('claude sendWithFile', () => {
     });
 
     it('rejects oversized files before any upload attempt', async () => {
-        const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'opencli-claude-'));
+        const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'cloudl-claude-'));
         tempDirs.push(dir);
         const filePath = path.join(dir, 'big.bin');
         fs.writeFileSync(filePath, Buffer.alloc(31 * 1024 * 1024));

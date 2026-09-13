@@ -5,10 +5,10 @@
 // suggestion list from `__UNIVERSAL_DATA_FOR_REHYDRATION__` first, then
 // top up via `/api/recommend/user/` if the warm snapshot is short.
 
-import { cli, Strategy } from '@jackwener/opencli/registry';
+import { cli, Strategy } from '@jyjyxt/cloudl/registry';
 import {
     EmptyResultError,
-} from '@jackwener/opencli/errors';
+} from '@jyjyxt/cloudl/errors';
 import {
     BROWSER_HELPERS,
     MAX_PAGES,

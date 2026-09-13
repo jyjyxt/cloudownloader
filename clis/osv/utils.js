@@ -2,10 +2,10 @@
 //
 // OSV.dev publishes a free, unauthenticated REST API at https://api.osv.dev.
 // Docs: https://google.github.io/osv.dev/api/
-import { ArgumentError, CommandExecutionError, EmptyResultError } from '@jackwener/opencli/errors';
+import { ArgumentError, CommandExecutionError, EmptyResultError } from '@jyjyxt/cloudl/errors';
 
 export const OSV_BASE = 'https://api.osv.dev';
-const UA = 'opencli-osv-adapter (+https://github.com/jyjyxt/cloudownloader)';
+const UA = 'cloudl-osv-adapter (+https://github.com/jyjyxt/cloudownloader)';
 
 // OSV vulnerability IDs are short tokens like "GHSA-29mw-wpgm-hmr9", "CVE-2020-28500", "PYSEC-2021-1".
 const VULN_ID = /^[A-Za-z0-9][A-Za-z0-9._-]{0,79}$/;

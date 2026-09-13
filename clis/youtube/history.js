@@ -1,14 +1,14 @@
 /**
  * YouTube history via the authenticated InnerTube FEhistory browse surface.
  */
-import { cli, Strategy } from '@jackwener/opencli/registry';
+import { cli, Strategy } from '@jyjyxt/cloudl/registry';
 import {
     ArgumentError,
     AuthRequiredError,
     CommandExecutionError,
     EmptyResultError,
     TimeoutError,
-} from '@jackwener/opencli/errors';
+} from '@jyjyxt/cloudl/errors';
 import {
     prepareYoutubeApiPage,
     readYoutubeSapisid,

@@ -1,10 +1,10 @@
-import { cli, Strategy } from '@jackwener/opencli/registry';
+import { cli, Strategy } from '@jyjyxt/cloudl/registry';
 
 export const setupCommand = cli({
   site: 'trae-cn',
   name: 'setup',
   access: 'read',
-  description: 'Show local setup commands for controlling Trae CN with OpenCLI',
+  description: 'Show local setup commands for controlling Trae CN with Cloudl',
   example: 'cloudl trae-cn setup -f table',
   strategy: Strategy.LOCAL,
   browser: false,
@@ -17,13 +17,13 @@ export const setupCommand = cli({
       Purpose: 'Start Trae CN with a Chrome DevTools Protocol endpoint',
     },
     {
-      Step: '2. Point OpenCLI at Trae',
-      Command: 'export OPENCLI_CDP_ENDPOINT="http://127.0.0.1:39240"',
-      Purpose: 'Tell OpenCLI which local Trae CDP endpoint to use',
+      Step: '2. Point Cloudl at Trae',
+      Command: 'export CLOUDL_CDP_ENDPOINT="http://127.0.0.1:39240"',
+      Purpose: 'Tell Cloudl which local Trae CDP endpoint to use',
     },
     {
       Step: '3. Select a workspace target',
-      Command: 'export OPENCLI_CDP_TARGET="talk"',
+      Command: 'export CLOUDL_CDP_TARGET="talk"',
       Purpose: 'Choose the Trae workspace/window title when multiple targets are open',
     },
     {
@@ -64,7 +64,7 @@ export const setupCommand = cli({
     {
       Step: 'Auto-run boundary',
       Command: 'rm, mv, chmod, dd, truncate, kill, destructive git/database commands',
-      Purpose: 'Trae CN may still stop these as high-risk even when command mode is 自动运行; OpenCLI approves them only after explicit --auto-approve true or approve',
+      Purpose: 'Trae CN may still stop these as high-risk even when command mode is 自动运行; Cloudl approves them only after explicit --auto-approve true or approve',
     },
     {
       Step: 'Help',

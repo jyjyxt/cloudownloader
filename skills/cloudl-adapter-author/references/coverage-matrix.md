@@ -39,7 +39,7 @@ skill 明确承诺能搞定什么、搞不定什么。动手前先看一眼这�
 | | CSV 字符串（eastmoney kline） | ✅ | `response.split(',')` 按列序解 |
 | | HTML 表格（tonghuashun） | 🟡 | `page.evaluate` 里用 `querySelectorAll` 拿 |
 
-🟡 的维度意思：方法在文档里，但这一版没拿真实站点跑过端到端。第一次遇到时按文档走，遇到和文档不一致的地方记到 `~/.opencli/sites/<site>/notes.md`，下一次再打开就是 ✅。
+🟡 的维度意思：方法在文档里，但这一版没拿真实站点跑过端到端。第一次遇到时按文档走，遇到和文档不一致的地方记到 `~/.cloudl/sites/<site>/notes.md`，下一次再打开就是 ✅。
 
 ---
 
@@ -74,8 +74,8 @@ skill 明确承诺能搞定什么、搞不定什么。动手前先看一眼这�
 
 | 类型 | 证据 adapter | 覆盖维度 |
 |------|-------------|---------|
-| PUBLIC + 自解释字段 + SPA | `~/.opencli/clis/coingecko/top.js`（本轮 dry run） | `Strategy.PUBLIC` + REST JSON + 自解释字段 + 列表页 |
+| PUBLIC + 自解释字段 + SPA | `~/.cloudl/clis/coingecko/top.js`（本轮 dry run） | `Strategy.PUBLIC` + REST JSON + 自解释字段 + 列表页 |
 | COOKIE + 代号字段 + JSONP | `clis/eastmoney/*.js` × 13（PR #1091 merged） | `Strategy.PUBLIC`（匿名 `ut=`）+ JSONP + f-代号 + 列表/详情/K 线 |
 | COOKIE + SPA | `clis/bilibili/*.js` × 10+（已存在） | `Strategy.COOKIE + browser:true` + wbi 签名 |
 
-**本 PR 新增的 skill 还未硬验证的维度**：🟡 行，尤其 SSR Pattern B + Bearer/CSRF + 未登记代号解码。这些放到第一批真实用户 adapter 写作中打磨，skill 文档先落，踩坑回来补 `site-memory`。合 PR 之前先拿 coingecko 跑第二轮（带着第一轮写出的 `~/.opencli/sites/coingecko/`）验证 memory 命中 → endpoint re-verify → 字段抽查 → 写 adapter 这条回路。
+**本 PR 新增的 skill 还未硬验证的维度**：🟡 行，尤其 SSR Pattern B + Bearer/CSRF + 未登记代号解码。这些放到第一批真实用户 adapter 写作中打磨，skill 文档先落，踩坑回来补 `site-memory`。合 PR 之前先拿 coingecko 跑第二轮（带着第一轮写出的 `~/.cloudl/sites/coingecko/`）验证 memory 命中 → endpoint re-verify → 字段抽查 → 写 adapter 这条回路。

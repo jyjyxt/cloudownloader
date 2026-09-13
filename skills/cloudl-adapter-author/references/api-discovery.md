@@ -100,7 +100,7 @@ cloudl browser network --filter author,text,likes
 cloudl browser network --detail <key>
 ```
 
-capture 会持久化到 `~/.opencli/cache/browser-network/<session>.json`（默认 TTL 24h），所以 `--detail` 即使跨多条其他命令也还在。
+capture 会持久化到 `~/.cloudl/cache/browser-network/<session>.json`（默认 TTL 24h），所以 `--detail` 即使跨多条其他命令也还在。
 
 `--detail` 还会在 capture provider 支持时返回 `request`：method 仍在顶层；headers 中 cookie、Authorization、CSRF/XSRF、token/key/secret/session 等值会替换为 `<redacted>`；可安全识别的 JSON object / URL-encoded form 会保留结构，位置数组、opaque 或截断 body 只保留 kind、shape、full size、truncated/omitted 状态。不要因为 body 被安全省略就拿 URL 单独 replay——这说明请求合同仍不完整。
 

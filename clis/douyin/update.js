@@ -1,5 +1,5 @@
-import { cli, Strategy } from '@jackwener/opencli/registry';
-import { ArgumentError } from '@jackwener/opencli/errors';
+import { cli, Strategy } from '@jyjyxt/cloudl/registry';
+import { ArgumentError } from '@jyjyxt/cloudl/errors';
 import { browserFetch } from './_shared/browser-fetch.js';
 import { toUnixSeconds, validateTiming } from './_shared/timing.js';
 cli({

@@ -1,10 +1,10 @@
 ---
-description: How to automate Antigravity using OpenCLI
+description: How to automate Antigravity using Cloudl
 ---
 
 # Antigravity Automation Skill
 
-This skill allows AI agents to control the [Antigravity](https://github.com/chengazhen/Antigravity) desktop app (and any Electron app with CDP enabled) programmatically via OpenCLI. 
+This skill allows AI agents to control the [Antigravity](https://github.com/chengazhen/Antigravity) desktop app (and any Electron app with CDP enabled) programmatically via Cloudl.
 
 ## Requirements
 cloudl automatically detects, launches (with `--remote-debugging-port=9234`), and connects to Antigravity.
@@ -12,7 +12,7 @@ If Antigravity is already running without CDP, cloudl will prompt to restart it.
 
 If the endpoint exposes multiple inspectable targets, set:
 \`\`\`bash
-export OPENCLI_CDP_TARGET="antigravity"
+export CLOUDL_CDP_TARGET="antigravity"
 \`\`\`
 
 ## High-Level Capabilities

@@ -1,12 +1,12 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
-import { ArgumentError, CommandExecutionError } from '@jackwener/opencli/errors';
+import { ArgumentError, CommandExecutionError } from '@jyjyxt/cloudl/errors';
 const { browserFetchMock } = vi.hoisted(() => ({
     browserFetchMock: vi.fn(),
 }));
 vi.mock('./_shared/browser-fetch.js', () => ({
     browserFetch: browserFetchMock,
 }));
-import { getRegistry } from '@jackwener/opencli/registry';
+import { getRegistry } from '@jyjyxt/cloudl/registry';
 import './hashtag.js';
 describe('douyin hashtag', () => {
     beforeEach(() => {

@@ -1,15 +1,15 @@
-# 在 Android Chrome 上使用 OpenCLI
+# 在 Android Chrome 上使用 Cloudl
 
-OpenCLI 可以通过 **ADB 端口转发** 和 **CDPBridge** 直接控制 Android 手机上的 Chrome 浏览器，无需额外工具或定制构建。桌面端的所有 adapter 在 Android 上同样可用，并且能直接复用手机浏览器中已有的登录 Cookie。
+Cloudl 可以通过 **ADB 端口转发** 和 **CDPBridge** 直接控制 Android 手机上的 Chrome 浏览器，无需额外工具或定制构建。桌面端的所有 adapter 在 Android 上同样可用，并且能直接复用手机浏览器中已有的登录 Cookie。
 
 ---
 
 ## 工作原理
 
-Android Chrome 支持[通过 CDP 进行远程调试](https://developer.chrome.com/docs/devtools/remote-debugging/)。设备会暴露一个本地 Unix Socket，ADB 将其转发为本机的 TCP 端口，OpenCLI 的 `CDPBridge` 再通过该端口建立 CDP WebSocket 连接。
+Android Chrome 支持[通过 CDP 进行远程调试](https://developer.chrome.com/docs/devtools/remote-debugging/)。设备会暴露一个本地 Unix Socket，ADB 将其转发为本机的 TCP 端口，Cloudl 的 `CDPBridge` 再通过该端口建立 CDP WebSocket 连接。
 
 ```
-OpenCLI (CDPBridge)
+Cloudl (CDPBridge)
     │  WebSocket (CDP)
     ▼
 localhost:9222                ← ADB 端口转发
@@ -77,10 +77,10 @@ curl http://localhost:9222/json
 ]
 ```
 
-### 第四步：执行 OpenCLI 命令
+### 第四步：执行 Cloudl 命令
 
 ```bash
-export OPENCLI_CDP_ENDPOINT=http://localhost:9222
+export CLOUDL_CDP_ENDPOINT=http://localhost:9222
 cloudl hackernews top --limit 5
 ```
 
@@ -88,23 +88,23 @@ cloudl hackernews top --limit 5
 
 ## 指定特定标签页
 
-多个标签页同时打开时，`CDPBridge` 会通过打分算法自动选择最合适的目标（优先选 `type=page`、有实际 URL 的标签）。如需手动指定，可设置 `OPENCLI_CDP_TARGET` 为标签页标题或 URL 的子串：
+多个标签页同时打开时，`CDPBridge` 会通过打分算法自动选择最合适的目标（优先选 `type=page`、有实际 URL 的标签）。如需手动指定，可设置 `CLOUDL_CDP_TARGET` 为标签页标题或 URL 的子串：
 
 ```bash
-OPENCLI_CDP_TARGET="twitter" cloudl twitter trending
+CLOUDL_CDP_TARGET="twitter" cloudl twitter trending
 ```
 
 也可直接使用 `/json` 返回的 WebSocket 地址精确连接某个标签页：
 
 ```bash
-OPENCLI_CDP_ENDPOINT=ws://localhost:9222/devtools/page/3941 opencli ...
+CLOUDL_CDP_ENDPOINT=ws://localhost:9222/devtools/page/3941 cloudl ...
 ```
 
 ---
 
 ## 使用需要登录的 Adapter
 
-使用 `cookie` 策略的 adapter（大多数社交和内容类网站）需要在 Android 设备上先完成登录。OpenCLI 会通过 CDP 自动读取手机 Chrome 中的 Cookie，无需任何额外配置。
+使用 `cookie` 策略的 adapter（大多数社交和内容类网站）需要在 Android 设备上先完成登录。Cloudl 会通过 CDP 自动读取手机 Chrome 中的 Cookie，无需任何额外配置。
 
 查看某个 adapter 是否需要登录：
 
@@ -154,8 +154,8 @@ adb -s <设备1序列号> forward tcp:9222 localabstract:chrome_devtools_remote
 adb -s <设备2序列号> forward tcp:9223 localabstract:chrome_devtools_remote
 
 # 分别执行命令
-OPENCLI_CDP_ENDPOINT=http://localhost:9222 cloudl twitter trending
-OPENCLI_CDP_ENDPOINT=http://localhost:9223 cloudl twitter trending
+CLOUDL_CDP_ENDPOINT=http://localhost:9222 cloudl twitter trending
+CLOUDL_CDP_ENDPOINT=http://localhost:9223 cloudl twitter trending
 ```
 
 ---

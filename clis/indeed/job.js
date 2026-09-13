@@ -7,8 +7,8 @@
  * `search`.
  */
 
-import { cli, Strategy } from '@jackwener/opencli/registry';
-import { EmptyResultError, CommandExecutionError } from '@jackwener/opencli/errors';
+import { cli, Strategy } from '@jyjyxt/cloudl/registry';
+import { EmptyResultError, CommandExecutionError } from '@jyjyxt/cloudl/errors';
 import {
     JOB_COLUMNS,
     requireJobKey,

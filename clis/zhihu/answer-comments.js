@@ -1,5 +1,5 @@
-import { cli, Strategy } from '@jackwener/opencli/registry';
-import { ArgumentError, CommandExecutionError, EmptyResultError } from '@jackwener/opencli/errors';
+import { cli, Strategy } from '@jyjyxt/cloudl/registry';
+import { ArgumentError, CommandExecutionError, EmptyResultError } from '@jyjyxt/cloudl/errors';
 import { ANSWER_PATH_RE, parseAnswerTarget } from './answer-target.js';
 import { buildCommentRows, fetchRepliesByRoot, fetchRootComments } from './answer-comments-helpers.js';
 

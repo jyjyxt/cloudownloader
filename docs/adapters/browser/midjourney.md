@@ -158,7 +158,7 @@ For a fresh 200-minute Basic allocation, the conservative upper bounds are about
 - `open-editor` opens the correct image in Midjourney's editor; inpainting, outpainting, pan, zoom, and canvas edits remain interactive editor work rather than separate CLI commands.
 - Existing profile/Moodboard IDs can be passed to `--profile`; profile discovery and Style Explorer browsing are not separate commands.
 - `describe` currently accepts a local image only.
-- The adapter follows the logged-in website, whose feature availability can change independently of OpenCLI. Use `settings`, `--dry-run`, and typed errors to inspect the current boundary.
+- The adapter follows the logged-in website, whose feature availability can change independently of Cloudl. Use `settings`, `--dry-run`, and typed errors to inspect the current boundary.
 
 ## Prerequisites
 

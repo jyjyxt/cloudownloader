@@ -1,6 +1,6 @@
 /**
  * E2E integration tests for plugin management commands.
- * Uses a real GitHub plugin (opencli-plugin-hot-digest) to verify the full
+ * Uses a real GitHub plugin (cloudl-plugin-hot-digest) to verify the full
  * install → list → update → uninstall lifecycle in an isolated HOME.
  */
 
@@ -10,13 +10,13 @@ import * as path from 'node:path';
 import * as os from 'node:os';
 import { runCli, parseJsonOutput } from './helpers.js';
 
-const TEST_HOME = fs.mkdtempSync(path.join(os.tmpdir(), 'opencli-plugin-e2e-'));
-const OPENCLI_HOME = path.join(TEST_HOME, '.opencli');
-const PLUGINS_DIR = path.join(OPENCLI_HOME, 'plugins');
-const PLUGIN_SOURCE = 'github:ByteYue/opencli-plugin-hot-digest';
+const TEST_HOME = fs.mkdtempSync(path.join(os.tmpdir(), 'cloudl-plugin-e2e-'));
+const CLOUDL_HOME = path.join(TEST_HOME, '.cloudl');
+const PLUGINS_DIR = path.join(CLOUDL_HOME, 'plugins');
+const PLUGIN_SOURCE = 'github:ByteYue/cloudl-plugin-hot-digest';
 const PLUGIN_NAME = 'hot-digest';
 const PLUGIN_DIR = path.join(PLUGINS_DIR, PLUGIN_NAME);
-const LOCK_FILE = path.join(OPENCLI_HOME, 'plugins.lock.json');
+const LOCK_FILE = path.join(CLOUDL_HOME, 'plugins.lock.json');
 
 function runPluginCli(
   args: string[],
@@ -63,7 +63,7 @@ describe('plugin management E2E', () => {
     expect(lock[PLUGIN_NAME].source).toMatchObject({
       kind: 'git',
     });
-    expect(lock[PLUGIN_NAME].source.url).toContain('opencli-plugin-hot-digest');
+    expect(lock[PLUGIN_NAME].source.url).toContain('cloudl-plugin-hot-digest');
     expect(lock[PLUGIN_NAME].installedAt).toBeTruthy();
   }, 60_000);
 

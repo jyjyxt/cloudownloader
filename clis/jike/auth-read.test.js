@@ -1,6 +1,6 @@
 import { describe, expect, it, vi } from 'vitest';
-import { getRegistry } from '@jackwener/opencli/registry';
-import { AuthRequiredError, CommandExecutionError } from '@jackwener/opencli/errors';
+import { getRegistry } from '@jyjyxt/cloudl/registry';
+import { AuthRequiredError, CommandExecutionError } from '@jyjyxt/cloudl/errors';
 import { requireJikeIdentity } from './utils.js';
 import './auth.js';
 import './feed.js';
@@ -74,7 +74,7 @@ describe('Jike identity guard', () => {
 
   it.each([
     ['jike/feed', {}, 'https://web.okjike.com'],
-    ['jike/search', { query: 'OpenCLI' }, 'https://web.okjike.com/search?q=OpenCLI'],
+    ['jike/search', { query: 'Cloudl' }, 'https://web.okjike.com/search?q=Cloudl'],
     ['jike/notifications', {}, 'https://web.okjike.com/notification'],
   ])('prevents %s from silently returning an empty anonymous result', async (commandName, args, expectedUrl) => {
     const page = makePage({

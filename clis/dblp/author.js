@@ -14,8 +14,8 @@
 //
 // To bypass author search entirely, pass `--pid <prefix>/<id>` (e.g.
 // `--pid 56/953`). This is the canonical disambiguator.
-import { cli, Strategy } from '@jackwener/opencli/registry';
-import { ArgumentError, CommandExecutionError, EmptyResultError } from '@jackwener/opencli/errors';
+import { cli, Strategy } from '@jyjyxt/cloudl/registry';
+import { ArgumentError, CommandExecutionError, EmptyResultError } from '@jyjyxt/cloudl/errors';
 import {
     DBLP_ORIGIN,
     decodeXmlEntities,

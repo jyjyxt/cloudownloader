@@ -1,6 +1,6 @@
 // github-trending — repositories from https://github.com/trending (public HTML, no auth).
-import { cli, Strategy } from '@jackwener/opencli/registry';
-import { ArgumentError, CommandExecutionError, EmptyResultError } from '@jackwener/opencli/errors';
+import { cli, Strategy } from '@jyjyxt/cloudl/registry';
+import { ArgumentError, CommandExecutionError, EmptyResultError } from '@jyjyxt/cloudl/errors';
 
 const SINCE = {
     daily: 'daily',
@@ -135,7 +135,7 @@ cli({
         try {
             resp = await fetch(url, {
                 headers: {
-                    'User-Agent': 'Mozilla/5.0 (compatible; opencli/github-trending)',
+                    'User-Agent': 'Mozilla/5.0 (compatible; cloudl/github-trending)',
                     Accept: 'text/html',
                 },
             });

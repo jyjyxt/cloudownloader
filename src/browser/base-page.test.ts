@@ -144,13 +144,13 @@ describe('BasePage annotatedScreenshot', () => {
       true,
     ];
 
-    await expect(page.annotatedScreenshot({ path: '/tmp/opencli.png', annotate: true })).resolves.toBe('shot');
+    await expect(page.annotatedScreenshot({ path: '/tmp/cloudl.png', annotate: true })).resolves.toBe('shot');
 
     expect(page.scripts[0]).toContain('const VIEWPORT_EXPAND = 0');
-    expect(page.scripts[2]).toContain('__opencli_visual_ref_overlay');
-    expect(page.scripts[2]).toContain('[data-opencli-ref]');
-    expect(page.scripts[3]).toContain('__opencli_visual_ref_overlay');
-    expect(page.screenshotCalls).toEqual([{ path: '/tmp/opencli.png', annotate: false }]);
+    expect(page.scripts[2]).toContain('__cloudl_visual_ref_overlay');
+    expect(page.scripts[2]).toContain('[data-cloudl-ref]');
+    expect(page.scripts[3]).toContain('__cloudl_visual_ref_overlay');
+    expect(page.screenshotCalls).toEqual([{ path: '/tmp/cloudl.png', annotate: false }]);
   });
 });
 
@@ -805,9 +805,9 @@ describe('BasePage native input routing', () => {
       accept: 'application/pdf',
     });
 
-    expect(page.setFileInput).toHaveBeenCalledWith(['/tmp/receipt.pdf'], expect.stringMatching(/data-opencli-upload-target/));
-    expect(page.withArgs.at(0)).toMatchObject({ markerAttr: 'data-opencli-upload-target' });
-    expect(page.withArgs.at(-1)).toMatchObject({ markerAttr: 'data-opencli-upload-target' });
+    expect(page.setFileInput).toHaveBeenCalledWith(['/tmp/receipt.pdf'], expect.stringMatching(/data-cloudl-upload-target/));
+    expect(page.withArgs.at(0)).toMatchObject({ markerAttr: 'data-cloudl-upload-target' });
+    expect(page.withArgs.at(-1)).toMatchObject({ markerAttr: 'data-cloudl-upload-target' });
   });
 
   it('rejects non-file-input upload targets with a structured error', async () => {

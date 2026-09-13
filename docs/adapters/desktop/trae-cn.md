@@ -11,18 +11,18 @@ Control the **Trae CN** desktop app from the terminal through Chrome DevTools Pr
 open -a "Trae CN" --args --remote-debugging-port=39240
 ```
 
-3. Point OpenCLI at the Trae CDP endpoint:
+3. Point Cloudl at the Trae CDP endpoint:
 
 ```bash
-export OPENCLI_CDP_ENDPOINT="http://127.0.0.1:39240"
+export CLOUDL_CDP_ENDPOINT="http://127.0.0.1:39240"
 ```
 
-If Trae CN is already running on another remote debugging port, do not restart it just to match this default. Point `OPENCLI_CDP_ENDPOINT` at the port that is currently listening.
+If Trae CN is already running on another remote debugging port, do not restart it just to match this default. Point `CLOUDL_CDP_ENDPOINT` at the port that is currently listening.
 
 If multiple Trae workspaces are open, select the right target by title:
 
 ```bash
-export OPENCLI_CDP_TARGET="talk"
+export CLOUDL_CDP_TARGET="talk"
 ```
 
 ## Commands
@@ -61,7 +61,7 @@ export OPENCLI_CDP_TARGET="talk"
 
 ### Approval Prompts
 
-Trae CN may pause a long task for UI confirmations, especially before running terminal commands or deleting files. `ask` and `watch` do not click approval prompts unless you pass `--auto-approve true`; `approve` clicks the current matching prompt directly. The approval detector is category-based: OpenCLI approves Trae's visible `terminal` confirmation UI and visible `delete` confirmation UI. It is not a semantic command allowlist limited to `rm` or `mv`.
+Trae CN may pause a long task for UI confirmations, especially before running terminal commands or deleting files. `ask` and `watch` do not click approval prompts unless you pass `--auto-approve true`; `approve` clicks the current matching prompt directly. The approval detector is category-based: Cloudl approves Trae's visible `terminal` confirmation UI and visible `delete` confirmation UI. It is not a semantic command allowlist limited to `rm` or `mv`.
 
 Opt-in approval behavior:
 
@@ -84,7 +84,7 @@ cloudl trae-cn approve --approve-kinds terminal,delete -f json
 
 Use `--dry-run true` to inspect matching prompts without clicking. Use `--approve-kinds keep` only when the intended action is to keep/retain a file instead of approving deletion.
 
-For long-running agent tasks where you explicitly want OpenCLI to approve terminal/delete prompts while watching:
+For long-running agent tasks where you explicitly want Cloudl to approve terminal/delete prompts while watching:
 
 ```bash
 cloudl trae-cn watch --stream true --duration 300 --auto-approve true
@@ -100,15 +100,15 @@ When multiple Trae windows are open, use:
 
 ```bash
 cloudl trae-cn targets -f table
-OPENCLI_CDP_TARGET=workspace cloudl trae-cn watch --stream true --duration 300
+CLOUDL_CDP_TARGET=workspace cloudl trae-cn watch --stream true --duration 300
 ```
 
-`targets` is the quickest way to find the row with `ApprovalPending=yes` and copy its `RecommendedTarget` into `OPENCLI_CDP_TARGET`. Confirm the current state with `targets`, `activity`, `watch`, or `read`.
+`targets` is the quickest way to find the row with `ApprovalPending=yes` and copy its `RecommendedTarget` into `CLOUDL_CDP_TARGET`. Confirm the current state with `targets`, `activity`, `watch`, or `read`.
 
 ## Notes
 
 - The adapter operates the currently selected Trae workspace target. It does not yet open folders or switch historical conversations.
-- `OPENCLI_CDP_TARGET` should be used when multiple Trae windows or workspaces share the same CDP endpoint.
+- `CLOUDL_CDP_TARGET` should be used when multiple Trae windows or workspaces share the same CDP endpoint.
 - Trae assistant output may describe model identity differently from the UI. Use `trae-cn status` or `trae-cn model` as the source of truth for the current selected model.
 - Sensitive local state under Trae data directories is not required for normal adapter operation.
 
@@ -117,11 +117,11 @@ OPENCLI_CDP_TARGET=workspace cloudl trae-cn watch --stream true --duration 300
 ```bash
 cloudl trae-cn setup
 
-OPENCLI_CDP_ENDPOINT=http://127.0.0.1:39240 \
-OPENCLI_CDP_TARGET=talk \
+CLOUDL_CDP_ENDPOINT=http://127.0.0.1:39240 \
+CLOUDL_CDP_TARGET=talk \
 cloudl trae-cn new "Please reply only: TRAE_OK"
 
-OPENCLI_CDP_ENDPOINT=http://127.0.0.1:39240 \
-OPENCLI_CDP_TARGET=talk \
+CLOUDL_CDP_ENDPOINT=http://127.0.0.1:39240 \
+CLOUDL_CDP_TARGET=talk \
 cloudl trae-cn watch --duration 30 --interval 1 --stream true
 ```

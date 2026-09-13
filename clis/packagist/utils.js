@@ -3,10 +3,10 @@
 // Hits the public, unauthenticated `packagist.org` JSON endpoints. Composer's
 // canonical package registry. Package names are `<vendor>/<package>`,
 // lowercase letters / digits / `_-.`, with each segment 1-100 chars.
-import { ArgumentError, CommandExecutionError, EmptyResultError } from '@jackwener/opencli/errors';
+import { ArgumentError, CommandExecutionError, EmptyResultError } from '@jyjyxt/cloudl/errors';
 
 export const PACKAGIST_BASE = 'https://packagist.org';
-const UA = 'opencli-packagist-adapter (+https://github.com/jyjyxt/cloudownloader)';
+const UA = 'cloudl-packagist-adapter (+https://github.com/jyjyxt/cloudownloader)';
 
 // Each segment of a Composer package name (`vendor` and `package`).
 const SEGMENT = /^[a-z0-9]([_.-]?[a-z0-9]+)*$/;

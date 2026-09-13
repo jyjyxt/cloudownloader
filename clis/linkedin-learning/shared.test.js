@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { ArgumentError, AuthRequiredError } from '@jackwener/opencli/errors';
+import { ArgumentError, AuthRequiredError } from '@jyjyxt/cloudl/errors';
 import { expectRejectsWithMessage, makePage } from './test-helpers.js';
 import {
     buildFetchScript,

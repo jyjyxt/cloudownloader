@@ -19,12 +19,12 @@ import { log } from './logger.js';
 import type { ManifestEntry } from './manifest-types.js';
 import { findPackageRoot, getCliManifestPath } from './package-paths.js';
 
-/** User runtime directory: ~/.opencli */
-export const USER_OPENCLI_DIR = path.join(os.homedir(), '.opencli');
-/** User CLIs directory: ~/.opencli/clis */
-export const USER_CLIS_DIR = path.join(USER_OPENCLI_DIR, 'clis');
-/** Plugins directory: ~/.opencli/plugins/ */
-export const PLUGINS_DIR = path.join(USER_OPENCLI_DIR, 'plugins');
+/** User runtime directory: ~/.cloudl */
+export const USER_CLOUDL_DIR = path.join(os.homedir(), '.cloudl');
+/** User CLIs directory: ~/.cloudl/clis */
+export const USER_CLIS_DIR = path.join(USER_CLOUDL_DIR, 'clis');
+/** Plugins directory: ~/.cloudl/plugins/ */
+export const PLUGINS_DIR = path.join(USER_CLOUDL_DIR, 'plugins');
 /** Matches files that register commands via cli() or lifecycle hooks */
 const PLUGIN_MODULE_PATTERN = /\b(?:cli|registerSiteAuthCommands|onStartup|onBeforeExecute|onAfterExecute)\s*\(/;
 const YAML_ADAPTER_EXT_RE = /\.ya?ml$/i;
@@ -40,19 +40,19 @@ function parseStrategy(rawStrategy: string | undefined, fallback: Strategy = Str
 const PACKAGE_ROOT = findPackageRoot(fileURLToPath(import.meta.url));
 
 /**
- * Ensure ~/.opencli/node_modules/@jackwener/opencli symlink exists so that
- * user CLIs in ~/.opencli/clis/ can `import { cli } from '@jackwener/opencli/registry'`.
+ * Ensure ~/.cloudl/node_modules/@jyjyxt/cloudl symlink exists so that
+ * user CLIs in ~/.cloudl/clis/ can `import { cli } from '@jyjyxt/cloudl/registry'`.
  *
  * This is the sole resolution mechanism — adapters use package exports
- * (e.g. `@jackwener/opencli/registry`, `@jackwener/opencli/errors`) and
+ * (e.g. `@jyjyxt/cloudl/registry`, `@jyjyxt/cloudl/errors`) and
  * Node.js resolves them through this symlink.
  */
-export async function ensureUserCliCompatShims(baseDir: string = USER_OPENCLI_DIR): Promise<void> {
+export async function ensureUserCliCompatShims(baseDir: string = USER_CLOUDL_DIR): Promise<void> {
   await fs.promises.mkdir(baseDir, { recursive: true });
 
-  // package.json for ESM resolution in ~/.opencli/
+  // package.json for ESM resolution in ~/.cloudl/
   const pkgJsonPath = path.join(baseDir, 'package.json');
-  const pkgJsonContent = `${JSON.stringify({ name: 'opencli-user-runtime', private: true, type: 'module' }, null, 2)}\n`;
+  const pkgJsonContent = `${JSON.stringify({ name: 'cloudl-user-runtime', private: true, type: 'module' }, null, 2)}\n`;
   try {
     const existing = await fs.promises.readFile(pkgJsonPath, 'utf-8');
     if (existing !== pkgJsonContent) await fs.promises.writeFile(pkgJsonPath, pkgJsonContent, 'utf-8');
@@ -60,21 +60,21 @@ export async function ensureUserCliCompatShims(baseDir: string = USER_OPENCLI_DI
     await fs.promises.writeFile(pkgJsonPath, pkgJsonContent, 'utf-8');
   }
 
-  // Create node_modules/@jackwener/opencli symlink pointing to the installed package root.
-  const opencliRoot = PACKAGE_ROOT;
-  const symlinkDir = path.join(baseDir, 'node_modules', '@jackwener');
-  const symlinkPath = path.join(symlinkDir, 'opencli');
+  // Create node_modules/@jyjyxt/cloudl symlink pointing to the installed package root.
+  const cloudlRoot = PACKAGE_ROOT;
+  const symlinkDir = path.join(baseDir, 'node_modules', '@jyjyxt');
+  const symlinkPath = path.join(symlinkDir, 'cloudl');
   try {
     let needsUpdate = true;
     try {
       const existing = await fs.promises.readlink(symlinkPath);
-      if (existing === opencliRoot) needsUpdate = false;
+      if (existing === cloudlRoot) needsUpdate = false;
     } catch { /* doesn't exist */ }
     if (needsUpdate) {
       await fs.promises.mkdir(symlinkDir, { recursive: true });
       try { await fs.promises.rm(symlinkPath, { recursive: true, force: true }); } catch { /* doesn't exist */ }
       const symlinkType = process.platform === 'win32' ? 'junction' : 'dir';
-      await fs.promises.symlink(opencliRoot, symlinkPath, symlinkType);
+      await fs.promises.symlink(cloudlRoot, symlinkPath, symlinkType);
     }
   } catch (err) {
     log.warn(`Could not create symlink at ${symlinkPath}: ${getErrorMessage(err)}`);
@@ -84,7 +84,7 @@ export async function ensureUserCliCompatShims(baseDir: string = USER_OPENCLI_DI
 /**
  * Ensure the user adapters directory exists.
  *
- * With smart sync, ~/.opencli/clis/ only holds files that differ from the
+ * With smart sync, ~/.cloudl/clis/ only holds files that differ from the
  * package baseline (upstream-synced cache + autofix output + user overrides).
  * Built-in adapters are loaded directly from the installed package.
  */
@@ -194,7 +194,7 @@ async function discoverClisFromFs(dir: string): Promise<void> {
 }
 
 /**
- * Discover and register plugins from ~/.opencli/plugins/.
+ * Discover and register plugins from ~/.cloudl/plugins/.
  * Each subdirectory is treated as a plugin (site = directory name).
  * Files inside are scanned flat (no nested site subdirs).
  */

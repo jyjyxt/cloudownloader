@@ -6,7 +6,7 @@
  */
 import * as fs from 'node:fs';
 import * as path from 'node:path';
-import { CommandExecutionError } from '@jackwener/opencli/errors';
+import { CommandExecutionError } from '@jyjyxt/cloudl/errors';
 /**
  * Detect MIME type from file extension.
  * Falls back to image/jpeg for unknown extensions.

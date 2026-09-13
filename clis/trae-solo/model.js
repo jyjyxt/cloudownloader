@@ -1,5 +1,5 @@
-import { cli, Strategy } from '@jackwener/opencli/registry';
-import { CommandExecutionError, selectorError } from '@jackwener/opencli/errors';
+import { cli, Strategy } from '@jyjyxt/cloudl/registry';
+import { CommandExecutionError, selectorError } from '@jyjyxt/cloudl/errors';
 
 async function readCurrentModel(page) {
     const current = await page.evaluate(`(function() {

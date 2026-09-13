@@ -1,6 +1,6 @@
 // Pinterest board-delete — delete one of your own boards (BoardResource/delete).
-import { cli, Strategy } from '@jackwener/opencli/registry';
-import { ArgumentError } from '@jackwener/opencli/errors';
+import { cli, Strategy } from '@jyjyxt/cloudl/registry';
+import { ArgumentError } from '@jyjyxt/cloudl/errors';
 import { PINTEREST_BASE, resolveBoardTarget, pinterestResourceDelete, resolveBoardId } from './utils.js';
 
 cli({

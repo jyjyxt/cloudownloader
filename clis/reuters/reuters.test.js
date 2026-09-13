@@ -1,6 +1,6 @@
 import { describe, expect, it, vi } from 'vitest';
-import { ArgumentError, AuthRequiredError, CommandExecutionError, EmptyResultError } from '@jackwener/opencli/errors';
-import { getRegistry } from '@jackwener/opencli/registry';
+import { ArgumentError, AuthRequiredError, CommandExecutionError, EmptyResultError } from '@jyjyxt/cloudl/errors';
+import { getRegistry } from '@jyjyxt/cloudl/registry';
 import './search.js';
 import './article-detail.js';
 import { buildArticleDetailScript, buildSearchScript, isAuthStatus, looksAuthWallText, mapArticleDetail, mapSearchArticles, parseLimit } from './utils.js';

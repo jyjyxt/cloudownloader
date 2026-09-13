@@ -1,5 +1,5 @@
-import { htmlToMarkdown } from '@jackwener/opencli/utils';
-import { ArgumentError, AuthRequiredError, CommandExecutionError, TimeoutError } from '@jackwener/opencli/errors';
+import { htmlToMarkdown } from '@jyjyxt/cloudl/utils';
+import { ArgumentError, AuthRequiredError, CommandExecutionError, TimeoutError } from '@jyjyxt/cloudl/errors';
 
 export const QIANWEN_DOMAIN = 'www.qianwen.com';
 export const QIANWEN_URL = 'https://www.qianwen.com/';
@@ -46,7 +46,7 @@ export async function dismissLoginModal(page) {
     ${IS_VISIBLE_JS}
     const modal = document.querySelector('[role=alert-biz-modal]');
     if (!modal || !isVisible(modal)) return { dismissed: false };
-    const close = modal.querySelector('[data-opencli-ref]:last-of-type')
+    const close = modal.querySelector('[data-cloudl-ref]:last-of-type')
       || modal.querySelector('svg')?.closest('[role=button], button, div[class*="close"]');
     const closeCandidates = Array.from(modal.querySelectorAll('div, button, span'))
       .filter((node) => node instanceof HTMLElement && isVisible(node))

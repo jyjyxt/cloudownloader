@@ -6,8 +6,8 @@
  * extractor and wait helper against the `freetravel` search section. A
  * destination with no packages raises `EmptyResultError`.
  */
-import { AuthRequiredError, CommandExecutionError, EmptyResultError } from '@jackwener/opencli/errors';
-import { cli, Strategy } from '@jackwener/opencli/registry';
+import { AuthRequiredError, CommandExecutionError, EmptyResultError } from '@jyjyxt/cloudl/errors';
+import { cli, Strategy } from '@jyjyxt/cloudl/registry';
 import {
     WAIT_FOR_VACATIONS_JS,
     buildPackageListUrl,

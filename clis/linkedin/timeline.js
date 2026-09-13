@@ -1,5 +1,5 @@
-import { cli, Strategy } from '@jackwener/opencli/registry';
-import { AuthRequiredError, EmptyResultError } from '@jackwener/opencli/errors';
+import { cli, Strategy } from '@jyjyxt/cloudl/registry';
+import { AuthRequiredError, EmptyResultError } from '@jyjyxt/cloudl/errors';
 import { compactRepeatedText } from './shared.js';
 function normalizeWhitespace(value) {
     return String(value ?? '').replace(/\s+/g, ' ').trim();

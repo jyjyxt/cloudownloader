@@ -1,4 +1,4 @@
-import { cli, Strategy } from '@jackwener/opencli/registry';
+import { cli, Strategy } from '@jyjyxt/cloudl/registry';
 import { MANUS_DOMAIN, ensureOnManus, MANUS_API_CALL_JS, requireObject, requireString } from './_utils.js';
 
 cli({

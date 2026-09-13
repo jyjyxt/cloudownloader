@@ -8,8 +8,8 @@
  * `url` column links to the complete article).
  */
 
-import { cli, Strategy } from '@jackwener/opencli/registry';
-import { EmptyResultError } from '@jackwener/opencli/errors';
+import { cli, Strategy } from '@jyjyxt/cloudl/registry';
+import { EmptyResultError } from '@jyjyxt/cloudl/errors';
 import {
     DCD_BASE,
     KOUBEI_COLUMNS,

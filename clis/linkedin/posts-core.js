@@ -1,4 +1,4 @@
-import { CommandExecutionError, EmptyResultError } from '@jackwener/opencli/errors';
+import { CommandExecutionError, EmptyResultError } from '@jyjyxt/cloudl/errors';
 import {
   assertLinkedInAuthenticated,
   assertSafeLinkedinUrl,

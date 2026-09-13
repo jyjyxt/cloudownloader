@@ -1,7 +1,7 @@
 import * as fs from 'node:fs';
 import * as path from 'node:path';
-import { cli, Strategy } from '@jackwener/opencli/registry';
-import { ArgumentError, AuthRequiredError, CommandExecutionError } from '@jackwener/opencli/errors';
+import { cli, Strategy } from '@jyjyxt/cloudl/registry';
+import { ArgumentError, AuthRequiredError, CommandExecutionError } from '@jyjyxt/cloudl/errors';
 import { installInstagramProtocolCapture, readInstagramProtocolCapture, } from './_shared/protocol-capture.js';
 import { publishMediaViaPrivateApi, publishImagesViaPrivateApi, resolveInstagramPrivatePublishConfig, } from './_shared/private-publish.js';
 import { resolveCurrentUserId, resolveInstagramRuntimeInfo } from './_shared/runtime-info.js';
@@ -422,10 +422,10 @@ async function findUploadSelectors(page, mediaItems) {
         .filter((el, index, arr) => arr.indexOf(el) === index);
       if (!ordered.length) return { ok: false };
 
-      document.querySelectorAll('[data-opencli-ig-upload-index]').forEach((el) => el.removeAttribute('data-opencli-ig-upload-index'));
+      document.querySelectorAll('[data-cloudl-ig-upload-index]').forEach((el) => el.removeAttribute('data-cloudl-ig-upload-index'));
       const selectors = ordered.map((input, index) => {
-        input.setAttribute('data-opencli-ig-upload-index', String(index));
-        return '[data-opencli-ig-upload-index="' + index + '"]';
+        input.setAttribute('data-cloudl-ig-upload-index', String(index));
+        return '[data-cloudl-ig-upload-index="' + index + '"]';
       });
       return { ok: true, selectors };
     })(${JSON.stringify(includesVideo)})
@@ -462,7 +462,7 @@ async function resolveUploadSelectors(page, mediaItems) {
     }
 }
 function extractSelectorIndex(selector) {
-    const match = selector.match(/data-opencli-ig-upload-index="(\d+)"/);
+    const match = selector.match(/data-cloudl-ig-upload-index="(\d+)"/);
     if (!match)
         return null;
     const index = Number.parseInt(match[1] || '', 10);
@@ -489,7 +489,7 @@ async function injectImageViaBrowser(page, imagePaths, selector) {
             base64: fs.readFileSync(imagePath).toString('base64'),
         };
     });
-    const chunkKey = `__opencliInstagramUpload_${Date.now()}_${Math.random().toString(36).slice(2)}`;
+    const chunkKey = `__cloudlInstagramUpload_${Date.now()}_${Math.random().toString(36).slice(2)}`;
     const chunkSize = 256 * 1024;
     await page.evaluate(`
     (() => {
@@ -1410,7 +1410,7 @@ cli({
         const finalPreviewWaitSeconds = getFinalPreviewWaitSeconds(mediaItems);
         const preShareDelaySeconds = getPreShareDelaySeconds(mediaItems);
         const inlineUploadRetryBudget = getInlineUploadRetryBudget(mediaItems);
-        const protocolCaptureEnabled = process.env.OPENCLI_INSTAGRAM_CAPTURE === '1';
+        const protocolCaptureEnabled = process.env.CLOUDL_INSTAGRAM_CAPTURE === '1';
         const protocolCaptureData = [];
         const protocolCaptureErrors = [];
         const installProtocolCapture = async () => {

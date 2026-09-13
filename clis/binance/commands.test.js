@@ -1,6 +1,6 @@
-import { getRegistry } from '@jackwener/opencli/registry';
+import { getRegistry } from '@jyjyxt/cloudl/registry';
 import { afterEach, describe, expect, it, vi } from 'vitest';
-import { executePipeline } from '@jackwener/opencli/pipeline';
+import { executePipeline } from '@jyjyxt/cloudl/pipeline';
 
 // Import all binance adapters to register them
 import './top.js';

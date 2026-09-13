@@ -1,8 +1,8 @@
 // Shared helpers for the bbc adapters that hit BBC's public RSS feeds.
-import { ArgumentError, CommandExecutionError } from '@jackwener/opencli/errors';
+import { ArgumentError, CommandExecutionError } from '@jyjyxt/cloudl/errors';
 
 export const BBC_FEED_BASE = 'https://feeds.bbci.co.uk/news';
-const UA = 'opencli-bbc-adapter (+https://github.com/jyjyxt/cloudownloader)';
+const UA = 'cloudl-bbc-adapter (+https://github.com/jyjyxt/cloudownloader)';
 
 const HTML_ENTITIES = {
     '&amp;': '&', '&lt;': '<', '&gt;': '>', '&quot;': '"', '&apos;': "'", '&#39;': "'", '&nbsp;': ' ',

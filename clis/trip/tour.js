@@ -8,8 +8,8 @@
  * `buildTourSearchJs` in utils). Per-departure pricing and availability sit behind
  * the booking step; the row `price` is the starting per-person estimate shown.
  */
-import { ArgumentError, AuthRequiredError, CommandExecutionError, EmptyResultError } from '@jackwener/opencli/errors';
-import { cli, Strategy } from '@jackwener/opencli/registry';
+import { ArgumentError, AuthRequiredError, CommandExecutionError, EmptyResultError } from '@jyjyxt/cloudl/errors';
+import { cli, Strategy } from '@jyjyxt/cloudl/registry';
 import { buildTourSearchJs, buildTourSearchUrl, parseKeyword, parseListLimit } from './utils.js';
 
 const TOUR_TABS = { private: 'privateTours', group: 'groupTours' };

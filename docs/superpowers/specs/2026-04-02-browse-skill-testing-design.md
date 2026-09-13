@@ -69,16 +69,16 @@ last command's output:
 
 ## Layer 2: Claude Code Skill E2E Testing
 
-Spawns Claude Code with the opencli-browser skill to complete tasks
+Spawns Claude Code with the cloudl-browser skill to complete tasks
 autonomously using browse commands.
 
 ### How It Works
 
 ```bash
 claude -p \
-  --system-prompt "$(cat skills/opencli-browser/SKILL.md)" \
+  --system-prompt "$(cat skills/cloudl-browser/SKILL.md)" \
   --dangerously-skip-permissions \
-  --allowedTools "Bash(opencli:*)" \
+  --allowedTools "Bash(cloudl:*)" \
   --output-format json \
   "用 cloudl browse 完成任务：Extract the top 5 stories from Hacker News with title and score. Start URL: https://news.ycombinator.com"
 ```

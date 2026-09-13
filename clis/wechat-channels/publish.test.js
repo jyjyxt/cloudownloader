@@ -2,8 +2,8 @@ import * as fs from 'node:fs';
 import * as os from 'node:os';
 import * as path from 'node:path';
 import { describe, expect, it, vi } from 'vitest';
-import { getRegistry } from '@jackwener/opencli/registry';
-import { ArgumentError } from '@jackwener/opencli/errors';
+import { getRegistry } from '@jyjyxt/cloudl/registry';
+import { ArgumentError } from '@jyjyxt/cloudl/errors';
 import { __test__ } from './publish.js';
 
 function createPageMock(overrides = {}) {
@@ -18,7 +18,7 @@ function createPageMock(overrides = {}) {
 }
 
 function makeTempVideo(ext = '.mp4') {
-  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'opencli-wechat-channels-publish-'));
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'cloudl-wechat-channels-publish-'));
   const file = path.join(dir, `demo${ext}`);
   fs.writeFileSync(file, Buffer.from([0x00, 0x00, 0x00, 0x18]));
   return file;

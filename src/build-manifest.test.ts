@@ -25,7 +25,7 @@ describe('manifest helper rules', () => {
   });
 
   it('skips TS files that do not register a cli', () => {
-    const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'opencli-manifest-'));
+    const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'cloudl-manifest-'));
     tempDirs.push(dir);
     const file = path.join(dir, 'utils.ts');
     fs.writeFileSync(file, `export function helper() { return 'noop'; }`);
@@ -36,7 +36,7 @@ describe('manifest helper rules', () => {
   it('builds TS manifest entries from exported runtime commands', async () => {
     const site = `manifest-hydrate-${Date.now()}`;
     const key = `${site}/dynamic`;
-    const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'opencli-manifest-'));
+    const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'cloudl-manifest-'));
     tempDirs.push(dir);
     const file = path.join(dir, `${site}.ts`);
     fs.writeFileSync(file, `export const command = cli({ site: '${site}', name: 'dynamic', access: 'read' });`);
@@ -103,7 +103,7 @@ describe('manifest helper rules', () => {
   it('falls back to registry delta for side-effect-only cli modules', async () => {
     const site = `manifest-side-effect-${Date.now()}`;
     const key = `${site}/legacy`;
-    const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'opencli-manifest-'));
+    const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'cloudl-manifest-'));
     tempDirs.push(dir);
     const file = path.join(dir, `${site}.ts`);
     fs.writeFileSync(file, `cli({ site: '${site}', name: 'legacy', access: 'read' });`);
@@ -141,7 +141,7 @@ describe('manifest helper rules', () => {
     const site = `manifest-multi-${Date.now()}`;
     const screenKey = `${site}/screen`;
     const statusKey = `${site}/status`;
-    const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'opencli-manifest-'));
+    const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'cloudl-manifest-'));
     tempDirs.push(dir);
     const file = path.join(dir, `${site}.ts`);
     fs.writeFileSync(file, `export const screen = cli({ site: '${site}', name: 'screen', access: 'read' });`);
@@ -191,7 +191,7 @@ describe('manifest helper rules', () => {
     // Reproduces the "stale dist drops adapters silently" incident: the file
     // matches the cli() pattern (so it's not just a helper), but the importer
     // throws — we want the failure surfaced, not swallowed.
-    const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'opencli-manifest-fail-'));
+    const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'cloudl-manifest-fail-'));
     tempDirs.push(dir);
     const file = path.join(dir, 'broken.ts');
     fs.writeFileSync(file, `export const command = cli({ site: 'demo', name: 'broken', access: 'read' });`);
@@ -215,7 +215,7 @@ describe('manifest helper rules', () => {
     // The cli() pattern check happens before importing — we don't even ask
     // the importer about helper modules, so a thrown import does not turn
     // them into failures.
-    const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'opencli-manifest-helper-'));
+    const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'cloudl-manifest-helper-'));
     tempDirs.push(dir);
     const file = path.join(dir, 'helper.ts');
     fs.writeFileSync(file, `export const helper = () => 42;`);
@@ -224,7 +224,7 @@ describe('manifest helper rules', () => {
   });
 
   it('scanClisDir aggregates per-adapter import failures instead of silently dropping them', async () => {
-    const root = fs.mkdtempSync(path.join(os.tmpdir(), 'opencli-clis-'));
+    const root = fs.mkdtempSync(path.join(os.tmpdir(), 'cloudl-clis-'));
     tempDirs.push(root);
     const siteDir = path.join(root, 'demo');
     fs.mkdirSync(siteDir);

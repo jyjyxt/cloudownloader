@@ -4,8 +4,8 @@
  * Medium autosaves stories while they are being edited. This command waits
  * for that save acknowledgement and deliberately never opens the publish UI.
  */
-import { cli, Strategy } from '@jackwener/opencli/registry';
-import { ArgumentError, CommandExecutionError, TimeoutError } from '@jackwener/opencli/errors';
+import { cli, Strategy } from '@jyjyxt/cloudl/registry';
+import { ArgumentError, CommandExecutionError, TimeoutError } from '@jyjyxt/cloudl/errors';
 import { fillStory, waitForEditor } from './publish.js';
 import fs from 'node:fs';
 import path from 'node:path';
@@ -86,7 +86,7 @@ async function uploadInlineImage(page, imagePath, index) {
         }
         if (!input) return { ok: false, reason: 'Medium image file input not found' };
 
-        const marker = 'data-opencli-medium-image-upload';
+        const marker = 'data-cloudl-medium-image-upload';
         const value = String(Date.now()) + '-' + Math.random().toString(36).slice(2);
         input.setAttribute(marker, value);
         return {

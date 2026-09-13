@@ -17,7 +17,7 @@ export interface ExternalCliInstall {
 }
 
 export interface ExternalCliConfig {
-  /** User-facing OpenCLI subcommand and, by default, the executable name. */
+  /** User-facing Cloudl subcommand and, by default, the executable name. */
   name: string;
   binary: string;
   /**
@@ -35,7 +35,7 @@ export interface ExternalCliConfig {
 
 function getUserRegistryPath(): string {
   const home = os.homedir();
-  return path.join(home, '.opencli', 'external-clis.yaml');
+  return path.join(home, '.cloudl', 'external-clis.yaml');
 }
 
 let _cachedExternalClis: ExternalCliConfig[] | null = null;

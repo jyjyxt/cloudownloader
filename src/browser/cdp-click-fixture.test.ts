@@ -46,7 +46,7 @@ describe('CDP-primary click dropdown fixtures', () => {
       });
     });
 
-    // Baseline: DOM el.click() dispatches click only. This is the old OpenCLI
+    // Baseline: DOM el.click() dispatches click only. This is the old Cloudl
     // failure mode: the command reports success but the dropdown never opens.
     trigger.click();
     expect(trigger.getAttribute('aria-expanded')).toBe('false');

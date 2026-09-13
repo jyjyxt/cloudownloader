@@ -1,4 +1,4 @@
-import { CommandExecutionError } from '@jackwener/opencli/errors';
+import { CommandExecutionError } from '@jyjyxt/cloudl/errors';
 import { fetchJson, requireOkPayload } from './utils.js';
 
 const RELATION_VERIFY_TIMEOUT_MS = 5000;

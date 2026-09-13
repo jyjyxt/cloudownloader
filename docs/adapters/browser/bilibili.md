@@ -83,7 +83,7 @@ cloudl bilibili comments BV1xx411c7mD --parent 123456789 --limit 10
 cloudl bilibili comments BV1xx411c7mD --top
 
 # Post a comment or reply. The write only happens with --execute.
-cloudl bilibili comment BV1xx411c7mD "这条评论来自 OpenCLI" --execute
+cloudl bilibili comment BV1xx411c7mD "这条评论来自 Cloudl" --execute
 cloudl bilibili comment BV1xx411c7mD "回复楼主" --parent 123456789 --execute
 
 # JSON output

@@ -1,6 +1,6 @@
 import { describe, expect, it, vi } from 'vitest';
-import { getRegistry } from '@jackwener/opencli/registry';
-import { ArgumentError, AuthRequiredError, CommandExecutionError, EmptyResultError } from '@jackwener/opencli/errors';
+import { getRegistry } from '@jyjyxt/cloudl/registry';
+import { ArgumentError, AuthRequiredError, CommandExecutionError, EmptyResultError } from '@jyjyxt/cloudl/errors';
 import './notifications.js';
 
 const identity = {
@@ -76,14 +76,14 @@ describe('jike notifications API pagination', () => {
             }),
             notification('notification-3', 'PRODUCT_PAGE_VOTED', {
                 actionItem: { users: [{ screenName: 'Dave' }], behavior: '赞了你的产品页' },
-                referenceItem: { content: 'OpenCLI' },
+                referenceItem: { content: 'Cloudl' },
             }),
         ]));
 
         await expect(command().func(page, { limit: 20 })).resolves.toEqual([
             { type: '评论了你的动态', user: 'Bob', content: 'hello world', time: '2026-08-25T00:00:00.000Z' },
             { type: '@了你', user: 'Carol', content: '@Alice hi', time: '2026-08-25T00:00:00.000Z' },
-            { type: '赞了你的产品页', user: 'Dave', content: 'OpenCLI', time: '2026-08-25T00:00:00.000Z' },
+            { type: '赞了你的产品页', user: 'Dave', content: 'Cloudl', time: '2026-08-25T00:00:00.000Z' },
         ]);
     });
 

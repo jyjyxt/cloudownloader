@@ -8,8 +8,8 @@
  * Round-trip search lives in the sibling `flight-round` command; advanced filters
  * (airline whitelist, cabin selection beyond 全舱位) remain out of scope here.
  */
-import { ArgumentError, AuthRequiredError, CommandExecutionError, EmptyResultError, TimeoutError } from '@jackwener/opencli/errors';
-import { cli, Strategy } from '@jackwener/opencli/registry';
+import { ArgumentError, AuthRequiredError, CommandExecutionError, EmptyResultError, TimeoutError } from '@jyjyxt/cloudl/errors';
+import { cli, Strategy } from '@jyjyxt/cloudl/registry';
 import { parseIataCode, parseIsoDate, parseStrictIntegerRange } from './utils.js';
 
 const MIN_LIMIT = 1;

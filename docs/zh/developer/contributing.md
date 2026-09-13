@@ -5,7 +5,7 @@
 ## 快速开始
 
 ```bash
-git clone git@github.com:<your-username>/opencli.git
+git clone git@github.com:<your-username>/cloudl.git
 cd cloudl
 npm install
 npm run build

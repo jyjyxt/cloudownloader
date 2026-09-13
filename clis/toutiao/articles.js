@@ -2,8 +2,8 @@
  * Toutiao creator-backend article list — extracts article rows + basic metrics
  * from the rendered creator dashboard page text.
  */
-import { cli, Strategy } from '@jackwener/opencli/registry';
-import { AuthRequiredError, CommandExecutionError, EmptyResultError } from '@jackwener/opencli/errors';
+import { cli, Strategy } from '@jyjyxt/cloudl/registry';
+import { AuthRequiredError, CommandExecutionError, EmptyResultError } from '@jyjyxt/cloudl/errors';
 import { looksToutiaoAuthWallText, parseArticlesPage, parseToutiaoArticlesText } from './utils.js';
 
 cli({

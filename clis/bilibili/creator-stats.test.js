@@ -5,8 +5,8 @@ import {
     CommandExecutionError,
     EmptyResultError,
     TimeoutError,
-} from '@jackwener/opencli/errors';
-import { getRegistry, Strategy } from '@jackwener/opencli/registry';
+} from '@jyjyxt/cloudl/errors';
+import { getRegistry, Strategy } from '@jyjyxt/cloudl/registry';
 import './creator-stats.js';
 
 const BVID = 'BV1xx411c7mD';

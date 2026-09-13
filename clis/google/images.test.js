@@ -34,8 +34,8 @@ describe('google images', () => {
     it('rejects empty query and invalid limits before navigation', async () => {
         const page = createPageMock();
         await expect(command.func(page, { keyword: ' ', limit: 5 })).rejects.toMatchObject({ code: 'ARGUMENT' });
-        await expect(command.func(page, { keyword: 'opencli', limit: 0 })).rejects.toMatchObject({ code: 'ARGUMENT' });
-        await expect(command.func(page, { keyword: 'opencli', limit: 101 })).rejects.toMatchObject({ code: 'ARGUMENT' });
+        await expect(command.func(page, { keyword: 'cloudl', limit: 0 })).rejects.toMatchObject({ code: 'ARGUMENT' });
+        await expect(command.func(page, { keyword: 'cloudl', limit: 101 })).rejects.toMatchObject({ code: 'ARGUMENT' });
         expect(page.goto).not.toHaveBeenCalled();
     });
 

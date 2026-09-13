@@ -1,5 +1,5 @@
-import { ArgumentError, AuthRequiredError, CommandExecutionError } from '@jackwener/opencli/errors';
-import { cli, Strategy } from '@jackwener/opencli/registry';
+import { ArgumentError, AuthRequiredError, CommandExecutionError } from '@jyjyxt/cloudl/errors';
+import { cli, Strategy } from '@jyjyxt/cloudl/registry';
 import { canonicalizeProductUrl, normalizeProductId, requireProductIdArg } from './utils.js';
 function escapeJsString(value) {
     return JSON.stringify(value);

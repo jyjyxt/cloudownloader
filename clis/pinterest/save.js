@@ -1,6 +1,6 @@
 // Pinterest save — repin an existing pin to your profile or a board (RepinResource/create; no board_id → profile).
-import { cli, Strategy } from '@jackwener/opencli/registry';
-import { ArgumentError, CommandExecutionError } from '@jackwener/opencli/errors';
+import { cli, Strategy } from '@jyjyxt/cloudl/registry';
+import { ArgumentError, CommandExecutionError } from '@jyjyxt/cloudl/errors';
 import { PINTEREST_BASE, movePinToSection, parsePinId, pinterestResourceCreate, resolveBoardId, resolveBoardTarget, resolveSection } from './utils.js';
 
 cli({

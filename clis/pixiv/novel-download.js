@@ -1,5 +1,5 @@
-import { cli, Strategy } from '@jackwener/opencli/registry';
-import { ArgumentError } from '@jackwener/opencli/errors';
+import { cli, Strategy } from '@jyjyxt/cloudl/registry';
+import { ArgumentError } from '@jyjyxt/cloudl/errors';
 import { fetchNovelForDownload, normalizeNovelFileFormat, normalizePixivOutputRoot, writeNovelFile } from './novel-download-utils.js';
 
 cli({

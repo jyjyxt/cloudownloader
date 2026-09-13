@@ -60,7 +60,7 @@
 
 ```typescript
 /**
- * Generate JS to wait until window.__opencli_xhr has ≥1 captured response.
+ * Generate JS to wait until window.__cloudl_xhr has ≥1 captured response.
  * Polls every 100ms. Resolves 'captured' on success; rejects after maxMs.
  * Used after installInterceptor() + goto() instead of a fixed sleep.
  */
@@ -69,7 +69,7 @@ export function waitForCaptureJs(maxMs: number): string {
     new Promise((resolve, reject) => {
       const deadline = Date.now() + ${maxMs};
       const check = () => {
-        if ((window.__opencli_xhr || []).length > 0) return resolve('captured');
+        if ((window.__cloudl_xhr || []).length > 0) return resolve('captured');
         if (Date.now() > deadline) return reject(new Error('No network capture within ${maxMs / 1000}s'));
         setTimeout(check, 100);
       };
@@ -108,36 +108,36 @@ describe('waitForCaptureJs', () => {
     const code = waitForCaptureJs(1000);
     expect(typeof code).toBe('string');
     expect(code.length).toBeGreaterThan(0);
-    expect(code).toContain('__opencli_xhr');
+    expect(code).toContain('__cloudl_xhr');
     expect(code).toContain('resolve');
     expect(code).toContain('reject');
   });
 
-  it('resolves "captured" when __opencli_xhr is populated before deadline', async () => {
+  it('resolves "captured" when __cloudl_xhr is populated before deadline', async () => {
     const g = globalThis as any;
-    g.__opencli_xhr = [];
+    g.__cloudl_xhr = [];
     const code = waitForCaptureJs(1000);
     const promise = eval(code) as Promise<string>;
-    g.__opencli_xhr.push({ data: 'test' });
+    g.__cloudl_xhr.push({ data: 'test' });
     await expect(promise).resolves.toBe('captured');
-    delete g.__opencli_xhr;
+    delete g.__cloudl_xhr;
   });
 
-  it('rejects when __opencli_xhr stays empty past deadline', async () => {
+  it('rejects when __cloudl_xhr stays empty past deadline', async () => {
     const g = globalThis as any;
-    g.__opencli_xhr = [];
+    g.__cloudl_xhr = [];
     const code = waitForCaptureJs(50); // 50ms timeout
     const promise = eval(code) as Promise<string>;
     await expect(promise).rejects.toThrow('No network capture within 0.05s');
-    delete g.__opencli_xhr;
+    delete g.__cloudl_xhr;
   });
 
-  it('resolves immediately when __opencli_xhr already has data', async () => {
+  it('resolves immediately when __cloudl_xhr already has data', async () => {
     const g = globalThis as any;
-    g.__opencli_xhr = [{ data: 'already here' }];
+    g.__cloudl_xhr = [{ data: 'already here' }];
     const code = waitForCaptureJs(1000);
     await expect(eval(code) as Promise<string>).resolves.toBe('captured');
-    delete g.__opencli_xhr;
+    delete g.__cloudl_xhr;
   });
 });
 
@@ -171,7 +171,7 @@ describe('waitForSelectorJs', () => {
 - [ ] **Step 3: Run tests to verify they fail (functions not yet exported)**
 
 ```bash
-cd /Users/jakevin/code/opencli
+cd /Users/jakevin/code/cloudl
 npx vitest run --project unit src/browser/dom-helpers.test.ts
 ```
 Expected: Tests for `waitForCaptureJs` pass (function exists), tests for `waitForSelectorJs` fail (not yet added).
@@ -439,7 +439,7 @@ git commit -m "feat(perf): implement waitForCapture() and wait({ selector }) in 
 **Files:**
 - Modify: `src/pipeline/steps/intercept.ts`
 
-The current `stepIntercept` uses `generateInterceptorJs`/`generateReadInterceptedJs` directly, writing to `__opencli_intercepted`. We unify this to use `page.installInterceptor()` (→ `__opencli_xhr`) + `page.waitForCapture()` + `page.getInterceptedRequests()`.
+The current `stepIntercept` uses `generateInterceptorJs`/`generateReadInterceptedJs` directly, writing to `__cloudl_intercepted`. We unify this to use `page.installInterceptor()` (→ `__cloudl_xhr`) + `page.waitForCapture()` + `page.getInterceptedRequests()`.
 
 - [ ] **Step 1: Rewrite `src/pipeline/steps/intercept.ts`**
 
@@ -448,7 +448,7 @@ The current `stepIntercept` uses `generateInterceptorJs`/`generateReadIntercepte
  * Pipeline step: intercept — declarative XHR interception.
  */
 
-import type { IPage } from '@jackwener/opencli/types';
+import type { IPage } from '@jyjyxt/cloudl/types';
 import { render, normalizeEvaluateSource } from '../template.js';
 
 export async function stepIntercept(page: IPage | null, params: any, data: any, args: Record<string, any>): Promise<any> {
@@ -1124,7 +1124,7 @@ gh pr create \
 
 Three layered performance + correctness improvements:
 
-- **Layer 1 — `waitForCapture()`**: Fixes a correctness bug in INTERCEPT adapters where `wait(N)` (now DOM-stable-aware) could return before network captures arrive. Adds `waitForCapture(timeout)` to `IPage` — polls `window.__opencli_xhr` at 100ms intervals, resolves as soon as ≥1 capture exists. Applied to 36kr, twitter/search, followers, following, notifications, producthunt.
+- **Layer 1 — `waitForCapture()`**: Fixes a correctness bug in INTERCEPT adapters where `wait(N)` (now DOM-stable-aware) could return before network captures arrive. Adds `waitForCapture(timeout)` to `IPage` — polls `window.__cloudl_xhr` at 100ms intervals, resolves as soon as ≥1 capture exists. Applied to 36kr, twitter/search, followers, following, notifications, producthunt.
 - **Layer 2 — `wait({ selector })`**: Extends `WaitOptions` with `selector?: string`. Adds `waitForSelectorJs()` to dom-helpers. Applied to 14 Twitter adapters (replacing `wait(5)` "React hydration" waits with precise element checks) and medium/substack/bloomberg/sinablog (removing duplicate inner `setTimeout` inside `evaluate()`).
 - **Layer 3 — daemon backoff**: Replaces fixed 300ms poll with exponential backoff (50→100→200→400→800ms) in `_ensureDaemon()`. Cold-start first-success at ~150ms vs ~600ms.
 

@@ -1,4 +1,4 @@
-import { cli, Strategy } from '@jackwener/opencli/registry';
+import { cli, Strategy } from '@jyjyxt/cloudl/registry';
 import {
   activityScript,
   approveTraePrompts,
@@ -44,7 +44,7 @@ export const watchCommand = cli({
   name: 'watch',
   access: 'write',
   description: 'Sample Trae CN activity over time to monitor long-running tasks; optionally approve visible terminal/delete prompts',
-  example: 'OPENCLI_CDP_ENDPOINT=http://127.0.0.1:39240 OPENCLI_CDP_TARGET=talk cloudl trae-cn watch --stream true --duration 120',
+  example: 'CLOUDL_CDP_ENDPOINT=http://127.0.0.1:39240 CLOUDL_CDP_TARGET=talk cloudl trae-cn watch --stream true --duration 120',
   domain: 'localhost',
   strategy: Strategy.UI,
   browser: true,

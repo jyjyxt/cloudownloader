@@ -1,6 +1,6 @@
 /**
  * Extended E2E tests for all other browser commands.
- * Opt-in only: OPENCLI_E2E=1 npx vitest run
+ * Opt-in only: CLOUDL_E2E=1 npx vitest run
  */
 
 import { describe, it, expect } from 'vitest';

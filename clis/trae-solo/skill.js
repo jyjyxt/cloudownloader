@@ -15,12 +15,12 @@
 // they can prove install/uninstall/run/toggle postconditions instead of only
 // proving a button click.
 
-import { cli, Strategy } from '@jackwener/opencli/registry';
+import { cli, Strategy } from '@jyjyxt/cloudl/registry';
 import {
     ArgumentError,
     CommandExecutionError,
     EmptyResultError,
-} from '@jackwener/opencli/errors';
+} from '@jyjyxt/cloudl/errors';
 import { switchToPanel } from './_actions.js';
 
 const SESSION_HINT = 'Make sure TRAE SOLO is running and the Skills panel is reachable.';

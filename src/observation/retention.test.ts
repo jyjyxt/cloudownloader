@@ -9,7 +9,7 @@ describe('trace artifact retention', () => {
   let tracesDir: string;
 
   beforeEach(() => {
-    tmpDir = fs.mkdtempSync(path.join(os.tmpdir(), 'opencli-trace-retention-'));
+    tmpDir = fs.mkdtempSync(path.join(os.tmpdir(), 'cloudl-trace-retention-'));
     tracesDir = path.join(tmpDir, 'profiles', 'default', 'traces');
     fs.mkdirSync(tracesDir, { recursive: true });
   });

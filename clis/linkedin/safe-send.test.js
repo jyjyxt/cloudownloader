@@ -1,6 +1,6 @@
 import { describe, expect, it, vi } from 'vitest';
-import { getRegistry } from '@jackwener/opencli/registry';
-import { ArgumentError, CommandExecutionError } from '@jackwener/opencli/errors';
+import { getRegistry } from '@jyjyxt/cloudl/registry';
+import { ArgumentError, CommandExecutionError } from '@jyjyxt/cloudl/errors';
 import './safe-send.js';
 
 const {
@@ -16,10 +16,10 @@ function makeFakePage(probe) {
     wait: vi.fn(async () => undefined),
     evaluate: vi.fn(async (script) => {
       const text = String(script);
-      if (text.includes('__OPENCLI_LINKEDIN_PROBE__')) return probe;
-      if (text.includes('__OPENCLI_LINKEDIN_FOCUS_COMPOSER__')) return { ok: true, composerText: '' };
-      if (text.includes('__OPENCLI_LINKEDIN_READ_COMPOSER__')) return { ok: true, composerText };
-      if (text.includes('__OPENCLI_LINKEDIN_CLICK_SEND__')) return { ok: true, sent: true };
+      if (text.includes('__CLOUDL_LINKEDIN_PROBE__')) return probe;
+      if (text.includes('__CLOUDL_LINKEDIN_FOCUS_COMPOSER__')) return { ok: true, composerText: '' };
+      if (text.includes('__CLOUDL_LINKEDIN_READ_COMPOSER__')) return { ok: true, composerText };
+      if (text.includes('__CLOUDL_LINKEDIN_CLICK_SEND__')) return { ok: true, sent: true };
       return undefined;
     }),
     insertText: vi.fn(async (text) => {

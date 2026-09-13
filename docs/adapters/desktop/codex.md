@@ -1,6 +1,6 @@
 # Codex
 
-Control the **OpenAI Codex Desktop App** headless or headfully via Chrome DevTools Protocol (CDP). Because Codex is built on Electron, OpenCLI can directly drive its internal UI, automate slash commands, and manipulate its AI agent threads.
+Control the **OpenAI Codex Desktop App** headless or headfully via Chrome DevTools Protocol (CDP). Because Codex is built on Electron, Cloudl can directly drive its internal UI, automate slash commands, and manipulate its AI agent threads.
 
 ## Prerequisites
 
@@ -11,12 +11,12 @@ Control the **OpenAI Codex Desktop App** headless or headfully via Chrome DevToo
    /Applications/Codex.app/Contents/MacOS/ChatGPT --remote-debugging-port=9238 --remote-allow-origins=*
    ```
 
-   > Depending on your installation, the executable might be named differently, e.g., `Codex` instead of `ChatGPT`. OpenCLI's auto-launch path tries `ChatGPT` first, then `Codex`.
+   > Depending on your installation, the executable might be named differently, e.g., `Codex` instead of `ChatGPT`. Cloudl's auto-launch path tries `ChatGPT` first, then `Codex`.
 
 ## Setup
 
 ```bash
-export OPENCLI_CDP_ENDPOINT="http://127.0.0.1:9238"
+export CLOUDL_CDP_ENDPOINT="http://127.0.0.1:9238"
 ```
 
 ## Commands

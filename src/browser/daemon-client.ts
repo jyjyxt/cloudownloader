@@ -239,7 +239,7 @@ export interface DaemonCommand {
   idleTimeout?: number;
   /** Frame index for cross-frame operations (0-based, from 'frames' action) */
   frameIndex?: number;
-  /** Browser profile/context REQUIRED for this command (--profile / OPENCLI_PROFILE). Fails loud when offline. */
+  /** Browser profile/context REQUIRED for this command (--profile / CLOUDL_PROFILE). Fails loud when offline. */
   contextId?: string;
   /**
    * Browser profile/context PREFERRED for this command (persisted config
@@ -328,7 +328,7 @@ async function sendCommandRaw(
 ): Promise<DaemonResult> {
   const timeoutSeconds = effectiveCommandTimeoutSeconds(params);
   const deadlineAt = Date.now() + timeoutSeconds * 1000;
-  const rawWindowMode = process.env.OPENCLI_WINDOW;
+  const rawWindowMode = process.env.CLOUDL_WINDOW;
   const envWindowMode = rawWindowMode === 'foreground' || rawWindowMode === 'background'
     ? rawWindowMode
     : undefined;

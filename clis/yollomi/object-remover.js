@@ -2,9 +2,9 @@
  * Yollomi object remover — POST /api/ai/object-remover
  */
 import * as path from 'node:path';
-import { cli, Strategy } from '@jackwener/opencli/registry';
-import { CliError } from '@jackwener/opencli/errors';
-import { log } from '@jackwener/opencli/logger';
+import { cli, Strategy } from '@jyjyxt/cloudl/registry';
+import { CliError } from '@jyjyxt/cloudl/errors';
+import { log } from '@jyjyxt/cloudl/logger';
 import { YOLLOMI_DOMAIN, yollomiPost, downloadOutput, fmtBytes } from './utils.js';
 cli({
     site: 'yollomi',

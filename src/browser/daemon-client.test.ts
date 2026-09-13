@@ -46,7 +46,7 @@ describe('daemon-client', () => {
     expect(fetchMock).toHaveBeenCalledWith(
       expect.stringMatching(/\/status$/),
       expect.objectContaining({
-        headers: expect.objectContaining({ 'X-OpenCLI': '1' }),
+        headers: expect.objectContaining({ 'X-Cloudl': '1' }),
       }),
     );
   });
@@ -66,7 +66,7 @@ describe('daemon-client', () => {
       expect.stringMatching(/\/shutdown$/),
       expect.objectContaining({
         method: 'POST',
-        headers: expect.objectContaining({ 'X-OpenCLI': '1' }),
+        headers: expect.objectContaining({ 'X-Cloudl': '1' }),
       }),
     );
   });
@@ -177,9 +177,9 @@ describe('daemon-client', () => {
     expect(vi.mocked(fetch).mock.calls[1][0]).toMatch(/\/status\?contextId=work&preferredContextId=zvypsyje$/);
   });
 
-  it('rejects OPENCLI_DAEMON_PORT so CLI and extension cannot split bridge ports', async () => {
+  it('rejects CLOUDL_DAEMON_PORT so CLI and extension cannot split bridge ports', async () => {
     vi.resetModules();
-    vi.stubEnv('OPENCLI_DAEMON_PORT', '19999');
+    vi.stubEnv('CLOUDL_DAEMON_PORT', '19999');
     vi.mocked(fetch).mockResolvedValue({
       ok: true,
       json: () => Promise.resolve({
@@ -194,14 +194,14 @@ describe('daemon-client', () => {
     } as Response);
 
     const freshClient = await import('./daemon-client.js');
-    await expect(freshClient.fetchDaemonStatus()).rejects.toThrow('OPENCLI_DAEMON_PORT is no longer supported');
+    await expect(freshClient.fetchDaemonStatus()).rejects.toThrow('CLOUDL_DAEMON_PORT is no longer supported');
 
     expect(vi.mocked(fetch)).not.toHaveBeenCalled();
   });
 
-  it('tolerates OPENCLI_DAEMON_PORT when it equals the default port (launchers inject it, #2068)', async () => {
+  it('tolerates CLOUDL_DAEMON_PORT when it equals the default port (launchers inject it, #2068)', async () => {
     vi.resetModules();
-    vi.stubEnv('OPENCLI_DAEMON_PORT', '19825');
+    vi.stubEnv('CLOUDL_DAEMON_PORT', '19825');
     const status = {
       ok: true,
       pid: 1,
@@ -310,8 +310,8 @@ describe('daemon-client', () => {
     expect(vi.mocked(fetch)).toHaveBeenCalledTimes(1);
   });
 
-  it('sendCommand forwards OPENCLI_PROFILE as a hard contextId requirement', async () => {
-    vi.stubEnv('OPENCLI_PROFILE', 'work');
+  it('sendCommand forwards CLOUDL_PROFILE as a hard contextId requirement', async () => {
+    vi.stubEnv('CLOUDL_PROFILE', 'work');
     vi.spyOn(Date, 'now').mockReturnValue(1_763_000_000_000);
     vi.mocked(fetch).mockResolvedValue({
       status: 200,
@@ -329,13 +329,13 @@ describe('daemon-client', () => {
     const fs = await import('node:fs');
     const os = await import('node:os');
     const path = await import('node:path');
-    const configDir = fs.mkdtempSync(path.join(os.tmpdir(), 'opencli-dc-profile-'));
+    const configDir = fs.mkdtempSync(path.join(os.tmpdir(), 'cloudl-dc-profile-'));
     fs.writeFileSync(
       path.join(configDir, 'browser-profiles.json'),
       JSON.stringify({ version: 1, aliases: {}, defaultContextId: 'zvypsyje' }),
     );
-    vi.stubEnv('OPENCLI_CONFIG_DIR', configDir);
-    vi.stubEnv('OPENCLI_PROFILE', '');
+    vi.stubEnv('CLOUDL_CONFIG_DIR', configDir);
+    vi.stubEnv('CLOUDL_PROFILE', '');
     try {
       vi.mocked(fetch).mockResolvedValue({
         status: 200,
@@ -352,8 +352,8 @@ describe('daemon-client', () => {
     }
   });
 
-  it('sendCommand uses explicit windowMode before OPENCLI_WINDOW env fallback', async () => {
-    vi.stubEnv('OPENCLI_WINDOW', 'foreground');
+  it('sendCommand uses explicit windowMode before CLOUDL_WINDOW env fallback', async () => {
+    vi.stubEnv('CLOUDL_WINDOW', 'foreground');
     vi.mocked(fetch).mockResolvedValue({
       status: 200,
       json: () => Promise.resolve({ id: 'server', ok: true, data: 'ok' }),

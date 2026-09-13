@@ -2,10 +2,10 @@
 //
 // DefiLlama serves a public REST API (no auth) over https://api.llama.fi.
 // Docs: https://defillama.com/docs/api
-import { ArgumentError, CommandExecutionError, EmptyResultError } from '@jackwener/opencli/errors';
+import { ArgumentError, CommandExecutionError, EmptyResultError } from '@jyjyxt/cloudl/errors';
 
 export const LLAMA_BASE = 'https://api.llama.fi';
-const UA = 'opencli-defillama-adapter (+https://github.com/jyjyxt/cloudownloader)';
+const UA = 'cloudl-defillama-adapter (+https://github.com/jyjyxt/cloudownloader)';
 
 // DefiLlama slugs are lowercase with hyphens / digits / dots; allow up to 100 chars.
 const SLUG = /^[a-z0-9][a-z0-9._-]{0,99}$/;

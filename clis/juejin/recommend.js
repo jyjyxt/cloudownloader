@@ -2,8 +2,8 @@
 //
 // Hits the `recommend_all_feed` endpoint, which mirrors what the Juejin web UI
 // renders on the front page; `sort_type` 200 is the default "recommended" mix.
-import { cli, Strategy } from '@jackwener/opencli/registry';
-import { CommandExecutionError } from '@jackwener/opencli/errors';
+import { cli, Strategy } from '@jyjyxt/cloudl/registry';
+import { CommandExecutionError } from '@jyjyxt/cloudl/errors';
 import {
     juejinFetch,
     mapFeedItem,

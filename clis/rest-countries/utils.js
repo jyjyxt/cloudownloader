@@ -3,10 +3,10 @@
 // REST Countries is a free public country-metadata API, no API key required.
 // We hit v3.1 only. The `fields=` query param is mandatory in v3.1 to keep
 // payloads small; we always specify the agent-useful projection.
-import { ArgumentError, CommandExecutionError, EmptyResultError } from '@jackwener/opencli/errors';
+import { ArgumentError, CommandExecutionError, EmptyResultError } from '@jyjyxt/cloudl/errors';
 
 export const REST_COUNTRIES_BASE = 'https://restcountries.com/v3.1';
-const UA = 'opencli-rest-countries-adapter/1.0 (+https://github.com/jyjyxt/cloudownloader; mailto:opencli@example.com)';
+const UA = 'cloudl-rest-countries-adapter/1.0 (+https://github.com/jyjyxt/cloudownloader; mailto:cloudl@example.com)';
 
 // REST Countries valid region values; subregions are validated server-side.
 export const REST_COUNTRIES_REGIONS = new Set(['africa', 'americas', 'asia', 'europe', 'oceania', 'antarctic']);

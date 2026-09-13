@@ -1,5 +1,5 @@
-import { ArgumentError, CommandExecutionError } from '@jackwener/opencli/errors';
-import { cli, Strategy } from '@jackwener/opencli/registry';
+import { ArgumentError, CommandExecutionError } from '@jyjyxt/cloudl/errors';
+import { cli, Strategy } from '@jyjyxt/cloudl/registry';
 import { DRIVE_API, apiPost, findFolder, pollTask } from './utils.js';
 cli({
     site: 'quark',

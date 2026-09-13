@@ -1,8 +1,8 @@
 {
   "manifest_version": 3,
-  "name": "OpenCLI",
+  "name": "Cloudl",
   "version": "1.0.24",
-  "description": "Browser automation bridge for the OpenCLI CLI tool. Executes commands in Chrome tab leases via a local daemon.",
+  "description": "Browser automation bridge for the Cloudl CLI tool. Executes commands in Chrome tab leases via a local daemon.",
   "permissions": [
     "debugger",
     "tabs",
@@ -27,7 +27,7 @@
     "128": "icons/icon-128.png"
   },
   "action": {
-    "default_title": "OpenCLI",
+    "default_title": "Cloudl",
     "default_popup": "popup.html",
     "default_icon": {
       "16": "icons/icon-16.png",

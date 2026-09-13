@@ -122,7 +122,7 @@ describe('linux-do feed metadata resolution', () => {
         expect(request.url).toBe('/c/develop/4.json?per_page=20');
     });
     it('falls back to cached metadata when live metadata is unavailable', async () => {
-        const cacheDir = fs.mkdtempSync(path.join(os.tmpdir(), 'opencli-linux-do-cache-'));
+        const cacheDir = fs.mkdtempSync(path.join(os.tmpdir(), 'cloudl-linux-do-cache-'));
         __test__.setCacheDirForTests(cacheDir);
         fs.writeFileSync(path.join(cacheDir, 'tags.json'), JSON.stringify({
             fetchedAt: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString(),

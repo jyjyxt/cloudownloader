@@ -12,7 +12,7 @@ Launch with remote debugging port:
 ## Setup
 
 ```bash
-export OPENCLI_CDP_ENDPOINT="http://127.0.0.1:9232"
+export CLOUDL_CDP_ENDPOINT="http://127.0.0.1:9232"
 ```
 
 ## Commands

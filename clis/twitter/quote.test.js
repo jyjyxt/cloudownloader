@@ -2,8 +2,8 @@ import * as fs from 'node:fs';
 import * as os from 'node:os';
 import * as path from 'node:path';
 import { describe, expect, it, vi } from 'vitest';
-import { ArgumentError, CommandExecutionError } from '@jackwener/opencli/errors';
-import { getRegistry } from '@jackwener/opencli/registry';
+import { ArgumentError, CommandExecutionError } from '@jyjyxt/cloudl/errors';
+import { getRegistry } from '@jyjyxt/cloudl/registry';
 import { __test__ } from './quote.js';
 import './quote.js';
 import { createPageMock } from '../test-utils.js';
@@ -68,7 +68,7 @@ describe('twitter quote command', () => {
     it('uploads a local image through the quote composer when --image is provided', async () => {
         const cmd = getRegistry().get('twitter/quote');
         expect(cmd?.func).toBeTypeOf('function');
-        const tempDir = fs.mkdtempSync(path.join(os.tmpdir(), 'opencli-twitter-quote-'));
+        const tempDir = fs.mkdtempSync(path.join(os.tmpdir(), 'cloudl-twitter-quote-'));
         const imagePath = path.join(tempDir, 'banner.png');
         fs.writeFileSync(imagePath, Buffer.from([0x89, 0x50, 0x4e, 0x47]));
         const setFileInput = vi.fn().mockResolvedValue(undefined);
@@ -127,7 +127,7 @@ describe('twitter quote command', () => {
         expect(fetchMock).toHaveBeenCalledWith('https://example.com/banner');
         expect(setFileInput).toHaveBeenCalledTimes(1);
         const uploadedPath = setFileInput.mock.calls[0][0][0];
-        expect(uploadedPath).toMatch(/opencli-twitter-.*\/image\.png$/);
+        expect(uploadedPath).toMatch(/cloudl-twitter-.*\/image\.png$/);
         // Per-call tmp dir is removed in the adapter's finally block.
         expect(fs.existsSync(uploadedPath)).toBe(false);
         expect(result).toEqual([

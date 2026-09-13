@@ -1,5 +1,5 @@
-import { cli } from '@jackwener/opencli/registry';
-import { EmptyResultError } from '@jackwener/opencli/errors';
+import { cli } from '@jyjyxt/cloudl/registry';
+import { EmptyResultError } from '@jyjyxt/cloudl/errors';
 import { fetchXueqiuJson, formatChinaDate } from './utils.js';
 cli({
     site: 'xueqiu',

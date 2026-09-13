@@ -1,7 +1,7 @@
 import * as fs from 'node:fs';
 import * as path from 'node:path';
-import { cli, Strategy } from '@jackwener/opencli/registry';
-import { CommandExecutionError, TimeoutError } from '@jackwener/opencli/errors';
+import { cli, Strategy } from '@jyjyxt/cloudl/registry';
+import { CommandExecutionError, TimeoutError } from '@jyjyxt/cloudl/errors';
 import { unwrapBrowserResult } from './shared.js';
 import { isRecoverableFileInputError } from './utils.js';
 
@@ -236,7 +236,7 @@ async function submitTweet(page, text) {
         try {
             const visible = (el) => !!el && (el.offsetParent !== null || el.getClientRects().length > 0);
             for (const toast of Array.from(document.querySelectorAll('[role="alert"], [data-testid="toast"]'))) {
-                if (visible(toast)) toast.setAttribute('data-opencli-before-submit-toast', 'true');
+                if (visible(toast)) toast.setAttribute('data-cloudl-before-submit-toast', 'true');
             }
             const buttons = Array.from(document.querySelectorAll('[data-testid="tweetButtonInline"], [data-testid="tweetButton"]'));
             const btn = buttons.find((el) => visible(el) && !el.disabled && el.getAttribute('aria-disabled') !== 'true');
@@ -272,7 +272,7 @@ async function submitTweet(page, text) {
         for (let i = 0; i < ${JSON.stringify(iterations)}; i++) {
             await new Promise(r => setTimeout(r, ${JSON.stringify(SUBMIT_POLL_MS)}));
             const toasts = Array.from(document.querySelectorAll('[role="alert"], [data-testid="toast"]'))
-                .filter((el) => visible(el) && !el.hasAttribute('data-opencli-before-submit-toast'));
+                .filter((el) => visible(el) && !el.hasAttribute('data-cloudl-before-submit-toast'));
             const successToast = toasts.find((el) => /sent|posted|your post was sent|your tweet was sent/i.test(el.textContent || ''));
             if (successToast) return { ok: true, message: 'Tweet posted successfully.', ...statusUrl(successToast) };
             const alert = toasts.find((el) => /failed|error|try again|not sent|could not/i.test(el.textContent || ''));

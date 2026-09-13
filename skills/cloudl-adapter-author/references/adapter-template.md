@@ -12,8 +12,8 @@
 
 ```javascript
 // eastmoney convertible — on-market convertible bond listing.
-import { cli, Strategy } from '@jackwener/opencli/registry';
-import { CliError } from '@jackwener/opencli/errors';
+import { cli, Strategy } from '@jyjyxt/cloudl/registry';
+import { CliError } from '@jyjyxt/cloudl/errors';
 
 const SORTS = {
   change:   { fid: 'f3',   order: 'desc' },
@@ -123,7 +123,7 @@ columns: ['rank', 'bondCode', 'bondName', /* ... */ ],
 ### 3. func — 主体
 
 ```javascript
-import { ArgumentError, CommandExecutionError, EmptyResultError } from '@jackwener/opencli/errors';
+import { ArgumentError, CommandExecutionError, EmptyResultError } from '@jyjyxt/cloudl/errors';
 
 func: async (args) => {
   // 1. 解析参数 — 越界一律抛，不要 silent clamp
@@ -180,8 +180,8 @@ PUBLIC 模式不够（接口 401 / 302 到 login / 响应是"请登录"页）就
 3. Declaration 加 `browser: true`；不需要真的打开目标页时 `navigateBefore: false`。
 
 ```javascript
-import { cli, Strategy } from '@jackwener/opencli/registry';
-import { ArgumentError, AuthRequiredError, CommandExecutionError, EmptyResultError } from '@jackwener/opencli/errors';
+import { cli, Strategy } from '@jyjyxt/cloudl/registry';
+import { ArgumentError, AuthRequiredError, CommandExecutionError, EmptyResultError } from '@jyjyxt/cloudl/errors';
 
 const BASE = 'https://www.example.com';
 const HOST = 'www.example.com';
@@ -350,7 +350,7 @@ for (const opts of [{ domain: HOST }, { domain: ROOT }]) { ... }
 历史上这里写的是"返回一行说明 row 比 `return []` 安全"。**这条已经反过来了**——见 PR #1329 R3 的 four anti-pattern fixes。现在的契约：
 
 ```javascript
-import { EmptyResultError } from '@jackwener/opencli/errors';
+import { EmptyResultError } from '@jyjyxt/cloudl/errors';
 
 // ❌ 老写法：sentinel 行污染 row 合同，让 listing→detail round-trip 拿到 tid='' 白跑
 if (/暂时没有提醒内容/.test(html)) {
@@ -383,7 +383,7 @@ if (/暂时没有提醒内容/.test(html)) {
 
 ---
 
-## Verify fixture（每个 adapter 配一份 `~/.opencli/sites/<site>/verify/<name>.json`）
+## Verify fixture（每个 adapter 配一份 `~/.cloudl/sites/<site>/verify/<name>.json`）
 
 verify fixture 是"adapter 产出长什么样"的结构锚点。没有它，`cloudl browser verify` 只能证"adapter 能跑完不抛"，证不出数据没错位。**必写**。
 
@@ -430,7 +430,7 @@ named-flag adapter（`hot` / `latest` 类）可以直接让工具生成种子：
 # 1. 让 verify 先跑一遍，--write-fixture 生成种子（默认追加 --limit 3）
 cloudl browser verify 1point3acres/hot --write-fixture
 
-# 2. 手改 ~/.opencli/sites/1point3acres/verify/hot.json
+# 2. 手改 ~/.cloudl/sites/1point3acres/verify/hot.json
 #    - patterns: 加 URL / 日期 / ID 正则
 #    - notEmpty: 加核心字段（title / author / url）
 #    - rowCount: 收紧到业务合理区间
@@ -445,7 +445,7 @@ positional adapter 目前 `--write-fixture` 没法表达主语，**首份 fixtur
 # 1. 先直跑 adapter 看输出长啥样
 cloudl 1point3acres thread 1173710 --limit 2 --format json | head
 
-# 2. 照着响应手写 ~/.opencli/sites/1point3acres/verify/thread.json
+# 2. 照着响应手写 ~/.cloudl/sites/1point3acres/verify/thread.json
 #    （args 一定用数组: ["1173710", "--limit", "2"]）
 
 # 3. 跑 verify 核对
@@ -459,7 +459,7 @@ cloudl browser verify 1point3acres/thread
 ## 私人 adapter vs repo 贡献
 
 ```
-~/.opencli/clis/<site>/<name>.js    # 私人
+~/.cloudl/clis/<site>/<name>.js    # 私人
 clis/<site>/<name>.js               # repo 贡献
 ```
 
@@ -468,4 +468,4 @@ clis/<site>/<name>.js               # repo 贡献
 - 私人：写完立即可跑（`cloudl <site> <name>`）
 - repo：要 `npm run build` 才被注册
 
-先在 `~/.opencli/clis/` 调通再拷贝到 `clis/`。
+先在 `~/.cloudl/clis/` 调通再拷贝到 `clis/`。

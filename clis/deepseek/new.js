@@ -1,5 +1,5 @@
-import { cli, Strategy } from '@jackwener/opencli/registry';
-import { CommandExecutionError } from '@jackwener/opencli/errors';
+import { cli, Strategy } from '@jyjyxt/cloudl/registry';
+import { CommandExecutionError } from '@jyjyxt/cloudl/errors';
 import { DEEPSEEK_DOMAIN, DEEPSEEK_URL, TEXTAREA_SELECTOR } from './utils.js';
 
 export const newCommand = cli({

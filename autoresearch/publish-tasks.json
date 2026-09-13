@@ -8,7 +8,7 @@
       "cloudl browser open https://x.com/compose/tweet",
       "cloudl browser wait time 3",
       "cloudl browser eval \"document.querySelector('[data-testid=\\\"tweetTextarea_0\\\"]') ? 'composer-ready' : 'not-found'\"",
-      "cloudl browser eval \"(() => { const box = document.querySelector('[data-testid=\\\"tweetTextarea_0\\\"]'); if (!box) return 'no-box'; box.focus(); const dt = new DataTransfer(); dt.setData('text/plain', '[AutoTest] OpenCLI publish eval - fill only test ' + Date.now()); box.dispatchEvent(new ClipboardEvent('paste', { clipboardData: dt, bubbles: true, cancelable: true })); return 'filled'; })()\"",
+      "cloudl browser eval \"(() => { const box = document.querySelector('[data-testid=\\\"tweetTextarea_0\\\"]'); if (!box) return 'no-box'; box.focus(); const dt = new DataTransfer(); dt.setData('text/plain', '[AutoTest] Cloudl publish eval - fill only test ' + Date.now()); box.dispatchEvent(new ClipboardEvent('paste', { clipboardData: dt, bubbles: true, cancelable: true })); return 'filled'; })()\"",
       "cloudl browser wait time 1",
       "cloudl browser eval \"document.querySelector('[data-testid=\\\"tweetTextarea_0\\\"]')?.textContent || ''\""
     ],
@@ -26,7 +26,7 @@
     "steps": [
       "cloudl browser open https://x.com/compose/tweet",
       "cloudl browser wait time 3",
-      "cloudl browser eval \"(() => { const box = document.querySelector('[data-testid=\\\"tweetTextarea_0\\\"]'); if (!box) return 'no-box'; box.focus(); const dt = new DataTransfer(); dt.setData('text/plain', '[AutoTest] OpenCLI publish eval ' + Date.now()); box.dispatchEvent(new ClipboardEvent('paste', { clipboardData: dt, bubbles: true, cancelable: true })); return 'filled'; })()\"",
+      "cloudl browser eval \"(() => { const box = document.querySelector('[data-testid=\\\"tweetTextarea_0\\\"]'); if (!box) return 'no-box'; box.focus(); const dt = new DataTransfer(); dt.setData('text/plain', '[AutoTest] Cloudl publish eval ' + Date.now()); box.dispatchEvent(new ClipboardEvent('paste', { clipboardData: dt, bubbles: true, cancelable: true })); return 'filled'; })()\"",
       "cloudl browser wait time 1",
       "cloudl browser eval \"(() => { const btn = document.querySelector('[data-testid=\\\"tweetButton\\\"]') || document.querySelector('[data-testid=\\\"tweetButtonInline\\\"]'); if (btn && !btn.disabled) { btn.click(); return 'clicked'; } return 'btn-not-ready'; })()\"",
       "cloudl browser wait time 4",
@@ -109,7 +109,7 @@
       "cloudl browser wait time 3",
       "cloudl browser eval \"(() => { const btn = document.querySelector('[data-zop-retarget=\\\"answer\\\"]') || Array.from(document.querySelectorAll('button')).find(b => b.textContent?.includes('写回答')); if (btn) { btn.click(); return 'editor-opened'; } return 'no-answer-btn'; })()\"",
       "cloudl browser wait time 2",
-      "cloudl browser eval \"(() => { const editor = document.querySelector('.ql-editor') || document.querySelector('[contenteditable=\\\"true\\\"]'); if (!editor) return 'no-editor'; editor.focus(); editor.innerHTML = '<p>[AutoTest] 这是一个 OpenCLI 发文测试，时间戳: ' + Date.now() + '</p><p>这段内容用于验证 browser 命令链的完整性。</p>'; editor.dispatchEvent(new Event('input', { bubbles: true })); return 'filled'; })()\"",
+      "cloudl browser eval \"(() => { const editor = document.querySelector('.ql-editor') || document.querySelector('[contenteditable=\\\"true\\\"]'); if (!editor) return 'no-editor'; editor.focus(); editor.innerHTML = '<p>[AutoTest] 这是一个 Cloudl 发文测试，时间戳: ' + Date.now() + '</p><p>这段内容用于验证 browser 命令链的完整性。</p>'; editor.dispatchEvent(new Event('input', { bubbles: true })); return 'filled'; })()\"",
       "cloudl browser wait time 1",
       "cloudl browser eval \"(document.querySelector('.ql-editor') || document.querySelector('[contenteditable=\\\"true\\\"]'))?.textContent || ''\""
     ],
@@ -127,9 +127,9 @@
     "steps": [
       "cloudl browser open https://zhuanlan.zhihu.com/write",
       "cloudl browser wait time 3",
-      "cloudl browser eval \"(() => { const ta = document.querySelector('.WriteIndex-titleInput textarea') || document.querySelector('textarea[placeholder]'); if (!ta) return 'no-title-input'; ta.focus(); var nativeSetter = Object.getOwnPropertyDescriptor(window.HTMLTextAreaElement.prototype, 'value').set; nativeSetter.call(ta, '[AutoTest] OpenCLI 发文能力验证 ' + Date.now()); ta.dispatchEvent(new Event('input', { bubbles: true })); return 'title-filled'; })()\"",
+      "cloudl browser eval \"(() => { const ta = document.querySelector('.WriteIndex-titleInput textarea') || document.querySelector('textarea[placeholder]'); if (!ta) return 'no-title-input'; ta.focus(); var nativeSetter = Object.getOwnPropertyDescriptor(window.HTMLTextAreaElement.prototype, 'value').set; nativeSetter.call(ta, '[AutoTest] Cloudl 发文能力验证 ' + Date.now()); ta.dispatchEvent(new Event('input', { bubbles: true })); return 'title-filled'; })()\"",
       "cloudl browser wait time 1",
-      "cloudl browser eval \"(() => { const editor = document.querySelector('[contenteditable=true]'); if (!editor) return 'no-editor'; editor.focus(); editor.innerHTML = '<p>这是 OpenCLI autoresearch 发文测试集的一部分。</p><p>测试链路：导航 → 填写标题 → 填写正文 → 验证内容。</p><p>时间戳: ' + Date.now() + '</p>'; editor.dispatchEvent(new Event('input', { bubbles: true })); return 'body-filled'; })()\"",
+      "cloudl browser eval \"(() => { const editor = document.querySelector('[contenteditable=true]'); if (!editor) return 'no-editor'; editor.focus(); editor.innerHTML = '<p>这是 Cloudl autoresearch 发文测试集的一部分。</p><p>测试链路：导航 → 填写标题 → 填写正文 → 验证内容。</p><p>时间戳: ' + Date.now() + '</p>'; editor.dispatchEvent(new Event('input', { bubbles: true })); return 'body-filled'; })()\"",
       "cloudl browser wait time 1",
       "cloudl browser eval \"(() => { const title = (document.querySelector('.WriteIndex-titleInput textarea') || document.querySelector('textarea[placeholder]'))?.value || ''; const body = document.querySelector('[contenteditable=true]')?.textContent || ''; return JSON.stringify({ title: title.slice(0, 50), body: body.slice(0, 50) }); })()\""
     ],
@@ -211,9 +211,9 @@
     "name": "twitter-search-then-reply-fill",
     "platform": "twitter",
     "type": "fill-only",
-    "description": "Search 'opencli' on twitter, find first result, click reply, fill reply text, verify",
+    "description": "Search 'cloudl' on twitter, find first result, click reply, fill reply text, verify",
     "steps": [
-      "cloudl browser open https://x.com/search?q=opencli&src=typed_query&f=live",
+      "cloudl browser open https://x.com/search?q=cloudl&src=typed_query&f=live",
       "cloudl browser wait time 4",
       "cloudl browser eval \"(() => { const tweets = document.querySelectorAll('[data-testid=\\\"tweet\\\"]'); if (tweets.length === 0) return 'no-results'; return 'found-' + tweets.length + '-results'; })()\"",
       "cloudl browser eval \"(() => { const tweet = document.querySelector('[data-testid=\\\"tweet\\\"]'); if (!tweet) return 'no-tweet'; const reply = tweet.querySelector('[data-testid=\\\"reply\\\"]'); if (reply) { reply.click(); return 'reply-clicked'; } return 'no-reply-btn'; })()\"",
@@ -283,7 +283,7 @@
       "cloudl browser wait time 3",
       "cloudl browser eval \"(() => { const titleInput = document.querySelector('.WriteIndex-titleInput textarea') || document.querySelector('textarea[placeholder*=\\\"标题\\\"]'); if (!titleInput) return 'no-title-input'; titleInput.focus(); titleInput.value = '[AutoTest] 格式化文章测试 ' + Date.now(); titleInput.dispatchEvent(new Event('input', { bubbles: true })); return 'title-filled'; })()\"",
       "cloudl browser wait time 1",
-      "cloudl browser eval \"(() => { const editor = document.querySelector('.ql-editor') || document.querySelector('[contenteditable=\\\"true\\\"]'); if (!editor) return 'no-editor'; editor.focus(); editor.innerHTML = '<p>这是第一段：OpenCLI 格式化发文测试。</p><p><strong>[AutoTest-Bold] 这是加粗的第二段，用于验证富文本格式。</strong></p><p>这是第三段，包含普通文本内容，时间戳: ' + Date.now() + '。</p><p>这是第四段，测试多段落填充能力。</p>'; editor.dispatchEvent(new Event('input', { bubbles: true })); return 'body-filled-with-formatting'; })()\"",
+      "cloudl browser eval \"(() => { const editor = document.querySelector('.ql-editor') || document.querySelector('[contenteditable=\\\"true\\\"]'); if (!editor) return 'no-editor'; editor.focus(); editor.innerHTML = '<p>这是第一段：Cloudl 格式化发文测试。</p><p><strong>[AutoTest-Bold] 这是加粗的第二段，用于验证富文本格式。</strong></p><p>这是第三段，包含普通文本内容，时间戳: ' + Date.now() + '。</p><p>这是第四段，测试多段落填充能力。</p>'; editor.dispatchEvent(new Event('input', { bubbles: true })); return 'body-filled-with-formatting'; })()\"",
       "cloudl browser wait time 1",
       "cloudl browser eval \"(() => { const editor = document.querySelector('.ql-editor') || document.querySelector('[contenteditable=\\\"true\\\"]'); if (!editor) return 'no-editor'; const hasBold = editor.querySelector('strong') || editor.querySelector('b'); const paragraphs = editor.querySelectorAll('p'); return JSON.stringify({ paragraphCount: paragraphs.length, hasBold: !!hasBold, preview: editor.textContent?.slice(0, 80) }); })()\"",
       "cloudl browser wait time 1",

@@ -1,5 +1,5 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
-import { getRegistry } from '@jackwener/opencli/registry';
+import { getRegistry } from '@jyjyxt/cloudl/registry';
 import './search.js';
 describe('zsxq search command', () => {
     beforeEach(() => {
@@ -14,7 +14,7 @@ describe('zsxq search command', () => {
                 .mockResolvedValueOnce(true)
                 .mockResolvedValueOnce(null),
         };
-        await expect(command.func(mockPage, { keyword: 'opencli', limit: 20 })).rejects.toMatchObject({
+        await expect(command.func(mockPage, { keyword: 'cloudl', limit: 20 })).rejects.toMatchObject({
             code: 'ARGUMENT',
             message: 'Cannot determine active group_id',
         });

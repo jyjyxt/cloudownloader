@@ -86,7 +86,7 @@ export async function checkConnectivity(opts?: { timeout?: number }): Promise<Co
   setDaemonCommandTimeoutSeconds(timeoutSeconds);
   try {
     await sendCommand('cookies', {
-      domain: 'opencli-probe.invalid',
+      domain: 'cloudl-probe.invalid',
       session: DOCTOR_SESSION,
       surface: 'browser',
     });
@@ -142,7 +142,7 @@ export async function runBrowserDoctor(opts: DoctorOptions = {}): Promise<Doctor
     } else if (health.state === 'profile-disconnected') {
       issues.push(
         `Selected browser profile is not connected: ${health.status?.contextId ?? 'unknown'}.\n` +
-        '  Open that Chrome profile and make sure the OpenCLI extension is enabled.',
+        '  Open that Chrome profile and make sure the Cloudl extension is enabled.',
       );
     } else {
       issues.push(

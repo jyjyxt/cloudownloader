@@ -2,8 +2,8 @@ import {
   ArgumentError,
   CommandExecutionError,
   EmptyResultError,
-} from '@jackwener/opencli/errors';
-import { cli, Strategy } from '@jackwener/opencli/registry';
+} from '@jyjyxt/cloudl/errors';
+import { cli, Strategy } from '@jyjyxt/cloudl/registry';
 
 const DATE_RE = /^\d{4}-\d{2}-\d{2}$/;
 

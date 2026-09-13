@@ -5,7 +5,7 @@
  * from the SSR-rendered hotel listing page. Ctrip serves first 13 hotels
  * (10 organic + ~3 promoted) inline; `&pageSize=N` URL params are ignored
  * server-side so we cap default limit accordingly (see
- * `~/.opencli/sites/ctrip/notes.md`).
+ * `~/.cloudl/sites/ctrip/notes.md`).
  *
  * Reuses the existing `mapHotelRow` + `pickHotelMapCoords` helpers from utils.js
  * so the column shape stays consistent if future variants (hotel-detail) also
@@ -13,8 +13,8 @@
  *
  * Anti-bot: not detected on first-page navigation (PR #1481 recon 2026-05-12).
  */
-import { ArgumentError, AuthRequiredError, CommandExecutionError, EmptyResultError } from '@jackwener/opencli/errors';
-import { cli, Strategy } from '@jackwener/opencli/registry';
+import { ArgumentError, AuthRequiredError, CommandExecutionError, EmptyResultError } from '@jyjyxt/cloudl/errors';
+import { cli, Strategy } from '@jyjyxt/cloudl/registry';
 import { mapHotelRow, parseCityId, parseIsoDate, parseStrictIntegerRange } from './utils.js';
 
 const MIN_LIMIT = 1;

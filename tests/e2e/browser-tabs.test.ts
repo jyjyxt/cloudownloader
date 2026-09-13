@@ -54,7 +54,7 @@ async function shutdownExistingDaemon(): Promise<void> {
       port: DAEMON_PORT,
       path: '/shutdown',
       method: 'POST',
-      headers: { 'X-OpenCLI': '1' },
+      headers: { 'X-Cloudl': '1' },
       timeout: 500,
     }, (res) => {
       res.resume();
@@ -334,10 +334,10 @@ describe('browser tab CLI e2e', () => {
   it('keeps untargeted browser commands on the default tab after creating a new tab', async () => {
     const daemon = await startFakeDaemon();
     daemons.push(daemon);
-    const cacheDir = fs.mkdtempSync(path.join(os.tmpdir(), 'opencli-browser-tabs-'));
+    const cacheDir = fs.mkdtempSync(path.join(os.tmpdir(), 'cloudl-browser-tabs-'));
     cacheDirs.push(cacheDir);
     const env = {
-      OPENCLI_CACHE_DIR: cacheDir,
+      CLOUDL_CACHE_DIR: cacheDir,
     };
     const session = 'tabs-default-new';
 
@@ -353,10 +353,10 @@ describe('browser tab CLI e2e', () => {
   it('uses an explicitly selected tab as the default target for later untargeted commands', async () => {
     const daemon = await startFakeDaemon();
     daemons.push(daemon);
-    const cacheDir = fs.mkdtempSync(path.join(os.tmpdir(), 'opencli-browser-tabs-'));
+    const cacheDir = fs.mkdtempSync(path.join(os.tmpdir(), 'cloudl-browser-tabs-'));
     cacheDirs.push(cacheDir);
     const env = {
-      OPENCLI_CACHE_DIR: cacheDir,
+      CLOUDL_CACHE_DIR: cacheDir,
     };
     const session = 'tabs-selected-default';
 

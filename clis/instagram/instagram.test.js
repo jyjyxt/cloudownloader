@@ -5,7 +5,7 @@ import './following.js';
 import './profile.js';
 import './save.js';
 import './unfollow.js';
-import { getRegistry } from '@jackwener/opencli/registry';
+import { getRegistry } from '@jyjyxt/cloudl/registry';
 
 /**
  * Run any instagram command evaluate script with a mock fetch, substituting

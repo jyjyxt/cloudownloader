@@ -4,7 +4,7 @@ import { buildInstallInstagramProtocolCaptureJs, buildReadInstagramProtocolCaptu
 describe('instagram protocol capture helpers', () => {
     afterEach(() => {
         vi.restoreAllMocks();
-        delete process.env.OPENCLI_INSTAGRAM_CAPTURE;
+        delete process.env.CLOUDL_INSTAGRAM_CAPTURE;
         try {
             fs.rmSync('/tmp/instagram_post_protocol_trace.json', { force: true });
         }
@@ -15,7 +15,7 @@ describe('instagram protocol capture helpers', () => {
         const page = { evaluate };
         await installInstagramProtocolCapture(page);
         expect(evaluate).toHaveBeenCalledTimes(1);
-        expect(String(evaluate.mock.calls[0]?.[0] || '')).toContain('__opencli_ig_protocol_capture');
+        expect(String(evaluate.mock.calls[0]?.[0] || '')).toContain('__cloudl_ig_protocol_capture');
         expect(String(evaluate.mock.calls[0]?.[0] || '')).toContain('/media/configure_sidecar/');
     });
     it('prefers native page network capture when available', async () => {
@@ -33,7 +33,7 @@ describe('instagram protocol capture helpers', () => {
         });
         const page = { evaluate };
         const result = await readInstagramProtocolCapture(page);
-        expect(String(evaluate.mock.calls[0]?.[0] || '')).toContain('__opencli_ig_protocol_capture');
+        expect(String(evaluate.mock.calls[0]?.[0] || '')).toContain('__cloudl_ig_protocol_capture');
         expect(result).toEqual({
             data: [{ kind: 'fetch', url: 'https://www.instagram.com/api/v1/media/configure/' }],
             errors: ['ignored'],
@@ -54,7 +54,7 @@ describe('instagram protocol capture helpers', () => {
         });
     });
     it('dumps protocol traces to /tmp only when capture env is enabled', async () => {
-        process.env.OPENCLI_INSTAGRAM_CAPTURE = '1';
+        process.env.CLOUDL_INSTAGRAM_CAPTURE = '1';
         const page = {
             evaluate: vi.fn().mockResolvedValue({
                 data: [{ kind: 'fetch', url: 'https://www.instagram.com/rupload_igphoto/test' }],
@@ -109,6 +109,6 @@ describe('instagram private api fetch', () => {
     });
     it('exposes stable browser-side JS builders', () => {
         expect(buildInstallInstagramProtocolCaptureJs()).toContain('/rupload_igphoto/');
-        expect(buildReadInstagramProtocolCaptureJs()).toContain('__opencli_ig_protocol_capture');
+        expect(buildReadInstagramProtocolCaptureJs()).toContain('__cloudl_ig_protocol_capture');
     });
 });

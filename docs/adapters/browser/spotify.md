@@ -52,11 +52,11 @@ cloudl spotify repeat track
 
 1. Create a Spotify app at <https://developer.spotify.com/dashboard>
 2. Add `http://127.0.0.1:8888/callback` to the app's Redirect URIs
-3. Fill in `SPOTIFY_CLIENT_ID` and `SPOTIFY_CLIENT_SECRET` in `~/.opencli/spotify.env`
+3. Fill in `SPOTIFY_CLIENT_ID` and `SPOTIFY_CLIENT_SECRET` in `~/.cloudl/spotify.env`
 4. Run `cloudl spotify auth`
 
 ## Notes
 
 - Browser Bridge is not required.
-- Tokens are stored locally at `~/.opencli/spotify-tokens.json`.
+- Tokens are stored locally at `~/.cloudl/spotify-tokens.json`.
 - Playback commands work best when you already have an active Spotify device/session.

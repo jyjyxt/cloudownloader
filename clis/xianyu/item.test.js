@@ -1,6 +1,6 @@
 import { describe, expect, it, vi } from 'vitest';
-import { AuthRequiredError, EmptyResultError } from '@jackwener/opencli/errors';
-import { getRegistry } from '@jackwener/opencli/registry';
+import { AuthRequiredError, EmptyResultError } from '@jyjyxt/cloudl/errors';
+import { getRegistry } from '@jyjyxt/cloudl/registry';
 import { __test__ } from './item.js';
 import './item.js';
 function createPageMock(evaluateResult) {

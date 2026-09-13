@@ -3,7 +3,7 @@
 > **让任何网站或 Electron 应用成为你的 CLI。**
 > 零风险 · 复用 Chrome 登录态 · AI 驱动发现 · 浏览器 + 桌面自动化
 
-OpenCLI 将**任何网站**或 **Electron 应用**变成命令行界面 — Bilibili、知乎、小红书、Twitter/X、Reddit、YouTube、Antigravity 等 — 基于浏览器会话复用和 AI 原生发现。
+Cloudl 将**任何网站**或 **Electron 应用**变成命令行界面 — Bilibili、知乎、小红书、Twitter/X、Reddit、YouTube、Antigravity 等 — 基于浏览器会话复用和 AI 原生发现。
 
 ## 安装
 
@@ -37,7 +37,7 @@ cloudl bilibili hot -f csv     # CSV
 
 ## 终端自动补全
 
-OpenCLI 支持智能的 Tab 自动补全，加快命令输入：
+Cloudl 支持智能的 Tab 自动补全，加快命令输入：
 
 ```bash
 # 把自动补全加入 shell 启动配置
@@ -60,7 +60,7 @@ cloudl bilibili [Tab] # 补全命令（hot、search、me、download...）
 
 - [安装详情](/zh/guide/installation)
 - [Browser Bridge 设置](/zh/guide/browser-bridge)
-- [扩展 OpenCLI：自定义命令、plugin 和 external CLI](/zh/guide/extending-opencli)
+- [扩展 Cloudl：自定义命令、plugin 和 external CLI](/zh/guide/extending-cloudl)
 - [所有适配器](/zh/adapters/)
 - [开发者指南](/zh/developer/contributing)
 - [给新 Electron 应用生成 CLI](/zh/guide/electron-app-cli)

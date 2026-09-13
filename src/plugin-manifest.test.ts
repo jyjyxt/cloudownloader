@@ -22,7 +22,7 @@ describe('readPluginManifest', () => {
   let tmpDir: string;
 
   beforeEach(() => {
-    tmpDir = fs.mkdtempSync(path.join(os.tmpdir(), 'opencli-manifest-test-'));
+    tmpDir = fs.mkdtempSync(path.join(os.tmpdir(), 'cloudl-manifest-test-'));
   });
 
   afterEach(() => {
@@ -52,7 +52,7 @@ describe('readPluginManifest', () => {
     const manifest: PluginManifest = {
       name: 'polymarket',
       version: '1.2.0',
-      opencli: '>=1.0.0',
+      cloudl: '>=1.0.0',
       description: 'Prediction market analysis',
     };
     fs.writeFileSync(path.join(tmpDir, MANIFEST_FILENAME), JSON.stringify(manifest));
@@ -63,7 +63,7 @@ describe('readPluginManifest', () => {
   it('reads a monorepo manifest', () => {
     const manifest: PluginManifest = {
       version: '1.0.0',
-      opencli: '>=0.9.0',
+      cloudl: '>=0.9.0',
       description: 'My plugin collection',
       plugins: {
         polymarket: {

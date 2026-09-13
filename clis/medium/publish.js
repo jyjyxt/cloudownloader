@@ -4,8 +4,8 @@
  * Usage:
  *   cloudl medium publish "Article body" --title "Article title" --tags ai,writing
  */
-import { cli, Strategy } from '@jackwener/opencli/registry';
-import { ArgumentError, AuthRequiredError, CommandExecutionError, TimeoutError } from '@jackwener/opencli/errors';
+import { cli, Strategy } from '@jyjyxt/cloudl/registry';
+import { ArgumentError, AuthRequiredError, CommandExecutionError, TimeoutError } from '@jyjyxt/cloudl/errors';
 
 const NEW_STORY_URL = 'https://medium.com/new-story';
 const MAX_TAGS = 5;

@@ -8,13 +8,13 @@
 //   CREATE TABLE ItemTable (key TEXT UNIQUE ON CONFLICT REPLACE, value BLOB);
 //
 // We shell out to /usr/bin/sqlite3 (macOS ships it) so we avoid pulling a
-// native sqlite dep into OpenCLI. Reads only — writing would race with
+// native sqlite dep into Cloudl. Reads only — writing would race with
 // Trae's own writer and corrupt the DB.
 
 import * as fs from 'node:fs';
 import * as path from 'node:path';
 import { execFileSync } from 'node:child_process';
-import { CommandExecutionError } from '@jackwener/opencli/errors';
+import { CommandExecutionError } from '@jyjyxt/cloudl/errors';
 import { TRAE_APP_SUPPORT } from './_fs.js';
 
 export const TRAE_USER_DIR_APP = path.join(TRAE_APP_SUPPORT, 'User');

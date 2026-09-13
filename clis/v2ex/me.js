@@ -1,8 +1,8 @@
 /**
  * V2EX Me (Profile/Balance) adapter.
  */
-import { CommandExecutionError } from '@jackwener/opencli/errors';
-import { cli, Strategy } from '@jackwener/opencli/registry';
+import { CommandExecutionError } from '@jyjyxt/cloudl/errors';
+import { cli, Strategy } from '@jyjyxt/cloudl/registry';
 cli({
     site: 'v2ex',
     name: 'me',
@@ -16,8 +16,8 @@ cli({
     func: async (page) => {
         if (!page)
             throw new CommandExecutionError('Browser page required');
-        if (process.env.OPENCLI_VERBOSE) {
-            console.error('[opencli:v2ex] Navigating to /');
+        if (process.env.CLOUDL_VERBOSE) {
+            console.error('[cloudl:v2ex] Navigating to /');
         }
         await page.goto('https://www.v2ex.com/');
         // Cloudflare challenge bypass wait
@@ -26,8 +26,8 @@ cli({
             const title = await page.evaluate(`() => document.title`);
             if (!title?.includes('Just a moment'))
                 break;
-            if (process.env.OPENCLI_VERBOSE)
-                console.error('[opencli:v2ex] Waiting for Cloudflare...');
+            if (process.env.CLOUDL_VERBOSE)
+                console.error('[cloudl:v2ex] Waiting for Cloudflare...');
         }
         // Evaluate DOM to extract user profile
         const data = await page.evaluate(`
@@ -89,9 +89,9 @@ cli({
       }
     `);
         if (data.error) {
-            if (process.env.OPENCLI_VERBOSE) {
-                console.error(`[opencli:v2ex:debug] Page Title: ${data.debug_title}`);
-                console.error(`[opencli:v2ex:debug] Page Body: ${data.debug_body}`);
+            if (process.env.CLOUDL_VERBOSE) {
+                console.error(`[cloudl:v2ex:debug] Page Title: ${data.debug_title}`);
+                console.error(`[cloudl:v2ex:debug] Page Body: ${data.debug_body}`);
             }
             throw new CommandExecutionError(data.error);
         }

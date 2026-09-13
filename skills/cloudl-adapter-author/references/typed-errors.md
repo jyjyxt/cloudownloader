@@ -1,6 +1,6 @@
 # Typed Error Conventions
 
-OpenCLI 用 5 类 typed error 让 agent 能从 exit code 直接分辨"参数错 / 没数据 / 接口挂 / 要登录 / 超时"。silent `return []` / silent `return [{sentinel}]` / scalar sentinel (`'-'`) / `Math.max/min` silent clamp / `CliError('HTTP_ERROR')` 这些"绿但错"的写法都被 audit gate 抓得越来越紧（[`scripts/check-typed-error-lint.mjs`](../../../scripts/check-typed-error-lint.mjs) 的 baseline JSON 只能减不能加，新违例必须立刻收掉）。
+Cloudl 用 5 类 typed error 让 agent 能从 exit code 直接分辨"参数错 / 没数据 / 接口挂 / 要登录 / 超时"。silent `return []` / silent `return [{sentinel}]` / scalar sentinel (`'-'`) / `Math.max/min` silent clamp / `CliError('HTTP_ERROR')` 这些"绿但错"的写法都被 audit gate 抓得越来越紧（[`scripts/check-typed-error-lint.mjs`](../../../scripts/check-typed-error-lint.mjs) 的 baseline JSON 只能减不能加，新违例必须立刻收掉）。
 
 每条 rule 都挂了真实 anti-pattern 反例（PR #1329 三轮迭代是主要素材库）。
 
@@ -37,7 +37,7 @@ const page = Math.max(1, Number(args.page) || 1);
 **修法**（[`clis/1point3acres/utils.js`](../../../clis/1point3acres/utils.js) 的 `normalizePositiveInteger` / `normalizeLimit`）：
 
 ```js
-import { ArgumentError } from '@jackwener/opencli/errors';
+import { ArgumentError } from '@jyjyxt/cloudl/errors';
 
 /** Validate a positive integer arg without silently flooring/clamping. */
 export function normalizePositiveInteger(value, defaultValue, label = 'value', { min = 1 } = {}) {
@@ -118,7 +118,7 @@ if (!asset?.ok) {
 **修法**：
 
 ```js
-import { EmptyResultError, CommandExecutionError } from '@jackwener/opencli/errors';
+import { EmptyResultError, CommandExecutionError } from '@jyjyxt/cloudl/errors';
 
 if (/暂时没有提醒内容/.test(html)) {
     throw new EmptyResultError('1point3acres notifications', '暂时没有提醒内容');
@@ -209,7 +209,7 @@ if (!/id="postlist"/.test(html)) throw new EmptyResultError('1point3acres thread
 
 ## 6. Verify fixture 怎么挡这三类
 
-新写 fixture 时（`~/.opencli/sites/<site>/verify/<cmd>.json`）：
+新写 fixture 时（`~/.cloudl/sites/<site>/verify/<cmd>.json`）：
 
 - **rowCount.min ≥ 1**：保证 sentinel-row 不能伪装通过
 - **patterns**：核心 id 列加 `^\d+$` 类正则，挡 `tid: ''` / `pid: ''` 之类空字符串污染

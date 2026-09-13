@@ -2,8 +2,8 @@ import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
-import { ArgumentError, AuthRequiredError, CommandExecutionError } from '@jackwener/opencli/errors';
-import { getRegistry } from '@jackwener/opencli/registry';
+import { ArgumentError, AuthRequiredError, CommandExecutionError } from '@jyjyxt/cloudl/errors';
+import { getRegistry } from '@jyjyxt/cloudl/registry';
 import { normalizeReimbursementInput } from './utils.js';
 import './check-login.js';
 import './reimbursement-draft.js';
@@ -13,7 +13,7 @@ let tmpDir;
 let receiptPath;
 
 beforeEach(() => {
-    tmpDir = fs.mkdtempSync(path.join(os.tmpdir(), 'opencli-mercury-test-'));
+    tmpDir = fs.mkdtempSync(path.join(os.tmpdir(), 'cloudl-mercury-test-'));
     receiptPath = path.join(tmpDir, 'receipt.png');
     fs.writeFileSync(receiptPath, 'receipt');
 });

@@ -1,7 +1,7 @@
 import { describe, expect, it, vi } from 'vitest';
 import { JSDOM } from 'jsdom';
-import { getRegistry } from '@jackwener/opencli/registry';
-import { ArgumentError, AuthRequiredError, CommandExecutionError, EmptyResultError } from '@jackwener/opencli/errors';
+import { getRegistry } from '@jyjyxt/cloudl/registry';
+import { ArgumentError, AuthRequiredError, CommandExecutionError, EmptyResultError } from '@jyjyxt/cloudl/errors';
 import './people-search.js';
 
 const {
@@ -84,7 +84,7 @@ describe('linkedin people-search command', () => {
         expect(normalizeProfileUrl('https://linkedin.com/in/bob-builder')).toBe('https://www.linkedin.com/in/bob-builder/');
         expect(normalizeProfileUrl('https://evil-linkedin.com/in/bob-builder')).toBe('');
         expect(normalizeProfileUrl('http://www.linkedin.com/in/bob-builder')).toBe('');
-        expect(normalizeProfileUrl('https://www.linkedin.com/company/opencli')).toBe('');
+        expect(normalizeProfileUrl('https://www.linkedin.com/company/cloudl')).toBe('');
     });
 
     it('rejects malformed extraction rows instead of fabricating success rows', () => {

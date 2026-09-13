@@ -158,15 +158,15 @@ function main() {
     }
   } catch (err) {
     // Completion install is best-effort; never fail the package install
-    if (process.env.OPENCLI_VERBOSE) {
+    if (process.env.CLOUDL_VERBOSE) {
       console.error(`Warning: Could not install shell completion: ${err.message}`);
     }
   }
 
   // ── Spotify credentials template ────────────────────────────────────
-  const opencliDir = join(home, '.opencli');
-  const spotifyEnvFile = join(opencliDir, 'spotify.env');
-  ensureDir(opencliDir);
+  const cloudlDir = join(home, '.cloudl');
+  const spotifyEnvFile = join(cloudlDir, 'spotify.env');
+  ensureDir(cloudlDir);
   if (!existsSync(spotifyEnvFile)) {
     writeFileSync(spotifyEnvFile,
       `# Spotify credentials — get them at https://developer.spotify.com/dashboard\n` +

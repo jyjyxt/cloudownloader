@@ -1,5 +1,5 @@
-import { htmlToMarkdown } from '@jackwener/opencli/utils';
-import { ArgumentError, AuthRequiredError } from '@jackwener/opencli/errors';
+import { htmlToMarkdown } from '@jyjyxt/cloudl/utils';
+import { ArgumentError, AuthRequiredError } from '@jyjyxt/cloudl/errors';
 
 export const GROK_DOMAIN = 'grok.com';
 export const GROK_URL = 'https://grok.com/';

@@ -33,7 +33,7 @@ cloudl weixin download --url "https://mp.weixin.qq.com/s/xxx" --no-download-imag
 cloudl weixin drafts --limit 5
 
 # Create a draft article
-cloudl weixin create-draft --title "周报" --author "OpenCLI" --summary "本周更新摘要" "这里是正文内容"
+cloudl weixin create-draft --title "周报" --author "Cloudl" --summary "本周更新摘要" "这里是正文内容"
 
 # Create a draft with a cover image sourced from local disk
 cloudl weixin create-draft --title "封面示例" --cover-image ./cover.png "正文会先插入图片，再设为封面"

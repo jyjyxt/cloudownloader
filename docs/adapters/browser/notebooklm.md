@@ -35,7 +35,7 @@
 
 ## Positioning
 
-This adapter reuses the existing OpenCLI Browser Bridge runtime:
+This adapter reuses the existing Cloudl Browser Bridge runtime:
 
 - no custom NotebookLM extension
 - no exported cookie replay
@@ -78,7 +78,7 @@ cloudl notebooklm generate-slides 17e2b882-6a01-4c6c-9262-0738dfa2abee --length 
 
 ## Notes
 
-- Notebook-oriented commands run in OpenCLI's owned NotebookLM adapter session/window. Use `cloudl notebooklm open <notebook>` first to choose the current notebook for follow-up commands.
+- Notebook-oriented commands run in Cloudl's owned NotebookLM adapter session/window. Use `cloudl notebooklm open <notebook>` first to choose the current notebook for follow-up commands.
 - The adapter's semantic strategy is same-origin page fetch against NotebookLM's internal, unstable RPC contract. The manifest's `cookie` label describes the browser session carrier; it is not a stable cookie API.
 - `list` uses the active trusted NotebookLM page origin for RPC. It falls back only to valid, non-empty page rows; authentication and an RPC failure with empty fallbacks remain typed failures rather than empty success.
 - `get`, `source-list`, `history`, `source-fulltext`, and `source-guide` prefer NotebookLM RPC paths and fall back only when the richer path is unavailable.

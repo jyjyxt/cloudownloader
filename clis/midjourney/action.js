@@ -1,6 +1,6 @@
-import { ArgumentError, CommandExecutionError, TimeoutError } from '@jackwener/opencli/errors';
-import { log } from '@jackwener/opencli/logger';
-import { cli, Strategy } from '@jackwener/opencli/registry';
+import { ArgumentError, CommandExecutionError, TimeoutError } from '@jyjyxt/cloudl/errors';
+import { log } from '@jyjyxt/cloudl/logger';
+import { cli, Strategy } from '@jyjyxt/cloudl/registry';
 import {
   ACTION_CHOICES,
   assertActionPlan,

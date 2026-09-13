@@ -1,7 +1,7 @@
 import { JSDOM } from 'jsdom';
 import { describe, expect, it, vi } from 'vitest';
-import { CommandExecutionError } from '@jackwener/opencli/errors';
-import { getRegistry } from '@jackwener/opencli/registry';
+import { CommandExecutionError } from '@jyjyxt/cloudl/errors';
+import { getRegistry } from '@jyjyxt/cloudl/registry';
 import './mute-word.js';
 import { createPageMock } from '../test-utils.js';
 import { createTwitterDomPage } from './test-dom-utils.js';
@@ -30,7 +30,7 @@ describe('twitter mute-word command', () => {
         const cmd = getRegistry().get('twitter/mute-word');
         const page = createPageMock([{ ok: true, message: 'Muted word added.' }]);
 
-        const result = await cmd.func(page, { keyword: '  opencli-muted-token  ' });
+        const result = await cmd.func(page, { keyword: '  cloudl-muted-token  ' });
 
         expect(page.goto).toHaveBeenCalledWith('https://x.com/settings/add_muted_keyword');
         expect(page.wait).toHaveBeenCalledWith({ selector: '[data-testid="primaryColumn"]' });
@@ -38,7 +38,7 @@ describe('twitter mute-word command', () => {
         expect(script).toContain('input[name="keyword"]');
         expect(script).toContain("labels = new Set(['save', 'add', 'done', '保存', '添加', '完成'])");
         expect(result).toEqual([{
-            keyword: 'opencli-muted-token',
+            keyword: 'cloudl-muted-token',
             status: 'success',
             message: 'Muted word added.',
         }]);
@@ -47,13 +47,13 @@ describe('twitter mute-word command', () => {
     it('embeds the keyword safely in the browser script', async () => {
         const cmd = getRegistry().get('twitter/mute-word');
         const page = createPageMock([{ ok: true, message: 'Muted word added.' }]);
-        const keyword = '"); window.__opencliInjected = true; //';
+        const keyword = '"); window.__cloudlInjected = true; //';
 
         await cmd.func(page, { keyword });
 
         const script = page.evaluate.mock.calls[0][0];
         expect(script).toContain(JSON.stringify(keyword));
-        expect(script).not.toContain('const keyword = ""); window.__opencliInjected = true; //";');
+        expect(script).not.toContain('const keyword = ""); window.__cloudlInjected = true; //";');
     });
 
     it('throws ArgumentError for an empty keyword before browser work', async () => {

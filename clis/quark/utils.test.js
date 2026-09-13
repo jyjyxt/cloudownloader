@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from 'vitest';
-import { AuthRequiredError, CommandExecutionError } from '@jackwener/opencli/errors';
+import { AuthRequiredError, CommandExecutionError } from '@jyjyxt/cloudl/errors';
 import { apiGet, apiPost, extractPwdId, getShareList, getToken } from './utils.js';
 function makePage(evaluateImpl) {
     return {

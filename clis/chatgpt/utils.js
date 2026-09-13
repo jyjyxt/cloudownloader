@@ -1,10 +1,10 @@
 /**
  * ChatGPT web browser automation helpers.
- * Cross-platform: works on Linux/macOS/Windows via OpenCLI's CDP browser automation.
+ * Cross-platform: works on Linux/macOS/Windows via Cloudl's CDP browser automation.
  */
 
-import { htmlToMarkdown } from '@jackwener/opencli/utils';
-import { ArgumentError, AuthRequiredError, CommandExecutionError, TimeoutError } from '@jackwener/opencli/errors';
+import { htmlToMarkdown } from '@jyjyxt/cloudl/utils';
+import { ArgumentError, AuthRequiredError, CommandExecutionError, TimeoutError } from '@jyjyxt/cloudl/errors';
 
 export const CHATGPT_DOMAIN = 'chatgpt.com';
 export const CHATGPT_URL = 'https://chatgpt.com';
@@ -68,7 +68,7 @@ const CHATGPT_MODEL_ALIASES = Object.fromEntries(Object.entries(CHATGPT_MODEL_TA
 export const CHATGPT_MODEL_CHOICES = Object.keys(CHATGPT_MODEL_ALIASES);
 
 function debugChatGPTModel(message) {
-    if (process?.env?.OPENCLI_CHATGPT_MODEL_DEBUG) {
+    if (process?.env?.CLOUDL_CHATGPT_MODEL_DEBUG) {
         console.error(`[chatgpt/model] ${message}`);
     }
 }
@@ -115,7 +115,7 @@ function isSameChatGPTConversation(currentUrl, expectedUrl) {
 }
 
 function buildComposerLocatorScript() {
-    const markerAttr = 'data-opencli-chatgpt-composer';
+    const markerAttr = 'data-cloudl-chatgpt-composer';
     return `
       const isVisible = (el) => {
         if (!(el instanceof HTMLElement)) return false;
@@ -161,7 +161,7 @@ export function requireNonEmptyPrompt(prompt, commandName) {
     if (!text) {
         throw new ArgumentError(
             `${commandName} prompt cannot be empty`,
-            `Example: opencli ${commandName} "hello"`,
+            `Example: cloudl ${commandName} "hello"`,
         );
     }
     return text;

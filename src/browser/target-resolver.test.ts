@@ -153,8 +153,8 @@ describe('boundingRectResolvedJs runtime behavior', () => {
 describe('resolveTargetJs', () => {
   it('generates JS that returns structured resolution for numeric ref', () => {
     const js = resolveTargetJs('12');
-    expect(js).toContain('data-opencli-ref');
-    expect(js).toContain('__opencli_ref_identity');
+    expect(js).toContain('data-cloudl-ref');
+    expect(js).toContain('__cloudl_ref_identity');
     expect(js).toContain('"12"');
   });
 
@@ -167,7 +167,7 @@ describe('resolveTargetJs', () => {
   it('generates JS with stale_ref detection for numeric refs', () => {
     const js = resolveTargetJs('5');
     expect(js).toContain('stale_ref');
-    expect(js).toContain('__opencli_ref_identity');
+    expect(js).toContain('__cloudl_ref_identity');
   });
 
   it('generates JS with ambiguity detection for CSS selectors', () => {
@@ -251,11 +251,11 @@ describe('resolveTargetJs', () => {
     expect(js).toContain('candidates.length === 1');
     // Recovered element is re-tagged + identity map refreshed so subsequent
     // resolves land on 'exact' instead of re-walking the cascade.
-    expect(js).toContain("setAttribute('data-opencli-ref', ref)");
+    expect(js).toContain("setAttribute('data-cloudl-ref', ref)");
     expect(js).toContain('identity[ref] = fingerprintOf(recovered)');
   });
 
-  it('reidentify runs both when data-opencli-ref is missing AND when fingerprint is mismatched', () => {
+  it('reidentify runs both when data-cloudl-ref is missing AND when fingerprint is mismatched', () => {
     const js = resolveTargetJs('9');
     // Two call sites: one in the !el branch, one after classifyMatch returns mismatch.
     const count = js.split('reidentify(fp)').length - 1;

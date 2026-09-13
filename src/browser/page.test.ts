@@ -94,7 +94,7 @@ describe('Page.evaluate', () => {
   });
 
   it('serializes function-form evaluate calls with JSON args', async () => {
-    sendCommandMock.mockResolvedValueOnce('/opencli');
+    sendCommandMock.mockResolvedValueOnce('/cloudl');
 
     const page = new Page('twitter', undefined, undefined, undefined, 'adapter');
     const href = await page.evaluate((selector: string) => {
@@ -102,7 +102,7 @@ describe('Page.evaluate', () => {
       return link ? link.getAttribute('href') : null;
     }, 'a[data-testid="AppTabBar_Profile_Link"]');
 
-    expect(href).toBe('/opencli');
+    expect(href).toBe('/cloudl');
     expect(sendCommandMock).toHaveBeenCalledWith('exec', expect.objectContaining({
       session: 'twitter',
       surface: 'adapter',

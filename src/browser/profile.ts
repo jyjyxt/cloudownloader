@@ -11,7 +11,7 @@ export type ProfileConfig = {
 };
 
 function profileConfigPath(): string {
-  const baseDir = process.env.OPENCLI_CONFIG_DIR || path.join(os.homedir(), '.opencli');
+  const baseDir = process.env.CLOUDL_CONFIG_DIR || path.join(os.homedir(), '.cloudl');
   return path.join(baseDir, 'browser-profiles.json');
 }
 
@@ -57,7 +57,7 @@ export type ProfileSelection = {
   contextId: string;
   /**
    * 'explicit' — the user demanded this profile right now (--profile argument
-   * or OPENCLI_PROFILE env): route strictly and fail loud if it is offline.
+   * or CLOUDL_PROFILE env): route strictly and fail loud if it is offline.
    * 'preferred' — the persisted default from browser-profiles.json. A default
    * is a preference, not a requirement: its lifetime routinely exceeds the
    * extension instance it names (reinstalling the extension regenerates the
@@ -69,7 +69,7 @@ export type ProfileSelection = {
 
 export function resolveProfileSelection(profile?: string): ProfileSelection | undefined {
   const config = loadProfileConfig();
-  const explicit = normalizeContextId(profile) ?? normalizeContextId(process.env.OPENCLI_PROFILE);
+  const explicit = normalizeContextId(profile) ?? normalizeContextId(process.env.CLOUDL_PROFILE);
   if (explicit) return { contextId: config.aliases[explicit] ?? explicit, source: 'explicit' };
   const preferred = normalizeContextId(config.defaultContextId);
   if (preferred) return { contextId: config.aliases[preferred] ?? preferred, source: 'preferred' };

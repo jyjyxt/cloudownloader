@@ -2,11 +2,11 @@ import { defineConfig } from 'vitepress'
 
 export default defineConfig({
   base: '/docs/',
-  title: 'OpenCLI',
+  title: 'Cloudl',
   description: 'Make any website or Electron App your CLI — AI-powered, account-safe, self-healing.',
 
   head: [
-    ['meta', { property: 'og:title', content: 'OpenCLI Documentation' }],
+    ['meta', { property: 'og:title', content: 'Cloudl Documentation' }],
     ['meta', { property: 'og:description', content: 'Make any website or Electron App your CLI.' }],
     ['meta', { name: 'twitter:card', content: 'summary_large_image' }],
   ],
@@ -34,7 +34,7 @@ export default defineConfig({
                 { text: 'Remote Orchestration', link: '/guide/remote-orchestration' },
                 { text: 'Troubleshooting', link: '/guide/troubleshooting' },
                 { text: 'Add an Electron App CLI', link: '/guide/electron-app-cli' },
-                { text: 'Extending OpenCLI', link: '/guide/extending-opencli' },
+                { text: 'Extending Cloudl', link: '/guide/extending-cloudl' },
                 { text: 'Plugins', link: '/guide/plugins' },
               ],
             },
@@ -235,7 +235,7 @@ export default defineConfig({
                 { text: '安装', link: '/zh/guide/installation' },
                 { text: 'Browser Bridge', link: '/zh/guide/browser-bridge' },
                 { text: '给新 Electron 应用生成 CLI', link: '/zh/guide/electron-app-cli' },
-                { text: '扩展 OpenCLI', link: '/zh/guide/extending-opencli' },
+                { text: '扩展 Cloudl', link: '/zh/guide/extending-cloudl' },
                 { text: '插件', link: '/zh/guide/plugins' },
               ],
             },

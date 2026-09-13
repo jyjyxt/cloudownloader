@@ -3,10 +3,10 @@
 // Coverage: worldwide. Unlike NWS (US-only), wttr.in geocodes any city/airport
 // code/lat,lon string and serves a 3-day forecast + current conditions in one
 // payload.
-import { ArgumentError, EmptyResultError, CommandExecutionError } from '@jackwener/opencli/errors';
+import { ArgumentError, EmptyResultError, CommandExecutionError } from '@jyjyxt/cloudl/errors';
 
 export const WTTR_BASE = 'https://wttr.in';
-const UA = 'opencli-wttr/1.0';
+const UA = 'cloudl-wttr/1.0';
 
 export function requireString(value, name) {
     if (typeof value !== 'string' || !value.trim()) {

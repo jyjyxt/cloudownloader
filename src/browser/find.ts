@@ -11,8 +11,8 @@
  *   browser click "<sel>" --nth <n>  // always works
  *
  * Refs are *allocated on the spot* for matched elements that were not
- * tagged by a prior snapshot: `data-opencli-ref` is set on the element
- * and a fingerprint is written into `window.__opencli_ref_identity`
+ * tagged by a prior snapshot: `data-cloudl-ref` is set on the element
+ * and a fingerprint is written into `window.__cloudl_ref_identity`
  * (same shape the snapshot uses). That makes `find` a first-class entry
  * point to the ref system — agents can skip running `browser state`
  * when they already know the selector.
@@ -49,7 +49,7 @@ export interface FindEntry {
   /** Zero-based position within the match set — pair with `--nth` on downstream commands. */
   nth: number;
   /**
-   * Numeric data-opencli-ref. Find assigns one if the element was not
+   * Numeric data-cloudl-ref. Find assigns one if the element was not
    * tagged by a prior snapshot, so downstream `browser click <ref>` works
    * directly off the find output without requiring `browser state` first.
    */
@@ -157,24 +157,24 @@ export function buildFindJs(selector: string, opts: FindOptions = {}): string {
         return true;
       }
 
-      // Ref allocation: reuse \`window.__opencli_ref_identity\` (the same map
+      // Ref allocation: reuse \`window.__cloudl_ref_identity\` (the same map
       // snapshot populates) as the source of truth. For matched elements that
-      // don't already carry a \`data-opencli-ref\`, assign the next free numeric
+      // don't already carry a \`data-cloudl-ref\`, assign the next free numeric
       // ref and write the fingerprint so the target resolver can verify it on
       // downstream click/type/get calls.
-      const identity = (window.__opencli_ref_identity = window.__opencli_ref_identity || {});
+      const identity = (window.__cloudl_ref_identity = window.__cloudl_ref_identity || {});
       let maxRef = 0;
       for (const k in identity) {
         const n = parseInt(k, 10);
         if (!isNaN(n) && n > maxRef) maxRef = n;
       }
-      // Also walk any \`data-opencli-ref\` already in the DOM in case the identity
+      // Also walk any \`data-cloudl-ref\` already in the DOM in case the identity
       // map was cleared but annotations remain (e.g. soft navigation without a
       // fresh snapshot). Guarantees allocated refs don't collide.
       try {
-        const tagged = document.querySelectorAll('[data-opencli-ref]');
+        const tagged = document.querySelectorAll('[data-cloudl-ref]');
         for (let t = 0; t < tagged.length; t++) {
-          const v = tagged[t].getAttribute('data-opencli-ref');
+          const v = tagged[t].getAttribute('data-cloudl-ref');
           const n = v != null && /^\\d+$/.test(v) ? parseInt(v, 10) : NaN;
           if (!isNaN(n) && n > maxRef) maxRef = n;
         }
@@ -195,11 +195,11 @@ export function buildFindJs(selector: string, opts: FindOptions = {}): string {
       const entries = [];
       for (let i = 0; i < take; i++) {
         const el = matches[i];
-        const refAttr = el.getAttribute('data-opencli-ref');
+        const refAttr = el.getAttribute('data-cloudl-ref');
         let refNum = refAttr != null && /^\\d+$/.test(refAttr) ? parseInt(refAttr, 10) : null;
         if (refNum === null) {
           refNum = ++maxRef;
-          try { el.setAttribute('data-opencli-ref', '' + refNum); } catch (_) {}
+          try { el.setAttribute('data-cloudl-ref', '' + refNum); } catch (_) {}
           identity['' + refNum] = fingerprintOf(el);
         } else if (!identity['' + refNum]) {
           // Ref annotation survived but identity map was cleared — repopulate so the
@@ -399,16 +399,16 @@ export function buildSemanticFindJs(opts: SemanticFindOptions): string {
         };
       }
 
-      const identity = (window.__opencli_ref_identity = window.__opencli_ref_identity || {});
+      const identity = (window.__cloudl_ref_identity = window.__cloudl_ref_identity || {});
       let maxRef = 0;
       for (const k in identity) {
         const n = parseInt(k, 10);
         if (!isNaN(n) && n > maxRef) maxRef = n;
       }
       try {
-        const tagged = document.querySelectorAll('[data-opencli-ref]');
+        const tagged = document.querySelectorAll('[data-cloudl-ref]');
         for (let t = 0; t < tagged.length; t++) {
-          const v = tagged[t].getAttribute('data-opencli-ref');
+          const v = tagged[t].getAttribute('data-cloudl-ref');
           const n = v != null && /^\\d+$/.test(v) ? parseInt(v, 10) : NaN;
           if (!isNaN(n) && n > maxRef) maxRef = n;
         }
@@ -418,11 +418,11 @@ export function buildSemanticFindJs(opts: SemanticFindOptions): string {
       const entries = [];
       for (let i = 0; i < take; i++) {
         const el = matchesList[i];
-        const refAttr = el.getAttribute('data-opencli-ref');
+        const refAttr = el.getAttribute('data-cloudl-ref');
         let refNum = refAttr != null && /^\\d+$/.test(refAttr) ? parseInt(refAttr, 10) : null;
         if (refNum === null) {
           refNum = ++maxRef;
-          try { el.setAttribute('data-opencli-ref', '' + refNum); } catch (_) {}
+          try { el.setAttribute('data-cloudl-ref', '' + refNum); } catch (_) {}
           identity['' + refNum] = fingerprintOf(el);
         } else if (!identity['' + refNum]) {
           identity['' + refNum] = fingerprintOf(el);

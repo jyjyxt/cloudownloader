@@ -1,8 +1,8 @@
 /**
  * Weibo user — get user profile by uid or screen_name.
  */
-import { cli, Strategy } from '@jackwener/opencli/registry';
-import { CommandExecutionError } from '@jackwener/opencli/errors';
+import { cli, Strategy } from '@jyjyxt/cloudl/registry';
+import { CommandExecutionError } from '@jyjyxt/cloudl/errors';
 import { requireObjectEvaluateResult, unwrapEvaluateResult } from './utils.js';
 cli({
     site: 'weibo',

@@ -3,12 +3,12 @@
 // Unlike `wikipedia summary` which returns the lead-section blurb truncated to
 // 300 chars, this adapter returns the *complete* article body (or the first N
 // paragraphs by explicit opt-in). No silent truncation: the caller decides.
-import { cli, Strategy } from '@jackwener/opencli/registry';
+import { cli, Strategy } from '@jyjyxt/cloudl/registry';
 import {
     ArgumentError,
     CommandExecutionError,
     EmptyResultError,
-} from '@jackwener/opencli/errors';
+} from '@jyjyxt/cloudl/errors';
 
 cli({
     site: 'wikipedia',
@@ -52,7 +52,7 @@ cli({
         try {
             resp = await fetch(url, {
                 headers: {
-                    'User-Agent': 'opencli/1.0 (+https://github.com/jyjyxt/cloudownloader)',
+                    'User-Agent': 'cloudl/1.0 (+https://github.com/jyjyxt/cloudownloader)',
                     'Accept': 'application/json',
                 },
             });

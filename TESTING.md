@@ -128,7 +128,7 @@ npx vitest src/
 
 ### 浏览器命令本地测试须知
 
-- opencli 通过 Browser Bridge 扩展连接已运行的 Chrome 浏览器
+- cloudl 通过 Browser Bridge 扩展连接已运行的 Chrome 浏览器
 - E2E 测试通过 `tests/e2e/helpers.ts` 里的 `runCli()` 调用已构建的 `dist/src/main.js`
 - `browser-public.test.ts` 使用 `tryBrowserCommand()`，站点反爬或地域限制导致空数据时会 warn + pass
 - `browser-auth.test.ts` 验证 **graceful failure**，重点是不 crash、不 hang、错误信息可控
@@ -226,7 +226,7 @@ steps:
 
 ## 浏览器模式
 
-opencli 通过 Browser Bridge 扩展连接浏览器：
+cloudl 通过 Browser Bridge 扩展连接浏览器：
 
 | 条件 | 模式 | 使用场景 |
 |---|---|---|

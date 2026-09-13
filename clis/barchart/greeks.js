@@ -3,8 +3,8 @@
  * for near-the-money options on a given symbol.
  * Auth: CSRF token from <meta name="csrf-token"> + session cookies.
  */
-import { cli, Strategy } from '@jackwener/opencli/registry';
-import { ArgumentError, CommandExecutionError, EmptyResultError } from '@jackwener/opencli/errors';
+import { cli, Strategy } from '@jyjyxt/cloudl/registry';
+import { ArgumentError, CommandExecutionError, EmptyResultError } from '@jyjyxt/cloudl/errors';
 
 const DEFAULT_LIMIT = 10;
 const MIN_LIMIT = 1;

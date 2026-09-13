@@ -51,7 +51,7 @@ Only modify the adapter file identified by `adapterSourcePath` in trace `summary
 That path may be:
 
 - `clis/<site>/*.js` — repo-local adapters in a source checkout
-- `~/.opencli/clis/<site>/*.js` — user-local adapters in npm install scenarios
+- `~/.cloudl/clis/<site>/*.js` — user-local adapters in npm install scenarios
 
 The agent must use the trace summary path, not guess a repo-relative path. This matters for npm-installed users where `clis/` may not be in the working directory.
 
@@ -89,16 +89,16 @@ Never modify:
 | Trace artifact output | Done | `src/observation/` |
 | Error envelope trace metadata | Done | `src/errors.ts`, `src/execution.ts` |
 | Adapter source resolution | Done | `src/adapter-source.ts` |
-| AutoFix skill protocol | Done | `skills/opencli-autofix/SKILL.md` |
+| AutoFix skill protocol | Done | `skills/cloudl-autofix/SKILL.md` |
 
 ### Delivery Mechanism
 
-The `opencli-autofix` skill is the portable self-repair protocol. Any AI agent can load this skill to get the workflow.
+The `cloudl-autofix` skill is the portable self-repair protocol. Any AI agent can load this skill to get the workflow.
 
 No separate diagnostic env var is required. The runtime has two control axes:
 
 ```text
--v / OPENCLI_VERBOSE              human-readable logs
+-v / CLOUDL_VERBOSE              human-readable logs
 --trace off|on|retain-on-failure  machine-readable browser evidence artifact
 ```
 
@@ -106,7 +106,7 @@ No separate diagnostic env var is required. The runtime has two control axes:
 
 ## The AutoFix Protocol
 
-The `opencli-autofix` skill instructs agents:
+The `cloudl-autofix` skill instructs agents:
 
 1. When `cloudl <site> <command>` fails, don't just report the error.
 2. Re-run with `--trace retain-on-failure`.
@@ -124,7 +124,7 @@ The `opencli-autofix` skill instructs agents:
 
 PR #863 (spec/runner/incident framework) is not needed for Phase 1. It becomes useful later as a hardening layer:
 
-- Phase 1: self-repair via `opencli-autofix` skill and trace artifacts.
+- Phase 1: self-repair via `cloudl-autofix` skill and trace artifacts.
 - Phase 2: high-frequency failures get hardened into command specs for offline regression testing and CI.
 
 The spec/runner framework is the asset layer. It turns ad-hoc repairs into reusable tests, but it is not the entry point.
@@ -133,7 +133,7 @@ The spec/runner framework is the asset layer. It turns ad-hoc repairs into reusa
 
 ## Usage
 
-No new commands. No new scripts. The agent loads the `opencli-autofix` skill and uses cloudl normally:
+No new commands. No new scripts. The agent loads the `cloudl-autofix` skill and uses cloudl normally:
 
 ```bash
 # Agent runs a command as part of its task

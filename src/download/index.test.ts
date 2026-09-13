@@ -53,7 +53,7 @@ describe('download helpers', { retry: process.platform === 'win32' ? 2 : 0 }, ()
       res.end();
     });
 
-    const tempDir = await fs.promises.mkdtemp(path.join(os.tmpdir(), 'opencli-dl-'));
+    const tempDir = await fs.promises.mkdtemp(path.join(os.tmpdir(), 'cloudl-dl-'));
     tempDirs.push(tempDir);
     const destPath = path.join(tempDir, 'file.txt');
     const result = await httpDownload(`${baseUrl}/loop`, destPath, { maxRedirects: 2 });
@@ -80,7 +80,7 @@ describe('download helpers', { retry: process.platform === 'win32' ? 2 : 0 }, ()
       res.end();
     });
 
-    const tempDir = await fs.promises.mkdtemp(path.join(os.tmpdir(), 'opencli-dl-'));
+    const tempDir = await fs.promises.mkdtemp(path.join(os.tmpdir(), 'cloudl-dl-'));
     tempDirs.push(tempDir);
     const destPath = path.join(tempDir, 'redirect.txt');
     const result = await httpDownload(`${redirectUrl}/start`, destPath, { cookies: 'sid=abc' });
@@ -104,7 +104,7 @@ describe('download helpers', { retry: process.platform === 'win32' ? 2 : 0 }, ()
       res.end();
     });
 
-    const tempDir = await fs.promises.mkdtemp(path.join(os.tmpdir(), 'opencli-dl-'));
+    const tempDir = await fs.promises.mkdtemp(path.join(os.tmpdir(), 'cloudl-dl-'));
     tempDirs.push(tempDir);
     const destPath = path.join(tempDir, 'redirect-header.txt');
     const result = await httpDownload(`${redirectUrl}/start`, destPath, {
@@ -124,7 +124,7 @@ describe('download helpers', { retry: process.platform === 'win32' ? 2 : 0 }, ()
       res.end('ok');
     });
 
-    const tempDir = await fs.promises.mkdtemp(path.join(os.tmpdir(), 'opencli-dl-'));
+    const tempDir = await fs.promises.mkdtemp(path.join(os.tmpdir(), 'cloudl-dl-'));
     tempDirs.push(tempDir);
     const destPath = path.join(tempDir, 'loopback.txt');
     const result = await httpDownload(`${baseUrl}/ok`, destPath);
@@ -134,7 +134,7 @@ describe('download helpers', { retry: process.platform === 'win32' ? 2 : 0 }, ()
   });
 
   it.skipIf(process.platform === 'win32')('writes the Netscape cookie file with 0o600 owner-only permissions', async () => {
-    const tempDir = await fs.promises.mkdtemp(path.join(os.tmpdir(), 'opencli-dl-'));
+    const tempDir = await fs.promises.mkdtemp(path.join(os.tmpdir(), 'cloudl-dl-'));
     tempDirs.push(tempDir);
     const cookiesPath = path.join(tempDir, 'cookies.txt');
 
@@ -147,7 +147,7 @@ describe('download helpers', { retry: process.platform === 'win32' ? 2 : 0 }, ()
   });
 
   it.skipIf(process.platform === 'win32')('tightens an existing Netscape cookie file before rewriting it', async () => {
-    const tempDir = await fs.promises.mkdtemp(path.join(os.tmpdir(), 'opencli-dl-'));
+    const tempDir = await fs.promises.mkdtemp(path.join(os.tmpdir(), 'cloudl-dl-'));
     tempDirs.push(tempDir);
     const cookiesPath = path.join(tempDir, 'cookies.txt');
     fs.writeFileSync(cookiesPath, 'stale-cookie', { mode: 0o644 });

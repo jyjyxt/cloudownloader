@@ -1,5 +1,5 @@
-import { AuthRequiredError, EmptyResultError } from '@jackwener/opencli/errors';
-import { cli, Strategy } from '@jackwener/opencli/registry';
+import { AuthRequiredError, EmptyResultError } from '@jyjyxt/cloudl/errors';
+import { cli, Strategy } from '@jyjyxt/cloudl/registry';
 
 const WEIXIN_DOMAIN = 'mp.weixin.qq.com';
 

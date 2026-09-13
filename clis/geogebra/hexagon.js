@@ -1,5 +1,5 @@
-import { cli, Strategy } from '@jackwener/opencli/registry';
-import { CommandExecutionError } from '@jackwener/opencli/errors';
+import { cli, Strategy } from '@jyjyxt/cloudl/registry';
+import { CommandExecutionError } from '@jyjyxt/cloudl/errors';
 import os from 'node:os';
 import path from 'node:path';
 import { ensureApplet, ggbEval, ggbListObjects, ggbWaitForObjectCount, normalizeNumber, requireGgbSuccess } from './utils.js';
@@ -45,7 +45,7 @@ cli({
 
     const objectCount = await ggbWaitForObjectCount(page, 7);
     const objects = await ggbListObjects(page);
-    const screenshotPath = path.join(os.tmpdir(), 'opencli-geogebra-hexagon.png');
+    const screenshotPath = path.join(os.tmpdir(), 'cloudl-geogebra-hexagon.png');
     try {
       await page.screenshot({ path: screenshotPath });
     } catch (err) {

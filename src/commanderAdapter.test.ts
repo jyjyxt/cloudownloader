@@ -40,7 +40,7 @@ describe('commanderAdapter arg passing', () => {
     mockExecuteCommand.mockReset();
     mockExecuteCommand.mockResolvedValue([]);
     mockRenderOutput.mockReset();
-    delete process.env.OPENCLI_VERBOSE;
+    delete process.env.CLOUDL_VERBOSE;
     process.exitCode = undefined;
   });
 
@@ -79,7 +79,7 @@ describe('commanderAdapter arg passing', () => {
 
     expect(mockExecuteCommand).toHaveBeenCalled();
     const kwargs = mockExecuteCommand.mock.calls[0][1];
-    expect(kwargs.__opencliOptionSources).toMatchObject({
+    expect(kwargs.__cloudlOptionSources).toMatchObject({
       'prepare-only': 'cli',
     });
   });
@@ -128,7 +128,7 @@ describe('commanderAdapter boolean alias support', () => {
     mockExecuteCommand.mockReset();
     mockExecuteCommand.mockResolvedValue([]);
     mockRenderOutput.mockReset();
-    delete process.env.OPENCLI_VERBOSE;
+    delete process.env.CLOUDL_VERBOSE;
     process.exitCode = undefined;
   });
 
@@ -181,7 +181,7 @@ describe('commanderAdapter value-required optional options', () => {
     mockExecuteCommand.mockReset();
     mockExecuteCommand.mockResolvedValue([]);
     mockRenderOutput.mockReset();
-    delete process.env.OPENCLI_VERBOSE;
+    delete process.env.CLOUDL_VERBOSE;
     process.exitCode = undefined;
   });
 
@@ -225,7 +225,7 @@ describe('commanderAdapter command aliases', () => {
     mockExecuteCommand.mockReset();
     mockExecuteCommand.mockResolvedValue([]);
     mockRenderOutput.mockReset();
-    delete process.env.OPENCLI_VERBOSE;
+    delete process.env.CLOUDL_VERBOSE;
     process.exitCode = undefined;
   });
 
@@ -245,7 +245,7 @@ describe('commanderAdapter validation preparation', () => {
     mockExecuteCommand.mockReset();
     mockExecuteCommand.mockResolvedValue([]);
     mockRenderOutput.mockReset();
-    delete process.env.OPENCLI_VERBOSE;
+    delete process.env.CLOUDL_VERBOSE;
     process.exitCode = undefined;
   });
 
@@ -292,7 +292,7 @@ describe('commanderAdapter default formats', () => {
     mockExecuteCommand.mockReset();
     mockExecuteCommand.mockResolvedValue([{ response: 'hello' }]);
     mockRenderOutput.mockReset();
-    delete process.env.OPENCLI_VERBOSE;
+    delete process.env.CLOUDL_VERBOSE;
     process.exitCode = undefined;
   });
 
@@ -338,7 +338,7 @@ describe('commanderAdapter error envelope output', () => {
   beforeEach(() => {
     mockExecuteCommand.mockReset();
     mockRenderOutput.mockReset();
-    delete process.env.OPENCLI_VERBOSE;
+    delete process.env.CLOUDL_VERBOSE;
     process.exitCode = undefined;
   });
 
@@ -422,11 +422,11 @@ describe('commanderAdapter error envelope output', () => {
     const err = selectorError('.note-title');
     attachTraceReceipt(err, {
       schemaVersion: 1,
-      opencliVersion: '1.7.8',
+      cloudlVersion: '1.7.8',
       traceId: 'trace-1',
-      traceDir: '/tmp/opencli/profiles/default/traces/trace-1',
-      summaryPath: '/tmp/opencli/profiles/default/traces/trace-1/summary.md',
-      receiptPath: '/tmp/opencli/profiles/default/traces/trace-1/receipt.json',
+      traceDir: '/tmp/cloudl/profiles/default/traces/trace-1',
+      summaryPath: '/tmp/cloudl/profiles/default/traces/trace-1/summary.md',
+      receiptPath: '/tmp/cloudl/profiles/default/traces/trace-1/receipt.json',
       status: 'failure',
       createdAt: '2026-05-03T00:00:00.000Z',
       error: { code: 'SELECTOR', message: 'Could not find element: .note-title' },
@@ -445,9 +445,9 @@ describe('commanderAdapter error envelope output', () => {
 
     const output = stderrSpy.mock.calls.map(c => String(c[0])).join('');
     expect(output).toContain('trace:');
-    expect(output).toContain('dir: /tmp/opencli/profiles/default/traces/trace-1');
-    expect(output).toContain('summaryPath: /tmp/opencli/profiles/default/traces/trace-1/summary.md');
-    expect(output).toContain('receiptPath: /tmp/opencli/profiles/default/traces/trace-1/receipt.json');
+    expect(output).toContain('dir: /tmp/cloudl/profiles/default/traces/trace-1');
+    expect(output).toContain('summaryPath: /tmp/cloudl/profiles/default/traces/trace-1/summary.md');
+    expect(output).toContain('receiptPath: /tmp/cloudl/profiles/default/traces/trace-1/receipt.json');
 
     stderrSpy.mockRestore();
   });

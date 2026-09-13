@@ -1,7 +1,7 @@
 /**
  * Public API for cloudl plugins.
  *
- * TS plugins should import from '@jackwener/opencli/registry' which resolves to
+ * TS plugins should import from '@jyjyxt/cloudl/registry' which resolves to
  * this file. It re-exports ONLY the core registration API — no serialization,
  * no transitive side-effects — to avoid circular dependency deadlocks when
  * plugins are dynamically imported during discoverPlugins().

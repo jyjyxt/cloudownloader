@@ -1,5 +1,5 @@
-import { cli, Strategy } from '@jackwener/opencli/registry';
-import { ConfigError } from '@jackwener/opencli/errors';
+import { cli, Strategy } from '@jyjyxt/cloudl/registry';
+import { ConfigError } from '@jyjyxt/cloudl/errors';
 import { activateChatGPT, selectModel, MODEL_CHOICES } from './ax.js';
 export const modelCommand = cli({
     site: 'chatgpt-app',

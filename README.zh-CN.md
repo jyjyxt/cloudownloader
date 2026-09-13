@@ -321,4 +321,4 @@ cloudl plugin uninstall my-tool                            # 卸载
 
 ## License
 
-[Apache-2.0](./LICENSE)
+[Apache-2.0](./LICENSE) · [NOTICE](./NOTICE)

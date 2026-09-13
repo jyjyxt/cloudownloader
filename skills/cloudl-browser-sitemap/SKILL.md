@@ -1,10 +1,10 @@
 ---
-name: opencli-browser-sitemap
+name: cloudl-browser-sitemap
 description: Use when driving a website with cloudl browser and sitemap context is available, requested, or needed to avoid blind navigation. Guides agents to consume site sitemap files lazily, choose adapter/browser fallback paths, resume from state signatures, and mark stale sitemap entries without trusting them over live browser state.
-allowed-tools: Bash(opencli:*), Read, Edit, Write, Grep
+allowed-tools: Bash(cloudl:*), Read, Edit, Write, Grep
 ---
 
-# opencli-browser-sitemap
+# cloudl-browser-sitemap
 
 Use this skill when `cloudl browser open` or `cloudl browser analyze` reports `sitemap.available: true`, or when the user asks you to use a site's sitemap.
 
@@ -33,7 +33,7 @@ The sitemap is **prior knowledge**, not ground truth. It should reduce blind cli
 Read local overlay first, then global seed:
 
 ```text
-~/.opencli/sites/<site>/sitemap/    # local overlay
+~/.cloudl/sites/<site>/sitemap/    # local overlay
 sitemaps/<site>/                    # repo seed (top-level)
 ```
 
@@ -75,7 +75,7 @@ Do not edit global seed files unless the task is explicitly a sitemap-authoring 
 
 When an adapter fails and the sitemap action or workflow tells you to update adapter health:
 
-1. Find the local workflow file under `~/.opencli/sites/<site>/sitemap/workflows/` whose `Best path` references the adapter command.
+1. Find the local workflow file under `~/.cloudl/sites/<site>/sitemap/workflows/` whose `Best path` references the adapter command.
 2. If no local workflow exists, copy the matching global workflow into the local overlay first; never edit the global seed directly during browser task execution.
 3. Set `adapter_health: suspect` or `broken` as directed.
 4. Add a short stale note with observed error, current URL, and timestamp.

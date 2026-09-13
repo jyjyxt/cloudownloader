@@ -1,10 +1,10 @@
 // archive search: Internet Archive Advanced Search across all mediatypes.
-import { cli, Strategy } from '@jackwener/opencli/registry';
+import { cli, Strategy } from '@jyjyxt/cloudl/registry';
 import {
     ArgumentError,
     CommandExecutionError,
     EmptyResultError,
-} from '@jackwener/opencli/errors';
+} from '@jyjyxt/cloudl/errors';
 
 const SORT_OPTIONS = ['downloads', 'date', 'addeddate', 'week', 'title'];
 const SORT_ALIAS = { added: 'addeddate', published: 'date' };
@@ -66,7 +66,7 @@ cli({
             resp = await fetch(url, {
                 headers: {
                     'Accept': 'application/json',
-                    'User-Agent': 'opencli/1.0 (+https://github.com/jyjyxt/cloudownloader)',
+                    'User-Agent': 'cloudl/1.0 (+https://github.com/jyjyxt/cloudownloader)',
                 },
             });
         } catch (error) {

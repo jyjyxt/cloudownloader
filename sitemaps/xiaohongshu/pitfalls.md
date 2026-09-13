@@ -4,7 +4,7 @@ last_verified: 2026-06-04
 source: global
 ---
 
-> **Scope**：本文件只列 **task-executing agent** 跑 sitemap workflow 时会撞的坑。adapter-author 实现层的坑（Pinia store SSR vs XHR 形状差异 / creator-center shadow-DOM publish button / `xsec_token` signed URL 起源）放在 `~/.opencli/sites/xiaohongshu/notes.md`，与本文件互补。
+> **Scope**：本文件只列 **task-executing agent** 跑 sitemap workflow 时会撞的坑。adapter-author 实现层的坑（Pinia store SSR vs XHR 形状差异 / creator-center shadow-DOM publish button / `xsec_token` signed URL 起源）放在 `~/.cloudl/sites/xiaohongshu/notes.md`，与本文件互补。
 
 ## Site-specific pitfalls
 

@@ -3,8 +3,8 @@
 // Hits the public `/api/articles/latest` endpoint. Complements the existing
 // `devto top` (most-reactioned) and `devto tag` (filtered) commands by
 // surfacing the firehose of brand-new posts.
-import { cli, Strategy } from '@jackwener/opencli/registry';
-import { ArgumentError, CommandExecutionError, EmptyResultError } from '@jackwener/opencli/errors';
+import { cli, Strategy } from '@jyjyxt/cloudl/registry';
+import { ArgumentError, CommandExecutionError, EmptyResultError } from '@jyjyxt/cloudl/errors';
 
 function requireBoundedInt(value, defaultValue, maxValue) {
     const raw = value ?? defaultValue;

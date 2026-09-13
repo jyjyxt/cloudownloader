@@ -1,4 +1,4 @@
-import { cli, Strategy } from '@jackwener/opencli/registry';
+import { cli, Strategy } from '@jyjyxt/cloudl/registry';
 import { getPostDataJs, requireJikeIdentity } from './utils.js';
 /**
  * 即刻首页动态流适配器

@@ -29,7 +29,7 @@ export interface CliResult {
 }
 
 /**
- * Run `opencli` as a child process with the given arguments.
+ * Run `cloudl` as a child process with the given arguments.
  * Without PLAYWRIGHT_MCP_EXTENSION_TOKEN, cloudl auto-launches its own browser.
  */
 export async function runCli(
@@ -42,7 +42,7 @@ export async function runCli(
   const timeout = opts.timeout ?? 25_000;
   const maxBuffer = opts.maxBuffer ?? DEFAULT_MAX_BUFFER_BYTES;
   try {
-    const runtime = process.env.OPENCLI_TEST_RUNTIME || 'node';
+    const runtime = process.env.CLOUDL_TEST_RUNTIME || 'node';
     const { stdout, stderr } = await exec(runtime, [MAIN, ...args], {
       cwd: ROOT,
       timeout,

@@ -1,5 +1,5 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
-import { CliError } from '@jackwener/opencli/errors';
+import { CliError } from '@jyjyxt/cloudl/errors';
 const { mockFetchPrivateApi } = vi.hoisted(() => ({
     mockFetchPrivateApi: vi.fn(),
 }));
@@ -10,7 +10,7 @@ vi.mock('./utils.js', async () => {
         fetchPrivateApi: mockFetchPrivateApi,
     };
 });
-import { getRegistry } from '@jackwener/opencli/registry';
+import { getRegistry } from '@jyjyxt/cloudl/registry';
 import './book.js';
 import './highlights.js';
 import './notes.js';

@@ -1,4 +1,4 @@
-import { AuthRequiredError, CommandExecutionError } from '@jackwener/opencli/errors';
+import { AuthRequiredError, CommandExecutionError } from '@jyjyxt/cloudl/errors';
 import { registerSiteAuthCommands } from '../_shared/site-auth.js';
 
 const NEW_STORY_URL = 'https://medium.com/new-story';

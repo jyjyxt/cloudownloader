@@ -1,4 +1,4 @@
-import { cli, Strategy } from '@jackwener/opencli/registry';
+import { cli, Strategy } from '@jyjyxt/cloudl/registry';
 import { inspectTraeShellScript } from './utils.js';
 
 export const statusCommand = cli({
@@ -6,7 +6,7 @@ export const statusCommand = cli({
   name: 'status',
   access: 'read',
   description: 'Check active CDP connection to Trae CN and summarize the current workspace/model',
-  example: 'OPENCLI_CDP_ENDPOINT=http://127.0.0.1:39240 OPENCLI_CDP_TARGET=talk cloudl trae-cn status -f json',
+  example: 'CLOUDL_CDP_ENDPOINT=http://127.0.0.1:39240 CLOUDL_CDP_TARGET=talk cloudl trae-cn status -f json',
   domain: 'localhost',
   strategy: Strategy.UI,
   browser: true,

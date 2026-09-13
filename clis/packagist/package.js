@@ -3,8 +3,8 @@
 // Hits `https://packagist.org/packages/<vendor>/<package>.json`. Returns
 // one row: latest stable version + release time, license, repository,
 // description, lifetime / monthly / daily downloads, github stars, favers.
-import { cli, Strategy } from '@jackwener/opencli/registry';
-import { CommandExecutionError } from '@jackwener/opencli/errors';
+import { cli, Strategy } from '@jyjyxt/cloudl/registry';
+import { CommandExecutionError } from '@jyjyxt/cloudl/errors';
 import { PACKAGIST_BASE, packagistFetch, pickStableVersion, requirePackageName, trimDate } from './utils.js';
 
 cli({

@@ -1,5 +1,5 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
-import { getRegistry } from '@jackwener/opencli/registry';
+import { getRegistry } from '@jyjyxt/cloudl/registry';
 import './search.js';
 import './top.js';
 describe('apple-podcasts search command', () => {
@@ -16,7 +16,7 @@ describe('apple-podcasts search command', () => {
                     {
                         collectionId: 42,
                         collectionName: 'Machine Learning Guide',
-                        artistName: 'OpenCLI',
+                        artistName: 'Cloudl',
                         trackCount: 12,
                         primaryGenreName: 'Technology',
                     },
@@ -34,7 +34,7 @@ describe('apple-podcasts search command', () => {
             expect.objectContaining({
                 id: 42,
                 title: 'Machine Learning Guide',
-                author: 'OpenCLI',
+                author: 'Cloudl',
                 episodes: 12,
                 genre: 'Technology',
                 url: '',

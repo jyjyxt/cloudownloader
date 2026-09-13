@@ -454,5 +454,5 @@ function detectExtension(url: string): string {
  * Get temp directory for cookie files.
  */
 export function getTempDir(): string {
-  return path.join(os.tmpdir(), 'opencli-download');
+  return path.join(os.tmpdir(), 'cloudl-download');
 }

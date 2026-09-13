@@ -1,9 +1,9 @@
 import * as fs from 'node:fs';
 import * as os from 'node:os';
 import * as path from 'node:path';
-import { Page as BrowserPage } from '@jackwener/opencli/browser/page';
-import { cli, Strategy } from '@jackwener/opencli/registry';
-import { ArgumentError, AuthRequiredError, CommandExecutionError } from '@jackwener/opencli/errors';
+import { Page as BrowserPage } from '@jyjyxt/cloudl/browser/page';
+import { cli, Strategy } from '@jyjyxt/cloudl/registry';
+import { ArgumentError, AuthRequiredError, CommandExecutionError } from '@jyjyxt/cloudl/errors';
 import { buildClickActionJs, buildEnsureComposerOpenJs, buildInspectUploadStageJs, } from './post.js';
 import { resolveCurrentUserId, resolveInstagramRuntimeInfo } from './_shared/runtime-info.js';
 import { INSTAGRAM_HOME_URL, gotoInstagramHome } from './_shared/navigation.js';
@@ -49,7 +49,7 @@ function isRecoverableReelSessionError(error) {
 }
 function buildSafeTempVideoPath(filePath) {
     const ext = path.extname(filePath).toLowerCase() || '.mp4';
-    return path.join(os.tmpdir(), `opencli-instagram-video-real${ext}`);
+    return path.join(os.tmpdir(), `cloudl-instagram-video-real${ext}`);
 }
 function prepareVideoUpload(filePath) {
     const baseName = path.basename(filePath);
@@ -171,8 +171,8 @@ async function resolveUploadSelectors(page) {
           if (input.disabled) continue;
           const accept = (input.getAttribute('accept') || '').toLowerCase();
           if (accept && !accept.includes('video') && !accept.includes('.mp4')) continue;
-          input.setAttribute('data-opencli-reel-upload-index', String(index));
-          selectors.push('[data-opencli-reel-upload-index="' + index + '"]');
+          input.setAttribute('data-cloudl-reel-upload-index', String(index));
+          selectors.push('[data-cloudl-reel-upload-index="' + index + '"]');
           index += 1;
         }
       }

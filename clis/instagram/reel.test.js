@@ -2,12 +2,12 @@ import * as fs from 'node:fs';
 import * as os from 'node:os';
 import * as path from 'node:path';
 import { afterAll, afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
-import { ArgumentError } from '@jackwener/opencli/errors';
-import { getRegistry } from '@jackwener/opencli/registry';
+import { ArgumentError } from '@jyjyxt/cloudl/errors';
+import { getRegistry } from '@jyjyxt/cloudl/registry';
 import './reel.js';
 const tempDirs = [];
 function createTempVideo(name = 'demo.mp4', bytes = Buffer.from('video')) {
-    const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'opencli-instagram-reel-'));
+    const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'cloudl-instagram-reel-'));
     tempDirs.push(dir);
     const filePath = path.join(dir, name);
     fs.writeFileSync(filePath, bytes);
@@ -85,7 +85,7 @@ describe('instagram reel registration', () => {
             { ok: false }, // dismiss residual dialogs
             { ok: true }, // ensure composer open
             { ok: true }, // composer upload input ready
-            { ok: true, selectors: ['[data-opencli-reel-upload-index="0"]', '[data-opencli-reel-upload-index="1"]'] }, // resolve upload selector
+            { ok: true, selectors: ['[data-cloudl-reel-upload-index="0"]', '[data-cloudl-reel-upload-index="1"]'] }, // resolve upload selector
             { count: 1 }, // file bound to input
             { state: 'preview', detail: 'Crop Back Next' }, // preview detected
             { ok: true, label: 'OK' }, // dismiss reels nux
@@ -98,7 +98,7 @@ describe('instagram reel registration', () => {
         ]);
         const cmd = getRegistry().get('instagram/reel');
         const result = await cmd.func(page, { video: videoPath });
-        expect(page.setFileInput).toHaveBeenCalledWith([videoPath], '[data-opencli-reel-upload-index="0"]');
+        expect(page.setFileInput).toHaveBeenCalledWith([videoPath], '[data-cloudl-reel-upload-index="0"]');
         expect(page.insertText).not.toHaveBeenCalled();
         expect(result).toEqual([
             {
@@ -114,7 +114,7 @@ describe('instagram reel registration', () => {
             { ok: false },
             { ok: true },
             { ok: true },
-            { ok: true, selectors: ['[data-opencli-reel-upload-index="0"]'] },
+            { ok: true, selectors: ['[data-cloudl-reel-upload-index="0"]'] },
             { count: 1 },
             { state: 'preview', detail: 'Crop Back Next' },
             { ok: true, label: 'OK' },
@@ -130,7 +130,7 @@ describe('instagram reel registration', () => {
         const uploadPaths = page.setFileInput.mock.calls[0]?.[0] ?? [];
         expect(uploadPaths).toHaveLength(1);
         expect(uploadPaths[0]).not.toBe(videoPath);
-        expect(String(uploadPaths[0])).toContain('opencli-instagram-video-real');
+        expect(String(uploadPaths[0])).toContain('cloudl-instagram-video-real');
         expect(String(uploadPaths[0]).toLowerCase()).toContain('.mp4');
     });
     it('uploads a reel video with caption and shares it', async () => {
@@ -139,7 +139,7 @@ describe('instagram reel registration', () => {
             { ok: false }, // dismiss residual dialogs
             { ok: true }, // ensure composer open
             { ok: true }, // composer upload input ready
-            { ok: true, selectors: ['[data-opencli-reel-upload-index="0"]'] }, // resolve upload selector
+            { ok: true, selectors: ['[data-cloudl-reel-upload-index="0"]'] }, // resolve upload selector
             { count: 1 }, // file bound to input
             { state: 'preview', detail: 'Crop Back Next' }, // preview detected
             { ok: true, label: 'OK' }, // dismiss reels nux

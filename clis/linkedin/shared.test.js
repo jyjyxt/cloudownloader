@@ -33,7 +33,7 @@ describe('linkedin shared helpers', () => {
   });
 
   it('decodes LinkedIn safety redirect URLs', () => {
-    expect(decodeLinkedInSafetyUrl('https://www.linkedin.com/safety/go/?url=https%3A%2F%2Fgithub.com%2Fjackwener%2FOpenCLI&urlhash=x'))
+    expect(decodeLinkedInSafetyUrl('https://www.linkedin.com/safety/go/?url=https%3A%2F%2Fgithub.com%2Fjyjyxt%2Fcloudownloader&urlhash=x'))
       .toBe('https://github.com/jyjyxt/cloudownloader');
   });
 

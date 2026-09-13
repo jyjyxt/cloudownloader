@@ -1,5 +1,5 @@
 /**
- * Plugin lifecycle hooks: allows plugins to tap into opencli's execution lifecycle.
+ * Plugin lifecycle hooks: allows plugins to tap into cloudl's execution lifecycle.
  *
  * Hooks use globalThis (like the command registry) to guarantee a single shared
  * instance across all module copies — critical when TS plugins are loaded via
@@ -35,10 +35,10 @@ export type HookFn = (ctx: HookContext, result?: unknown) => void | Promise<void
 // ── Singleton hook store (shared across module instances via globalThis) ──
 declare global {
   // eslint-disable-next-line no-var
-  var __opencli_hooks__: Map<HookName, HookFn[]> | undefined;
+  var __cloudl_hooks__: Map<HookName, HookFn[]> | undefined;
 }
 const _hooks: Map<HookName, HookFn[]> =
-  globalThis.__opencli_hooks__ ??= new Map();
+  globalThis.__cloudl_hooks__ ??= new Map();
 
 // ── Registration API (used by plugins) ─────────────────────────────────────
 

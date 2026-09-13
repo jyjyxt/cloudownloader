@@ -2,7 +2,7 @@ import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
 import { describe, expect, it } from 'vitest';
-import { ArgumentError, CommandExecutionError } from '@jackwener/opencli/errors';
+import { ArgumentError, CommandExecutionError } from '@jyjyxt/cloudl/errors';
 import {
     DEFAULT_MAX_PAGINATION_PAGES,
     appendJsonlRows,
@@ -14,7 +14,7 @@ import {
 } from './archive.js';
 
 function makeTempDir() {
-    return fs.mkdtempSync(path.join(os.tmpdir(), 'opencli-twitter-archive-'));
+    return fs.mkdtempSync(path.join(os.tmpdir(), 'cloudl-twitter-archive-'));
 }
 
 describe('twitter archive helpers', () => {

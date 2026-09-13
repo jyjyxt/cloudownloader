@@ -124,7 +124,7 @@ Do NOT fix the code — just diagnose. Use cloudl browser commands to investigat
 
     try {
       const result = execSync(
-        `claude -p --dangerously-skip-permissions --allowedTools "Bash(opencli:*),Bash(npm:*),Read,Grep,Glob" --output-format text --no-session-persistence "${prompt.replace(/"/g, '\\"')}"`,
+        `claude -p --dangerously-skip-permissions --allowedTools "Bash(cloudl:*),Bash(npm:*),Read,Grep,Glob" --output-format text --no-session-persistence "${prompt.replace(/"/g, '\\"')}"`,
         { cwd: ROOT, timeout: 120_000, encoding: 'utf-8', stdio: ['pipe', 'pipe', 'pipe'] }
       ).trim();
 

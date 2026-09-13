@@ -36,13 +36,13 @@
 //   - Empty list (after settle + auth check passes) → `EmptyResultError`,
 //     never silent `[]`.
 
-import { cli, Strategy } from '@jackwener/opencli/registry';
+import { cli, Strategy } from '@jyjyxt/cloudl/registry';
 import {
     ArgumentError,
     AuthRequiredError,
     CommandExecutionError,
     EmptyResultError,
-} from '@jackwener/opencli/errors';
+} from '@jyjyxt/cloudl/errors';
 
 export const FB_HOST = 'https://www.facebook.com';
 export const NOTIFICATIONS_LIMIT_DEFAULT = 15;

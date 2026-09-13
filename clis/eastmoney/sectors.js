@@ -3,8 +3,8 @@
 //   cloudl eastmoney sectors
 //   cloudl eastmoney sectors --type concept --sort money-flow --limit 30
 
-import { cli, Strategy } from '@jackwener/opencli/registry';
-import { CliError } from '@jackwener/opencli/errors';
+import { cli, Strategy } from '@jyjyxt/cloudl/registry';
+import { CliError } from '@jyjyxt/cloudl/errors';
 
 const SECTOR_TYPES = {
   industry: 'm:90+t:2',

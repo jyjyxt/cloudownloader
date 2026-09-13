@@ -3,8 +3,8 @@
  * REST returns HTTP 500 from a web context; LinkedIn renders results
  * server-side now. One navigation per call consumes one CUL query.
  */
-import { cli, Strategy } from '@jackwener/opencli/registry';
-import { ArgumentError, AuthRequiredError, CommandExecutionError, EmptyResultError } from '@jackwener/opencli/errors';
+import { cli, Strategy } from '@jyjyxt/cloudl/registry';
+import { ArgumentError, AuthRequiredError, CommandExecutionError, EmptyResultError } from '@jyjyxt/cloudl/errors';
 import { looksLinkedInAuthWall, normalizeWhitespace, unwrapEvaluateResult } from './shared.js';
 
 const LINKEDIN_DOMAIN = 'www.linkedin.com';

@@ -4,10 +4,10 @@
 // (served as static files from GitHub Pages, regenerated daily). No auth.
 // Formula / cask tokens are lowercase ASCII + `-_.+@` per Homebrew's own
 // validation; they round-trip into `homebrew formula` / `homebrew cask`.
-import { ArgumentError, CommandExecutionError, EmptyResultError } from '@jackwener/opencli/errors';
+import { ArgumentError, CommandExecutionError, EmptyResultError } from '@jyjyxt/cloudl/errors';
 
 export const BREW_BASE = 'https://formulae.brew.sh/api';
-const UA = 'opencli-homebrew-adapter (+https://github.com/jyjyxt/cloudownloader)';
+const UA = 'cloudl-homebrew-adapter (+https://github.com/jyjyxt/cloudownloader)';
 
 // Homebrew formula / cask tokens — letters / digits / `_-.+@` (`gcc@13`,
 // `imagemagick@6`, `c++`, `0-ad`, `php-cs-fixer`).

@@ -73,7 +73,7 @@ cloudl jira links PROJ-123 -f json
 
 - `issue` returns an agent-friendly object with `key`, `summary`, `status`, `priority`, `description.markdown`, `comments`, `attachments`, `linkedIssues`, versions, components, and timestamps.
 - Jira Cloud ADF descriptions and comments are converted to Markdown.
-- Rendered Jira HTML from Data Center is converted through OpenCLI's Markdown converter.
+- Rendered Jira HTML from Data Center is converted through Cloudl's Markdown converter.
 - Invalid issue keys fail early with `ArgumentError`.
 
 ## Custom Fields

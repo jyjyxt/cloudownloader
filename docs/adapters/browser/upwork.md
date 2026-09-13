@@ -87,7 +87,7 @@ Both commands return the same column set so feeds and search results can be comp
 ## Caveats
 
 - **Read-only.** No commands write to your Upwork account. There is no `apply` / `submit-proposal` / `withdraw` command — proposing for jobs is deliberately out of scope.
-- **No proposals command.** Listing your own submitted proposals is intentionally not shipped. Upwork's `lists` Vuex module is the right source, but verifying the field shape end-to-end requires an account with real proposals — once that data is available, see the field-map notes in `~/.opencli/sites/upwork/`.
+- **No proposals command.** Listing your own submitted proposals is intentionally not shipped. Upwork's `lists` Vuex module is the right source, but verifying the field shape end-to-end requires an account with real proposals — once that data is available, see the field-map notes in `~/.cloudl/sites/upwork/`.
 - **Cloudflare** sits in front of every surface — all commands run through your logged-in browser session (`Strategy.COOKIE`, `browser: true`). Bare `fetch` returns a `__cf_bm` challenge. If the adapter sees the challenge page it raises `CommandExecutionError` with a hint to clear it in the connected browser.
 - **List data comes from SSR state, not DOM scraping.** Upwork's card class names change often; instead the adapter reads `window.__NUXT__.state.{jobsSearch,feedBestMatch,feedMostRecent}.jobs[]` directly. Detail reads from the Vuex store at `window.$nuxt.$store.state.jobDetails.{job,buyer}`. This is more durable but means UI freshness / DOM tweaks have no effect — what you see in the browser may briefly differ from what the adapter returns if Upwork re-hydrates mid-load.
 - **Login redirect** raises `AuthRequiredError` (exit 77), not an empty result.

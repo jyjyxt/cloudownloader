@@ -4,8 +4,8 @@
 // of `hf models` / `hf datasets`. The Spaces API does not expose `trending` as
 // a sort key (verified live: returns "Invalid sort parameter"), so the allowed
 // sort set is narrower.
-import { cli, Strategy } from '@jackwener/opencli/registry';
-import { ArgumentError, CommandExecutionError, EmptyResultError } from '@jackwener/opencli/errors';
+import { cli, Strategy } from '@jyjyxt/cloudl/registry';
+import { ArgumentError, CommandExecutionError, EmptyResultError } from '@jyjyxt/cloudl/errors';
 
 const SORT_OPTIONS = ['likes', 'created_at', 'last_modified'];
 const SORT_ALIAS = { lastmodified: 'last_modified', createdat: 'created_at' };
@@ -55,7 +55,7 @@ cli({
         let resp;
         try {
             resp = await fetch(url, {
-                headers: { Accept: 'application/json', 'User-Agent': 'opencli/1.0 (+https://github.com/jyjyxt/cloudownloader)' },
+                headers: { Accept: 'application/json', 'User-Agent': 'cloudl/1.0 (+https://github.com/jyjyxt/cloudownloader)' },
             });
         }
         catch (err) {

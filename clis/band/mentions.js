@@ -1,5 +1,5 @@
-import { AuthRequiredError, EmptyResultError, selectorError } from '@jackwener/opencli/errors';
-import { cli, Strategy } from '@jackwener/opencli/registry';
+import { AuthRequiredError, EmptyResultError, selectorError } from '@jyjyxt/cloudl/errors';
+import { cli, Strategy } from '@jyjyxt/cloudl/registry';
 /**
  * band mentions — Show Band notifications where you were @mentioned.
  *
