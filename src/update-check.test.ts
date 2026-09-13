@@ -13,7 +13,7 @@ describe('extractLatestExtensionVersionFromReleases', () => {
           tag_name: 'v1.7.3',
           assets: [
             { name: 'cloudl-extension.zip' },
-            { name: 'cloudownloader-extension-v1.0.2.zip' },
+            { name: 'cloudl-extension-v1.0.2.zip' },
           ],
         },
       ]),

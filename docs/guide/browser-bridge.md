@@ -8,7 +8,7 @@ Cloudl connects to your browser through a lightweight **Browser Bridge** Chrome 
 
 ### Method 1: Download Pre-built Release (Recommended)
 
-1. Go to the GitHub [Releases page](https://github.com/jyjyxt/cloudownloader/releases) and download the latest `cloudownloader-extension-v{version}.zip`.
+1. Go to the GitHub [Releases page](https://github.com/jyjyxt/cloudownloader/releases) and download the latest `cloudl-extension-v{version}.zip`.
 2. Unzip the file and open `chrome://extensions`, enable **Developer mode** (top-right toggle).
 3. Click **Load unpacked** and select the unzipped folder.
 

@@ -37,7 +37,7 @@ cloudl --help
 cloudl connects to Chrome/Chromium through a lightweight Browser Bridge extension plus a small local daemon. The daemon auto-starts when needed.
 
 **Manual installation (currently the only supported method):**
-1. Download the latest `cloudownloader-extension-v{version}.zip` from the GitHub [Releases page](https://github.com/jyjyxt/cloudownloader/releases).
+1. Download the latest `cloudl-extension-v{version}.zip` from the GitHub [Releases page](https://github.com/jyjyxt/cloudownloader/releases).
 2. Unzip it, open `chrome://extensions`, and enable **Developer mode**.
 3. Click **Load unpacked** and select the unzipped folder.
 
@@ -67,6 +67,36 @@ cloudl list
 cloudl hackernews top --limit 5
 cloudl bilibili hot --limit 5
 ```
+
+## Updating cloudl and the extension
+
+The CLI and website adapters live in this repository. The Chrome extension executes browser operations requested by the CLI. When a website changes its layout or API, updating the affected adapter is usually enough; the extension does not need an update for every CLI change.
+
+### Update a source installation
+
+Run these commands in your existing repository directory:
+
+```bash
+git pull --ff-only
+npm install
+cloudl --version
+cloudl doctor
+```
+
+`npm install` updates dependencies and rebuilds the CLI through its prepare script. An existing `npm link` continues to point to this directory, so you do not need to link again unless you move the repository or switch Node.js installations.
+
+After editing CLI or adapter code locally, run `npm run build`, then rerun the affected command to verify the change. If you also changed dependencies, run `npm install` instead.
+
+### Update the Chrome extension when needed
+
+Update the extension when a release requires new browser capabilities, permissions, or communication protocol changes, or includes extension fixes you need. CLI-only and website adapter changes usually do not require it.
+
+Manually loaded extensions do not automatically install new releases:
+
+1. Download `cloudl-extension-v{version}.zip` from the GitHub [Releases page](https://github.com/jyjyxt/cloudownloader/releases).
+2. Replace the contents of the extension directory already loaded in Chrome with the newly extracted files.
+3. Open `chrome://extensions` and click **Reload** on the **Cloudl** extension. If you use a different directory, remove the old extension and use **Load unpacked** to select the new directory.
+4. Run `cloudl doctor` to verify connectivity, then rerun the browser command you need.
 
 ## For Humans
 

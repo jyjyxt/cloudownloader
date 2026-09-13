@@ -37,7 +37,7 @@ cloudl --help
 cloudl 通过轻量 Browser Bridge 扩展和本地微型 daemon 与 Chrome/Chromium 通信。daemon 会按需自动启动。
 
 **手动安装（目前唯一支持的方式）：**
-1. 到 GitHub [Releases 页面](https://github.com/jyjyxt/cloudownloader/releases) 下载最新的 `cloudownloader-extension-v{version}.zip`。
+1. 到 GitHub [Releases 页面](https://github.com/jyjyxt/cloudownloader/releases) 下载最新的 `cloudl-extension-v{version}.zip`。
 2. 解压后打开 `chrome://extensions`，启用 **开发者模式**。
 3. 点击 **加载已解压的扩展程序**，选择解压后的目录。
 
@@ -54,6 +54,36 @@ cloudl list
 cloudl hackernews top --limit 5
 cloudl bilibili hot --limit 5
 ```
+
+## 更新 cloudl 和浏览器扩展
+
+命令行程序和网站适配器位于本仓库中，Chrome 扩展负责执行 CLI 发来的浏览器操作。网页布局或接口发生变化时，通常只需修改对应的网站适配器，不必每次都更新扩展。
+
+### 更新源码安装的 CLI
+
+在已有的仓库目录中执行：
+
+```bash
+git pull --ff-only
+npm install
+cloudl --version
+cloudl doctor
+```
+
+`npm install` 会更新依赖，并通过 prepare 脚本重新构建 CLI。已有的 `npm link` 会继续指向这个目录，除非移动仓库或切换 Node.js 安装，否则不需要重新关联。
+
+在本地修改 CLI 或适配器代码后，执行 `npm run build`，再运行受影响的命令验证修改。如果同时修改了依赖，则执行 `npm install`。
+
+### 按需更新 Chrome 扩展
+
+当发布说明要求新增浏览器能力、权限或通信协议变更，或者包含你需要的扩展修复时，再更新扩展。仅修改 CLI 或网站适配器，通常不需要升级扩展。
+
+手动加载的扩展不会自动安装新版本：
+
+1. 从 GitHub [Releases 页面](https://github.com/jyjyxt/cloudownloader/releases) 下载 `cloudl-extension-v{version}.zip`。
+2. 将新版本解压后的文件替换到 Chrome 已加载的扩展目录中。
+3. 打开 `chrome://extensions`，点击 **Cloudl** 扩展的 **重新加载** 按钮。如果改用新目录，先移除旧扩展，再通过 **加载已解压的扩展程序** 选择新目录。
+4. 执行 `cloudl doctor` 检查连接，再运行需要使用的浏览器命令。
 
 ## 给人类用户
 

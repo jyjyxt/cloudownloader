@@ -144,7 +144,7 @@ export function registerUpdateNoticeOnExit(): void {
 function extractLatestExtensionVersionFromReleases(releases: GitHubRelease[]): string | undefined {
   for (const release of releases) {
     for (const asset of release.assets ?? []) {
-      const assetMatch = asset.name.match(/^cloudownloader-extension-v(.+)\.zip$/);
+      const assetMatch = asset.name.match(/^cloudl-extension-v(.+)\.zip$/);
       if (assetMatch) return assetMatch[1];
     }
 

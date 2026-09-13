@@ -16,7 +16,7 @@ npm link
 cloudl --help
 ```
 
-For browser commands, download cloudownloader-extension-v{version}.zip from
+For browser commands, download cloudl-extension-v{version}.zip from
 https://github.com/jyjyxt/cloudownloader/releases, unzip it, enable Developer mode
 at chrome://extensions and choose Load unpacked. Run `cloudl doctor` to check
 the connection. Log into the target website in Chrome when required.
