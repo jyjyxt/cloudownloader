@@ -6,16 +6,28 @@ Cloudl 通过轻量级 **Browser Bridge** Chrome 扩展 + 微守护进程连接�
 
 ## 扩展安装
 
-### 方法 1：下载预构建版本（推荐）
+### 方法 1：从 Chrome 应用商店安装（推荐）
 
-1. 前往 GitHub [Releases 页面](https://github.com/jyjyxt/cloudownloader/releases) 下载最新的 `cloudl-extension-v{version}.zip`。
-2. 解压后打开 `chrome://extensions`，启用**开发者模式**。
-3. 点击**加载已解压的扩展程序**，选择解压后的文件夹。
+1. 在 Chrome 中打开 [Cloudl 扩展的应用商店页面](https://chromewebstore.google.com/detail/cloudl/eajdmnipgdkcfooackbbobapnenbgnlf)。
+2. 点击**添加至 Chrome** 并确认安装，无需编译或启用开发者模式。
 
-### 方法 2：加载源码（开发者）
+商店发布新版本后，Chrome 会自动更新扩展。
+
+### 方法 2：自行编译并加载
+
+在仓库根目录执行：
+
+```bash
+npm --prefix extension install
+npm --prefix extension run build
+```
 
 1. 打开 `chrome://extensions`，启用**开发者模式**。
 2. 点击**加载已解压的扩展程序**，选择仓库中的 `extension/` 目录。
+
+请选择包含 `manifest.json` 的目录，不要选择 `extension/dist/`。Chrome 会持续读取该目录中的文件，因此请保留该目录及其路径。根目录的 `npm run build` 只构建 CLI。
+
+更新源码安装的扩展时，先拉取最新代码，再重新执行上述命令，最后到 `chrome://extensions` 点击 Cloudl 扩展的**重新加载**按钮。
 
 ## 验证
 

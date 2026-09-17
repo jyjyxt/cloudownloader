@@ -36,13 +36,12 @@ cloudl --help
 
 cloudl 通过轻量 Browser Bridge 扩展和本地微型 daemon 与 Chrome/Chromium 通信。daemon 会按需自动启动。
 
-通过以下任一方式手动安装。
+通过以下任一方式安装。
 
-**方式 A：下载已构建的扩展包（无需编译）**
+**方式 A：从 Chrome 应用商店安装（推荐）**
 
-1. 到 GitHub [Releases 页面](https://github.com/jyjyxt/cloudownloader/releases) 下载最新的 `cloudl-extension-v{version}.zip`。
-2. 解压后打开 `chrome://extensions`，启用 **开发者模式**。
-3. 点击 **加载已解压的扩展程序**，选择解压后包含 `manifest.json` 的目录。
+1. 在 Chrome 中打开 [Cloudl 扩展的应用商店页面](https://chromewebstore.google.com/detail/cloudl/eajdmnipgdkcfooackbbobapnenbgnlf)。
+2. 点击 **添加至 Chrome** 并确认安装，无需编译或启用开发者模式。
 
 **方式 B：构建并加载本仓库中的扩展**
 
@@ -57,7 +56,7 @@ npm --prefix extension run build
 
 根目录的 `npm run build` 只构建 CLI，扩展需要单独构建。修改扩展源码后，重新执行 `npm --prefix extension run build`，再到 Chrome 中点击 Cloudl 扩展的 **重新加载** 按钮。
 
-Chrome 会持续读取已加载目录中的文件，因此请保留该目录及其路径。下载的 ZIP 解压后可以删除，但已加载的扩展目录不能删除。
+源码安装时，Chrome 会持续读取 `extension/` 目录中的文件，因此请保留该目录及其路径。
 
 ### 3. 验证环境
 
@@ -96,11 +95,13 @@ cloudl doctor
 
 当发布说明要求新增浏览器能力、权限或通信协议变更，或者包含你需要的扩展修复时，再更新扩展。仅修改 CLI 或网站适配器，通常不需要升级扩展。
 
-手动加载的扩展不会自动安装新版本：
+**Chrome 应用商店安装：** 商店发布新版本后，Chrome 会自动更新扩展。
 
-1. 从 GitHub [Releases 页面](https://github.com/jyjyxt/cloudownloader/releases) 下载 `cloudl-extension-v{version}.zip`。
-2. 将新版本解压后的文件替换到 Chrome 已加载的扩展目录中。
-3. 打开 `chrome://extensions`，点击 **Cloudl** 扩展的 **重新加载** 按钮。如果改用新目录，先移除旧扩展，再通过 **加载已解压的扩展程序** 选择新目录。
+**源码安装：** 手动加载的扩展需要重新构建并加载：
+
+1. 在仓库根目录执行 `git pull --ff-only`。
+2. 执行 `npm --prefix extension install` 和 `npm --prefix extension run build`。
+3. 打开 `chrome://extensions`，点击 **Cloudl** 扩展的 **重新加载** 按钮。
 4. 执行 `cloudl doctor` 检查连接，再运行需要使用的浏览器命令。
 
 ## 给人类用户
@@ -356,7 +357,7 @@ cloudl plugin uninstall my-tool                            # 卸载
 ## 常见问题排查
 
 - **"Extension not connected" 报错**
-  - 确保你已按上述步骤手动加载 Browser Bridge 扩展，且在 `chrome://extensions` 中**已启用**。
+  - 确保你已按上述任一方式安装 Browser Bridge 扩展，且在 `chrome://extensions` 中**已启用**。
 - **"attach failed: Cannot access a chrome-extension:// URL" 报错**
   - 其他 Chrome/Chromium 扩展（如 youmind、New Tab Override 或 AI 助手类扩展）可能产生冲突。请尝试**暂时禁用其他扩展**后重试。
 - **返回空数据，或者报错 "Unauthorized"**

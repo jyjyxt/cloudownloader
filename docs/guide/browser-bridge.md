@@ -6,16 +6,28 @@ Cloudl connects to your browser through a lightweight **Browser Bridge** Chrome 
 
 ## Extension Installation
 
-### Method 1: Download Pre-built Release (Recommended)
+### Method 1: Install from the Chrome Web Store (Recommended)
 
-1. Go to the GitHub [Releases page](https://github.com/jyjyxt/cloudownloader/releases) and download the latest `cloudl-extension-v{version}.zip`.
-2. Unzip the file and open `chrome://extensions`, enable **Developer mode** (top-right toggle).
-3. Click **Load unpacked** and select the unzipped folder.
+1. Open [Cloudl on the Chrome Web Store](https://chromewebstore.google.com/detail/cloudl/eajdmnipgdkcfooackbbobapnenbgnlf) in Chrome.
+2. Click **Add to Chrome** and confirm the installation. No build or Developer mode is required.
 
-### Method 2: Load Unpacked Source (For Developers)
+Chrome automatically updates the extension when a new store version is available.
+
+### Method 2: Build and Load from Source
+
+Run these commands from the repository root:
+
+```bash
+npm --prefix extension install
+npm --prefix extension run build
+```
 
 1. Open `chrome://extensions` and enable **Developer mode**.
 2. Click **Load unpacked** and select the `extension/` directory from the repository.
+
+Select the directory containing `manifest.json`, not `extension/dist/`. Keep this directory in place because Chrome continues to read its files. The root `npm run build` builds only the CLI.
+
+To update a source installation, pull the latest code, rerun the commands above, then click **Reload** on the Cloudl extension in `chrome://extensions`.
 
 ## Verification
 

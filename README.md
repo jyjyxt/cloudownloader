@@ -36,13 +36,12 @@ cloudl --help
 
 cloudl connects to Chrome/Chromium through a lightweight Browser Bridge extension plus a small local daemon. The daemon auto-starts when needed.
 
-Install manually using either option below.
+Install using either option below.
 
-**Option A: Download a prebuilt extension (no build required)**
+**Option A: Install from the Chrome Web Store (recommended)**
 
-1. Download the latest `cloudl-extension-v{version}.zip` from the GitHub [Releases page](https://github.com/jyjyxt/cloudownloader/releases).
-2. Unzip it, open `chrome://extensions`, and enable **Developer mode**.
-3. Click **Load unpacked** and select the unzipped folder containing `manifest.json`.
+1. Open [Cloudl on the Chrome Web Store](https://chromewebstore.google.com/detail/cloudl/eajdmnipgdkcfooackbbobapnenbgnlf) in Chrome.
+2. Click **Add to Chrome** and confirm the installation. No build or Developer mode is required.
 
 **Option B: Build and load the extension from this repository**
 
@@ -57,7 +56,7 @@ Open `chrome://extensions`, enable **Developer mode**, click **Load unpacked**, 
 
 The root `npm run build` builds only the CLI; the extension needs its own build. After changing extension source code, rerun `npm --prefix extension run build`, then click **Reload** on the Cloudl extension in Chrome.
 
-Keep the directory loaded by Chrome in its original location: Chrome continues to read its files. You may delete the downloaded ZIP after extraction, but keep the loaded extension directory.
+For a source installation, keep the `extension/` directory in its original location: Chrome continues to read its files.
 
 ### 3. Verify the setup
 
@@ -109,11 +108,13 @@ After editing CLI or adapter code locally, run `npm run build`, then rerun the a
 
 Update the extension when a release requires new browser capabilities, permissions, or communication protocol changes, or includes extension fixes you need. CLI-only and website adapter changes usually do not require it.
 
-Manually loaded extensions do not automatically install new releases:
+**Chrome Web Store installation:** Chrome automatically updates the extension when a new store version is available.
 
-1. Download `cloudl-extension-v{version}.zip` from the GitHub [Releases page](https://github.com/jyjyxt/cloudownloader/releases).
-2. Replace the contents of the extension directory already loaded in Chrome with the newly extracted files.
-3. Open `chrome://extensions` and click **Reload** on the **Cloudl** extension. If you use a different directory, remove the old extension and use **Load unpacked** to select the new directory.
+**Source installation:** Manually loaded extensions need to be rebuilt and reloaded:
+
+1. Run `git pull --ff-only` in the repository root.
+2. Run `npm --prefix extension install` and `npm --prefix extension run build`.
+3. Open `chrome://extensions` and click **Reload** on the **Cloudl** extension.
 4. Run `cloudl doctor` to verify connectivity, then rerun the browser command you need.
 
 ## For Humans
@@ -322,7 +323,7 @@ See **[TESTING.md](./TESTING.md)** for how to run and write tests.
 
 ## Troubleshooting
 
-- **"Extension not connected"** — Ensure the Browser Bridge extension is loaded manually using the steps above and **enabled** in `chrome://extensions`.
+- **"Extension not connected"** — Ensure the Browser Bridge extension is installed using either option above and **enabled** in `chrome://extensions`.
 - **"attach failed: Cannot access a chrome-extension:// URL"** — Another extension may be interfering. Try disabling other extensions temporarily.
 - **Empty data or 'Unauthorized' error** — Your Chrome/Chromium login session may have expired. Navigate to the target site and log in again.
 - **Node API errors / missing `fetch` / startup crash on old Node** — cloudl requires **Node.js >= 20.18.1**. Run `node --version`, upgrade Node if needed, then retry.
