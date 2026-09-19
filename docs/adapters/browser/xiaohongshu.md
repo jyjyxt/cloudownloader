@@ -17,6 +17,7 @@
 | `cloudl xiaohongshu liked` | List liked notes (`/user/profile/<id>?tab=liked&subTab=note`) |
 | `cloudl xiaohongshu download` | Download images and videos from a note |
 | `cloudl xiaohongshu publish` | Publish image-text notes (creator center UI automation) |
+| `cloudl xiaohongshu publish-video` | Upload and prepare a video note; publish once with `--execute`, or resume with `--resume` |
 | `cloudl xiaohongshu delete-note` | Verify or delete a published creator-center note by exact note ID |
 | `cloudl xiaohongshu follow` | Follow a user from the profile UI and verify the button state flips |
 | `cloudl xiaohongshu unfollow` | Unfollow a user from the profile UI, confirm the modal, and verify the button state flips |
@@ -73,6 +74,32 @@ cloudl xiaohongshu delete-note 6a08ba0b000000000702a893
 # Actually delete after the target row and delete action are verified
 cloudl xiaohongshu delete-note 6a08ba0b000000000702a893 --execute
 ```
+
+### Video publishing
+
+Create a metadata JSON file such as `video-note.json`:
+
+```json
+{
+  "video": "./video.mp4",
+  "title": "视频标题",
+  "content": "视频正文",
+  "account": "创作者中心显示的账号名称"
+}
+```
+
+```bash
+# Upload and fill the form, waiting for the video to be ready without publishing
+cloudl xiaohongshu publish-video ./video-note.json
+
+# Reuse the uploaded video in the same named browser session and publish once
+cloudl xiaohongshu publish-video ./video-note.json --resume --execute
+
+# Use a custom session and allow up to 20 minutes for editor/upload readiness
+cloudl xiaohongshu publish-video ./video-note.json --session my-video --timeout 1200
+```
+
+`video` is resolved relative to the current working directory and must be an existing `.mp4`, `.mov`, or `.m4v` file. The title must contain 1–20 characters and the body 1–1000 characters. The command checks the account name before uploading; `--resume` also checks the uploaded filename. The default session is `xhs-video` and the default readiness timeout is 600 seconds. Publishing requires `--execute`. If submission succeeds but its acknowledgement cannot be confirmed, inspect creator-center notes before retrying.
 
 `search` supports the same visible filter-panel choices as the website: `--sort comprehensive|latest|most-liked|most-commented|most-collected`, `--note-type all|video|image`, `--publish-time anytime|day|week|half-year`, `--scope all|seen|unseen|following`, and `--location all|same-city|nearby`. Account-scoped and location filters fail explicitly when the logged-in browser session lacks the required account or geolocation capability.
 
