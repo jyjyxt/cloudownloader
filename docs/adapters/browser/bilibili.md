@@ -26,6 +26,7 @@
 | `cloudl bilibili user-videos` | |
 | `cloudl bilibili download` | |
 | `cloudl bilibili creator-stats <bvid-or-video-url>` | Read a curated manuscript-level metric snapshot from the latest creator-center comparison rows |
+| `cloudl bilibili publish-video <metadata.json>` | Upload and prepare a video; add `--execute` to submit once ([guide](./bilibili-publish-video.md)) |
 
 ## Usage Examples
 

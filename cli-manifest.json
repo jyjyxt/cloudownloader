@@ -4001,6 +4001,61 @@
   },
   {
     "site": "bilibili",
+    "name": "publish-video",
+    "description": "上传视频并填写投稿信息；默认仅准备，--execute 投稿一次，--resume 继续已有上传",
+    "access": "write",
+    "strategy": "cookie",
+    "browser": false,
+    "args": [
+      {
+        "name": "metadata",
+        "type": "str",
+        "required": true,
+        "positional": true,
+        "help": "JSON: video, account, title, description, category, declaration, tags; optional account_id, cover_index"
+      },
+      {
+        "name": "session",
+        "type": "str",
+        "default": "bilibili-publish",
+        "required": false,
+        "help": "Cloudl 浏览器会话"
+      },
+      {
+        "name": "resume",
+        "type": "bool",
+        "default": false,
+        "required": false,
+        "help": "继续会话中同一文件的上传；核对文件名与大小"
+      },
+      {
+        "name": "execute",
+        "type": "bool",
+        "default": false,
+        "required": false,
+        "help": "信息核对且上传完成后立即投稿；不会自动重试提交"
+      },
+      {
+        "name": "timeout",
+        "type": "int",
+        "default": 900,
+        "required": false,
+        "help": "页面加载及视频上传等待秒数"
+      }
+    ],
+    "columns": [
+      "status",
+      "title",
+      "bvid",
+      "url"
+    ],
+    "type": "js",
+    "modulePath": "bilibili/publish-video.js",
+    "sourceFile": "bilibili/publish-video.js",
+    "navigateBefore": true
+  },
+  {
+    "site": "bilibili",
     "name": "ranking",
     "description": "Get Bilibili video ranking board",
     "access": "read",
