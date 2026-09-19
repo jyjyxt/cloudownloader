@@ -12609,7 +12609,7 @@
   {
     "site": "douyin",
     "name": "publish",
-    "description": "定时发布视频到抖音（必须设置 2h ~ 14天后的发布时间）",
+    "description": "发布视频到抖音（--now 立即发布，或 --schedule 定时发布）",
     "access": "write",
     "domain": "creator.douyin.com",
     "strategy": "cookie",
@@ -12631,8 +12631,15 @@
       {
         "name": "schedule",
         "type": "str",
-        "required": true,
-        "help": "定时发布时间（ISO8601 或 Unix 秒，2h ~ 14天后）"
+        "required": false,
+        "help": "定时发布时间（ISO8601 或 Unix 秒，2h ~ 14天后；与 --now 二选一）"
+      },
+      {
+        "name": "now",
+        "type": "bool",
+        "default": false,
+        "required": false,
+        "help": "立即发布；不能同时设置 --schedule"
       },
       {
         "name": "caption",

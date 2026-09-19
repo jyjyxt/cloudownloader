@@ -69,6 +69,35 @@ describe('douyin publish upload identifier handling', () => {
     expect(createCall?.[3]?.body.item.common.text).toBe('Cloudl自测');
   });
 
+  it('publishes immediately with timing zero and no AI declaration', async () => {
+    const tmpDir = fs.mkdtempSync(path.join(os.tmpdir(), 'douyin-publish-now-'));
+    const video = path.join(tmpDir, 'video.mp4');
+    fs.writeFileSync(video, 'fake-video');
+    const { getRegistry } = await import('@jyjyxt/cloudl/registry');
+    getRegistry().delete('douyin/publish');
+    await import('./publish.js');
+    const cmd = getRegistry().get('douyin/publish');
+    const result = await cmd.func({}, { video, title: '立即发布测试', now: true, no_safety_check: true });
+    const calls = mocks.browserFetch.mock.calls.filter(call => String(call[2]).includes('/aweme/create_v2/'));
+    expect(calls).toHaveLength(1);
+    expect(calls[0][3].body.item.common.timing).toBe(0);
+    expect(calls[0][3].body.item.declare.user_declare_info).toBe('{}');
+    expect(result[0].publish_time).toBe('立即发布');
+    fs.rmSync(tmpDir, { recursive: true });
+  });
+
+  it.each([{}, { now: true, schedule: '2030-01-01T00:00:00Z' }])('rejects ambiguous publish timing before upload: %j', async timing => {
+    const tmpDir = fs.mkdtempSync(path.join(os.tmpdir(), 'douyin-publish-mode-'));
+    const video = path.join(tmpDir, 'video.mp4');
+    fs.writeFileSync(video, 'fake-video');
+    const { getRegistry } = await import('@jyjyxt/cloudl/registry');
+    getRegistry().delete('douyin/publish');
+    await import('./publish.js');
+    await expect(getRegistry().get('douyin/publish').func({}, { video, title: '测试', ...timing })).rejects.toThrow('--now 或 --schedule');
+    expect(mocks.getUploadAuthV5Credentials).not.toHaveBeenCalled();
+    fs.rmSync(tmpDir, { recursive: true });
+  });
+
   it('keeps title-prefixed publish text and hashtag offsets aligned for create_v2', async () => {
     const tmpDir = fs.mkdtempSync(path.join(os.tmpdir(), 'douyin-publish-text-'));
     const video = path.join(tmpDir, 'video.mp4');
