@@ -7,6 +7,7 @@
 | Command | Description |
 |---------|-------------|
 | `cloudl wechat-channels publish` | 发布视频到视频号 |
+| `cloudl wechat-channels publish-video <metadata.json>` | 核对编辑器已保存文案，发表后复查，支持恢复与防重复提交（[使用说明](./wechat-channels-publish-video.md)） |
 
 ## Usage Examples
 
