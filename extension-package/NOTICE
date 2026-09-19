@@ -1,0 +1,10 @@
+cloudl
+
+This project is derived from OpenCLI by jackwener and its contributors.
+Upstream: https://github.com/jackwener/opencli
+Copyright 2025 jackwener
+Licensed under the Apache License, Version 2.0; see LICENSE.
+
+This fork changes the package identity, module imports, runtime directories,
+environment variables, browser bridge protocol, plugin format, and documentation
+to cloudl. It does not retain compatibility with the former product namespace.
