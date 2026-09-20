@@ -268,3 +268,6 @@ export const __test__ = {
     requireCursor,
     requirePositiveInt,
 };
+
+// Shared read-only Studio contract for publication receipt verification.
+export { buildFetchItemListScript, buildItemListRequest, extractUsername };

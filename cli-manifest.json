@@ -38414,6 +38414,62 @@
   },
   {
     "site": "tiktok",
+    "name": "publish-video",
+    "description": "Upload a video to TikTok Studio; prepare by default, --execute posts once, --resume continues a prepared upload",
+    "access": "write",
+    "strategy": "cookie",
+    "browser": false,
+    "args": [
+      {
+        "name": "metadata",
+        "type": "str",
+        "required": true,
+        "positional": true,
+        "help": "JSON file: video, account, caption, visibility, ai_generated; optional account_id"
+      },
+      {
+        "name": "session",
+        "type": "str",
+        "default": "tiktok-publish",
+        "required": false,
+        "help": "Named Cloudl browser session"
+      },
+      {
+        "name": "resume",
+        "type": "bool",
+        "default": false,
+        "required": false,
+        "help": "Resume the same prepared file, metadata and browser session"
+      },
+      {
+        "name": "execute",
+        "type": "bool",
+        "default": false,
+        "required": false,
+        "help": "Post once after verifying the form; uncertain submissions are never retried"
+      },
+      {
+        "name": "timeout",
+        "type": "int",
+        "default": 900,
+        "required": false,
+        "help": "Page/upload wait timeout in seconds (1–3600)"
+      }
+    ],
+    "columns": [
+      "status",
+      "account",
+      "caption",
+      "videoId",
+      "url"
+    ],
+    "type": "js",
+    "modulePath": "tiktok/publish-video.js",
+    "sourceFile": "tiktok/publish-video.js",
+    "navigateBefore": true
+  },
+  {
+    "site": "tiktok",
     "name": "save",
     "description": "Add a TikTok video to Favorites",
     "access": "write",

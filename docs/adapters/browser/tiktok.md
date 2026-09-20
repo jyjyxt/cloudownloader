@@ -15,6 +15,7 @@
 | `cloudl tiktok live` | Browse live streams |
 | `cloudl tiktok notifications` | Get notifications |
 | `cloudl tiktok creator-videos` | List TikTok Studio creator videos and metrics |
+| `cloudl tiktok publish-video` | Upload and prepare a video; `--execute` posts once |
 | `cloudl tiktok like` | Like a video |
 | `cloudl tiktok unlike` | Unlike a video |
 | `cloudl tiktok save` | Add to Favorites |
@@ -70,6 +71,16 @@ cloudl tiktok profile --username tiktok -f json
 ```
 
 ## Output
+
+### Video publishing
+
+See [TikTok video publishing](./tiktok-publish-video.md) for metadata, preparation,
+resume, AI label and receipt handling. The command never adds text to your caption.
+
+```bash
+cloudl tiktok publish-video metadata.json --session tiktok-upload
+cloudl tiktok publish-video metadata.json --session tiktok-upload --resume --execute
+```
 
 ### `explore`
 
