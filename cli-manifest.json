@@ -43480,6 +43480,13 @@
         "help": "Cloudl 浏览器会话名称"
       },
       {
+        "name": "original",
+        "type": "bool",
+        "default": false,
+        "required": false,
+        "help": "声明原创并确认原创协议；需要账号已开放原创入口，否则停止且不发表"
+      },
+      {
         "name": "execute",
         "type": "bool",
         "default": false,

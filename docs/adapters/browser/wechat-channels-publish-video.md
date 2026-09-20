@@ -16,7 +16,8 @@
   "video": "/absolute/path/video.mp4",
   "account": "你的视频号名称",
   "title": "AI的6种日常用法",
-  "caption": "完整视频描述、来源说明\n\n#人工智能 #AI工具"
+  "caption": "完整视频描述、来源说明\n\n#人工智能 #AI工具",
+  "original": true
 }
 ```
 
@@ -24,6 +25,11 @@
 命令当前只支持适用「无需标注」的内容（可显式填写 `declaration: "无需标注"`），
 不会主动勾选 AI 生成标签。需要其他标注的内容请在视频号界面处理。
 使用视频自动生成的封面，位置设置为「不显示位置」，立即发表；暂不支持定时、合集或自定义封面。
+
+原创声明可通过元数据 `original: true` 或 `--original` 请求。命令会检查账号原创权限，
+点击声明原创并确认《原创声明须知》和《使用条款》，核对编辑器状态及已发表记录的 `originalInfo.isDeclared`。
+没有原创入口或声明无法确认时停止，不改用“自行拍摄”，不无标记发表。只有确实要声明原创时才传此参数。
+原创选项与“视频标注”是不同设置；默认不声明原创。
 
 ## 使用
 
@@ -36,6 +42,9 @@ cloudl wechat-channels publish-video metadata.json --session wechat-video --resu
 
 # 上传、核对、发表、复查，一次完成
 cloudl wechat-channels publish-video metadata.json --execute --timeout 900 -f json
+
+# 上传并声明原创、发表、复查
+cloudl wechat-channels publish-video metadata.json --original --execute -f json
 
 # 核对已有作品或恢复未确认的提交：只读取平台数据，不上传、不发表
 cloudl wechat-channels publish-video metadata.json --verify 'export/作品ID' -f json

@@ -8,7 +8,7 @@ import { validateMetadata, previousResult, submitOnce, assertPrepared, assertPub
 
 const data = () => ({ video: '/tmp/demo.mp4', account: 'tester', title: 'AI的6种用法', caption: '完整描述\n\n包含来源和 #AI' });
 const prepared = d => ({ account: d.account, title: d.title, shortTitle: d.title, caption: d.caption, savedCaption: d.caption,
-  files: [{ name: 'demo.mp4', size: 4 }], canPost: true, preview: true, uploading: false, hasLocation: false, scheduled: false, unlabelled: true });
+  files: [{ name: 'demo.mp4', size: 4 }], canPost: true, preview: true, uploading: false, hasLocation: false, scheduled: false, unlabelled: true, originalAvailable: true, original: d.original === true });
 const dirs = [];
 afterEach(() => { for (const path of dirs.splice(0)) rmSync(path, { recursive: true, force: true }); });
 
@@ -30,10 +30,10 @@ function browserFixture(d, options = {}) {
     const [action] = JSON.parse('[' + script.slice(script.lastIndexOf(')(') + 2, -1) + ']');
     calls.push([action]);
     if (action === 'snapshot') {
-      const posts = (submitted || options.existing) ? [{ id: 'export/new', text: d.caption + '\n2026-09-19' }] : [];
+      const posts = (submitted || options.existing) ? [{ id: 'export/new', text: d.caption + '\n2026-09-19', original: options.original !== false && d.original === true }] : [];
       if (url.includes('/list')) return { account: options.account || d.account, url, text: '视频管理\n发表视频', posts };
       return { ...prepared(d), url, editor: true, posts: [], account: options.account || d.account,
-        files: uploaded ? prepared(d).files : [], savedCaption: options.unsynced ? '' : d.caption };
+        originalAvailable: options.originalAvailable !== false, files: uploaded ? prepared(d).files : [], savedCaption: options.unsynced ? '' : d.caption };
     }
     if (action === 'submit') {
       submitted = true; url = 'https://channels.weixin.qq.com/platform/post/list';
@@ -54,6 +54,40 @@ describe('wechat-channels publish-video', () => {
   });
   it.each([{ account: '' }, { title: '字'.repeat(17) }, { title: 'a\nb' }, { caption: '' }, { caption: '字'.repeat(1001) }, { declaration: '含AI生成内容' }])('rejects unsupported metadata %j', patch => {
     expect(() => validateMetadata({ ...data(), ...patch })).toThrow();
+  });
+  it('validates original metadata and registers the explicit flag', () => {
+    expect(validateMetadata({ ...data(), original: true }).original).toBe(true);
+    expect(() => validateMetadata({ ...data(), original: 'yes' })).toThrow('boolean');
+    expect(getRegistry().get('wechat-channels/publish-video').args.find(a => a.name === 'original').default).toBe(false);
+  });
+  it('requires original permission and checked state before submission', () => {
+    const d = { ...data(), original: true };
+    expect(() => assertPrepared(prepared(d), d, { path: '/tmp/demo.mp4', size: 4 })).not.toThrow();
+    for (const patch of [{ original: false }, { originalAvailable: false }])
+      expect(() => assertPrepared({ ...prepared(d), ...patch }, d, { path: '/tmp/demo.mp4', size: 4 })).toThrow('original');
+  });
+  it('refuses publication when the account lacks original access', async () => {
+    const f = fixture(), b = browserFixture(f.d, { originalAvailable: false });
+    await expect(publishVideo({ ...f.args, original: true, execute: true }, b.browser)).rejects.toThrow('原创');
+    expect(b.calls.some(c => ['upload', 'submit'].includes(c[0]))).toBe(false);
+  });
+  it('checks original status in the saved published record', () => {
+    const d = { ...data(), original: true };
+    const record = { account: d.account, objectId: 'export/new', publishedTitle: d.title, publishedCaption: d.caption };
+    expect(() => assertPublished(record, d, 'export/new')).toThrow('original');
+    expect(assertPublished({ ...record, original: true }, d, 'export/new').original).toBe(true);
+  });
+  it('publishes with original and rejects a conflicting retry', async () => {
+    const f = fixture(); f.d.original = true; writeFileSync(f.metadata, JSON.stringify(f.d));
+    const b = browserFixture(f.d);
+    const result = await publishVideo({ ...f.args, execute: true }, b.browser);
+    expect(result[0].original).toBe(true);
+    expect(b.calls.filter(c => c[0] === 'original')).toHaveLength(1);
+    expect(b.calls.filter(c => c[0] === 'submit')).toHaveLength(1);
+    delete f.d.original; writeFileSync(f.metadata, JSON.stringify(f.d));
+    const unused = vi.fn();
+    await expect(publishVideo({ ...f.args, execute: true }, unused)).rejects.toThrow('differs');
+    expect(unused).not.toHaveBeenCalled();
   });
   it('accepts CJK text and multiline captions', () => expect(validateMetadata(data())).toEqual(data()));
   it('rejects visible-only captions, wrong files, locations and schedules', () => {
@@ -145,6 +179,32 @@ describe('actual browser-side editor operations', () => {
     const action = w.eval('(' + pageAction.toString() + ')');
     return { dom, root, action, editor, vm, title };
   }
+  it('clicks the original agreement flow and verifies the saved editor flag', async () => {
+    const f = dom();
+    const owner = { $data: { checkOriginalFlag: false }, checkOriginalFlag: false, canShowOriginalMark: true };
+    f.root.querySelector('body').__vue__ = owner;
+    const container = f.dom.window.document.createElement('div');
+    container.innerHTML = '<div class="declare-original-checkbox"><input type="checkbox"></div><div class="declare-original-dialog"><div class="original-proto-wrapper"><input type="checkbox"></div><button disabled>声明原创</button></div>';
+    f.root.querySelector('body').appendChild(container);
+    const box = container.querySelector('.declare-original-checkbox input');
+    const dialog = container.querySelector('.declare-original-dialog');
+    const agreement = dialog.querySelector('input');
+    const button = dialog.querySelector('button');
+    let opened = false;
+    dialog.getBoundingClientRect = () => ({ width: opened ? 500 : 0 });
+    button.getBoundingClientRect = () => ({ width: 100 });
+    box.addEventListener('click', () => { opened = true; });
+    agreement.addEventListener('click', () => { button.disabled = !agreement.checked; });
+    button.addEventListener('click', () => { owner.checkOriginalFlag = true; opened = false; });
+    await f.action('original');
+    expect(agreement.checked).toBe(true);
+    expect((await f.action('snapshot')).original).toBe(true);
+    await f.action('original');
+    expect(opened).toBe(false);
+    owner.canShowOriginalMark = false;
+    await expect(f.action('original')).rejects.toThrow('原创');
+    f.dom.window.close();
+  });
   it('synchronizes the editor model, not just the visible caption', async () => {
     const f = dom();
     await f.action('fill', data());

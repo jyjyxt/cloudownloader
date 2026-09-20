@@ -23,6 +23,7 @@ export function validateMetadata(data) {
   if (Array.from(data.title).length > 16 || /[\r\n]/.test(data.title)) throw new ArgumentError('Short title must be one line, at most 16 characters');
   if (Array.from(data.caption).length > 1000) throw new ArgumentError('Caption max 1000 characters');
   if (data.declaration !== undefined && data.declaration !== '无需标注') throw new ArgumentError('This command currently supports only 无需标注; other declarations require the creator UI');
+  if (data.original !== undefined && typeof data.original !== 'boolean') throw new ArgumentError('original must be boolean');
   return data;
 }
 
@@ -51,6 +52,8 @@ export function assertPrepared(actual, data, file) {
     throw new CommandExecutionError('Visible or saved metadata/account does not match; refusing to publish');
   if (actual.files?.length !== 1 || actual.files[0].name !== basename(file.path) || actual.files[0].size !== file.size)
     throw new CommandExecutionError('Uploaded file does not match metadata');
+  if (data.original && (!actual.originalAvailable || actual.original !== true))
+    throw new CommandExecutionError('Requested original declaration is unavailable or not checked; refusing to publish');
   if (!actual.canPost || actual.uploading || !actual.preview || actual.hasLocation || actual.scheduled || !actual.unlabelled)
     throw new CommandExecutionError('Upload/form is not ready, or location/schedule/declaration differs');
 }
@@ -59,7 +62,8 @@ export function assertPublished(actual, data, objectId) {
   if (actual.account !== data.account || actual.objectId !== objectId ||
       clean(actual.publishedCaption) !== clean(data.caption) || clean(actual.publishedTitle) !== data.title)
     throw new CommandExecutionError('Published record does not match title/caption/account. Submission will not be retried or deleted automatically');
-  return { status: 'published', account: data.account, title: data.title, object_id: objectId,
+  if (data.original && actual.original !== true) throw new CommandExecutionError('Published original declaration not confirmed; do not resubmit');
+  return { status: 'published', original: actual.original === true, account: data.account, title: data.title, object_id: objectId,
     url: BASE + 'list', verification_url: actual.url, metadata_verified: true };
 }
 
@@ -73,6 +77,14 @@ export async function pageAction(action, data = {}) {
   const visible = e => !!e?.getBoundingClientRect().width;
   const text = body?.innerText || '';
   const account = document.querySelector('.account-info .name')?.innerText?.trim();
+  const originalOwner = () => Array.from(root?.querySelectorAll('*') || []).map(e => e.__vue__)
+    .find(v => v?.$data && Object.prototype.hasOwnProperty.call(v.$data, 'checkOriginalFlag'));
+  const originalState = () => {
+    const owner = originalOwner();
+    return { originalAvailable: owner?.canShowOriginalMark === true && !owner.disDeclareOriginal,
+      original: owner?.checkOriginalFlag === true,
+      originalReason: owner?.disDeclareOriginal || (owner?.canShowOriginalMark === false ? '当前账号未开放原创声明入口' : '') };
+  };
   const shortTitleModel = () => {
     for (let e = title; e && e !== root; e = e.parentElement) {
       if (typeof e.__vue__?.$data?.shortTitle === 'string') return e.__vue__.$data.shortTitle;
@@ -81,7 +93,7 @@ export async function pageAction(action, data = {}) {
   };
   if (action === 'snapshot') {
     const location = vm?.postStore?.postObjDesc?.location;
-    return { url: locationHref(), account, text, editor: !!editor,
+    return { url: locationHref(), account, text, editor: !!editor, ...originalState(),
       title: title?.value, shortTitle: shortTitleModel(), caption: editor?.innerText,
       savedCaption: vm?.postStore?.postObjDesc?.description,
       canPost: vm?.postStore?.canPost === true,
@@ -91,7 +103,7 @@ export async function pageAction(action, data = {}) {
       hasLocation: !!location && Object.keys(location).length > 0,
       scheduled: Array.from(root?.querySelectorAll('input[type="radio"]') || []).some(e => e.checked && e.parentElement.innerText.trim() === '定时'),
       unlabelled: /视频标注\n(?:选择视频标注|无需标注)(?:\n|$)/.test(text),
-      posts: Array.from(root?.querySelectorAll('.post-feed-item') || []).map(e => ({ id: e.__vue__?.post?.objectId, text: e.innerText })) };
+      posts: Array.from(root?.querySelectorAll('.post-feed-item') || []).map(e => ({ id: e.__vue__?.post?.objectId, text: e.innerText, original: e.__vue__?.post?.originalInfo?.isDeclared === true || e.__vue__?.post?.originalInfo?.isDeclared === 1 })) };
   }
   function locationHref() { return window.location.href; }
   if (action === 'expose-upload') {
@@ -137,7 +149,30 @@ export async function pageAction(action, data = {}) {
     if (items.length !== 1) return false;
     items[0].click(); return true;
   }
+  if (action === 'original') {
+    const state = originalState();
+    if (!state.originalAvailable) throw new Error(state.originalReason || 'Original declaration control unavailable');
+    if (state.original) return true;
+    const box = root.querySelector('.declare-original-checkbox input[type="checkbox"]');
+    if (!box || box.disabled) throw new Error('Original declaration checkbox unavailable');
+    box.click();
+    await new Promise(resolve => setTimeout(resolve, 0));
+    const dialog = Array.from(root.querySelectorAll('.declare-original-dialog')).find(visible);
+    if (!dialog) throw new Error('Original declaration confirmation dialog missing');
+    const agreement = dialog.querySelector('.original-proto-wrapper input[type="checkbox"]');
+    if (!agreement || agreement.disabled) throw new Error('Original declaration agreement unavailable');
+    if (!agreement.checked) agreement.click();
+    await new Promise(resolve => setTimeout(resolve, 0));
+    const buttons = Array.from(dialog.querySelectorAll('button')).filter(e => visible(e) && !e.disabled && e.innerText.trim() === '声明原创');
+    if (buttons.length !== 1) throw new Error('Original declaration confirmation button ambiguous');
+    buttons[0].click();
+    await new Promise(resolve => setTimeout(resolve, 0));
+    if (!originalState().original) throw new Error('Original declaration not saved in editor');
+    return true;
+  }
   if (action === 'submit') {
+    if (data.original && (!originalState().originalAvailable || !originalState().original))
+      throw new Error('Original declaration changed before submission');
     if (account !== data.account || !vm?.postStore?.canPost || vm.postStore.postObjDesc.description !== editor.innerText ||
         editor.innerText.trim() !== data.caption.trim() || title?.value !== data.title || shortTitleModel() !== data.title)
       throw new Error('Saved metadata changed before submission');
@@ -169,6 +204,7 @@ export async function publishVideo(args, transport) {
   let data;
   try { data = validateMetadata(JSON.parse(readFileSync(metadata, 'utf8'))); }
   catch (e) { if (e instanceof ArgumentError) throw e; throw new ArgumentError(`Cannot read metadata: ${e.message}`); }
+  data = { ...data, original: enabled(args.original) || data.original === true };
   const video = resolve(data.video);
   let file;
   try { file = statSync(video); } catch { throw new ArgumentError('Video file not found'); }
@@ -190,6 +226,8 @@ export async function publishVideo(args, transport) {
       catch (e) { throw new CommandExecutionError(`Cannot lock ${lock}: ${e.code}. Check for an active publisher before removing a stale lock`); }
     }
     let state = existsSync(statePath) ? JSON.parse(readFileSync(statePath, 'utf8')) : null;
+    if (state && state.status !== 'prepared' && Boolean(state.original) !== data.original)
+      throw new CommandExecutionError('Original declaration differs from prior submission; inspect the existing receipt');
     const prior = previousResult(state, fingerprint, args.verify);
     if (prior && !args.verify) return [prior];
     const browser = transport || (async (...parts) => {
@@ -223,18 +261,18 @@ export async function publishVideo(args, transport) {
         return false;
       }, 'Creator page loading');
     };
-    const verifyRecord = async id => {
+    const verifyRecord = async (id, original) => {
       await browser('open', BASE + 'coverEdit?objectId=' + encodeURIComponent(id));
       const record = await wait(async () => { const s = await act('published'); return s.ready && s.account ? s : false; }, 'Published metadata');
-      const result = assertPublished(record, data, id);
+      const result = assertPublished({ ...record, original }, data, id);
       return { ...result, verified_at: new Date().toISOString() };
     };
     if (args.verify) {
       // Explicit recovery/adoption is read-only on the platform, even after a lost acknowledgement.
       const list = await open(BASE + 'list', s => s.posts.length > 0);
       if (!list.posts.some(p => p.id === args.verify)) throw new CommandExecutionError('Object ID is not on the current video-manager page');
-      const result = await verifyRecord(args.verify);
-      writeReceipt(statePath, { ...state, fingerprint, status: 'published', result });
+      const result = await verifyRecord(args.verify, list.posts.find(p => p.id === args.verify)?.original);
+      writeReceipt(statePath, { ...state, fingerprint, original: data.original, status: 'published', result });
       return [result];
     }
     if (!enabled(args.resume)) {
@@ -242,8 +280,9 @@ export async function publishVideo(args, transport) {
       const list = await open(BASE + 'list', s => /视频管理/.test(s.text) && /发表视频/.test(s.text));
       const matching = list.posts.filter(p => compact(p.text).includes(compact(data.caption)));
       if (matching.length) throw new CommandExecutionError(`Matching video already exists. Inspect and use --verify ${matching[0].id}`);
-      state = { status: 'prepared', fingerprint, baseline: list.posts.map(p => p.id) };
-      await open(BASE + 'create', s => s.editor);
+      state = { status: 'prepared', fingerprint, original: data.original, baseline: list.posts.map(p => p.id) };
+      const form = await open(BASE + 'create', s => s.editor);
+      if (data.original && !form.originalAvailable) throw new CommandExecutionError(form.originalReason || '当前账号未开放原创声明入口');
       if ((await snapshot()).files.length) throw new CommandExecutionError('Existing upload found; use --resume');
       writeReceipt(statePath, state);
       await act('expose-upload');
@@ -254,7 +293,9 @@ export async function publishVideo(args, transport) {
       const s = await snapshot(); identity(s);
       if (s.files.length !== 1 || s.files[0].name !== basename(video) || s.files[0].size !== file.size) throw new CommandExecutionError('Resume file mismatch');
     }
+    state = { ...state, original: data.original };
     writeReceipt(statePath, state);
+    if (data.original) await act('original');
     await act('fill', data);
     if ((await snapshot()).hasLocation) { await act('location-open'); await act('location-clear'); }
     console.error('Waiting for uploaded video and saved editor metadata...');
@@ -273,7 +314,7 @@ export async function publishVideo(args, transport) {
         }, 'Submission acknowledgement');
         const candidates = list.posts.filter(p => !state.baseline.includes(p.id) && compact(p.text).includes(compact(data.caption)));
         if (candidates.length !== 1) throw new CommandExecutionError('Cannot identify exactly one new matching post; inspect manager and use --verify');
-        return verifyRecord(candidates[0].id);
+        return verifyRecord(candidates[0].id, candidates[0].original);
       }
     });
     return [result];
@@ -288,6 +329,7 @@ cli({
   args: [
     { name: 'metadata', positional: true, required: true, help: 'JSON: video, account, title (<=16), caption (<=1000)' },
     { name: 'session', default: 'wechat-video', help: 'Cloudl 浏览器会话名称' },
+    { name: 'original', type: 'bool', default: false, help: '声明原创并确认原创协议；需要账号已开放原创入口，否则停止且不发表' },
     { name: 'execute', type: 'bool', default: false, help: '上传核对后立即发表一次；默认仅准备' },
     { name: 'resume', type: 'bool', default: false, help: '继续同一会话中的已上传视频' },
     { name: 'verify', help: '只核对指定已发布 object ID，保存回执；不上传或发表' },
