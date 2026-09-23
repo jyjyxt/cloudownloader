@@ -8,6 +8,7 @@
 |---------|-------------|
 | `cloudl wechat-channels publish` | 发布视频到视频号 |
 | `cloudl wechat-channels publish-video <metadata.json>` | 核对编辑器已保存文案，发表后复查，支持恢复与防重复提交（[使用说明](./wechat-channels-publish-video.md)） |
+| `cloudl wechat-channels whoami` | 核对当前账号，兼容主页账号信息与旧认证接口 |
 
 ## Usage Examples
 
@@ -34,6 +35,10 @@ cloudl wechat-channels publish ./video.mp4 \
 
 # 调整整体超时（含登录等待 + 上传转码，默认 600 秒）
 cloudl wechat-channels publish ./big-video.mp4 --title "大文件" --timeout 1200
+
+# 需要后台视频标注时使用完整发布命令；标注不会被写入描述
+cloudl wechat-channels publish-video metadata.json \
+  --declaration '个人观点，仅供参考' --execute
 ```
 
 ## Arguments
@@ -66,3 +71,5 @@ cloudl wechat-channels publish ./big-video.mp4 --title "大文件" --timeout 120
   立即释放标签页并重置为空白页，手动审核所需时间必然超过该窗口。
 - 定时发布通过 WeUI 桌面端日期-时间选择器完成；选择器结构变动时，命令会保存调试截图到
   `/tmp/wechat-channels_schedule_debug.png` 并失败，不会降级为非定时发布。
+- `whoami` 优先核对已渲染的账号昵称与视频号ID；旧认证接口返回结构发生变化时会尝试读取主页。
+  只有无法验证登录时才报告相应失败，不把缺少 `base_resp.ret` 直接当作需要重新登录。

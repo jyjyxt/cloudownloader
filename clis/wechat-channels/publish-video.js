@@ -1,4 +1,4 @@
-// Creator-center UI contract observed 2026-09-19. All browser work goes through cloudl.
+// Creator-center UI contract observed 2026-09-23. All browser work goes through cloudl.
 import { execFile } from 'node:child_process';
 import { promisify } from 'node:util';
 import { createHash } from 'node:crypto';
@@ -15,14 +15,22 @@ const compact = text => clean(text).replace(/\s+/g, ' ');
 const hash = value => createHash('sha256').update(value).digest('hex');
 const enabled = value => value === true || value === 'true' || value === '1';
 
+export function normalizeDeclaration(value = '无需标注') {
+  if (value === '作者观点，仅供参考') return '个人观点，仅供参考';
+  if (!['无需标注', '个人观点，仅供参考'].includes(value))
+    throw new ArgumentError('declaration supports 无需标注 or 个人观点，仅供参考 (alias: 作者观点，仅供参考)');
+  return value;
+}
+
 export function validateMetadata(data) {
   for (const key of ['video', 'account', 'title', 'caption']) {
     if (typeof data?.[key] !== 'string' || !data[key].trim()) throw new ArgumentError(`Require ${key}`);
   }
   if (data.account !== data.account.trim() || data.title !== data.title.trim()) throw new ArgumentError('Trim account/title whitespace');
   if (Array.from(data.title).length > 16 || /[\r\n]/.test(data.title)) throw new ArgumentError('Short title must be one line, at most 16 characters');
+  if (/[,，]/.test(data.title)) throw new ArgumentError('Short title does not support commas; replace them with spaces');
   if (Array.from(data.caption).length > 1000) throw new ArgumentError('Caption max 1000 characters');
-  if (data.declaration !== undefined && data.declaration !== '无需标注') throw new ArgumentError('This command currently supports only 无需标注; other declarations require the creator UI');
+  normalizeDeclaration(data.declaration);
   if (data.original !== undefined && typeof data.original !== 'boolean') throw new ArgumentError('original must be boolean');
   return data;
 }
@@ -31,8 +39,9 @@ export function previousResult(state, fingerprint, verify) {
   if (!state) return null;
   if (state.fingerprint !== fingerprint) throw new CommandExecutionError('Metadata/video changed; keep the existing receipt with its original metadata');
   if (state.status === 'published') return state.result;
-  if (state.status === 'submitting' && !verify) throw new CommandExecutionError('Previous submission unconfirmed. Inspect video manager and use --verify <object-id>; do not resubmit');
-  if (!['prepared', 'submitting'].includes(state.status)) throw new CommandExecutionError('Invalid receipt status');
+  if (['submitting', 'published_unverified'].includes(state.status) && !verify)
+    throw new CommandExecutionError(`Previous submission unconfirmed${state.object_id ? `: ${state.object_id}` : ''}. Inspect video manager and use --verify ${state.object_id || '<object-id>'}; do not resubmit`);
+  if (!['prepared', 'submitting', 'published_unverified'].includes(state.status)) throw new CommandExecutionError('Invalid receipt status');
   return null;
 }
 
@@ -54,7 +63,10 @@ export function assertPrepared(actual, data, file) {
     throw new CommandExecutionError('Uploaded file does not match metadata');
   if (data.original && (!actual.originalAvailable || actual.original !== true))
     throw new CommandExecutionError('Requested original declaration is unavailable or not checked; refusing to publish');
-  if (!actual.canPost || actual.uploading || !actual.preview || actual.hasLocation || actual.scheduled || !actual.unlabelled)
+  const declaration = normalizeDeclaration(data.declaration);
+  if (declaration === '无需标注' ? !actual.unlabelled : actual.declaration !== declaration || actual.declarationType !== 8 || !actual.declarationSaved)
+    throw new CommandExecutionError('Visible or saved video declaration does not match; refusing to publish');
+  if (!actual.canPost || actual.uploading || !actual.preview || actual.hasLocation || actual.scheduled)
     throw new CommandExecutionError('Upload/form is not ready, or location/schedule/declaration differs');
 }
 
@@ -63,7 +75,11 @@ export function assertPublished(actual, data, objectId) {
       clean(actual.publishedCaption) !== clean(data.caption) || clean(actual.publishedTitle) !== data.title)
     throw new CommandExecutionError('Published record does not match title/caption/account. Submission will not be retried or deleted automatically');
   if (data.original && actual.original !== true) throw new CommandExecutionError('Published original declaration not confirmed; do not resubmit');
+  const declaration = normalizeDeclaration(data.declaration);
+  if (actual.publishedDeclaration && actual.publishedDeclaration !== declaration)
+    throw new CommandExecutionError('Published video declaration differs; do not resubmit');
   return { status: 'published', original: actual.original === true, account: data.account, title: data.title, object_id: objectId,
+    declaration, declaration_verified: actual.publishedDeclaration === declaration,
     url: BASE + 'list', verification_url: actual.url, metadata_verified: true };
 }
 
@@ -76,7 +92,31 @@ export async function pageAction(action, data = {}) {
   const vm = editor?.parentElement.__vue__;
   const visible = e => !!e?.getBoundingClientRect().width;
   const text = body?.innerText || '';
-  const account = document.querySelector('.account-info .name')?.innerText?.trim();
+  // Read actual UI/store identity, never infer it from the caption or requested account.
+  const scopes = [document, root].filter(Boolean);
+  const names = new Set(scopes.flatMap(scope => Array.from(scope.querySelectorAll('.account-info .name, .finder-nickname')))
+    .map(e => e.innerText?.trim()).filter(Boolean));
+  const seen = new WeakSet();
+  const collectNames = (value, depth = 0) => {
+    if (!value || typeof value !== 'object' || depth > 3 || seen.has(value)) return;
+    seen.add(value);
+    for (const [key, item] of Object.entries(value)) {
+      if (['nickname', 'nickName'].includes(key) && typeof item === 'string' && item.trim()) names.add(item.trim());
+      else if (item && typeof item === 'object') collectNames(item, depth + 1);
+    }
+  };
+  for (const scope of scopes) collectNames(scope.querySelector('#app')?.__vue__?.$data?.userStore);
+  const account = names.size === 1 ? Array.from(names)[0] : undefined;
+  const markOwner = () => root?.querySelector('.post-with-mark-tag')?.__vue__;
+  const declarationState = () => {
+    const owner = markOwner();
+    const selected = owner?.selectedTag;
+    const saved = root?.querySelector('.post-create-wrap')?.__vue__?.tagInfo;
+    const unlabelled = /视频标注\n(?:选择视频标注|无需标注)(?:\n|$)/.test(text) && !selected?.tagType && !saved?.tagType;
+    return { unlabelled, declaration: unlabelled ? '无需标注' : selected?.tagName,
+      declarationType: selected?.tagType,
+      declarationSaved: !!selected && selected.tagType === 8 && saved?.tagType === selected.tagType };
+  };
   const originalOwner = () => Array.from(root?.querySelectorAll('*') || []).map(e => e.__vue__)
     .find(v => v?.$data && Object.prototype.hasOwnProperty.call(v.$data, 'checkOriginalFlag'));
   const originalState = () => {
@@ -93,7 +133,8 @@ export async function pageAction(action, data = {}) {
   };
   if (action === 'snapshot') {
     const location = vm?.postStore?.postObjDesc?.location;
-    return { url: locationHref(), account, text, editor: !!editor, ...originalState(),
+    return { url: locationHref(), account, text, editor: !!editor, ...originalState(), ...declarationState(),
+      appRouter: !!document.querySelector('#app')?.__vue__?.$router,
       title: title?.value, shortTitle: shortTitleModel(), caption: editor?.innerText,
       savedCaption: vm?.postStore?.postObjDesc?.description,
       canPost: vm?.postStore?.canPost === true,
@@ -102,10 +143,17 @@ export async function pageAction(action, data = {}) {
       preview: Array.from(root?.querySelectorAll('video') || []).some(e => e.readyState >= 2 && e.duration > 0 && e.videoWidth > 0),
       hasLocation: !!location && Object.keys(location).length > 0,
       scheduled: Array.from(root?.querySelectorAll('input[type="radio"]') || []).some(e => e.checked && e.parentElement.innerText.trim() === '定时'),
-      unlabelled: /视频标注\n(?:选择视频标注|无需标注)(?:\n|$)/.test(text),
       posts: Array.from(root?.querySelectorAll('.post-feed-item') || []).map(e => ({ id: e.__vue__?.post?.objectId, text: e.innerText, original: e.__vue__?.post?.originalInfo?.isDeclared === true || e.__vue__?.post?.originalInfo?.isDeclared === 1 })) };
   }
   function locationHref() { return window.location.href; }
+  if (action === 'navigate') {
+    const target = new URL(data.url);
+    const router = document.querySelector('#app')?.__vue__?.$router;
+    if (target.origin !== 'https://channels.weixin.qq.com' || location.origin !== target.origin || !target.pathname.startsWith('/platform')) throw new Error('Unexpected creator-center navigation');
+    if (!router) return false;
+    await router.push(target.pathname + target.search);
+    return true;
+  }
   if (action === 'expose-upload') {
     const input = root?.querySelector('input[type="file"][accept*="video"]');
     if (!input || window.__cloudlWechatUpload) throw new Error('Missing upload input or unfinished prior upload');
@@ -146,8 +194,31 @@ export async function pageAction(action, data = {}) {
   }
   if (action === 'reload') {
     const items = Array.from(document.querySelectorAll('*')).filter(e => !e.children.length && visible(e) && e.textContent.trim() === '重新加载');
-    if (items.length !== 1) return false;
-    items[0].click(); return true;
+    if (items.length === 1) { items[0].click(); return true; }
+    if (document.readyState === 'complete' && !document.body?.innerText?.trim()) { window.location.reload(); return true; }
+    return false;
+  }
+  if (action === 'declaration') {
+    const requested = data.declaration || '无需标注';
+    if (!['无需标注', '个人观点，仅供参考'].includes(requested)) throw new Error('Unsupported video declaration');
+    const state = declarationState();
+    if (requested === '无需标注' ? state.unlabelled : state.declaration === requested && state.declarationSaved) return true;
+    const container = root?.querySelector('.post-with-mark-tag');
+    const owner = markOwner();
+    if (!container || !owner) throw new Error('Video declaration control unavailable');
+    if (!owner.showOptions) {
+      const display = container.querySelector('.select-display');
+      if (!display) throw new Error('Video declaration selector unavailable');
+      display.click();
+      await new Promise(resolve => setTimeout(resolve, 0));
+    }
+    const option = Array.from(container.querySelectorAll('.mark-tag-option .option-main'))
+      .find(e => visible(e) && e.textContent.trim() === requested);
+    if (!option) return false;
+    option.click();
+    await new Promise(resolve => setTimeout(resolve, 0));
+    const saved = declarationState();
+    return requested === '无需标注' ? saved.unlabelled : saved.declaration === requested && saved.declarationSaved;
   }
   if (action === 'original') {
     const state = originalState();
@@ -171,6 +242,10 @@ export async function pageAction(action, data = {}) {
     return true;
   }
   if (action === 'submit') {
+    const declaration = declarationState();
+    if ((data.declaration || '无需标注') === '无需标注' ? !declaration.unlabelled :
+        declaration.declaration !== data.declaration || declaration.declarationType !== 8 || !declaration.declarationSaved)
+      throw new Error('Video declaration changed before submission');
     if (data.original && (!originalState().originalAvailable || !originalState().original))
       throw new Error('Original declaration changed before submission');
     if (account !== data.account || !vm?.postStore?.canPost || vm.postStore.postObjDesc.description !== editor.innerText ||
@@ -188,7 +263,8 @@ export async function pageAction(action, data = {}) {
     return { url: locationHref(), account, objectId: new URL(locationHref()).searchParams.get('objectId'),
       ready: start >= 0 && end > start && suffix.includes('\n取消\n'),
       publishedCaption: start >= 0 && end > start ? text.slice(start + '视频描述\n'.length, end) : undefined,
-      publishedTitle: suffix.split('\n取消\n')[0] };
+      publishedTitle: suffix.split('\n取消\n')[0],
+      publishedDeclaration: declarationState().declaration };
   }
   throw new Error('Unknown browser operation');
 }
@@ -202,9 +278,9 @@ function writeReceipt(path, state) {
 export async function publishVideo(args, transport) {
   const metadata = resolve(args.metadata);
   let data;
-  try { data = validateMetadata(JSON.parse(readFileSync(metadata, 'utf8'))); }
+  try { data = validateMetadata({ ...JSON.parse(readFileSync(metadata, 'utf8')), ...(args.declaration !== undefined ? { declaration: args.declaration } : {}) }); }
   catch (e) { if (e instanceof ArgumentError) throw e; throw new ArgumentError(`Cannot read metadata: ${e.message}`); }
-  data = { ...data, original: enabled(args.original) || data.original === true };
+  data = { ...data, declaration: normalizeDeclaration(data.declaration), original: enabled(args.original) || data.original === true };
   const video = resolve(data.video);
   let file;
   try { file = statSync(video); } catch { throw new ArgumentError('Video file not found'); }
@@ -251,18 +327,22 @@ export async function publishVideo(args, transport) {
       if (s.account !== data.account) throw new CommandExecutionError(`Wrong account: expected ${data.account}, got ${s.account || 'not logged in'}`);
     };
     const open = async (url, ready) => {
-      await browser('open', url);
+      const current = await snapshot();
+      if (!(current.appRouter && await act('navigate', { url }))) await browser('open', url);
       let reloads = 0;
+      let lastReload = Date.now();
       return wait(async () => {
         const s = await snapshot();
         if (/login/.test(s.url)) throw new CommandExecutionError('Sign in to WeChat Channels in Chrome, then rerun');
         if (ready(s)) { identity(s); return s; }
-        if (reloads < 2 && await act('reload')) reloads++;
+        if (reloads < 2 && Date.now() - lastReload >= 15000 && await act('reload')) { reloads++; lastReload = Date.now(); }
         return false;
       }, 'Creator page loading');
     };
     const verifyRecord = async (id, original) => {
-      await browser('open', BASE + 'coverEdit?objectId=' + encodeURIComponent(id));
+      const url = BASE + 'coverEdit?objectId=' + encodeURIComponent(id);
+      const current = await snapshot();
+      if (!(current.appRouter && await act('navigate', { url }))) await browser('open', url);
       const record = await wait(async () => { const s = await act('published'); return s.ready && s.account ? s : false; }, 'Published metadata');
       const result = assertPublished({ ...record, original }, data, id);
       return { ...result, verified_at: new Date().toISOString() };
@@ -293,11 +373,12 @@ export async function publishVideo(args, transport) {
       const s = await snapshot(); identity(s);
       if (s.files.length !== 1 || s.files[0].name !== basename(video) || s.files[0].size !== file.size) throw new CommandExecutionError('Resume file mismatch');
     }
-    state = { ...state, original: data.original };
+    state = { ...state, original: data.original, declaration: data.declaration };
     writeReceipt(statePath, state);
     if (data.original) await act('original');
     await act('fill', data);
     if ((await snapshot()).hasLocation) { await act('location-open'); await act('location-clear'); }
+    await wait(() => act('declaration', data), 'Video declaration');
     console.error('Waiting for uploaded video and saved editor metadata...');
     const actual = await wait(async () => {
       const s = await snapshot(); identity(s);
@@ -305,15 +386,18 @@ export async function publishVideo(args, transport) {
       return s.canPost && s.preview && !s.uploading ? s : false;
     }, 'Video upload');
     assertPrepared(actual, data, { path: video, size: file.size });
-    if (!enabled(args.execute)) return [{ status: 'prepared', account: data.account, title: data.title, url: actual.url }];
+    if (!enabled(args.execute)) return [{ status: 'prepared', account: data.account, title: data.title, declaration: data.declaration, url: actual.url }];
     const result = await submitOnce({ state, persist: s => writeReceipt(statePath, s), click: () => act('submit', data),
-      verify: async () => {
+      verify: async pending => {
         const list = await wait(async () => {
           const s = await snapshot(); if (s.account) identity(s); else return false;
           return /\/post\/list/.test(s.url) && s.posts.length ? s : false;
         }, 'Submission acknowledgement');
         const candidates = list.posts.filter(p => !state.baseline.includes(p.id) && compact(p.text).includes(compact(data.caption)));
         if (candidates.length !== 1) throw new CommandExecutionError('Cannot identify exactly one new matching post; inspect manager and use --verify');
+        // Preserve the known object even if the details page is blank or times out.
+        writeReceipt(statePath, { ...pending, status: 'published_unverified', object_id: candidates[0].id,
+          verification_url: BASE + 'coverEdit?objectId=' + encodeURIComponent(candidates[0].id) });
         return verifyRecord(candidates[0].id, candidates[0].original);
       }
     });
@@ -330,11 +414,12 @@ cli({
     { name: 'metadata', positional: true, required: true, help: 'JSON: video, account, title (<=16), caption (<=1000)' },
     { name: 'session', default: 'wechat-video', help: 'Cloudl 浏览器会话名称' },
     { name: 'original', type: 'bool', default: false, help: '声明原创并确认原创协议；需要账号已开放原创入口，否则停止且不发表' },
+    { name: 'declaration', help: '视频标注：无需标注 / 个人观点，仅供参考（也接受 作者观点，仅供参考）；不写入描述' },
     { name: 'execute', type: 'bool', default: false, help: '上传核对后立即发表一次；默认仅准备' },
     { name: 'resume', type: 'bool', default: false, help: '继续同一会话中的已上传视频' },
     { name: 'verify', help: '只核对指定已发布 object ID，保存回执；不上传或发表' },
     { name: 'timeout', type: 'int', default: 600, help: '整体等待秒数，30–3600' },
   ],
-  columns: ['status', 'account', 'title', 'object_id', 'url'],
+  columns: ['status', 'account', 'title', 'declaration', 'object_id', 'url'],
   func: args => publishVideo(args),
 });

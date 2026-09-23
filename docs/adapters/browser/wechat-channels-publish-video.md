@@ -17,13 +17,16 @@
   "account": "你的视频号名称",
   "title": "AI的6种日常用法",
   "caption": "完整视频描述、来源说明\n\n#人工智能 #AI工具",
-  "original": true
+  "original": false,
+  "declaration": "个人观点，仅供参考"
 }
 ```
 
-`title` 必填，单行最多 16 字；`caption` 必填，最多 1000 字。
-命令当前只支持适用「无需标注」的内容（可显式填写 `declaration: "无需标注"`），
-不会主动勾选 AI 生成标签。需要其他标注的内容请在视频号界面处理。
+`title` 必填，单行最多 16 字，不支持中英文逗号（请用空格替代）；`caption` 必填，最多 1000 字。
+`declaration` 操作后台的「视频标注」控件，**不会把标注写进描述**。
+支持「无需标注」（默认）和「个人观点，仅供参考」；「作者观点，仅供参考」是后者的别名，
+会按后台实际选项名保存。也可用 `--declaration` 覆盖 JSON 中的设置。
+其他标注目前仍需在界面处理；命令不会把不支持的值降级为「无需标注」。
 使用视频自动生成的封面，位置设置为「不显示位置」，立即发表；暂不支持定时、合集或自定义封面。
 
 原创声明可通过元数据 `original: true` 或 `--original` 请求。命令会检查账号原创权限，
@@ -46,6 +49,10 @@ cloudl wechat-channels publish-video metadata.json --execute --timeout 900 -f js
 # 上传并声明原创、发表、复查
 cloudl wechat-channels publish-video metadata.json --original --execute -f json
 
+# 在视频标注控件中选择个人观点，不修改 caption
+cloudl wechat-channels publish-video metadata.json \
+  --declaration '作者观点，仅供参考' --execute -f json
+
 # 核对已有作品或恢复未确认的提交：只读取平台数据，不上传、不发表
 cloudl wechat-channels publish-video metadata.json --verify 'export/作品ID' -f json
 ```
@@ -67,16 +74,27 @@ cloudl wechat-channels publish-video metadata.json --verify 'export/作品ID' -f
 （解码 URL 中的值），再用 `--verify` 核对并更新回执。核对目标必须出现在当前视频列表页；
 命令不自动翻页搜索历史作品。
 
+列表出现唯一匹配的新作品时，先保存 `published_unverified`、`object_id` 和核验链接，
+再加载详情页。详情页空白或超时不会丢失已发表对象；再次直接发布会被拦截，
+应使用回执中的 ID 执行 `--verify`。这个状态表示已找到发布记录、尚未完成详情核验，不能当作完整成功。
+
 进程被强制终止可能留下 `.lock` 文件。确认没有运行中的发布任务后，才可删除错误信息中列出的锁文件。
 不要直接删除 `submitting` 回执来重试发表。
 
 结果 `published` 表示作品已出现在管理列表，且重新打开的发布记录与元数据一致，
 不额外承诺平台审核状态。返回的 `verification_url` 是账号后台链接。
+`declaration` 是实际请求的后台标注；`declaration_verified` 只有在发布后读回一致标注时才为 `true`。
+详情页未暴露标注时返回 `false`，表示只完成了提交前的标注控件与保存模型核验。
 
 ## 实现约束
 
-2026-09-19 验证的视频号编辑器位于 `wujie-app` 的 Shadow DOM 中。
+2026-09-23 验证的视频号编辑器位于 `wujie-app` 的 Shadow DOM 中。
 上传时临时移动同一个文件输入节点供 CDP 使用，并在成功或失败后恢复原位置。
 描述填写后调用编辑器自身的 `updateDescData()`，再检查其已保存的描述。
 仅验证可见文本会漏掉「输入框有字、实际发布为空」的问题。
 若编辑器接口、账号选择器或发布记录结构变化，命令停止并返回错误。
+
+账号同时兼容旧 `.account-info .name`、当前 `.finder-nickname` 以及已挂载的账号 store。
+出现冲突昵称时停止，不从描述或传入参数猜账号。已挂载的页面优先用自身路由切换，
+未挂载时再打开地址；完全空白的页面最多重载两次，每次至少间隔15秒。
+选择个人观点标注后，命令核对选择器与投稿模型中的标注类型，并在点击「发表」前再次检查。

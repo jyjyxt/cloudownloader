@@ -4,11 +4,14 @@ import { mkdtempSync, writeFileSync, readFileSync, existsSync, rmSync } from 'no
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { getRegistry } from '@jyjyxt/cloudl/registry';
-import { validateMetadata, previousResult, submitOnce, assertPrepared, assertPublished, pageAction, publishVideo } from './publish-video.js';
+import { normalizeDeclaration, validateMetadata, previousResult, submitOnce, assertPrepared, assertPublished, pageAction, publishVideo } from './publish-video.js';
 
 const data = () => ({ video: '/tmp/demo.mp4', account: 'tester', title: 'AI的6种用法', caption: '完整描述\n\n包含来源和 #AI' });
 const prepared = d => ({ account: d.account, title: d.title, shortTitle: d.title, caption: d.caption, savedCaption: d.caption,
-  files: [{ name: 'demo.mp4', size: 4 }], canPost: true, preview: true, uploading: false, hasLocation: false, scheduled: false, unlabelled: true, originalAvailable: true, original: d.original === true });
+  files: [{ name: 'demo.mp4', size: 4 }], canPost: true, preview: true, uploading: false, hasLocation: false, scheduled: false,
+  unlabelled: normalizeDeclaration(d.declaration) === '无需标注', declaration: normalizeDeclaration(d.declaration),
+  declarationType: normalizeDeclaration(d.declaration) === '个人观点，仅供参考' ? 8 : undefined,
+  declarationSaved: true, originalAvailable: true, original: d.original === true });
 const dirs = [];
 afterEach(() => { for (const path of dirs.splice(0)) rmSync(path, { recursive: true, force: true }); });
 
@@ -22,19 +25,20 @@ function fixture() {
 
 // Browser boundary fake; the actual page-side synchronization is covered separately below.
 function browserFixture(d, options = {}) {
-  let url = '', uploaded = false, submitted = false;
+  let url = '', uploaded = false, submitted = false, declaration = normalizeDeclaration(d.declaration);
   const calls = [];
   const browser = vi.fn(async (command, script) => {
     if (command === 'open') { url = script; calls.push(['open', url]); return { url }; }
     if (command === 'upload') { calls.push(['upload']); if (options.uploadError) throw Error('upload transport lost'); uploaded = true; return { uploaded: true }; }
-    const [action] = JSON.parse('[' + script.slice(script.lastIndexOf(')(') + 2, -1) + ']');
-    calls.push([action]);
+    const [action, payload] = JSON.parse('[' + script.slice(script.lastIndexOf(')(') + 2, -1) + ']');
+    calls.push([action, payload]);
     if (action === 'snapshot') {
       const posts = (submitted || options.existing) ? [{ id: 'export/new', text: d.caption + '\n2026-09-19', original: options.original !== false && d.original === true }] : [];
       if (url.includes('/list')) return { account: options.account || d.account, url, text: '视频管理\n发表视频', posts };
-      return { ...prepared(d), url, editor: true, posts: [], account: options.account || d.account,
+      return { ...prepared({ ...d, declaration }), url, editor: true, posts: [], account: options.account || d.account,
         originalAvailable: options.originalAvailable !== false, files: uploaded ? prepared(d).files : [], savedCaption: options.unsynced ? '' : d.caption };
     }
+    if (action === 'declaration') { declaration = payload.declaration; return true; }
     if (action === 'submit') {
       submitted = true; url = 'https://channels.weixin.qq.com/platform/post/list';
       if (options.submitError) throw Error('ack lost');
@@ -52,7 +56,7 @@ describe('wechat-channels publish-video', () => {
     expect(c.access).toBe('write'); expect(c.browser).toBe(false);
     expect(c.args.find(a => a.name === 'execute').default).toBe(false);
   });
-  it.each([{ account: '' }, { title: '字'.repeat(17) }, { title: 'a\nb' }, { caption: '' }, { caption: '字'.repeat(1001) }, { declaration: '含AI生成内容' }])('rejects unsupported metadata %j', patch => {
+  it.each([{ account: '' }, { title: '字'.repeat(17) }, { title: 'a\nb' }, { title: '标题，逗号' }, { title: 'title,comma' }, { caption: '' }, { caption: '字'.repeat(1001) }, { declaration: '含AI生成内容' }])('rejects unsupported metadata %j', patch => {
     expect(() => validateMetadata({ ...data(), ...patch })).toThrow();
   });
   it('validates original metadata and registers the explicit flag', () => {
@@ -121,7 +125,7 @@ describe('wechat-channels publish-video', () => {
   it('restores the input after an upload error and retains a resumable receipt', async () => {
     const f = fixture(), b = browserFixture(f.d, { uploadError: true });
     await expect(publishVideo(f.args, b.browser)).rejects.toThrow('upload transport lost');
-    expect(b.calls.at(-1)).toEqual(['restore-upload']);
+    expect(b.calls.at(-1)[0]).toBe('restore-upload');
     expect(JSON.parse(readFileSync(f.statePath)).status).toBe('prepared');
   });
   it.each([{ account: 'someone else' }, { unsynced: true }])('never submits when verification fails: %j', options => {
@@ -142,7 +146,9 @@ describe('wechat-channels publish-video', () => {
   it.each([{ submitError: true }, { badPublished: true }])('leaves uncertain state, blocks repeat, and allows read-only recovery: %j', async options => {
     const f = fixture(), b = browserFixture(f.d, options);
     await expect(publishVideo({ ...f.args, execute: true }, b.browser)).rejects.toThrow();
-    expect(JSON.parse(readFileSync(f.statePath)).status).toBe('submitting');
+    const receipt = JSON.parse(readFileSync(f.statePath));
+    expect(receipt.status).toBe(options.submitError ? 'submitting' : 'published_unverified');
+    if (options.badPublished) expect(receipt.object_id).toBe('export/new');
     const unused = vi.fn();
     await expect(publishVideo({ ...f.args, execute: true }, unused)).rejects.toThrow('unconfirmed');
     expect(unused).not.toHaveBeenCalled();
@@ -159,6 +165,42 @@ describe('wechat-channels publish-video', () => {
     const f = fixture(); writeFileSync(f.statePath + '.lock', 'active');
     await expect(publishVideo(f.args, vi.fn())).rejects.toThrow('Cannot lock');
     expect(readFileSync(f.statePath + '.lock', 'utf8')).toBe('active');
+  });
+  it('normalizes the author wording without adding it to the caption and does not resubmit', async () => {
+    const f = fixture(); f.d.declaration = '作者观点，仅供参考'; writeFileSync(f.metadata, JSON.stringify(f.d));
+    const b = browserFixture(f.d);
+    const result = await publishVideo({ ...f.args, execute: true }, b.browser);
+    expect(result[0]).toMatchObject({ status: 'published', declaration: '个人观点，仅供参考', declaration_verified: false });
+    expect(b.calls.find(c => c[0] === 'declaration')[1]).toMatchObject({ declaration: '个人观点，仅供参考', caption: f.d.caption });
+    expect(b.calls.filter(c => c[0] === 'submit')).toHaveLength(1);
+    f.d.declaration = '个人观点，仅供参考'; writeFileSync(f.metadata, JSON.stringify(f.d));
+    const unused = vi.fn(); expect(await publishVideo(f.args, unused)).toEqual(result); expect(unused).not.toHaveBeenCalled();
+  });
+  it('requires the selected declaration to match the saved model', () => {
+    const d = { ...data(), declaration: '个人观点，仅供参考' };
+    for (const patch of [{ declaration: '无需标注' }, { declarationType: 2 }, { declarationSaved: false }])
+      expect(() => assertPrepared({ ...prepared(d), ...patch }, d, { path: d.video, size: 4 })).toThrow('declaration');
+  });
+  it('reports only observed declaration readback and rejects a conflicting saved label', () => {
+    const d = { ...data(), declaration: '个人观点，仅供参考' };
+    const record = { account: d.account, objectId: 'export/new', publishedTitle: d.title, publishedCaption: d.caption };
+    expect(assertPublished(record, d, 'export/new').declaration_verified).toBe(false);
+    expect(assertPublished({ ...record, publishedDeclaration: d.declaration }, d, 'export/new').declaration_verified).toBe(true);
+    expect(() => assertPublished({ ...record, publishedDeclaration: '无需标注' }, d, 'export/new')).toThrow('declaration');
+  });
+  it('registers a declaration option and blocks changed declaration retries', async () => {
+    expect(getRegistry().get('wechat-channels/publish-video').args.some(a => a.name === 'declaration')).toBe(true);
+    const f = fixture(), b = browserFixture(f.d);
+    await publishVideo({ ...f.args, execute: true }, b.browser);
+    const unused = vi.fn();
+    await expect(publishVideo({ ...f.args, declaration: '个人观点，仅供参考' }, unused)).rejects.toThrow('changed');
+    expect(unused).not.toHaveBeenCalled();
+  });
+  it('uses the CLI declaration override while retaining the original caption', async () => {
+    const f = fixture(), b = browserFixture(f.d);
+    const result = await publishVideo({ ...f.args, declaration: '作者观点，仅供参考', execute: true }, b.browser);
+    expect(result[0].declaration).toBe('个人观点，仅供参考');
+    expect(b.calls.find(c => c[0] === 'fill')[1].caption).toBe(f.d.caption);
   });
 });
 
@@ -224,6 +266,54 @@ describe('actual browser-side editor operations', () => {
     expect(f.dom.window.document.querySelector('#cloudl_wechat_video_input')).toBe(input);
     await f.action('restore-upload');
     expect(input.parentNode).toBe(parent); expect(input.nextSibling).toBe(next); expect(input.id).toBe('original');
+    f.dom.window.close();
+  });
+  it('recognizes the current account header and refuses ambiguous accounts', async () => {
+    const f = dom();
+    const old = f.dom.window.document.querySelector('.account-info');
+    old.outerHTML = '<h2 class="finder-nickname">tester</h2>';
+    expect((await f.action('snapshot')).account).toBe('tester');
+    const conflict = f.dom.window.document.createElement('div'); conflict.className = 'finder-nickname'; conflict.innerText = 'another account';
+    f.root.append(conflict);
+    expect((await f.action('snapshot')).account).toBeUndefined();
+    f.dom.window.close();
+  });
+  it('reads the actual mounted user store when the compact sidebar has no nickname', async () => {
+    const f = dom(); f.dom.window.document.querySelector('.account-info').remove();
+    const app = f.dom.window.document.createElement('div'); app.id = 'app';
+    const userStore = { finderUser: { nickname: 'tester' } }; userStore.self = userStore;
+    app.__vue__ = { $data: { userStore } }; f.dom.window.document.body.append(app);
+    expect((await f.action('snapshot')).account).toBe('tester');
+    f.dom.window.close();
+  });
+  it('selects the video label through the real control and checks both Vue models', async () => {
+    const f = dom();
+    const container = f.dom.window.document.createElement('div'); container.className = 'post-create-wrap';
+    container.innerHTML = '<div class="post-with-mark-tag"><div class="select-display">选择视频标注</div><div class="mark-tag-option"><div class="option-main">个人观点，仅供参考</div></div></div>';
+    f.root.querySelector('body').append(container);
+    const mark = container.querySelector('.post-with-mark-tag');
+    const owner = { selectedTag: null, showOptions: false };
+    mark.__vue__ = owner; container.__vue__ = { tagInfo: null };
+    mark.querySelector('.select-display').addEventListener('click', () => { owner.showOptions = true; });
+    const option = mark.querySelector('.option-main'); option.getBoundingClientRect = () => ({ width: owner.showOptions ? 200 : 0 });
+    option.addEventListener('click', () => { owner.selectedTag = { tagName: '个人观点，仅供参考', tagType: 8 }; container.__vue__.tagInfo = { tagType: 8 }; owner.showOptions = false; });
+    const d = { ...data(), declaration: '个人观点，仅供参考' };
+    await f.action('fill', d);
+    expect(await f.action('declaration', d)).toBe(true);
+    expect((await f.action('snapshot'))).toMatchObject({ declaration: d.declaration, declarationType: 8, declarationSaved: true });
+    expect(f.editor.innerText).toBe(d.caption);
+    container.__vue__.tagInfo = { tagType: 2 };
+    expect((await f.action('snapshot')).declarationSaved).toBe(false);
+    await expect(f.action('submit', d)).rejects.toThrow('declaration changed');
+    f.dom.window.close();
+  });
+  it('uses the mounted router for same-origin creator navigation', async () => {
+    const f = dom();
+    const app = f.dom.window.document.createElement('div'); app.id = 'app';
+    const push = vi.fn(); app.__vue__ = { $router: { push } }; f.dom.window.document.body.append(app);
+    expect(await f.action('navigate', { url: 'https://channels.weixin.qq.com/platform/post/list' })).toBe(true);
+    expect(push).toHaveBeenCalledWith('/platform/post/list');
+    await expect(f.action('navigate', { url: 'https://example.com/platform' })).rejects.toThrow('Unexpected');
     f.dom.window.close();
   });
 });
