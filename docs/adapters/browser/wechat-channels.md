@@ -36,7 +36,7 @@ cloudl wechat-channels publish ./video.mp4 \
 # 调整整体超时（含登录等待 + 上传转码，默认 600 秒）
 cloudl wechat-channels publish ./big-video.mp4 --title "大文件" --timeout 1200
 
-# 需要后台视频标注时使用完整发布命令；标注不会被写入描述
+# 两个发布命令默认选择个人观点标注；标注不会被写入描述
 cloudl wechat-channels publish-video metadata.json \
   --declaration '个人观点，仅供参考' --execute
 ```
@@ -48,10 +48,13 @@ cloudl wechat-channels publish-video metadata.json \
 | `video` (positional) | ✅ | 视频文件路径 (.mp4/.mov/.avi/.webm) |
 | `--title` | | 短标题（建议 6-16 字） |
 | `--caption` | | 描述内容，支持直接写 `#话题`（如：`日常生活 #搞笑 #生活`） |
+| `--declaration` | | 默认「个人观点，仅供参考」；可显式选择「无需标注」，不写入描述 |
 | `--schedule` | | 定时发布时间（ISO8601 或 Unix 秒，如 `"2026-05-20 10:00"`） |
 | `--draft` | | 保存为草稿，不直接发布 |
 | `--manual` | | 填完所有字段后不自动发布，由用户手动点击「发表」 |
 | `--timeout` | | 命令整体超时秒数（含登录等待 + 上传转码，默认 600，最小 30） |
+
+Both `publish` and `publish-video` select **个人观点，仅供参考** (personal opinions, for reference only) by default. The saved label is checked before publication; a missing or unsaved label stops the command. Use the exact platform option names.
 
 ## Prerequisites
 

@@ -24,8 +24,10 @@
 
 `title` 必填，单行最多 16 字，不支持中英文逗号（请用空格替代）；`caption` 必填，最多 1000 字。
 `declaration` 操作后台的「视频标注」控件，**不会把标注写进描述**。
-支持「无需标注」（默认）和「个人观点，仅供参考」；「作者观点，仅供参考」是后者的别名，
-会按后台实际选项名保存。也可用 `--declaration` 覆盖 JSON 中的设置。
+默认选择「个人观点，仅供参考」（即作者个人观点的提示）；需要时可显式选择「无需标注」。
+参数只接受后台当前选项名称。可用 `--declaration` 覆盖 JSON 中的设置。
+
+Both video publishing commands default to the platform's `个人观点，仅供参考` label (personal opinions, for reference only). The label is selected and verified in the editor, never appended to the caption. An explicit `--declaration '无需标注'` overrides the default.
 其他标注目前仍需在界面处理；命令不会把不支持的值降级为「无需标注」。
 使用视频自动生成的封面，位置设置为「不显示位置」，立即发表；暂不支持定时、合集或自定义封面。
 
@@ -51,7 +53,7 @@ cloudl wechat-channels publish-video metadata.json --original --execute -f json
 
 # 在视频标注控件中选择个人观点，不修改 caption
 cloudl wechat-channels publish-video metadata.json \
-  --declaration '作者观点，仅供参考' --execute -f json
+  --declaration '个人观点，仅供参考' --execute -f json
 
 # 核对已有作品或恢复未确认的提交：只读取平台数据，不上传、不发表
 cloudl wechat-channels publish-video metadata.json --verify 'export/作品ID' -f json
@@ -94,7 +96,7 @@ cloudl wechat-channels publish-video metadata.json --verify 'export/作品ID' -f
 仅验证可见文本会漏掉「输入框有字、实际发布为空」的问题。
 若编辑器接口、账号选择器或发布记录结构变化，命令停止并返回错误。
 
-账号同时兼容旧 `.account-info .name`、当前 `.finder-nickname` 以及已挂载的账号 store。
+账号读取页面昵称和已挂载 store 的 `finder` 信息；折叠侧栏通过 `uiStore.rootStore.userStore.finder` 核对，不混入操作员个人微信昵称。
 出现冲突昵称时停止，不从描述或传入参数猜账号。已挂载的页面优先用自身路由切换，
 未挂载时再打开地址；完全空白的页面最多重载两次，每次至少间隔15秒。
 选择个人观点标注后，命令核对选择器与投稿模型中的标注类型，并在点击「发表」前再次检查。

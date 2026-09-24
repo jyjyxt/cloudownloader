@@ -18,6 +18,7 @@
  */
 import * as fs from 'node:fs';
 import * as path from 'node:path';
+import { normalizeDeclaration, pageAction } from './publish-video.js';
 import { cli, Strategy } from '@jyjyxt/cloudl/registry';
 import { ArgumentError, AuthRequiredError, CommandExecutionError } from '@jyjyxt/cloudl/errors';
 
@@ -131,6 +132,7 @@ export const __test__ = {
   parseBooleanFlag,
   requireFilePath,
   submitSucceeded,
+  setVideoDeclaration,
 };
 
 // ── Shadow DOM utility (inlined into evaluate calls) ───────────────────────
@@ -515,6 +517,12 @@ async function setScheduleTime(page, dt) {
   process.stderr.write(`  定时设置完成: ${result.value || expected}\n`);
 }
 
+// Select and verify the platform label before every publishing path.
+async function setVideoDeclaration(page, declaration) {
+  const selected = await evalPage(page, `(${pageAction.toString()})('declaration',${JSON.stringify({ declaration })})`);
+  if (selected !== true) throw new CommandExecutionError('视频标注未保存，停止发表');
+}
+
 // ── Helper: click publish or draft button ────────────────────────────────────
 async function clickPublish(page, isDraft) {
   const labels = isDraft
@@ -567,6 +575,7 @@ cli({
     { name: 'video',    required: true,  positional: true, help: '视频文件路径 (.mp4/.mov/.avi/.webm)' },
     { name: 'title',    required: false, help: '短标题（建议 6-16 字）' },
     { name: 'caption',  required: false, help: '描述内容，支持直接写 #话题（如：日常生活 #搞笑 #生活）' },
+    { name: 'declaration', help: '视频标注，默认个人观点，仅供参考；可显式选择无需标注，不写入描述' },
     { name: 'schedule', required: false, help: '定时发布时间（ISO8601 或 Unix 秒，如 "2026-05-20 10:00"）' },
     { name: 'draft',    type: 'bool', default: false, help: '保存为草稿' },
     { name: 'manual',   type: 'bool', default: false, help: '填完所有字段后不自动发布，由用户手动点击发表（务必同时传 --site-session persistent，否则表单页约 30 秒后会被重置为空白页）' },
@@ -583,6 +592,7 @@ cli({
 
     const title = String(kwargs.title ?? '').trim();
     const caption = String(kwargs.caption ?? '').trim();
+    const declaration = normalizeDeclaration(kwargs.declaration);
     const scheduleTime = parseScheduleDate(kwargs.schedule || null);
     const isDraft = parseBooleanFlag(kwargs.draft);
     const isManual = parseBooleanFlag(kwargs.manual);
@@ -648,6 +658,8 @@ cli({
       await setScheduleTime(page, scheduleTime);
       await page.wait({ time: 0.5 });
     }
+
+    await setVideoDeclaration(page, declaration);
 
     // ── 9. Publish or save draft ──────────────────────────────────────────
     if (isManual) {

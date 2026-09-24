@@ -59,6 +59,12 @@ describe('wechat-channels publish-video', () => {
   it.each([{ account: '' }, { title: '字'.repeat(17) }, { title: 'a\nb' }, { title: '标题，逗号' }, { title: 'title,comma' }, { caption: '' }, { caption: '字'.repeat(1001) }, { declaration: '含AI生成内容' }])('rejects unsupported metadata %j', patch => {
     expect(() => validateMetadata({ ...data(), ...patch })).toThrow();
   });
+  it('defaults to the platform personal-opinion label and requires current option names', () => {
+    expect(normalizeDeclaration()).toBe('个人观点，仅供参考');
+    expect(normalizeDeclaration('无需标注')).toBe('无需标注');
+    expect(() => normalizeDeclaration('作者观点，仅供参考')).toThrow();
+    expect(() => normalizeDeclaration('作者个人观点，仅供参考')).toThrow();
+  });
   it('validates original metadata and registers the explicit flag', () => {
     expect(validateMetadata({ ...data(), original: true }).original).toBe(true);
     expect(() => validateMetadata({ ...data(), original: 'yes' })).toThrow('boolean');
@@ -95,7 +101,7 @@ describe('wechat-channels publish-video', () => {
   });
   it('accepts CJK text and multiline captions', () => expect(validateMetadata(data())).toEqual(data()));
   it('rejects visible-only captions, wrong files, locations and schedules', () => {
-    for (const patch of [{ savedCaption: '' }, { shortTitle: '' }, { files: [] }, { hasLocation: true }, { scheduled: true }, { unlabelled: false }, { account: 'other' }]) {
+    for (const patch of [{ savedCaption: '' }, { shortTitle: '' }, { files: [] }, { hasLocation: true }, { scheduled: true }, { declarationSaved: false }, { account: 'other' }]) {
       expect(() => assertPrepared({ ...prepared(data()), ...patch }, data(), { path: '/tmp/demo.mp4', size: 4 })).toThrow();
     }
   });
@@ -166,8 +172,8 @@ describe('wechat-channels publish-video', () => {
     await expect(publishVideo(f.args, vi.fn())).rejects.toThrow('Cannot lock');
     expect(readFileSync(f.statePath + '.lock', 'utf8')).toBe('active');
   });
-  it('normalizes the author wording without adding it to the caption and does not resubmit', async () => {
-    const f = fixture(); f.d.declaration = '作者观点，仅供参考'; writeFileSync(f.metadata, JSON.stringify(f.d));
+  it('defaults to personal opinion without changing the caption and does not resubmit', async () => {
+    const f = fixture();
     const b = browserFixture(f.d);
     const result = await publishVideo({ ...f.args, execute: true }, b.browser);
     expect(result[0]).toMatchObject({ status: 'published', declaration: '个人观点，仅供参考', declaration_verified: false });
@@ -193,12 +199,12 @@ describe('wechat-channels publish-video', () => {
     const f = fixture(), b = browserFixture(f.d);
     await publishVideo({ ...f.args, execute: true }, b.browser);
     const unused = vi.fn();
-    await expect(publishVideo({ ...f.args, declaration: '个人观点，仅供参考' }, unused)).rejects.toThrow('changed');
+    await expect(publishVideo({ ...f.args, declaration: '无需标注' }, unused)).rejects.toThrow('changed');
     expect(unused).not.toHaveBeenCalled();
   });
   it('uses the CLI declaration override while retaining the original caption', async () => {
     const f = fixture(), b = browserFixture(f.d);
-    const result = await publishVideo({ ...f.args, declaration: '作者观点，仅供参考', execute: true }, b.browser);
+    const result = await publishVideo({ ...f.args, declaration: '个人观点，仅供参考', execute: true }, b.browser);
     expect(result[0].declaration).toBe('个人观点，仅供参考');
     expect(b.calls.find(c => c[0] === 'fill')[1].caption).toBe(f.d.caption);
   });
@@ -281,10 +287,21 @@ describe('actual browser-side editor operations', () => {
   it('reads the actual mounted user store when the compact sidebar has no nickname', async () => {
     const f = dom(); f.dom.window.document.querySelector('.account-info').remove();
     const app = f.dom.window.document.createElement('div'); app.id = 'app';
-    const userStore = { finderUser: { nickname: 'tester' } }; userStore.self = userStore;
+    const userStore = { user: { nickname: 'operator' }, finder: { nickname: 'tester' } }; userStore.self = userStore;
     app.__vue__ = { $data: { userStore } }; f.dom.window.document.body.append(app);
     expect((await f.action('snapshot')).account).toBe('tester');
     f.dom.window.close();
+  });
+  it('reads the compact sidebar store and skips same-route navigation', async () => {
+    const f = dom(); f.dom.window.document.querySelector('.account-info').remove();
+    const app = f.dom.window.document.createElement('div'); app.id = 'app';
+    const push = vi.fn();
+    app.__vue__ = { $router: { push }, $data: { uiStore: { rootStore: { userStore: {
+      user: { nickname: 'operator' }, finder: { nickname: 'tester' }
+    } } } } }; f.dom.window.document.body.append(app);
+    expect((await f.action('snapshot')).account).toBe('tester');
+    expect(await f.action('navigate', { url: f.dom.window.location.href })).toBe(true);
+    expect(push).not.toHaveBeenCalled(); f.dom.window.close();
   });
   it('selects the video label through the real control and checks both Vue models', async () => {
     const f = dom();

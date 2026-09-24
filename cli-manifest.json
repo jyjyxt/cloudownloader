@@ -43476,6 +43476,12 @@
         "help": "描述内容，支持直接写 #话题（如：日常生活 #搞笑 #生活）"
       },
       {
+        "name": "declaration",
+        "type": "str",
+        "required": false,
+        "help": "视频标注，默认个人观点，仅供参考；可显式选择无需标注，不写入描述"
+      },
+      {
         "name": "schedule",
         "type": "str",
         "required": false,
@@ -43546,7 +43552,7 @@
         "name": "declaration",
         "type": "str",
         "required": false,
-        "help": "视频标注：无需标注 / 个人观点，仅供参考（也接受 作者观点，仅供参考）；不写入描述"
+        "help": "视频标注，默认个人观点，仅供参考；可显式选择无需标注，不写入描述"
       },
       {
         "name": "execute",

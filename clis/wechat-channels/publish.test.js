@@ -44,7 +44,7 @@ describe('wechat-channels publish — registration', () => {
   it('exposes the documented optional flags', () => {
     const cmd = getRegistry().get('wechat-channels/publish');
     const names = new Set(cmd?.args.map((a) => a.name));
-    for (const flag of ['title', 'caption', 'schedule', 'draft', 'manual', 'timeout']) {
+    for (const flag of ['title', 'caption', 'declaration', 'schedule', 'draft', 'manual', 'timeout']) {
       expect(names.has(flag)).toBe(true);
     }
     expect(names.has('cover')).toBe(false);
@@ -140,5 +140,34 @@ describe('wechat-channels publish — input validation', () => {
     const cmd = getRegistry().get('wechat-channels/publish');
     const video = makeTempVideo('.mp4');
     await expect(cmd.func(null, { video })).rejects.toThrow();
+  });
+});
+
+describe('wechat-channels publish — required video label', () => {
+  it('fails before navigation for unsupported labels', async () => {
+    const page = createPageMock();
+    await expect(getRegistry().get('wechat-channels/publish').func(page, {
+      video: makeTempVideo(), declaration: 'unsupported'
+    })).rejects.toBeInstanceOf(ArgumentError);
+    expect(page.goto).not.toHaveBeenCalled();
+  });
+  it.each([false, undefined])('blocks an unconfirmed label result: %s', async result => {
+    const page = createPageMock({ evaluate: vi.fn().mockResolvedValue(result) });
+    await expect(__test__.setVideoDeclaration(page, '个人观点，仅供参考')).rejects.toThrow('标注未保存');
+  });
+  it.each([{ manual: true }, { draft: true }, {}])('selects the default before any submit path: %j', async flags => {
+    const calls = [];
+    const page = createPageMock({ evaluate: vi.fn(async script => {
+      if (script.includes("})('declaration',")) { calls.push('label'); return true; }
+      if (script.includes('pageAction')) { calls.push('label'); return true; }
+      if (script.includes('location.href')) return 'https://channels.weixin.qq.com/platform/post/list';
+      if (script.includes('uploadFailed')) return { done: true };
+      if (script.includes('(function(labels)')) { calls.push('submit'); return { ok: true }; }
+      if (script.includes('(function(markers)')) return flags.draft ? '草稿已保存' : '发布成功';
+      return { ok: true };
+    }) });
+    await getRegistry().get('wechat-channels/publish').func(page, { video: makeTempVideo(), ...flags });
+    expect(calls).toEqual(flags.manual ? ['label'] : ['label', 'submit']);
+    expect(page.evaluate.mock.calls.find(([s]) => s.includes('pageAction'))[0]).toContain('个人观点，仅供参考');
   });
 });

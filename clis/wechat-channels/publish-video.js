@@ -15,10 +15,9 @@ const compact = text => clean(text).replace(/\s+/g, ' ');
 const hash = value => createHash('sha256').update(value).digest('hex');
 const enabled = value => value === true || value === 'true' || value === '1';
 
-export function normalizeDeclaration(value = '无需标注') {
-  if (value === '作者观点，仅供参考') return '个人观点，仅供参考';
+export function normalizeDeclaration(value = '个人观点，仅供参考') {
   if (!['无需标注', '个人观点，仅供参考'].includes(value))
-    throw new ArgumentError('declaration supports 无需标注 or 个人观点，仅供参考 (alias: 作者观点，仅供参考)');
+    throw new ArgumentError('declaration supports 无需标注 or 个人观点，仅供参考');
   return value;
 }
 
@@ -94,7 +93,7 @@ export async function pageAction(action, data = {}) {
   const text = body?.innerText || '';
   // Read actual UI/store identity, never infer it from the caption or requested account.
   const scopes = [document, root].filter(Boolean);
-  const names = new Set(scopes.flatMap(scope => Array.from(scope.querySelectorAll('.account-info .name, .finder-nickname')))
+  const names = new Set(scopes.flatMap(scope => Array.from(scope.querySelectorAll('.account-info .name, .finder-nickname, .user-info-wrap .user-nickname')))
     .map(e => e.innerText?.trim()).filter(Boolean));
   const seen = new WeakSet();
   const collectNames = (value, depth = 0) => {
@@ -105,7 +104,12 @@ export async function pageAction(action, data = {}) {
       else if (item && typeof item === 'object') collectNames(item, depth + 1);
     }
   };
-  for (const scope of scopes) collectNames(scope.querySelector('#app')?.__vue__?.$data?.userStore);
+  // The operator's personal WeChat nickname is not the publishing account.
+  for (const scope of scopes) {
+    const mounted = scope.querySelector('#app')?.__vue__?.$data;
+    collectNames(mounted?.userStore?.finder);
+    collectNames(mounted?.uiStore?.rootStore?.userStore?.finder);
+  }
   const account = names.size === 1 ? Array.from(names)[0] : undefined;
   const markOwner = () => root?.querySelector('.post-with-mark-tag')?.__vue__;
   const declarationState = () => {
@@ -151,6 +155,7 @@ export async function pageAction(action, data = {}) {
     const router = document.querySelector('#app')?.__vue__?.$router;
     if (target.origin !== 'https://channels.weixin.qq.com' || location.origin !== target.origin || !target.pathname.startsWith('/platform')) throw new Error('Unexpected creator-center navigation');
     if (!router) return false;
+    if (location.href === target.href) return true;
     await router.push(target.pathname + target.search);
     return true;
   }
@@ -199,7 +204,7 @@ export async function pageAction(action, data = {}) {
     return false;
   }
   if (action === 'declaration') {
-    const requested = data.declaration || '无需标注';
+    const requested = data.declaration || '个人观点，仅供参考';
     if (!['无需标注', '个人观点，仅供参考'].includes(requested)) throw new Error('Unsupported video declaration');
     const state = declarationState();
     if (requested === '无需标注' ? state.unlabelled : state.declaration === requested && state.declarationSaved) return true;
@@ -243,7 +248,7 @@ export async function pageAction(action, data = {}) {
   }
   if (action === 'submit') {
     const declaration = declarationState();
-    if ((data.declaration || '无需标注') === '无需标注' ? !declaration.unlabelled :
+    if ((data.declaration || '个人观点，仅供参考') === '无需标注' ? !declaration.unlabelled :
         declaration.declaration !== data.declaration || declaration.declarationType !== 8 || !declaration.declarationSaved)
       throw new Error('Video declaration changed before submission');
     if (data.original && (!originalState().originalAvailable || !originalState().original))
@@ -293,7 +298,7 @@ export async function publishVideo(args, transport) {
   const statePath = metadata + '.state.json';
   const videoHash = createHash('sha256');
   for await (const chunk of createReadStream(video)) videoHash.update(chunk);
-  const fingerprint = hash(JSON.stringify({ account: data.account, title: data.title, caption: data.caption, declaration: data.declaration ?? '无需标注', video_hash: videoHash.digest('hex') }));
+  const fingerprint = hash(JSON.stringify({ account: data.account, title: data.title, caption: data.caption, declaration: data.declaration, video_hash: videoHash.digest('hex') }));
   const locks = [statePath + '.lock', join(tmpdir(), `cloudl-wechat-video-${hash(session)}.lock`)];
   const acquired = [];
   try {
@@ -414,7 +419,7 @@ cli({
     { name: 'metadata', positional: true, required: true, help: 'JSON: video, account, title (<=16), caption (<=1000)' },
     { name: 'session', default: 'wechat-video', help: 'Cloudl 浏览器会话名称' },
     { name: 'original', type: 'bool', default: false, help: '声明原创并确认原创协议；需要账号已开放原创入口，否则停止且不发表' },
-    { name: 'declaration', help: '视频标注：无需标注 / 个人观点，仅供参考（也接受 作者观点，仅供参考）；不写入描述' },
+    { name: 'declaration', help: '视频标注，默认个人观点，仅供参考；可显式选择无需标注，不写入描述' },
     { name: 'execute', type: 'bool', default: false, help: '上传核对后立即发表一次；默认仅准备' },
     { name: 'resume', type: 'bool', default: false, help: '继续同一会话中的已上传视频' },
     { name: 'verify', help: '只核对指定已发布 object ID，保存回执；不上传或发表' },
