@@ -569,7 +569,7 @@ export const createDraftCommand = cli({
     site: 'weixin',
     name: 'create-draft',
     access: 'write',
-    description: '创建微信公众号图文草稿',
+    description: '仅创建微信公众号图文草稿，不发表或群发',
     domain: WEIXIN_DOMAIN,
     strategy: Strategy.COOKIE,
     browser: true,
@@ -625,6 +625,7 @@ export const createDraftCommand = cli({
             appliedSettings.push('reward');
         }
         await page.wait(1);
+        // Draft-only boundary: never advance to the editor's publish or group-send controls.
         const success = await clickSaveDraft(page);
         if (usedCoverRequestFallback) {
             const patchApplied = await page.evaluate('!!window.__cloudlWeixinCoverPatch?.applied');

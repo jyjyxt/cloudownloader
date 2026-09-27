@@ -44056,7 +44056,7 @@
   {
     "site": "weixin",
     "name": "create-draft",
-    "description": "创建微信公众号图文草稿",
+    "description": "仅创建微信公众号图文草稿，不发表或群发",
     "access": "write",
     "domain": "mp.weixin.qq.com",
     "strategy": "cookie",

@@ -2,6 +2,12 @@
 
 **Mode**: 🌐 / 🔐 Browser · **Domains**: `weixin.sogou.com`, `mp.weixin.qq.com`
 
+## Draft-only boundary
+
+`weixin create-draft` stops after saving to 草稿箱. Use `weixin drafts` to verify the saved title. A draft is not publicly published; the Cloudl Weixin workflow does not click 发表/群发 or start administrator QR verification. Do not continue the workflow with generic `cloudl browser` clicks.
+
+公众号图文只创建并核对草稿；即使需求写“发布到公众号”，当前流程也应明确报告“已保存草稿，未公开发表”。
+
 ## Commands
 
 | Command | Description |
