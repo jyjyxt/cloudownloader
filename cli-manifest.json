@@ -4012,7 +4012,7 @@
         "type": "str",
         "required": true,
         "positional": true,
-        "help": "JSON: video, account, title, description, category, declaration, tags; optional account_id, cover_index"
+        "help": "JSON: video, account, title, description, category, declaration, tags; optional account_id, cover_index, cover_url (saved preview)"
       },
       {
         "name": "session",
@@ -46674,7 +46674,7 @@
         "type": "str",
         "required": true,
         "positional": true,
-        "help": "JSON 文件：video、title、content、account"
+        "help": "JSON 文件：video、title、content、account；可选 cover_url（已保存封面预览）"
       },
       {
         "name": "session",

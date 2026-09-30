@@ -58,6 +58,9 @@ estimated_turns: 8
 
 ## Avoid
 
+- 视频发布使用 `publish-video` 的准备/续传流程，回执写在元数据旁；`submitting` 状态先核对笔记管理，不重复提交。详见 `docs/adapters/browser/xiaohongshu-publish-video.md`。
+- 自定义封面在平台编辑器上传、裁切并保存，检查实际预览；`cover` 文件参数不能被静默忽略。可用 `cover_url` 核对保存后的图片地址，加载失败或完成按钮不可用时不伪造成功。
+
 - 不要在 `www.xiaohongshu.com` 找发布入口 — `pitfall:creator_center_is_different_host`
 - 不要 host-level `.click()` `<xhs-publish-btn>` — `pitfall:publish_button_shadow_dom`
 - 不要 page-level selector 找 title input — `pitfall:title_input_has_hidden_decoy`，要加 visible filter (`offsetWidth > 50`)

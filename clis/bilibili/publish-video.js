@@ -2,8 +2,9 @@
 // Uses Cloudl named browser sessions; never replays an ambiguous submission.
 import { execFile } from 'node:child_process';
 import { promisify } from 'node:util';
-import { readFileSync, writeFileSync, statSync, existsSync } from 'node:fs';
-import { basename, resolve } from 'node:path';
+import { readFileSync, writeFileSync, statSync, existsSync, openSync, closeSync, unlinkSync } from 'node:fs';
+import { basename, resolve, join } from 'node:path';
+import { tmpdir } from 'node:os';
 import { createHash } from 'node:crypto';
 import { cli, Strategy } from '@jyjyxt/cloudl/registry';
 import { ArgumentError, CommandExecutionError, TimeoutError } from '@jyjyxt/cloudl/errors';
@@ -28,12 +29,30 @@ export function validateMetadata(data) {
       new Set(data.tags).size !== data.tags.length) throw new ArgumentError('Require 1–10 unique tags, each 1–20 characters without commas/newlines');
   if (data.cover_index !== undefined && (!Number.isInteger(data.cover_index) || data.cover_index < 0))
     throw new ArgumentError('cover_index must be a nonnegative integer');
+  if (data.cover !== undefined) throw new ArgumentError('Custom cover file upload is not supported by this command. Prepare, set/crop the image in the browser, then resume with cover_url instead of cover');
+  if (data.cover_url !== undefined && (typeof data.cover_url !== 'string' || !/^https:\/\//.test(data.cover_url)))
+    throw new ArgumentError('cover_url must be the HTTPS URL of the saved cover preview');
   return data;
 }
 export function submissionResult(snapshot, title) {
-  if (!/投稿成功|发布成功|恭喜你上传第一个稿件，成为\s*UP\s*主/.test(snapshot.text || '')) return null;
-  const bvid = [snapshot.url, ...(snapshot.links || []), snapshot.text].join(' ').match(/BV[1-9A-HJ-NP-Za-km-z]{10}/)?.[0] || '';
-  return { status: 'submitted', title, bvid, url: bvid ? `https://www.bilibili.com/video/${bvid}` : snapshot.url };
+  if (!/^(?:稿件投递成功|投稿成功|发布成功|恭喜你上传第一个稿件，成为\s*UP\s*主)[!！。~～]?$/m.test(snapshot.feedback || '')) return null;
+  const bvid = [snapshot.pageUrl, ...(snapshot.links || [])].join(' ').match(/BV[1-9A-HJ-NP-Za-km-z]{10}/)?.[0] || '';
+  return { status: 'submitted', title, bvid, url: bvid ? `https://www.bilibili.com/video/${bvid}` : snapshot.pageUrl };
+}
+// Only visible standalone platform feedback, excluding metadata/editor text.
+// Self-contained so production browser extraction and DOM tests use one path.
+export function readAcknowledgement() {
+  return Array.from(document.querySelectorAll('body *')).filter(element =>
+    !Array.from(element.children).some(child => child.textContent.trim() === element.textContent.trim()) &&
+    !element.closest('[contenteditable], [editor_id], textarea, input, script, style') &&
+    element.getBoundingClientRect().width > 0 &&
+    /^(?:稿件投递成功|投稿成功|发布成功|恭喜你上传第一个稿件，成为\s*UP\s*主)[!！。~～]?$/.test(element.textContent.trim())
+  ).map(element => element.textContent.trim()).join('\n');
+}
+export function assertCover(snapshot, data) {
+  if (!snapshot.cover) throw new CommandExecutionError('Saved cover preview is unavailable');
+  if (data.cover_url && snapshot.coverUrl !== data.cover_url)
+    throw new CommandExecutionError('Saved cover preview does not match cover_url; inspect crop and save it before resuming');
 }
 export async function submitOnce({ state, persist, click, confirm }) {
   if (state.status === 'submitting') throw new CommandExecutionError('Previous submission is unconfirmed; inspect creator content before retrying');
@@ -50,7 +69,7 @@ cli({
   description: '上传视频并填写投稿信息；默认仅准备，--execute 投稿一次，--resume 继续已有上传',
   browser: false, strategy: Strategy.COOKIE,
   args: [
-    { name: 'metadata', positional: true, required: true, help: 'JSON: video, account, title, description, category, declaration, tags; optional account_id, cover_index' },
+    { name: 'metadata', positional: true, required: true, help: 'JSON: video, account, title, description, category, declaration, tags; optional account_id, cover_index, cover_url (saved preview)' },
     { name: 'session', default: 'bilibili-publish', help: 'Cloudl 浏览器会话' },
     { name: 'resume', type: 'bool', default: false, help: '继续会话中同一文件的上传；核对文件名与大小' },
     { name: 'execute', type: 'bool', default: false, help: '信息核对且上传完成后立即投稿；不会自动重试提交' },
@@ -71,6 +90,13 @@ cli({
     if (!Number.isInteger(timeout) || timeout < 1 || timeout > 3600) throw new ArgumentError('timeout must be 1–3600 seconds');
     const statePath = metadata + '.state.json';
     const fingerprint = createHash('sha256').update(JSON.stringify({ data, video, size: file.size, mtime: file.mtimeMs })).digest('hex');
+    const locks = [statePath + '.lock', join(tmpdir(), `cloudl-bili-video-${createHash('sha256').update(args.session || 'bilibili-publish').digest('hex')}.lock`)];
+    const acquired = [];
+    try {
+      for (const lock of locks) {
+        try { const fd = openSync(lock, 'wx', 0o600); closeSync(fd); acquired.push(lock); }
+        catch (error) { throw new CommandExecutionError(`Cannot lock ${lock}: ${error.code}. Check for an active publisher before removing a stale lock`); }
+      }
     let state = { status: 'prepared', fingerprint };
     if (existsSync(statePath)) {
       state = JSON.parse(readFileSync(statePath, 'utf8'));
@@ -93,18 +119,19 @@ cli({
     const evaluate = js => browser('eval', js);
     const snapshot = () => evaluate(`(() => {
       const tag = document.querySelector(${JSON.stringify(TAG)});
-      return { url:location.href, text:document.body?.innerText || '',
-        title:document.querySelector(${JSON.stringify(TITLE)})?.value,
+      return { pageUrl:location.href, text:document.body?.innerText || '', feedback:(${readAcknowledgement.toString()})(),
+        editorTitle:document.querySelector(${JSON.stringify(TITLE)})?.value,
         description:Array.from(document.querySelector(${JSON.stringify(DESCRIPTION)})?.children || []).map(e=>e.textContent).join('\\n'),
         declaration:document.querySelector(${JSON.stringify(DECLARATION)})?.value,
         category:document.querySelector('.video-human-type .select-item-cont')?.innerText.trim(),
         tags:Array.from(tag?.closest('.input-container')?.querySelectorAll('.label-item-v2-content') || []).map(e=>e.innerText.trim()),
         files:Array.from(document.querySelectorAll(${JSON.stringify(UPLOAD)})).flatMap(e=>Array.from(e.files||[]).map(f=>({name:f.name,size:f.size}))),
         cover:!!document.querySelector('.cover-main .cover-img')?.style.backgroundImage,
+        coverUrl:document.querySelector('.cover-main .cover-img')?.style.backgroundImage.match(/^url\\(["']?(.*?)["']?\\)$/)?.[1] || '',
         progress:document.querySelector('.file-item-content-status-text')?.innerText || '',
         uploadStatus:document.querySelector('.task-status')?.innerText || '',
         submit:!!document.querySelector('.submit-add'),
-        links:Array.from(document.querySelectorAll('a[href]')).map(e=>e.href)
+        links:Array.from(document.querySelectorAll('a[href]')).filter(e=>!e.closest('[contenteditable], [editor_id]')).map(e=>e.href)
       }; })()`);
     const wait = async (check, label) => {
       const end = Date.now() + timeout * 1000;
@@ -112,7 +139,7 @@ cli({
       throw new TimeoutError(label, timeout);
     };
     if (!args.resume) await browser('open', 'https://member.bilibili.com/platform/upload/video/frame');
-    await wait(async () => (await snapshot()).url.startsWith('https://member.bilibili.com/platform/upload/video'), 'Bilibili upload page');
+    await wait(async () => (await snapshot()).pageUrl.startsWith('https://member.bilibili.com/platform/upload/video'), 'Bilibili upload page');
     await wait(() => evaluate(`!!document.querySelector(${JSON.stringify(UPLOAD)})`), 'Upload editor loading');
     // Read-only identity lookups may retry when the creator center is slow.
     const identity = await wait(async () => {
@@ -127,10 +154,10 @@ cli({
         throw new CommandExecutionError('Resume file name/size mismatch or multiple uploaded files');
     } else {
       await wait(() => evaluate(`!!document.querySelector(${JSON.stringify(UPLOAD)})`), 'Upload input');
-      if ((await snapshot()).title !== undefined) throw new CommandExecutionError('Existing upload found; use --resume after inspecting it');
+      if ((await snapshot()).editorTitle !== undefined) throw new CommandExecutionError('Existing upload found; use --resume after inspecting it');
       await browser('upload', UPLOAD, video, '--nth', '0');
     }
-    await wait(async () => (await snapshot()).title !== undefined, 'Video editor');
+    await wait(async () => (await snapshot()).editorTitle !== undefined, 'Video editor');
     await evaluate(`(() => {document.querySelector('.forbid.btn')?.click();const e=Array.from(document.querySelectorAll('span')).find(x=>x.textContent==='知道了');e?.click();return true;})()`);
     await browser('fill', TITLE, data.title);
     try { await browser('fill', DESCRIPTION, data.description); }
@@ -171,13 +198,14 @@ cli({
       return /上传完成|上传成功/.test(s.text) && !/上传中\.\.\./.test(s.text);
     }, 'Video upload');
     const actual = await snapshot();
-    if (actual.title !== data.title || norm(actual.description) !== norm(data.description) || actual.category !== data.category ||
+    assertCover(actual, data);
+    if (actual.editorTitle !== data.title || norm(actual.description) !== norm(data.description) || actual.category !== data.category ||
         actual.declaration !== data.declaration || JSON.stringify(actual.tags) !== JSON.stringify(data.tags) || !actual.cover || !actual.submit)
       throw new CommandExecutionError('Final form does not match metadata, or cover/submit is unavailable');
     if (actual.files.length !== 1 || actual.files[0].name !== basename(video) || actual.files[0].size !== file.size)
       throw new CommandExecutionError('Uploaded file changed during preparation');
     persist(state);
-    if (!args.execute) return [{ status: 'prepared', title: data.title, bvid: '', url: actual.url }];
+    if (!args.execute) return [{ status: 'prepared', title: data.title, bvid: '', url: actual.pageUrl }];
     const result = await submitOnce({ state, persist,
       click: () => browser('click', '.submit-add'),
       confirm: async () => {
@@ -191,5 +219,8 @@ cli({
       }
     });
     return [result];
+    } finally {
+      for (const lock of acquired.reverse()) unlinkSync(lock);
+    }
   }
 });

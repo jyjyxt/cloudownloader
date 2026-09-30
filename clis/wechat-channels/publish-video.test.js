@@ -56,7 +56,7 @@ describe('wechat-channels publish-video', () => {
     expect(c.access).toBe('write'); expect(c.browser).toBe(false);
     expect(c.args.find(a => a.name === 'execute').default).toBe(false);
   });
-  it.each([{ account: '' }, { title: '字'.repeat(17) }, { title: 'a\nb' }, { title: '标题，逗号' }, { title: 'title,comma' }, { caption: '' }, { caption: '字'.repeat(1001) }, { declaration: '含AI生成内容' }])('rejects unsupported metadata %j', patch => {
+  it.each([{ account: '' }, { title: '字'.repeat(17) }, { title: 'a\nb' }, { title: '标题，逗号' }, { title: 'title,comma' }, { caption: '' }, { caption: '字'.repeat(1001) }, { declaration: '含AI生成内容' }, { cover: '/tmp/cover.png' }, { cover_url: 'https://example.com/cover.png' }])('rejects unsupported metadata %j', patch => {
     expect(() => validateMetadata({ ...data(), ...patch })).toThrow();
   });
   it('defaults to the platform personal-opinion label and requires current option names', () => {

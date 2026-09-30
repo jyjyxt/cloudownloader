@@ -31,6 +31,8 @@ export function validateMetadata(data) {
   if (Array.from(data.caption).length > 1000) throw new ArgumentError('Caption max 1000 characters');
   normalizeDeclaration(data.declaration);
   if (data.original !== undefined && typeof data.original !== 'boolean') throw new ArgumentError('original must be boolean');
+  if (data.cover !== undefined || data.cover_url !== undefined)
+    throw new ArgumentError('Custom cover metadata is unsupported. Set/crop the cover in the browser during preparation and inspect the saved preview; do not pass a cover file that this command cannot apply');
   return data;
 }
 
