@@ -132,6 +132,28 @@ describe('xiaohongshu publish-video', () => {
     expect(fs.existsSync(f.receipt)).toBe(false);
     expect(mocks.execFile.mock.calls.some(call => call[1][3]?.includes('h._onPublish()'))).toBe(false);
   });
+  it.each([false, true])('accepts only paragraph/caret formatting after a rich-editor fill error (%s)', async corrupted => {
+    const f = fixture();
+    const data = {...f.data, content: 'José / HUMAN\n最后一字图'};
+    fs.writeFileSync(f.metadata, JSON.stringify(data));
+    const body = (corrupted ? data.content.slice(0, -1) : data.content).replace(/\n/g, '\u200b\n\n') + '\u200b';
+    mocks.execFile.mockImplementation((binary, argv, options, callback) => {
+      const action = argv[2], script = argv[3] || '';
+      if (action === 'fill' && argv[3] === '.tiptap.ProseMirror') return callback(new Error('editor formatting'), '', 'editor formatting');
+      let result = {};
+      if (action === 'eval') {
+        if (script.includes('coverReady')) result = {editorTitle: data.title, editorBody: body, coverUrl: 'https://example.com/cover.png', coverReady: true};
+        else if (script.includes('readAcknowledgement')) result = {url: 'https://creator.xiaohongshu.com/publish/publish?target=video', text: 'tester\ndemo.mp4', disabled: 'false'};
+        else if (script.includes('map(p => p.textContent)')) result = {text: body};
+        else result = true;
+      }
+      callback(null, JSON.stringify(result), '');
+    });
+    const pending = getRegistry().get('xiaohongshu/publish-video').func({metadata: f.metadata, timeout: 1, session: 'paragraph-test', resume: true});
+    if (corrupted) await expect(pending).rejects.toThrow('editor formatting');
+    else await expect(pending).resolves.toEqual([expect.objectContaining({status: 'prepared'})]);
+    expect(mocks.execFile.mock.calls.some(call => call[1][3]?.includes('h._onPublish()'))).toBe(false);
+  });
   it('locks both the metadata and the named browser session before concurrent preparation', async () => {
     const first = fixture(), second = fixture();
     let pendingCallback;

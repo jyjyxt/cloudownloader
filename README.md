@@ -126,6 +126,8 @@ Use cloudl directly when you want a reliable command instead of a live browser s
 - `cloudl external register mycli` exposes a local CLI through the same discovery surface.
 - `cloudl doctor` helps diagnose browser connectivity.
 
+[Video publication preparation](./docs/guide/video-publication-preparation.md) covers reusable platform metadata, safe cover sizes and verified form filling from JSON. The preparation tools do not submit videos or write publication-history reports.
+
 ## Extending cloudl
 
 If you want to add your own commands, start with the [Extending cloudl guide](./docs/guide/extending-cloudl.md). README keeps this short; the guide covers the directory layout, source-control model, and install commands.

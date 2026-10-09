@@ -25,3 +25,7 @@ docs/.vitepress/cache
 *.db
 autoresearch/results/
 autoresearch-results.tsv
+
+# Python publication tools
+__pycache__/
+*.py[cod]

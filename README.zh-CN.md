@@ -113,6 +113,8 @@ cloudl doctor
 - `cloudl external register mycli` 把本地 CLI 接入同一发现入口
 - `cloudl doctor` 处理浏览器连通性问题
 
+[视频投稿准备](./docs/zh/guide/video-publication-preparation.md)提供可复用的平台参数、封面尺寸适配和从 JSON 填入并核对网页字段的工具；准备工具不提交视频，不生成发布历史报告。
+
 ## 扩展 cloudl
 
 如果你想新增自己的命令，先看 [扩展 cloudl](./docs/zh/guide/extending-cloudl.md)。README 只保留入口；目录结构、源码管理方式和安装命令放在文档里。

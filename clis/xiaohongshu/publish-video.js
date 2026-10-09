@@ -10,6 +10,7 @@ import { tmpdir } from 'node:os';
 import { createHash } from 'node:crypto';
 import { cli, Strategy } from '@jyjyxt/cloudl/registry';
 import { ArgumentError, CommandExecutionError, TimeoutError } from '@jyjyxt/cloudl/errors';
+import { normalizeParagraphText } from '../_shared/publish-form.js';
 const run = promisify(execFile);
 export function validateMetadata(data) {
   if (!data || typeof data !== 'object' ||
@@ -121,7 +122,7 @@ cli({
       // ProseMirror renders paragraphs with extra innerText line breaks.
       // Accept only an exact paragraph-text match, never a general fill error.
       const paragraphs = await evaluate(`({text:Array.from(document.querySelector('.tiptap.ProseMirror')?.children || []).map(p => p.textContent).join('\\n')})`);
-      if (paragraphs.text !== data.content) throw error;
+      if (typeof paragraphs.text !== 'string' || normalizeParagraphText(paragraphs.text) !== normalizeParagraphText(data.content)) throw error;
     }
     while (true) {
       state = await snapshot();
@@ -131,7 +132,7 @@ cli({
       await new Promise(r => setTimeout(r, 3000));
     }
     const actual = await evaluate(`(() => {const cover=document.querySelector('img.cover');return {editorTitle:document.querySelector('input[placeholder="填写标题会有更多赞哦"]').value,editorBody:document.querySelector('.tiptap.ProseMirror').innerText,coverUrl:cover?.src || '',coverReady:!!cover?.complete && cover.naturalWidth>0,coverEditing:Array.from(document.querySelectorAll('button')).some(e=>e.innerText.trim()==='完成' && e.getBoundingClientRect().width>0)};})()`);
-    const norm = s => s.replace(/\r/g, '').replace(/\n+/g, '\n').trim();
+    const norm = normalizeParagraphText;
     if (actual.editorTitle !== data.title || norm(actual.editorBody) !== norm(data.content)) throw new CommandExecutionError('Form does not match metadata');
     assertCover(actual, data);
     persist(saved);

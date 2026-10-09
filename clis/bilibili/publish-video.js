@@ -8,6 +8,7 @@ import { tmpdir } from 'node:os';
 import { createHash } from 'node:crypto';
 import { cli, Strategy } from '@jyjyxt/cloudl/registry';
 import { ArgumentError, CommandExecutionError, TimeoutError } from '@jyjyxt/cloudl/errors';
+import { normalizeParagraphText } from '../_shared/publish-form.js';
 const run = promisify(execFile);
 const TITLE = 'input[placeholder="请输入稿件标题"]';
 const DESCRIPTION = '[editor_id="desc_at_editor"] .ql-editor';
@@ -15,7 +16,7 @@ const TAG = 'input[placeholder="按回车键Enter创建标签"]';
 const DECLARATION = 'input[placeholder="请选择符合您视频内容的创作声明"]';
 const UPLOAD = 'input[type="file"][accept^=".mp4"]';
 const DECLARATIONS = ['内容无需标注', '含AI生成内容', '含虚构演绎内容', '内容含营销信息', '个人观点，仅供参考'];
-const norm = s => String(s ?? '').replace(/\r/g, '').trim();
+const norm = s => normalizeParagraphText(String(s ?? ''));
 export function validateMetadata(data) {
   if (!data || typeof data !== 'object') throw new ArgumentError('Metadata must be an object');
   for (const key of ['video', 'account', 'title', 'description', 'category', 'declaration']) {
