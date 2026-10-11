@@ -31,8 +31,10 @@ export function validateMetadata(data) {
   if (Array.from(data.caption).length > 1000) throw new ArgumentError('Caption max 1000 characters');
   normalizeDeclaration(data.declaration);
   if (data.original !== undefined && typeof data.original !== 'boolean') throw new ArgumentError('original must be boolean');
-  if (data.cover !== undefined || data.cover_url !== undefined)
-    throw new ArgumentError('Custom cover metadata is unsupported. Set/crop the cover in the browser during preparation and inspect the saved preview; do not pass a cover file that this command cannot apply');
+  if (data.cover_url !== undefined) throw new ArgumentError('cover_url is unsupported; use a local cover image');
+  if (data.cover !== undefined && (typeof data.cover !== 'string' || !/\.(png|jpe?g)$/i.test(data.cover)))
+    throw new ArgumentError('cover must be a local PNG or JPEG path');
+  if (data.save_cover !== undefined && typeof data.save_cover !== 'boolean') throw new ArgumentError('save_cover must be boolean');
   return data;
 }
 
@@ -141,6 +143,7 @@ export async function pageAction(action, data = {}) {
     const location = vm?.postStore?.postObjDesc?.location;
     return { url: locationHref(), account, text, editor: !!editor, ...originalState(), ...declarationState(),
       appRouter: !!document.querySelector('#app')?.__vue__?.$router,
+      coverUrl: root?.querySelector('.cover-img-vertical')?.src || '',
       title: title?.value, shortTitle: shortTitleModel(), caption: editor?.innerText,
       savedCaption: vm?.postStore?.postObjDesc?.description,
       canPost: vm?.postStore?.canPost === true,
@@ -162,7 +165,7 @@ export async function pageAction(action, data = {}) {
     return true;
   }
   if (action === 'expose-upload') {
-    const input = root?.querySelector('input[type="file"][accept*="video"]');
+    const input = root?.querySelector(data.kind === 'cover' ? 'input[type="file"][accept*="image"]' : 'input[type="file"][accept*="video"]');
     if (!input || window.__cloudlWechatUpload) throw new Error('Missing upload input or unfinished prior upload');
     window.__cloudlWechatUpload = { input, parent: input.parentNode, next: input.nextSibling, id: input.getAttribute('id') };
     input.id = 'cloudl_wechat_video_input';
@@ -177,6 +180,19 @@ export async function pageAction(action, data = {}) {
       delete window.__cloudlWechatUpload;
     }
     return true;
+  }
+  if (action === 'open-cover') {
+    const button = root?.querySelector('.vertical-img-wrap .edit-btn');
+    if (!button) throw new Error('Cover editor entry unavailable');
+    button.click();
+    await new Promise(resolve => setTimeout(resolve, 100));
+    return true;
+  }
+  if (action === 'save-cover') {
+    const candidates = Array.from(root?.querySelectorAll('button') || [])
+      .filter(e => visible(e) && !e.disabled && ['确认', '确定', '完成', '保存'].includes(e.innerText.trim()));
+    if (candidates.length !== 1) throw new Error('Cover confirmation button unavailable or ambiguous; inspect crop before saving');
+    candidates[0].click(); return true;
   }
   if (action === 'fill') {
     if (!title || !editor || typeof vm?.updateDescData !== 'function') throw new Error('Editor synchronization contract changed');
@@ -296,6 +312,14 @@ export async function publishVideo(args, transport) {
   if (!Number.isInteger(timeout) || timeout < 30 || timeout > 3600) throw new ArgumentError('timeout must be 30–3600 seconds');
   if (args.verify && (enabled(args.execute) || enabled(args.resume))) throw new ArgumentError('--verify cannot be combined with --execute/--resume');
   if (args.verify && (typeof args.verify !== 'string' || !/^[A-Za-z0-9/_-]+$/.test(args.verify))) throw new ArgumentError('verify must be a raw object ID, not a URL');
+  const coverPath = data.cover && !args.verify ? resolve(data.cover) : null;
+  let coverHash;
+  if (coverPath) {
+    let coverFile;
+    try { coverFile = statSync(coverPath); } catch { throw new ArgumentError('Cover image not found'); }
+    if (!coverFile.isFile() || !coverFile.size) throw new ArgumentError('Require a nonempty cover image');
+    coverHash = hash(readFileSync(coverPath));
+  }
   const session = args.session || 'wechat-video';
   const statePath = metadata + '.state.json';
   const videoHash = createHash('sha256');
@@ -311,6 +335,8 @@ export async function publishVideo(args, transport) {
     let state = existsSync(statePath) ? JSON.parse(readFileSync(statePath, 'utf8')) : null;
     if (state && state.status !== 'prepared' && Boolean(state.original) !== data.original)
       throw new CommandExecutionError('Original declaration differs from prior submission; inspect the existing receipt');
+    if (!args.verify && coverPath && state && state.status !== 'prepared' && state.cover?.hash !== coverHash)
+      throw new CommandExecutionError('Cover differs from prior submission; inspect the existing receipt');
     const prior = previousResult(state, fingerprint, args.verify);
     if (prior && !args.verify) return [prior];
     const browser = transport || (async (...parts) => {
@@ -393,6 +419,33 @@ export async function publishVideo(args, transport) {
       return s.canPost && s.preview && !s.uploading ? s : false;
     }, 'Video upload');
     assertPrepared(actual, data, { path: video, size: file.size });
+    if (coverPath) {
+      if (state.cover?.hash !== coverHash || !state.cover?.saved_url) {
+        if (state.cover?.hash !== coverHash || !state.cover?.uploaded) {
+          state = { ...state, cover: { hash: coverHash, previous_url: actual.coverUrl, name: basename(coverPath) } };
+          writeReceipt(statePath, state);
+          await act('open-cover');
+          await act('expose-upload', { kind: 'cover' });
+          try { await browser('upload', '#cloudl_wechat_video_input', coverPath); }
+          finally { await act('restore-upload'); }
+          state = { ...state, cover: { ...state.cover, uploaded: true } };
+          writeReceipt(statePath, state);
+        }
+        if (!data.save_cover) {
+          if (enabled(args.execute)) throw new CommandExecutionError('Cover uploaded: inspect crop, then set save_cover=true and resume; nothing was published');
+          return [{ status: 'prepared_cover', account: data.account, title: data.title, url: actual.url,
+            cover: coverPath, next: 'Inspect the cover crop, set save_cover=true, and resume' }];
+        }
+        await act('save-cover');
+        const saved = await wait(async () => {
+          const current = await snapshot();
+          return current.coverUrl && current.coverUrl !== state.cover.previous_url ? current.coverUrl : false;
+        }, 'Saved custom cover preview');
+        state = { ...state, cover: { ...state.cover, saved_url: saved } };
+        writeReceipt(statePath, state);
+      }
+      if ((await snapshot()).coverUrl !== state.cover.saved_url) throw new CommandExecutionError('Saved cover changed; inspect before publishing');
+    }
     if (!enabled(args.execute)) return [{ status: 'prepared', account: data.account, title: data.title, declaration: data.declaration, url: actual.url }];
     const result = await submitOnce({ state, persist: s => writeReceipt(statePath, s), click: () => act('submit', data),
       verify: async pending => {
@@ -418,7 +471,7 @@ cli({
   site: 'wechat-channels', name: 'publish-video', access: 'write', browser: false, strategy: Strategy.COOKIE,
   description: '视频号完整视频投稿：核对已保存文案，发布后复查，支持恢复与防重复提交',
   args: [
-    { name: 'metadata', positional: true, required: true, help: 'JSON: video, account, title (<=16), caption (<=1000)' },
+    { name: 'metadata', positional: true, required: true, help: 'JSON: video, account, title (<=16), caption (<=1000); optional cover PNG/JPEG. Prepare cover crop first, then save_cover=true and resume' },
     { name: 'session', default: 'wechat-video', help: 'Cloudl 浏览器会话名称' },
     { name: 'original', type: 'bool', default: false, help: '声明原创并确认原创协议；需要账号已开放原创入口，否则停止且不发表' },
     { name: 'declaration', help: '视频标注，默认个人观点，仅供参考；可显式选择无需标注，不写入描述' },

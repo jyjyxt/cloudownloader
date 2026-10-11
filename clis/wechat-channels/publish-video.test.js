@@ -25,7 +25,7 @@ function fixture() {
 
 // Browser boundary fake; the actual page-side synchronization is covered separately below.
 function browserFixture(d, options = {}) {
-  let url = '', uploaded = false, submitted = false, declaration = normalizeDeclaration(d.declaration);
+  let url = '', uploaded = false, submitted = false, coverSaved = false, declaration = normalizeDeclaration(d.declaration);
   const calls = [];
   const browser = vi.fn(async (command, script) => {
     if (command === 'open') { url = script; calls.push(['open', url]); return { url }; }
@@ -36,8 +36,10 @@ function browserFixture(d, options = {}) {
       const posts = (submitted || options.existing) ? [{ id: 'export/new', text: d.caption + '\n2026-09-19', original: options.original !== false && d.original === true }] : [];
       if (url.includes('/list')) return { account: options.account || d.account, url, text: '视频管理\n发表视频', posts };
       return { ...prepared({ ...d, declaration }), url, editor: true, posts: [], account: options.account || d.account,
+        coverUrl: coverSaved ? 'https://example.com/custom-cover.jpg' : 'https://example.com/video-frame.jpg',
         originalAvailable: options.originalAvailable !== false, files: uploaded ? prepared(d).files : [], savedCaption: options.unsynced ? '' : d.caption };
     }
+    if (action === 'save-cover') { coverSaved = true; return true; }
     if (action === 'declaration') { declaration = payload.declaration; return true; }
     if (action === 'submit') {
       submitted = true; url = 'https://channels.weixin.qq.com/platform/post/list';
@@ -56,8 +58,12 @@ describe('wechat-channels publish-video', () => {
     expect(c.access).toBe('write'); expect(c.browser).toBe(false);
     expect(c.args.find(a => a.name === 'execute').default).toBe(false);
   });
-  it.each([{ account: '' }, { title: '字'.repeat(17) }, { title: 'a\nb' }, { title: '标题，逗号' }, { title: 'title,comma' }, { caption: '' }, { caption: '字'.repeat(1001) }, { declaration: '含AI生成内容' }, { cover: '/tmp/cover.png' }, { cover_url: 'https://example.com/cover.png' }])('rejects unsupported metadata %j', patch => {
+  it.each([{ account: '' }, { title: '字'.repeat(17) }, { title: 'a\nb' }, { title: '标题，逗号' }, { title: 'title,comma' }, { caption: '' }, { caption: '字'.repeat(1001) }, { declaration: '含AI生成内容' }, { cover: '/tmp/cover.gif' }, { cover: 1 }, { save_cover: 'true' }, { cover_url: 'https://example.com/cover.png' }])('rejects unsupported metadata %j', patch => {
     expect(() => validateMetadata({ ...data(), ...patch })).toThrow();
+  });
+  it('accepts a local cover and requires an explicit boolean for saving its crop', () => {
+    expect(validateMetadata({ ...data(), cover: '/tmp/cover.png', save_cover: true }).cover).toBe('/tmp/cover.png');
+    expect(validateMetadata({ ...data(), cover: '/tmp/cover.jpg', save_cover: false }).save_cover).toBe(false);
   });
   it('defaults to the platform personal-opinion label and requires current option names', () => {
     expect(normalizeDeclaration()).toBe('个人观点，仅供参考');
@@ -127,6 +133,36 @@ describe('wechat-channels publish-video', () => {
     expect(b.calls.map(c => c[0])).toContain('restore-upload');
     expect(b.calls.map(c => c[0])).not.toContain('submit');
     expect(existsSync(f.statePath + '.lock')).toBe(false);
+  });
+  it('prepares a custom crop, saves it on resume, and never repeats publication', async () => {
+    const f = fixture(); f.d.cover = join(f.args.session, 'cover.png');
+    writeFileSync(f.d.cover, 'cover image'); writeFileSync(f.metadata, JSON.stringify(f.d));
+    const b = browserFixture(f.d);
+    expect((await publishVideo(f.args, b.browser))[0].status).toBe('prepared_cover');
+    expect(b.calls.filter(c => c[0] === 'upload')).toHaveLength(2);
+    expect(b.calls.some(c => ['save-cover', 'submit'].includes(c[0]))).toBe(false);
+    await expect(publishVideo({ ...f.args, resume: true, execute: true }, b.browser)).rejects.toThrow('inspect crop');
+    expect(b.calls.filter(c => c[0] === 'upload')).toHaveLength(2);
+    f.d.save_cover = true; writeFileSync(f.metadata, JSON.stringify(f.d));
+    const result = await publishVideo({ ...f.args, resume: true, execute: true }, b.browser);
+    expect(result[0].status).toBe('published');
+    expect(b.calls.filter(c => c[0] === 'save-cover')).toHaveLength(1);
+    expect(b.calls.filter(c => c[0] === 'submit')).toHaveLength(1);
+    expect(JSON.parse(readFileSync(f.statePath)).cover.saved_url).toBe('https://example.com/custom-cover.jpg');
+    const unused = vi.fn();
+    expect(await publishVideo({ ...f.args, execute: true }, unused)).toEqual(result);
+    expect(unused).not.toHaveBeenCalled();
+    writeFileSync(f.d.cover, 'changed cover image');
+    await expect(publishVideo({ ...f.args, execute: true }, unused)).rejects.toThrow('Cover differs');
+    expect(unused).not.toHaveBeenCalled();
+  });
+  it('rejects missing and empty cover files before any browser operation', async () => {
+    const f = fixture(); f.d.cover = join(f.args.session, 'missing.png');
+    writeFileSync(f.metadata, JSON.stringify(f.d)); const unused = vi.fn();
+    await expect(publishVideo(f.args, unused)).rejects.toThrow('Cover image not found');
+    writeFileSync(f.d.cover, '');
+    await expect(publishVideo(f.args, unused)).rejects.toThrow('nonempty cover');
+    expect(unused).not.toHaveBeenCalled();
   });
   it('restores the input after an upload error and retains a resumable receipt', async () => {
     const f = fixture(), b = browserFixture(f.d, { uploadError: true });
@@ -273,6 +309,33 @@ describe('actual browser-side editor operations', () => {
     await f.action('restore-upload');
     expect(input.parentNode).toBe(parent); expect(input.nextSibling).toBe(next); expect(input.id).toBe('original');
     f.dom.window.close();
+  });
+  it('uses the actual cover input and native crop controls without forcing disabled confirmation', async () => {
+    const f = dom(), body = f.root.querySelector('body');
+    body.insertAdjacentHTML('beforeend', '<div class="vertical-img-wrap"><div class="edit-btn">编辑</div></div><div><input id="cover" type="file" accept="image/png"><span>end</span></div><img class="cover-img-vertical" src="https://example.com/saved.jpg"><button disabled>确认</button>');
+    const input = f.root.querySelector('#cover'), parent = input.parentNode, next = input.nextSibling;
+    const video = f.root.querySelector('input[accept*="video"]');
+    const opened = vi.fn(), saved = vi.fn(), changed = vi.fn();
+    f.root.querySelector('.edit-btn').addEventListener('click', opened);
+    input.addEventListener('change', changed);
+    const button = f.root.querySelector('button'); button.getBoundingClientRect = () => ({ width: 100 });
+    button.addEventListener('click', saved);
+    await f.action('open-cover'); expect(opened).toHaveBeenCalledTimes(1);
+    await f.action('expose-upload', { kind: 'cover' });
+    expect(f.dom.window.document.querySelector('#cloudl_wechat_video_input')).toBe(input);
+    expect(video.getRootNode()).toBe(f.root);
+    input.dispatchEvent(new f.dom.window.Event('change'));
+    expect(changed).toHaveBeenCalledTimes(1);
+    await f.action('restore-upload');
+    expect(input.parentNode).toBe(parent); expect(input.nextSibling).toBe(next); expect(input.id).toBe('cover');
+    await expect(f.action('save-cover')).rejects.toThrow('unavailable or ambiguous');
+    expect(button.disabled).toBe(true); expect(saved).not.toHaveBeenCalled();
+    button.disabled = false; await f.action('save-cover'); expect(saved).toHaveBeenCalledTimes(1);
+    expect((await f.action('snapshot')).coverUrl).toBe('https://example.com/saved.jpg');
+    button.insertAdjacentHTML('afterend', '<button>确认</button>');
+    button.nextSibling.getBoundingClientRect = () => ({ width: 100 });
+    await expect(f.action('save-cover')).rejects.toThrow('ambiguous');
+    expect(saved).toHaveBeenCalledTimes(1); f.dom.window.close();
   });
   it('recognizes the current account header and refuses ambiguous accounts', async () => {
     const f = dom();

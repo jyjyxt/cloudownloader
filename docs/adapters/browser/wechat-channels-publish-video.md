@@ -29,9 +29,20 @@
 
 Both video publishing commands default to the platform's `个人观点，仅供参考` label (personal opinions, for reference only). The label is selected and verified in the editor, never appended to the caption. An explicit `--declaration '无需标注'` overrides the default.
 其他标注目前仍需在界面处理；命令不会把不支持的值降级为「无需标注」。
-默认使用视频自动生成的封面，位置设置为「不显示位置」，立即发表；暂不支持定时、合集或自动上传自定义封面。自定义封面可在准备后的平台编辑器中上传、裁切并保存，发表前检查实际预览，尤其检查 3:4 裁切是否截掉首行标题。元数据中的 `cover` 或 `cover_url` 会明确报错，不能传入未被命令应用的封面参数。
+默认使用视频自动生成的封面，位置设置为「不显示位置」，立即发表；暂不支持定时或合集。
+自定义封面可在元数据中传入本地 PNG/JPEG 路径 `cover`。先运行准备命令，返回 `prepared_cover` 后在原会话检查平台的 3:4 裁切；确认标题和主体完整，再加入 `save_cover: true` 并使用 `--resume --execute`。命令点击平台原生确认按钮，读回已保存的封面预览后才发表。未确认裁切时即使传 `--execute` 也不会发表。
+`cover_url` 不支持；封面文件缺失、为空、保存按钮不可用或不唯一、预览未更新时均停止。已提交回执不允许换封面重发。
 
-Custom image upload/cropping is a platform-editor step after preparation. Inspect the saved preview, including the 3:4 crop, before publishing. The command rejects `cover` and `cover_url` metadata instead of silently publishing with an unapplied cover request.
+For a custom cover, set `cover` to a local PNG/JPEG path and prepare first. At `prepared_cover`, inspect the platform's 3:4 crop in the same browser session, then set `save_cover: true` and resume with `--resume --execute`. The command uses the native confirmation button and checks the saved preview before submitting. Without crop confirmation, `--execute` refuses publication. Missing/empty images, unavailable or ambiguous confirmation, unchanged previews, remote `cover_url`, and changed covers after submission are rejected.
+
+可选封面字段示例（加入上方 JSON）：
+
+```json
+{
+  "cover": "/absolute/path/cover_3x4.png",
+  "save_cover": false
+}
+```
 
 原创声明可通过元数据 `original: true` 或 `--original` 请求。命令会检查账号原创权限，
 点击声明原创并确认《原创声明须知》和《使用条款》，核对编辑器状态及已发表记录的 `originalInfo.isDeclared`。
