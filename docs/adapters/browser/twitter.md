@@ -17,7 +17,7 @@
 | `cloudl twitter notifications` | |
 | `cloudl twitter device-follow` | Read the /i/timeline device-follow notification stream (tweets aggregated under a bell-icon "new posts from @userA and N others" notification) |
 | `cloudl twitter post` | |
-| `cloudl twitter reply` | |
+| `cloudl twitter comment` | Comment on a specific tweet; preserves multiline text and links, with optional image attachment |
 | `cloudl twitter delete` | |
 | `cloudl twitter like` | |
 | `cloudl twitter likes` | |
@@ -75,12 +75,17 @@ cloudl twitter list-add-batch 123456789 "@alice,@bob" --interval 5
 cloudl twitter list-remove 123456789 alice
 cloudl twitter list-remove-batch 123456789 "@alice,@bob" --interval 5
 
-# Write actions (require login). Idempotent — calling twice is safe.
+# Likes and retweets (require login). Calling these twice is safe.
 cloudl twitter like https://x.com/jack/status/20
 cloudl twitter unlike https://x.com/jack/status/20
 cloudl twitter retweet https://x.com/jack/status/20
 cloudl twitter unretweet https://x.com/jack/status/20
+
+# Comments and quotes create new posts; do not replay an uncertain submission.
 cloudl twitter quote https://x.com/jack/status/20 "great take"
+cloudl twitter comment https://x.com/example/status/123 "Thanks for sharing!"
+cloudl twitter comment https://x.com/example/status/123 "Here is the guide" --image ./cover.webp
+cloudl twitter comment https://x.com/example/status/123 "Image reference" --image-url https://example.com/reference.png
 
 # JSON output
 cloudl twitter trending -f json
@@ -93,3 +98,17 @@ cloudl twitter trending -v
 
 - Chrome running and **logged into** twitter.com
 - [Browser Bridge extension](/guide/browser-bridge) installed
+
+## Multiline comments and links
+
+`cloudl twitter comment <tweet-url> <text>` opens the specified tweet, fills the exact text, and clicks its enabled submit control. Newlines, bullets and URLs are preserved; it does not rewrite a comment into a new standalone post. An image can be attached with `--image` or `--image-url`.
+
+```bash
+cloudl twitter comment https://x.com/example/status/123 "GitHub project:
+https://github.com/example/project
+
+Installation guide:
+https://example.com/skills/project" -f json
+```
+
+The result contains `status`, `message`, `text`, `url`, `image`, and `image-url`. Optional values are `null`; a permalink is returned only when X's fresh submission receipt supplies it. A cleared editor alone is insufficient evidence. An unconfirmed submission exits with `TIMEOUT` (75): inspect the thread before retrying because the comment may already be live.

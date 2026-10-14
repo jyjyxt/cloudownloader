@@ -41115,6 +41115,55 @@
   },
   {
     "site": "twitter",
+    "name": "comment",
+    "description": "Comment on a specific tweet with exact multiline text and links, optionally attaching an image",
+    "access": "write",
+    "domain": "x.com",
+    "strategy": "ui",
+    "browser": true,
+    "args": [
+      {
+        "name": "url",
+        "type": "string",
+        "required": true,
+        "positional": true,
+        "help": "The URL of the tweet to comment on"
+      },
+      {
+        "name": "text",
+        "type": "string",
+        "required": true,
+        "positional": true,
+        "help": "The text content of your comment"
+      },
+      {
+        "name": "image",
+        "type": "string",
+        "required": false,
+        "help": "Optional local image path to attach to the comment"
+      },
+      {
+        "name": "image-url",
+        "type": "string",
+        "required": false,
+        "help": "Optional remote image URL to download and attach to the comment"
+      }
+    ],
+    "columns": [
+      "status",
+      "message",
+      "text",
+      "url",
+      "image",
+      "image-url"
+    ],
+    "type": "js",
+    "modulePath": "twitter/comment.js",
+    "sourceFile": "twitter/comment.js",
+    "navigateBefore": true
+  },
+  {
+    "site": "twitter",
     "name": "delete",
     "description": "Delete a specific tweet by URL",
     "access": "write",
@@ -42024,53 +42073,6 @@
     "type": "js",
     "modulePath": "twitter/quote.js",
     "sourceFile": "twitter/quote.js",
-    "navigateBefore": true
-  },
-  {
-    "site": "twitter",
-    "name": "reply",
-    "description": "Reply to a specific tweet, optionally with a local or remote image",
-    "access": "write",
-    "domain": "x.com",
-    "strategy": "ui",
-    "browser": true,
-    "args": [
-      {
-        "name": "url",
-        "type": "string",
-        "required": true,
-        "positional": true,
-        "help": "The URL of the tweet to reply to"
-      },
-      {
-        "name": "text",
-        "type": "string",
-        "required": true,
-        "positional": true,
-        "help": "The text content of your reply"
-      },
-      {
-        "name": "image",
-        "type": "str",
-        "required": false,
-        "help": "Optional local image path to attach to the reply"
-      },
-      {
-        "name": "image-url",
-        "type": "str",
-        "required": false,
-        "help": "Optional remote image URL to download and attach to the reply"
-      }
-    ],
-    "columns": [
-      "status",
-      "message",
-      "text",
-      "url"
-    ],
-    "type": "js",
-    "modulePath": "twitter/reply.js",
-    "sourceFile": "twitter/reply.js",
     "navigateBefore": true
   },
   {

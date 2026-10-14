@@ -30,11 +30,11 @@ evidence: cloudl browser click
 ```yaml
 ### action:submit_reply
 pre: reply composer has text, submit enabled
-do: cloudl twitter reply --status-url <url> --text "..." || click [data-testid="tweetButtonInline"]
+do: cloudl twitter comment <url> "..." || click [data-testid="tweetButtonInline"]
 post: textarea cleared + toast "Your post was sent"; new reply appended below detail
-fail: button enabled but silent timeout (see pitfall:reply_silent_fails_on_rich_content) | login modal
-recover: adapter_health_update: cloudl twitter reply -> suspect; apply pitfall workaround (single-paragraph plain text, escape bullets); long reply -> workflows/post.md + quote
-evidence: cloudl twitter reply
+fail: button enabled but no new submission receipt (see pitfall:comment_editor_input_not_applied) | login modal
+recover: adapter_health_update: cloudl twitter comment -> suspect; preserve the supplied text; use exact browser fill; if a submit occurred, inspect the thread before retrying
+evidence: cloudl twitter comment
 ```
 
 ## Tweet card actions

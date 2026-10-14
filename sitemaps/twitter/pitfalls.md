@@ -30,12 +30,13 @@ source: global
 - verified_at: 2026-06-02
 - notes: 实现层根因是 GraphQL queryId rotation（step 3 数据：twitter COOKIE_API adapter 30 天 9 fixes，主因即此），但 task agent 不需要知道这层，只需"切 Fallback"。internal-unstable contract 的代表 pitfall，PoC v1 workflows 的 Fallback path 全部预留 browser DOM 兜底
 
-### pitfall:reply_silent_fails_on_rich_content
+### pitfall:comment_editor_input_not_applied
 
-- trigger: 我的 reply 内容含多段 / bullet list / 反引号 / `→` arrow / `<url>` 角括号占位
-- symptom: silent `Could not verify reply text in the composer`，同内容用 post composer 能通
-- workaround: 单段纯文字 / `/` 替代 bullet / "any URL" 替代 `<url>` 占位 / 500 char + 链接收尾；多段长 reply 改走 post + quote
-- verified_at: 2026-05-15
+- trigger: 多段评论或包含链接的评论，通过旧的纯 DOM 插入过程填入编辑框
+- symptom: 输入校验失败；或普通点击后没有发送回执
+- workaround: 使用 `cloudl twitter comment <url> "<正文>"`；命令复用共享精确填入能力并通过目标发送按钮提交。手动恢复时使用 `browser fill`，保留用户的换行、链接和原意。
+- verified_at: 2026-10-14
+- notes: 当前命令已经代替旧的 DOM 插入流程；提交结果不确定时先查看线程，不自动再次发送。
 
 ### pitfall:rtl_text_breaks_compose_verify
 

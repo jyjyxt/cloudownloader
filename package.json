@@ -1,6 +1,6 @@
 {
   "name": "@jyjyxt/cloudl",
-  "version": "1.8.11",
+  "version": "1.8.12",
   "publishConfig": {
     "access": "public"
   },

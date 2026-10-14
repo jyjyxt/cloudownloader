@@ -25,7 +25,7 @@ Twitter / X (`twitter.com` → 301 `x.com` since 2024)。微博形态的 social 
 ## Common goals
 
 - publish a post → workflows/post.md
-- reply to a tweet → workflows/reply.md
+- reply to a tweet → workflows/comment.md
 - search for tweets / users → workflows/search.md
 - bookmark a tweet → workflows/bookmark.md
 - read user timeline → 直接用 adapter `cloudl twitter tweets <handle>`，无需 workflow
