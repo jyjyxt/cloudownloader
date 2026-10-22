@@ -1,41 +1,41 @@
-import { AuthRequiredError, CommandExecutionError } from '@jyjyxt/cloudl/errors';
+import { AuthRequiredError, CommandExecutionError, TimeoutError } from '@jyjyxt/cloudl/errors';
 import { registerSiteAuthCommands } from '../_shared/site-auth.js';
 
-async function hasGoogleSessionCookie(page) {
-  const cookies = await page.getCookies({ url: 'https://www.youtube.com' });
-  const names = new Set(cookies.map(c => c.name));
-  return names.has('SID') || names.has('SAPISID') || names.has('__Secure-1PSID');
+// Strategy: DOM_STATE; contract: visible-ui.
+// Verified 2026-10-22: signed-in YouTube can expose LOGGED_IN=true and the
+// account menu while the browser cookie probe returns no matching cookies.
+export function readYoutubeIdentity() {
+  const cfg = window.ytcfg;
+  const flag = typeof cfg?.get === 'function' ? cfg.get('LOGGED_IN') : undefined;
+  if (flag === false || location.hostname === 'accounts.google.com') {
+    return { kind: 'auth', detail: 'YouTube reports that the current browser is signed out' };
+  }
+  if (flag !== true) return { kind: 'pending' };
+  let name = '';
+  const context = cfg.get('INNERTUBE_CONTEXT');
+  if (context?.user?.identityName) name = String(context.user.identityName);
+  const menu = document.querySelector('ytd-multi-page-menu-renderer');
+  const accountName = menu?.querySelector('#account-name');
+  if (!name && accountName) name = accountName.textContent.trim();
+  return { kind: 'ok', identityLabel: name || null };
+}
+
+async function quickCheck(page) {
+  const probe = await page.evaluate(`(${readYoutubeIdentity.toString()})()`);
+  return probe?.kind === 'ok';
 }
 
 async function verifyYoutubeIdentity(page) {
-  if (!await hasGoogleSessionCookie(page)) {
-    throw new AuthRequiredError('www.youtube.com', 'Google session cookies missing');
-  }
   await page.goto('https://www.youtube.com/');
-  await page.wait(3);
-  const probe = await page.evaluate(`
-    (() => {
-      const cfg = (typeof window !== 'undefined' && window.ytcfg && typeof window.ytcfg.get === 'function') ? window.ytcfg : null;
-      // ytcfg LOGGED_IN is the reliable signed-in signal; the avatar button is a fallback.
-      const loggedIn = !!(cfg && cfg.get('LOGGED_IN') === true) || !!document.querySelector('#avatar-btn');
-      if (!loggedIn) {
-        return { kind: 'auth', detail: 'YouTube ytcfg LOGGED_IN not true and no avatar — not signed in' };
-      }
-      // Name is best-effort: YouTube's masthead avatar exposes a generic
-      // "Account menu" aria-label, so the channel name is often unavailable
-      // without opening the menu. Surface it when present, else leave empty.
-      let name = '';
-      try { const ctx = cfg && cfg.get('INNERTUBE_CONTEXT'); name = (ctx && ctx.user && ctx.user.identityName) || ''; } catch {}
-      if (!name) {
-        const aria = (document.querySelector('#avatar-btn')?.getAttribute('aria-label') || '').trim();
-        if (aria && !/^account menu$/i.test(aria)) name = aria;
-      }
-      return { ok: true, name: String(name || '') };
-    })()
-  `);
-  if (probe?.kind === 'auth') throw new AuthRequiredError('www.youtube.com', probe.detail);
-  if (!probe?.ok) throw new CommandExecutionError(`Unexpected YouTube probe: ${JSON.stringify(probe)}`);
-  return { name: probe.name };
+  for (let attempt = 0; attempt < 20; attempt += 1) {
+    const probe = await page.evaluate(`(${readYoutubeIdentity.toString()})()`);
+    if (probe?.kind === 'auth') throw new AuthRequiredError('www.youtube.com', probe.detail);
+    if (probe?.kind === 'ok') return { name: probe.identityLabel };
+    if (probe?.kind !== 'pending')
+      throw new CommandExecutionError('Unexpected YouTube identity response');
+    await page.wait(0.5);
+  }
+  throw new TimeoutError('YouTube signed-in page state', 10);
 }
 
 registerSiteAuthCommands({
@@ -43,12 +43,7 @@ registerSiteAuthCommands({
   domain: 'www.youtube.com',
   loginUrl: 'https://accounts.google.com/ServiceLogin?service=youtube&continue=https%3A%2F%2Fwww.youtube.com%2F',
   columns: ['name'],
-  quickCheck: hasGoogleSessionCookie,
+  quickCheck,
   verify: verifyYoutubeIdentity,
-  poll: async (page) => {
-    if (!await hasGoogleSessionCookie(page)) {
-      throw new AuthRequiredError('www.youtube.com', 'Waiting for Google session cookies');
-    }
-    return verifyYoutubeIdentity(page);
-  },
+  poll: verifyYoutubeIdentity,
 });

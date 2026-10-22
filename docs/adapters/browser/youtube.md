@@ -20,6 +20,7 @@
 | `cloudl youtube unlike` | Remove like from a video |
 | `cloudl youtube subscribe` | Subscribe to a channel |
 | `cloudl youtube unsubscribe` | Unsubscribe from a channel |
+| `cloudl youtube publish-post` | Prepare or publish a public image post once |
 
 ## Usage Examples
 
@@ -46,3 +47,7 @@ cloudl youtube unsubscribe "UCxxxxxxxxxxxxxx"
 
 - Chrome running and **logged into** youtube.com
 - [Browser Bridge extension](/guide/browser-bridge) installed
+
+## Image posts
+
+See [English guide](../../guide/youtube-image-posts.md) / [中文指南](../../zh/guide/youtube-image-posts.md) for metadata, preparation, execution and durable submission receipts.
