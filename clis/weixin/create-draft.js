@@ -66,6 +66,74 @@ async function fillContent(page, text) {
     })()`);
 }
 
+
+async function appendFooter(page, text) {
+    const result = await page.evaluate(`(() => {
+        var editor = document.querySelector('#ueditor_0 .ProseMirror');
+        if (!editor) return { ok: false, reason: 'footer editor not found' };
+        editor.focus();
+        var range = document.createRange();
+        range.selectNodeContents(editor);
+        range.collapse(false);
+        var selection = window.getSelection();
+        selection.removeAllRanges();
+        selection.addRange(range);
+        document.execCommand('insertParagraph', false, null);
+        document.execCommand('insertText', false, ${JSON.stringify(text)});
+        editor.dispatchEvent(new InputEvent('input', { bubbles: true }));
+        return { ok: true };
+    })()`);
+    if (!result?.ok) throw new CommandExecutionError('Failed to append the article footer');
+}
+
+async function prepareArticleImages(kwargs) {
+    const fs = await import('node:fs');
+    const path = await import('node:path');
+    const images = String(kwargs.images || '').split(',').map(value => value.trim()).filter(Boolean)
+        .map(value => path.default.resolve(value));
+    const cover = kwargs['cover-image'] ? path.default.resolve(kwargs['cover-image']) : null;
+    if (cover && images.length && !images.includes(cover)) {
+        throw new CommandExecutionError('--cover-image must name one of the --images files');
+    }
+    if (!images.length && cover) images.push(cover);
+    if (new Set(images).size !== images.length) throw new CommandExecutionError('--images contains duplicate paths');
+    for (const image of images) {
+        if (!fs.default.existsSync(image)) throw new CommandExecutionError(`Image not found: ${image}`);
+    }
+    if (!String(kwargs.content || '').trim() && !images.length && !String(kwargs.footer || '').trim()) {
+        throw new CommandExecutionError('Provide article content, --images, or --footer');
+    }
+    return { images, coverIndex: cover ? images.indexOf(cover) : 0 };
+}
+
+async function verifyArticleContent(page, expectedImageCount, content, footer) {
+    const result = await page.evaluate(`(() => {
+        var expectedImageCount = ${expectedImageCount};
+        var footer = ${JSON.stringify(footer || '')};
+        var expectedText = ${JSON.stringify([content, footer].filter(Boolean).join(' '))};
+        var editor = document.querySelector('#ueditor_0 .ProseMirror');
+        if (!editor) return { ok: false, reason: 'content editor not found' };
+        var images = Array.from(editor.querySelectorAll('img[src*="mmbiz"], img[src*="qpic.cn"]'));
+        var normalize = function(text) { return String(text || '').replace(/\\s+/g, ' ').trim(); };
+        var footerAfterImages = !footer || !images.length;
+        if (footer && images.length) {
+            var heading = footer.trim().split('\\n')[0];
+            var walker = document.createTreeWalker(editor, NodeFilter.SHOW_TEXT);
+            var node;
+            while ((node = walker.nextNode())) {
+                if ((node.textContent || '').includes(heading)) {
+                    footerAfterImages = !!(images[images.length - 1].compareDocumentPosition(node) & Node.DOCUMENT_POSITION_FOLLOWING);
+                    break;
+                }
+            }
+        }
+        var bodyMatchesText = normalize(editor.innerText) === normalize(expectedText);
+        return { ok: images.length === expectedImageCount && footerAfterImages && bodyMatchesText,
+            imageCount: images.length, footerAfterImages: footerAfterImages, bodyMatchesText: bodyMatchesText };
+    })()`);
+    if (!result?.ok) throw new CommandExecutionError('Article images or footer did not match the requested layout', JSON.stringify(result));
+}
+
 async function uploadContentImage(page, imagePath) {
     const fs = await import('node:fs');
     const path = await import('node:path');
@@ -88,7 +156,7 @@ async function uploadContentImage(page, imagePath) {
         var selection = window.getSelection();
         selection.removeAllRanges();
         selection.addRange(range);
-        return true;
+        return { imageCount: editor.querySelectorAll('img[src*="mmbiz"], img[src*="qpic.cn"]').length };
     })()`);
     if (!editorReady) {
         throw new CommandExecutionError('Content editor not found before image upload');
@@ -160,7 +228,7 @@ async function uploadContentImage(page, imagePath) {
             throw new CommandExecutionError(`Image upload fallback failed: ${fallbackResult?.error || 'unknown error'}`);
         }
     }
-    const uploadState = await waitForContentImageUpload(page);
+    const uploadState = await waitForContentImageUpload(page, (editorReady.imageCount || 0) + 1);
     if (!uploadState?.ok) {
         throw new CommandExecutionError('Image did not upload to WeChat CDN');
     }
@@ -182,7 +250,7 @@ async function uploadContentImage(page, imagePath) {
     return uploadState;
 }
 
-async function waitForContentImageUpload(page) {
+async function waitForContentImageUpload(page, expectedCount) {
     for (let attempt = 0; attempt < 30; attempt++) {
         await page.wait(2);
         const state = await page.evaluate(`(() => {
@@ -200,7 +268,7 @@ async function waitForContentImageUpload(page) {
                 })
                 : [];
             var cdnCount = images.length;
-            if (cdnCount > 0) return { ok: true, cdnCount: cdnCount, images: images };
+            if (cdnCount >= ${expectedCount}) return { ok: true, cdnCount: cdnCount, images: images };
 
             var uploading = Array.from(document.querySelectorAll('.upload_file, .progress_bar, .progress_bar_thumb')).some(function(el) {
                 return !!(el.offsetWidth || el.offsetHeight || el.getClientRects().length);
@@ -524,9 +592,9 @@ async function clickSaveDraft(page) {
     return false;
 }
 
-async function installCoverRequestFallback(page) {
+async function installCoverRequestFallback(page, coverIndex = 0) {
     const result = await page.evaluate(`(() => {
-        var image = document.querySelector('#ueditor_0 .ProseMirror img[data-imgfileid][src*="qpic.cn"]');
+        var image = document.querySelectorAll('#ueditor_0 .ProseMirror img[data-imgfileid][src*="qpic.cn"]')[${coverIndex}];
         if (!image) return { ok: false, reason: 'uploaded article image not found' };
         var fileId = image.getAttribute('data-imgfileid') || '';
         var cdnUrl = image.getAttribute('data-src') || image.getAttribute('src') || '';
@@ -576,9 +644,11 @@ export const createDraftCommand = cli({
     navigateBefore: false,
     args: [
         { name: 'title', required: true, help: '文章标题 (最长64字)' },
-        { name: 'content', required: true, positional: true, help: '文章正文' },
+        { name: 'content', required: false, positional: true, help: '图片之前的正文；纯图片文章可省略' },
+        { name: 'images', help: '按正文顺序上传的图片路径，逗号分隔；默认首图作封面' },
+        { name: 'footer', help: '追加在所有正文图片之后的文字，例如参考来源' },
         { name: 'author', help: '作者名 (最长8字)' },
-        { name: 'cover-image', help: '封面图片路径 (会先上传到正文再设为封面)' },
+        { name: 'cover-image', help: '封面图片路径；同时提供 --images 时须为其中一张，不重复插入正文' },
         { name: 'summary', help: '文章摘要' },
         { name: 'original-declaration', help: '开启原创声明并填写原创署名，例如：一页科学课' },
         { name: 'reward', type: 'bool', default: false, help: '开启公众号赞赏' },
@@ -588,6 +658,7 @@ export const createDraftCommand = cli({
     columns: ['status', 'detail'],
 
     func: async (page, kwargs) => {
+        const article = await prepareArticleImages(kwargs);
         await navigateToEditor(page);
 
         const titleResult = await fillField(page, 'textarea#title', kwargs.title);
@@ -598,15 +669,21 @@ export const createDraftCommand = cli({
             if (!authorResult?.ok) throw new CommandExecutionError('Failed to fill author');
         }
 
-        const contentResult = await fillContent(page, kwargs.content);
+        const contentResult = await fillContent(page, kwargs.content || '');
         if (!contentResult?.ok) throw new CommandExecutionError('Failed to fill content');
 
         let usedCoverRequestFallback = false;
-        if (kwargs['cover-image']) {
-            await uploadContentImage(page, kwargs['cover-image']);
+        for (const image of article.images) {
+            await uploadContentImage(page, image);
+        }
+        if (kwargs.footer) await appendFooter(page, kwargs.footer);
+        if (kwargs.images || kwargs.footer) {
+            await verifyArticleContent(page, article.images.length, kwargs.content || '', kwargs.footer || '');
+        }
+        if (article.images.length) {
             const coverSet = await setCoverFromImageUpload(page);
             if (!coverSet) {
-                await installCoverRequestFallback(page);
+                await installCoverRequestFallback(page, article.coverIndex);
                 usedCoverRequestFallback = true;
             }
         }
@@ -636,7 +713,7 @@ export const createDraftCommand = cli({
 
         return [{
             status: success ? 'draft saved' : 'save attempted, check browser to confirm',
-            detail: `"${kwargs.title}"${kwargs.author ? ` by ${kwargs.author}` : ''}${kwargs['cover-image'] ? ' (with cover)' : ''}${appliedSettings.length ? ` (${appliedSettings.join(', ')})` : ''}`,
+            detail: `"${kwargs.title}"${kwargs.author ? ` by ${kwargs.author}` : ''}${article.images.length ? ' (with cover)' : ''}${kwargs.images ? ` (${article.images.length} images)` : ''}${appliedSettings.length ? ` (${appliedSettings.join(', ')})` : ''}`,
         }];
     },
 });

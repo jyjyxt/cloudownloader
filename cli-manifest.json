@@ -44073,9 +44073,21 @@
       {
         "name": "content",
         "type": "str",
-        "required": true,
+        "required": false,
         "positional": true,
-        "help": "文章正文"
+        "help": "图片之前的正文；纯图片文章可省略"
+      },
+      {
+        "name": "images",
+        "type": "str",
+        "required": false,
+        "help": "按正文顺序上传的图片路径，逗号分隔；默认首图作封面"
+      },
+      {
+        "name": "footer",
+        "type": "str",
+        "required": false,
+        "help": "追加在所有正文图片之后的文字，例如参考来源"
       },
       {
         "name": "author",
@@ -44087,7 +44099,7 @@
         "name": "cover-image",
         "type": "str",
         "required": false,
-        "help": "封面图片路径 (会先上传到正文再设为封面)"
+        "help": "封面图片路径；同时提供 --images 时须为其中一张，不重复插入正文"
       },
       {
         "name": "summary",

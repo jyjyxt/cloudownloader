@@ -142,3 +142,94 @@ describe('weixin create-draft command', () => {
         expect(result).toEqual([{ status: 'draft saved', detail: '"回退测试" (with cover)' }]);
     });
 });
+
+describe('weixin multi-image draft layout', () => {
+    const files = [
+        new URL('../../package.json', import.meta.url).pathname,
+        new URL('../../README.md', import.meta.url).pathname,
+    ];
+
+    function multiPage({ invalidLayout = false, delaySecond = false } = {}) {
+        let uploads = 0;
+        let delayed = false;
+        const events = [];
+        const expectedCounts = [];
+        const evaluate = vi.fn(async script => {
+            if (script.includes('window.location.href.match')) return '123456';
+            if (script.includes('!!document.querySelector("textarea#title")')) return true;
+            if (script.includes("reason: 'content editor not found'") && !script.includes('var expectedImageCount')) return { ok: true };
+            if (script.includes("reason: 'footer editor not found'")) { events.push('footer'); return { ok: true }; }
+            if (script.includes('var range = document.createRange()')) return { imageCount: uploads };
+            if (script.includes('var imageSelector =') && script.includes('errorText')) {
+                const expected = Number(script.match(/cdnCount >= (\d+)/)[1]);
+                expectedCounts.push(expected);
+                if (delaySecond && expected === 2 && !delayed) {
+                    delayed = true;
+                    return { ok: false, cdnCount: 1 };
+                }
+                return { ok: uploads >= expected, cdnCount: uploads };
+            }
+            if (script.includes('return { ok: images.length > 0')) return { ok: true, count: uploads };
+            if (script.includes('var expectedImageCount')) {
+                events.push('verify');
+                return { ok: !invalidLayout, imageCount: uploads, footerAfterImages: !invalidLayout };
+            }
+            if (script.includes('return { count: editor ?')) return { count: uploads };
+            if (script.includes('!!window.__cloudlWeixinCoverPatch?.applied')) return true;
+            if (script.includes('window.__cloudlWeixinCoverPatch')) return { ok: true, fileId: '110001', cdnUrl: 'https://mmbiz.qpic.cn/1.jpg' };
+            if (script.includes("=== '保存为草稿'")) { events.push('save'); return { ok: true }; }
+            if (script.includes("document.querySelector('#js_save_success')")) return true;
+            if (script.includes('var el = document.querySelector')) return { ok: true };
+            return undefined;
+        });
+        const page = createPageMock({ evaluate });
+        page.setFileInput.mockImplementation(async paths => {
+            uploads += 1;
+            events.push(paths[0]);
+        });
+        return { page, events, expectedCounts };
+    }
+
+    it('uploads in order, reuses the cover image, and appends sources last', async () => {
+        const { page, events } = multiPage();
+        const result = await getRegistry().get('weixin/create-draft').func(page, {
+            title: '两盏灯', images: files.join(','), 'cover-image': files[0],
+            footer: '参考来源\nOpenStax', reward: false,
+        });
+        expect(page.setFileInput.mock.calls.map(([paths]) => paths[0])).toEqual(files);
+        expect(events).toEqual([...files, 'footer', 'verify', 'save']);
+        expect(result[0]).toMatchObject({ status: 'draft saved', detail: '"两盏灯" (with cover) (2 images)' });
+    });
+
+    it('waits for the newly uploaded image rather than accepting an old CDN image', async () => {
+        const { page, expectedCounts } = multiPage({ delaySecond: true });
+        await getRegistry().get('weixin/create-draft').func(page, {
+            title: '等待上传', images: files.join(','), footer: '参考来源', reward: false,
+        });
+        expect(expectedCounts).toEqual([1, 2, 2]);
+    });
+
+    it('does not save when the image count or footer position is wrong', async () => {
+        const { page, events } = multiPage({ invalidLayout: true });
+        await expect(getRegistry().get('weixin/create-draft').func(page, {
+            title: '校验', images: files.join(','), footer: '参考来源', reward: false,
+        })).rejects.toThrow('requested layout');
+        expect(events).not.toContain('save');
+    });
+
+    it('rejects a missing image before opening the editor', async () => {
+        const { page } = multiPage();
+        await expect(getRegistry().get('weixin/create-draft').func(page, {
+            title: '缺图', images: '/does-not-exist/cloudl-image.jpg',
+        })).rejects.toThrow('Image not found');
+        expect(page.goto).not.toHaveBeenCalled();
+    });
+
+    it('rejects a cover outside the body images to avoid adding an extra image', async () => {
+        const { page } = multiPage();
+        await expect(getRegistry().get('weixin/create-draft').func(page, {
+            title: '封面', images: files[0], 'cover-image': files[1],
+        })).rejects.toThrow('--cover-image must name one of the --images files');
+        expect(page.goto).not.toHaveBeenCalled();
+    });
+});

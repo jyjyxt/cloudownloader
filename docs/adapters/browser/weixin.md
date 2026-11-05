@@ -66,3 +66,21 @@ Downloads to `<output>/<article-title>/`:
 - Chrome running and **logged into** mp.weixin.qq.com (for articles behind login wall)
 - [Browser Bridge extension](/guide/browser-bridge) installed
 - `create-draft` with `--cover-image` requires Browser Bridge file upload support
+
+## Ordered article images and footer
+
+`create-draft` accepts optional text before the pictures, comma-separated `--images`
+in article order, and `--footer` text placed after every picture. Omit the positional
+content for an image-only article. The first image supplies the cover by default.
+If `--cover-image` is supplied with `--images`, it must select a file from that
+list and is not uploaded a second time.
+
+```bash
+cloudl weixin create-draft --title "Series and parallel circuits" \
+  --images ./01.jpg,./02.jpg,./03.jpg --cover-image ./01.jpg \
+  --footer "References: OpenStax, University Physics Volume 2, section 10.2"
+```
+
+Each upload waits for the CDN image count to increase. Before saving, the adapter
+checks the requested image count, exact text, and that the footer follows the
+last picture. This still saves a draft only.
