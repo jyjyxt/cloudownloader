@@ -81,6 +81,7 @@ describe('weixin create-draft command', () => {
         const evaluate = vi.fn().mockImplementation(async (script) => {
             if (script.includes('window.location.href.match')) return '123456';
             if (script.includes('!!document.querySelector("textarea#title")')) return true;
+            if (script.includes("var el = document.querySelector('")) return { ok: true };
             if (script.includes("reason: 'content editor not found'")) return { ok: true };
             if (script.includes('var range = document.createRange()')) return true;
             if (script.includes('var imageSelector =') && script.includes('errorText')) return { ok: true, cdnCount: 1 };
@@ -140,6 +141,48 @@ describe('weixin create-draft command', () => {
         expect(page.setFileInput).toHaveBeenCalledOnce();
         expect(evaluate.mock.calls.some(([script]) => script.includes("['dragenter', 'dragover', 'drop']"))).toBe(false);
         expect(result).toEqual([{ status: 'draft saved', detail: '"回退测试" (with cover)' }]);
+    });
+});
+
+describe('weixin structured article draft input', () => {
+    it('keeps ordered HTML and images while using an independent cover', async () => {
+        const command = getRegistry().get('weixin/create-draft');
+        const inputPath = new URL('../../package.json', import.meta.url).pathname.replace(/package\.json$/, 'structured-wechat-input.json');
+        const fs = await import('node:fs/promises');
+        await fs.writeFile(inputPath, JSON.stringify({
+            cover: new URL('../../README.md', import.meta.url).pathname,
+            blocks: [
+                { type: 'html', value: '<p>第一段</p>' },
+                { type: 'image', value: new URL('../../package.json', import.meta.url).pathname },
+                { type: 'html', value: '<p>第二段</p>' },
+            ],
+        }));
+        let uploads = 0;
+        const evaluate = vi.fn().mockImplementation(async (script) => {
+            if (script.includes('window.location.href.match')) return '123456';
+            if (script.includes('!!document.querySelector("textarea#title")')) return true;
+            if (script.includes("var el = document.querySelector('")) return { ok: true };
+            if (script.includes("reason: 'content editor not found'")) return { ok: true };
+            if (script.includes('var range = document.createRange()')) return { ok: true, imageCount: uploads };
+            if (script.includes('var imageSelector =') && script.includes('errorText')) return { ok: true, cdnCount: uploads };
+            if (script.includes('var blocks =')) return { ok: true };
+            if (script.includes('var selector =')) return { ok: true };
+            if (script.includes('return { ok: images.length > 0')) return { ok: true, count: uploads };
+            if (script.includes('return { count: editor ?')) return { count: uploads };
+            if (script.includes('window.__cloudlWeixinCoverPatch')) return { ok: true, fileId: `11000${uploads}`, cdnUrl: 'https://mmbiz.qpic.cn/test.jpg' };
+            if (script.includes('!!window.__cloudlWeixinCoverPatch?.applied')) return true;
+            if (script.includes("=== '保存为草稿'")) return { ok: true };
+            if (script.includes("document.querySelector('#js_save_success')")) return true;
+            if (script.includes('var el = document.querySelector')) return true;
+            return undefined;
+        });
+        const page = createPageMock({ evaluate });
+        page.setFileInput.mockImplementation(async () => { uploads += 1; });
+        try {
+            const result = await command.func(page, { title: '结构化图文', input: inputPath, reward: false });
+            expect(uploads).toBe(2);
+            expect(result).toEqual([{ status: 'draft saved', detail: '"结构化图文" (with cover)' }]);
+        } finally { await fs.rm(inputPath, { force: true }); }
     });
 });
 

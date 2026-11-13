@@ -86,6 +86,125 @@ async function appendFooter(page, text) {
     if (!result?.ok) throw new CommandExecutionError('Failed to append the article footer');
 }
 
+async function prepareArticleInput(inputPath, temporary) {
+    const fs = await import('node:fs/promises');
+    const path = await import('node:path');
+    const os = await import('node:os');
+    let input;
+    try { input = JSON.parse(await fs.readFile(inputPath, 'utf8')); }
+    catch { throw new CommandExecutionError('Could not read article input JSON'); }
+    if (!input || !Array.isArray(input.blocks) || typeof input.cover !== 'string' || !input.cover || !input.blocks.length) {
+        throw new CommandExecutionError('Article input must contain blocks and a cover image');
+    }
+    const blocks = [];
+    for (const block of input.blocks) {
+        if (!block || !['html', 'image'].includes(block.type) || typeof block.value !== 'string' || !block.value) {
+            throw new CommandExecutionError('Invalid article block');
+        }
+        if (block.type === 'image') {
+            let imagePath;
+            try {
+                const url = new URL(block.value);
+                if (url.protocol === 'http:' || url.protocol === 'https:') {
+                    const response = await fetch(url, { signal: AbortSignal.timeout(30_000) });
+                    if (!response.ok) throw new Error(`HTTP ${response.status}`);
+                    const mime = (response.headers.get('content-type') || '').split(';', 1)[0].toLowerCase();
+                    const ext = ({ 'image/jpeg': '.jpg', 'image/png': '.png', 'image/gif': '.gif', 'image/webp': '.webp' })[mime];
+                    if (!ext) throw new Error('unsupported image type');
+                    const length = Number(response.headers.get('content-length') || 0);
+                    if (length > 45 * 1024 * 1024) throw new Error('image too large');
+                    const bytes = Buffer.from(await response.arrayBuffer());
+                    if (bytes.length > 45 * 1024 * 1024) throw new Error('image too large');
+                    const temp = path.join(await fs.mkdtemp(path.join(os.tmpdir(), 'cloudl-weixin-')), `image-${blocks.length}${ext}`);
+                    await fs.writeFile(temp, bytes); temporary.push(temp); imagePath = temp;
+                } else if (url.protocol === 'file:') imagePath = (await import('node:url')).fileURLToPath(url);
+                else throw new Error('unsupported');
+            } catch (error) {
+                if (error instanceof CommandExecutionError) throw error;
+                if (/^[a-z][a-z0-9+.-]*:/i.test(block.value) && !/^file:/i.test(block.value)) throw new CommandExecutionError(`Could not download article image: ${block.value}`);
+                if (!imagePath) imagePath = block.value;
+            }
+            const resolved = path.resolve(imagePath);
+            if (!(await fs.stat(resolved).catch(() => null))?.isFile()) throw new CommandExecutionError(`Image not found: ${resolved}`);
+            blocks.push({ type: 'image', value: resolved });
+        } else {
+            if (/<\s*(script|iframe|object|embed|form|input|button|style|link)\b|\son[a-z]+\s*=|javascript:/i.test(block.value)) {
+                throw new CommandExecutionError('Article HTML contains unsupported or unsafe markup');
+            }
+            blocks.push(block);
+        }
+    }
+    const cover = path.resolve(input.cover);
+    if (!(await fs.stat(cover).catch(() => null))?.isFile()) throw new CommandExecutionError(`Cover not found: ${cover}`);
+    return { blocks, cover };
+}
+
+async function appendArticleHtml(page, html) {
+    const result = await page.evaluate(`(() => {
+        var editor = document.querySelector('#ueditor_0 .ProseMirror');
+        if (!editor) return { ok: false };
+        editor.focus();
+        var range = document.createRange();
+        range.selectNodeContents(editor);
+        range.collapse(false);
+        var selection = window.getSelection();
+        selection.removeAllRanges();
+        selection.addRange(range);
+        var ok = document.execCommand('insertHTML', false, ${JSON.stringify(html)});
+        editor.dispatchEvent(new InputEvent('input', { bubbles: true }));
+        return { ok: ok };
+    })()`);
+    if (!result?.ok) throw new CommandExecutionError('Could not insert article text');
+}
+
+async function removeTemporaryCover(page, imageCount) {
+    const result = await page.evaluate(`(() => {
+        var editor = document.querySelector('#ueditor_0 .ProseMirror');
+        var selector = 'img[src*="mmbiz"], img[src*="qpic.cn"], img[data-src*="mmbiz"], img[data-src*="qpic.cn"]';
+        var images = editor ? editor.querySelectorAll(selector) : [];
+        var image = images[${imageCount}];
+        if (!image || images.length !== ${imageCount + 1}) return { ok: false };
+        editor.focus();
+        var range = document.createRange();
+        range.selectNode(image);
+        var selection = window.getSelection();
+        selection.removeAllRanges();
+        selection.addRange(range);
+        var deleted = document.execCommand('delete', false, null);
+        editor.dispatchEvent(new InputEvent('input', { bubbles: true }));
+        return { ok: deleted && editor.querySelectorAll(selector).length === ${imageCount} };
+    })()`);
+    if (!result?.ok) throw new CommandExecutionError('Could not remove the temporary cover from the article');
+}
+
+async function verifyArticleBlocks(page, blocks) {
+    const result = await page.evaluate(`(() => {
+        var blocks = ${JSON.stringify(blocks)};
+        var editor = document.querySelector('#ueditor_0 .ProseMirror');
+        if (!editor) return { ok: false };
+        var normalize = text => String(text || '').replace(/\\s+/g, ' ').trim();
+        var expected = [];
+        for (var block of blocks) {
+            if (block.type === 'image') expected.push({ type: 'image' });
+            else { var div = document.createElement('div'); div.innerHTML = block.value; var text = normalize(div.textContent); if (text) expected.push({ type: 'text', value: text }); }
+        }
+        var actual = [];
+        var range = document.createRange();
+        range.selectNodeContents(editor);
+        var startNode = editor, startOffset = 0;
+        var images = Array.from(editor.querySelectorAll('img[src*="mmbiz"], img[src*="qpic.cn"], img[data-src*="mmbiz"], img[data-src*="qpic.cn"]'));
+        for (var image of images) {
+            range.setStart(startNode, startOffset); range.setEndBefore(image);
+            var text = normalize(range.cloneContents().textContent); if (text) actual.push({ type: 'text', value: text });
+            actual.push({ type: 'image' }); startNode = image.parentNode; startOffset = Array.prototype.indexOf.call(startNode.childNodes, image) + 1;
+        }
+        range.setStart(startNode, startOffset); range.setEnd(editor, editor.childNodes.length);
+        var text = normalize(range.cloneContents().textContent); if (text) actual.push({ type: 'text', value: text });
+        return { ok: JSON.stringify(expected) === JSON.stringify(actual), expected: expected, actual: actual };
+    })()`);
+    if (!result?.ok) throw new CommandExecutionError('Article text or images did not match the requested order', JSON.stringify(result));
+}
+
 async function prepareArticleImages(kwargs) {
     const fs = await import('node:fs');
     const path = await import('node:path');
@@ -645,6 +764,7 @@ export const createDraftCommand = cli({
     args: [
         { name: 'title', required: true, help: '文章标题 (最长64字)' },
         { name: 'content', required: false, positional: true, help: '图片之前的正文；纯图片文章可省略' },
+        { name: 'input', help: '文章 JSON 文件（图文块与独立封面）' },
         { name: 'images', help: '按正文顺序上传的图片路径，逗号分隔；默认首图作封面' },
         { name: 'footer', help: '追加在所有正文图片之后的文字，例如参考来源' },
         { name: 'author', help: '作者名 (最长8字)' },
@@ -658,7 +778,13 @@ export const createDraftCommand = cli({
     columns: ['status', 'detail'],
 
     func: async (page, kwargs) => {
-        const article = await prepareArticleImages(kwargs);
+        if (kwargs.input && (kwargs.content || kwargs.images || kwargs.footer || kwargs['cover-image'])) {
+            throw new CommandExecutionError('--input cannot be combined with content, --images, --footer or --cover-image');
+        }
+        const temporary = [];
+        try {
+        const structured = kwargs.input ? await prepareArticleInput(kwargs.input, temporary) : null;
+        const article = structured ? { images: [], coverIndex: 0 } : await prepareArticleImages(kwargs);
         await navigateToEditor(page);
 
         const titleResult = await fillField(page, 'textarea#title', kwargs.title);
@@ -673,6 +799,19 @@ export const createDraftCommand = cli({
         if (!contentResult?.ok) throw new CommandExecutionError('Failed to fill content');
 
         let usedCoverRequestFallback = false;
+        if (structured) {
+            for (const block of structured.blocks) {
+                if (block.type === 'html') await appendArticleHtml(page, block.value);
+                else await uploadContentImage(page, block.value);
+            }
+            await verifyArticleBlocks(page, structured.blocks);
+            const imageCount = structured.blocks.filter(block => block.type === 'image').length;
+            await uploadContentImage(page, structured.cover);
+            await installCoverRequestFallback(page, imageCount);
+            usedCoverRequestFallback = true;
+            await removeTemporaryCover(page, imageCount);
+            await verifyArticleBlocks(page, structured.blocks);
+        }
         for (const image of article.images) {
             await uploadContentImage(page, image);
         }
@@ -713,7 +852,11 @@ export const createDraftCommand = cli({
 
         return [{
             status: success ? 'draft saved' : 'save attempted, check browser to confirm',
-            detail: `"${kwargs.title}"${kwargs.author ? ` by ${kwargs.author}` : ''}${article.images.length ? ' (with cover)' : ''}${kwargs.images ? ` (${article.images.length} images)` : ''}${appliedSettings.length ? ` (${appliedSettings.join(', ')})` : ''}`,
+            detail: `"${kwargs.title}"${kwargs.author ? ` by ${kwargs.author}` : ''}${article.images.length || structured ? ' (with cover)' : ''}${kwargs.images ? ` (${article.images.length} images)` : ''}${appliedSettings.length ? ` (${appliedSettings.join(', ')})` : ''}`,
         }];
+        } finally {
+            const fs = await import('node:fs/promises');
+            await Promise.all(temporary.map(temporaryPath => fs.rm(temporaryPath, { force: true }).catch(() => undefined)));
+        }
     },
 });

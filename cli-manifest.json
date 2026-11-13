@@ -44078,6 +44078,12 @@
         "help": "图片之前的正文；纯图片文章可省略"
       },
       {
+        "name": "input",
+        "type": "str",
+        "required": false,
+        "help": "文章 JSON 文件（图文块与独立封面）"
+      },
+      {
         "name": "images",
         "type": "str",
         "required": false,

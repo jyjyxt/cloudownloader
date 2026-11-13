@@ -43,6 +43,12 @@ cloudl weixin create-draft --title "周报" --author "Cloudl" --summary "本周�
 
 # Create a draft with a cover image sourced from local disk
 cloudl weixin create-draft --title "封面示例" --cover-image ./cover.png "正文会先插入图片，再设为封面"
+
+# Create a draft from ordered HTML/text blocks and an independent cover
+cat > ./wechat-article.json <<'JSON'
+{"cover":"/absolute/path/cover.png","blocks":[{"type":"html","value":"<p>第一段</p>"},{"type":"image","value":"/absolute/path/inline.png"},{"type":"html","value":"<p>第二段</p>"}]}
+JSON
+cloudl weixin create-draft --title "图文示例" --input ./wechat-article.json
 ```
 
 ## Output
@@ -84,3 +90,8 @@ cloudl weixin create-draft --title "Series and parallel circuits" \
 Each upload waits for the CDN image count to increase. Before saving, the adapter
 checks the requested image count, exact text, and that the footer follows the
 last picture. This still saves a draft only.
+
+
+## Structured article input
+
+`--input` accepts JSON with a `cover` path and ordered `blocks`. Each block is either `{ "type": "html", "value": "..." }` or `{ "type": "image", "value": "..." }`. Image values may be local paths, `file:` URLs, or HTTP(S) image URLs; remote images are downloaded temporarily before upload. The cover is uploaded for the cover setting and removed from the body before the draft is saved.
